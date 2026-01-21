@@ -1,12 +1,15 @@
 package Entidades;
 
 import jakarta.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
 @Entity
 @Table(name = "Trabajador")
-public class Trabajador extends AuditoriaBase {
+public class Trabajador extends AuditoriaBase implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +18,9 @@ public class Trabajador extends AuditoriaBase {
 
     @Column(name = "Nombre", nullable = false)
     private String nombre;
+    
+    @Column(name = "NoNomina", nullable = false)
+    private String noNomina;
 
     @ManyToOne
     @JoinColumn(name = "IdPuesto", nullable = false)
@@ -27,10 +33,11 @@ public class Trabajador extends AuditoriaBase {
     @Column(name = "Activo", nullable = false)
     private Boolean activo = true;
 
-    public Trabajador(String nombre, Puesto puesto, Boolean activo) {
+    public Trabajador(String nombre, String noNomina, Puesto puesto, Boolean activo) {
         this.nombre = nombre;
         this.puesto = puesto;
         this.activo = activo;
+        this.noNomina = noNomina;
         this.equiposAsignados = new ArrayList<>();
     }
 
@@ -76,6 +83,14 @@ public class Trabajador extends AuditoriaBase {
 
     public void setEquiposAsignados(List<EquipoAsignado> equiposAsignados) {
         this.equiposAsignados = equiposAsignados;
+    }
+
+    public String getNoNomina() {
+        return noNomina;
+    }
+
+    public void setNoNomina(String noNomina) {
+        this.noNomina = noNomina;
     }
 
 }

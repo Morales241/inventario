@@ -21,15 +21,18 @@ public class Modelo extends AuditoriaBase implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
+    @Column(name = "Nombre")
+    private String nombre;
 
     @Column(name = "Marca")
     private String marca;
     
     @Column(name = "MemoriaRam")
-    private String memoriaRam;
+    private int memoriaRam;
     
     @Column(name = "Almacenamiento")
-    private String almacenamiento;
+    private int almacenamiento;
     
     @Column(name = "Procesador")
     private String procesador;
@@ -41,8 +44,9 @@ public class Modelo extends AuditoriaBase implements Serializable {
     @OneToMany(mappedBy = "modelo") 
     private List<EquipoDeComputo> equipos;
 
-    public Modelo(String marca, String memoriaRam, String almacenamiento, String preocesador, String noSerie) {
+    public Modelo(String marca,String nombre, int memoriaRam, int almacenamiento, String preocesador, String noSerie) {
         this.marca = marca;
+        this.nombre = nombre;
         this.memoriaRam = memoriaRam;
         this.almacenamiento = almacenamiento;
         this.procesador = preocesador;
@@ -70,19 +74,19 @@ public class Modelo extends AuditoriaBase implements Serializable {
         this.marca = marca;
     }
 
-    public String getMemoriaRam() {
+    public int getMemoriaRam() {
         return memoriaRam;
     }
 
-    public void setMemoriaRam(String memoriaRam) {
+    public void setMemoriaRam(int memoriaRam) {
         this.memoriaRam = memoriaRam;
     }
 
-    public String getAlmacenamiento() {
+    public int getAlmacenamiento() {
         return almacenamiento;
     }
 
-    public void setAlmacenamiento(String almacenamiento) {
+    public void setAlmacenamiento(int almacenamiento) {
         this.almacenamiento = almacenamiento;
     }
 
@@ -109,6 +113,21 @@ public class Modelo extends AuditoriaBase implements Serializable {
     public void setEquipos(List<EquipoDeComputo> equipos) {
         this.equipos = equipos;
     }
-    
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getProcesador() {
+        return procesador;
+    }
+
+    public void setProcesador(String procesador) {
+        this.procesador = procesador;
+    }
     
 }

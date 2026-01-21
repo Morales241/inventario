@@ -6,8 +6,9 @@ import java.util.ArrayList;
 
 @Entity
 @Table(name = "Departamento")
-public class Departamento extends AuditoriaBase implements Serializable{
+public class Departamento extends AuditoriaBase implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_Departamento")
@@ -19,7 +20,6 @@ public class Departamento extends AuditoriaBase implements Serializable{
     @ManyToOne
     @JoinColumn(name = "Id_Sucursal", nullable = false)
     private Sucursal sucursal;
-
     
     @Column(name = "Puestos")
     @OneToMany(mappedBy = "departamento", cascade = CascadeType.ALL)

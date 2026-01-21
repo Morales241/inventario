@@ -1,12 +1,15 @@
 package Entidades;
 
 import jakarta.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
 @Entity
 @Table(name = "Puesto")
-public class Puesto extends AuditoriaBase {
+public class Puesto extends AuditoriaBase implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

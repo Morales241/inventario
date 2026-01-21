@@ -3,6 +3,7 @@ package Entidades;
 import Enums.CondicionFisica;
 import Enums.EstadoEquipo;
 import jakarta.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,9 @@ import java.util.List;
 @Table(name = "EquipoDeComputo")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TipoEquipo", discriminatorType = DiscriminatorType.STRING)
-public class EquipoDeComputo extends AuditoriaBase {
+public class EquipoDeComputo extends AuditoriaBase implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
