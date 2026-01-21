@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Entidades;
 
 import jakarta.persistence.*;
@@ -14,21 +10,29 @@ public class Trabajador {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_Trabajador")
+    @Column(name = "Id_Trabajador")
     private Integer idTrabajador;
 
     @Column(name = "Nombre", nullable = false)
     private String nombre;
 
     @ManyToOne
-    @JoinColumn(name = "idPuesto", nullable = false)
+    @JoinColumn(name = "IdPuesto", nullable = false)
     private Puesto puesto;
 
-    // ESTA ES LA LISTA DE EQUIPOS QUE PEDISTE
-    @OneToMany(mappedBy = "trabajadorAsignado") 
-    private List<EquipoDeComputo> equipos = new ArrayList<>();
+    @Column(name = "EquiposAsignados")
+    @OneToMany(mappedBy = "trabajador") 
+    private List<EquipoAsignado> equiposAsignados;
 
-    // Generar Getters y Setters
+    public Trabajador(String nombre, Puesto puesto) {
+        this.nombre = nombre;
+        this.puesto = puesto;
+        this.equiposAsignados = new ArrayList<>();
+    }
+
+    public Trabajador() {
+        this.equiposAsignados = new ArrayList<>();
+    }
 
     public Integer getIdTrabajador() {
         return idTrabajador;
@@ -54,12 +58,14 @@ public class Trabajador {
         this.puesto = puesto;
     }
 
-    public List<EquipoDeComputo> getEquipos() {
-        return equipos;
+    public List<EquipoAsignado> getEquiposAsignados() {
+        return equiposAsignados;
     }
 
-    public void setEquipos(List<EquipoDeComputo> equipos) {
-        this.equipos = equipos;
+    public void setEquiposAsignados(List<EquipoAsignado> equiposAsignados) {
+        this.equiposAsignados = equiposAsignados;
     }
     
+    
+
 }

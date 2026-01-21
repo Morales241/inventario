@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Entidades;
 
 import jakarta.persistence.CascadeType;
@@ -15,7 +11,6 @@ import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  *
  * @author tacot
@@ -28,18 +23,30 @@ public class Empresa implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_Empresa")
+    @Column(name = "Id_Empresa")
     private Integer idEmpresa;
 
     @Column(name = "Nombre", nullable = false)
     private String nombre;
 
-    @Column(name = "Ubicacion", nullable = false)
-    private String ubicacion;
+    @Column(name = "Sucursales")
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
+    private List<Sucursal> sucursales;
 
-    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Departamento> departamentos = new ArrayList<>();
+    public Empresa(String nombre, List<Sucursal> sucursales) {
+        this.nombre = nombre;
+        this.sucursales = sucursales;
+    }
 
+    public Empresa(String nombre) {
+        this.nombre = nombre;
+        this.sucursales = new ArrayList<>();
+    }
+
+    public Empresa() {
+        this.sucursales = new ArrayList<>();
+    }
+    
     public Integer getIdEmpresa() {
         return idEmpresa;
     }
@@ -56,21 +63,12 @@ public class Empresa implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getUbicacion() {
-        return ubicacion;
+    public List<Sucursal> getSucursales() {
+        return sucursales;
     }
 
-    public void setUbicacion(String ubicacion) {
-        this.ubicacion = ubicacion;
+    public void setSucursales(List<Sucursal> sucursales) {
+        this.sucursales = sucursales;
     }
-
-    public List<Departamento> getDepartamentos() {
-        return departamentos;
-    }
-
-    public void setDepartamentos(List<Departamento> departamentos) {
-        this.departamentos = departamentos;
-    }
-    
-    
+   
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Entidades;
 
 import jakarta.persistence.*;
@@ -14,20 +10,29 @@ public class Puesto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_Puesto")
+    @Column(name = "Id_Puesto")
     private Integer idPuesto;
 
     @Column(name = "Nombre", nullable = false)
     private String nombre;
 
     @ManyToOne
-    @JoinColumn(name = "idDepartamento")
+    @JoinColumn(name = "IdDepartamento")
     private Departamento departamento;
 
+    @Column(name = "Trabajadores")
     @OneToMany(mappedBy = "puesto", cascade = CascadeType.ALL)
-    private List<Trabajador> trabajadores = new ArrayList<>();
+    private List<Trabajador> trabajadores;
 
-    // Generar Getters y Setters
+    public Puesto(String nombre, Departamento departamento) {
+        this.nombre = nombre;
+        this.departamento = departamento;
+        this.trabajadores = new ArrayList<>();
+    }
+
+    public Puesto() {
+        this.trabajadores = new ArrayList<>();
+    }
 
     public Integer getIdPuesto() {
         return idPuesto;
@@ -60,5 +65,6 @@ public class Puesto {
     public void setTrabajadores(List<Trabajador> trabajadores) {
         this.trabajadores = trabajadores;
     }
+
     
 }

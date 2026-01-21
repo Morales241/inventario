@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Entidades;
 import jakarta.persistence.*;
 import java.util.List;
@@ -13,23 +9,31 @@ public class Departamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_Departamento")
+    @Column(name = "Id_Departamento")
     private Integer idDepartamento;
 
     @Column(name = "Nombre", nullable = false)
     private String nombre;
 
-    // Relación: Muchos Departamentos -> Una Empresa
     @ManyToOne
-    @JoinColumn(name = "id_Empresa", nullable = false)
-    private Empresa empresa;
+    @JoinColumn(name = "Id_Sucursal", nullable = false)
+    private Sucursal sucursal;
 
-    // Relación: Un Departamento -> Muchos Puestos
+    
+    @Column(name = "Puestos")
     @OneToMany(mappedBy = "departamento", cascade = CascadeType.ALL)
-    private List<Puesto> puestos = new ArrayList<>();
+    private List<Puesto> puestos;
 
-    // Generar Getters y Setters
+    public Departamento(String nombre, Sucursal sucursal) {
+        this.nombre = nombre;
+        this.sucursal = sucursal;
+        this.puestos = new ArrayList<>();
+    }
 
+    public Departamento() {
+        this.puestos = new ArrayList<>();
+    }
+    
     public Integer getIdDepartamento() {
         return idDepartamento;
     }
@@ -46,12 +50,12 @@ public class Departamento {
         this.nombre = nombre;
     }
 
-    public Empresa getEmpresa() {
-        return empresa;
+    public Sucursal getSucursal() {
+        return sucursal;
     }
 
-    public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
     public List<Puesto> getPuestos() {
@@ -61,5 +65,4 @@ public class Departamento {
     public void setPuestos(List<Puesto> puestos) {
         this.puestos = puestos;
     }
-    
 }
