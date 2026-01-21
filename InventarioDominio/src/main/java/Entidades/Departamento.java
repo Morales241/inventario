@@ -1,16 +1,17 @@
 package Entidades;
 import jakarta.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
 @Entity
 @Table(name = "Departamento")
-public class Departamento {
+public class Departamento extends AuditoriaBase implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_Departamento")
-    private Integer idDepartamento;
+    private Long idDepartamento;
 
     @Column(name = "Nombre", nullable = false)
     private String nombre;
@@ -34,11 +35,11 @@ public class Departamento {
         this.puestos = new ArrayList<>();
     }
     
-    public Integer getIdDepartamento() {
+    public Long getIdDepartamento() {
         return idDepartamento;
     }
 
-    public void setIdDepartamento(Integer idDepartamento) {
+    public void setIdDepartamento(Long idDepartamento) {
         this.idDepartamento = idDepartamento;
     }
 

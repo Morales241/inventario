@@ -6,12 +6,12 @@ import java.util.ArrayList;
 
 @Entity
 @Table(name = "Trabajador")
-public class Trabajador {
+public class Trabajador extends AuditoriaBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_Trabajador")
-    private Integer idTrabajador;
+    private Long idTrabajador;
 
     @Column(name = "Nombre", nullable = false)
     private String nombre;
@@ -21,12 +21,16 @@ public class Trabajador {
     private Puesto puesto;
 
     @Column(name = "EquiposAsignados")
-    @OneToMany(mappedBy = "trabajador") 
+    @OneToMany(mappedBy = "trabajador")
     private List<EquipoAsignado> equiposAsignados;
 
-    public Trabajador(String nombre, Puesto puesto) {
+    @Column(name = "Activo", nullable = false)
+    private Boolean activo = true;
+
+    public Trabajador(String nombre, Puesto puesto, Boolean activo) {
         this.nombre = nombre;
         this.puesto = puesto;
+        this.activo = activo;
         this.equiposAsignados = new ArrayList<>();
     }
 
@@ -34,11 +38,19 @@ public class Trabajador {
         this.equiposAsignados = new ArrayList<>();
     }
 
-    public Integer getIdTrabajador() {
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
+    public Long getIdTrabajador() {
         return idTrabajador;
     }
 
-    public void setIdTrabajador(Integer idTrabajador) {
+    public void setIdTrabajador(Long idTrabajador) {
         this.idTrabajador = idTrabajador;
     }
 
@@ -65,7 +77,5 @@ public class Trabajador {
     public void setEquiposAsignados(List<EquipoAsignado> equiposAsignados) {
         this.equiposAsignados = equiposAsignados;
     }
-    
-    
 
 }

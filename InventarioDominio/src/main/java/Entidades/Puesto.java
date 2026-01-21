@@ -6,12 +6,12 @@ import java.util.ArrayList;
 
 @Entity
 @Table(name = "Puesto")
-public class Puesto {
+public class Puesto extends AuditoriaBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_Puesto")
-    private Integer idPuesto;
+    private Long idPuesto;
 
     @Column(name = "Nombre", nullable = false)
     private String nombre;
@@ -34,11 +34,11 @@ public class Puesto {
         this.trabajadores = new ArrayList<>();
     }
 
-    public Integer getIdPuesto() {
+    public Long getIdPuesto() {
         return idPuesto;
     }
 
-    public void setIdPuesto(Integer idPuesto) {
+    public void setIdPuesto(Long idPuesto) {
         this.idPuesto = idPuesto;
     }
 

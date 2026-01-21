@@ -20,14 +20,14 @@ import java.util.List;
  */
 @Entity
 @Table(name = "Sucursal")
-public class Sucursal implements Serializable {
+public class Sucursal extends AuditoriaBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_Sucursal")
-    private Integer idSucursal;
+    private Long idSucursal;
 
     @ManyToOne
     @JoinColumn(name = "IdEmpresa")
@@ -37,7 +37,7 @@ public class Sucursal implements Serializable {
     private String ubicacion;
     
     @Column(name = "Nombre")
-    private String Nombre;
+    private String nombre;
     
     
     @Column(name = "Departamentos")
@@ -52,7 +52,7 @@ public class Sucursal implements Serializable {
     public Sucursal(Empresa empresa, String ubicacion, String Nombre) {
         this.empresa = empresa;
         this.ubicacion = ubicacion;
-        this.Nombre = Nombre;
+        this.nombre = Nombre;
         this.departamentos = new ArrayList<>();
         this.equipos = new ArrayList<>();
     }
@@ -62,11 +62,11 @@ public class Sucursal implements Serializable {
         this.equipos = new ArrayList<>();
     }
 
-    public Integer getIdSucursal() {
+    public Long getIdSucursal() {
         return idSucursal;
     }
 
-    public void setIdSucursal(Integer idSucursal) {
+    public void setIdSucursal(Long idSucursal) {
         this.idSucursal = idSucursal;
     }
 
@@ -87,11 +87,11 @@ public class Sucursal implements Serializable {
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String Nombre) {
-        this.Nombre = Nombre;
+        this.nombre = Nombre;
     }
 
     public List<Departamento> getDepartamento() {

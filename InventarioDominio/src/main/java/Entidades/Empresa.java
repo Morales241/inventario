@@ -17,14 +17,14 @@ import java.util.List;
  */
 @Entity
 @Table(name = "Empresa")
-public class Empresa implements Serializable {
+public class Empresa extends AuditoriaBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_Empresa")
-    private Integer idEmpresa;
+    private Long idEmpresa;
 
     @Column(name = "Nombre", nullable = false)
     private String nombre;
@@ -47,11 +47,11 @@ public class Empresa implements Serializable {
         this.sucursales = new ArrayList<>();
     }
     
-    public Integer getIdEmpresa() {
+    public Long getIdEmpresa() {
         return idEmpresa;
     }
 
-    public void setIdEmpresa(Integer idEmpresa) {
+    public void setIdEmpresa(Long idEmpresa) {
         this.idEmpresa = idEmpresa;
     }
 

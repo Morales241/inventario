@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Entidades;
 
 import jakarta.persistence.*;
@@ -9,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Movil")
 @PrimaryKeyJoinColumn(name = "id_Movil")
+@DiscriminatorValue("MOVIL")
 public class Movil extends EquipoDeComputo {
 
     @Column(nullable = false)
@@ -20,16 +17,22 @@ public class Movil extends EquipoDeComputo {
     @Column(name = "NumCelular", nullable = false)
     private String numCelular;
 
-    @Column(name = "MemoriaSD",nullable = false)
-    private String memoriaSD;
-
     @Column(nullable = false)
     private Boolean funda;
     
     @Column(nullable = false)
     private Boolean manosLibres;
 
-    // Generar Getters y Setters
+    public Movil() {
+    }
+
+    public Movil(Boolean cargador, String imei, String numCelular, Boolean funda, Boolean manosLibres) {
+        this.cargador = cargador;
+        this.imei = imei;
+        this.numCelular = numCelular;
+        this.funda = funda;
+        this.manosLibres = manosLibres;
+    }
 
     public Boolean getCargador() {
         return cargador;
@@ -53,14 +56,6 @@ public class Movil extends EquipoDeComputo {
 
     public void setNumCelular(String numCelular) {
         this.numCelular = numCelular;
-    }
-
-    public String getMemoriaSD() {
-        return memoriaSD;
-    }
-
-    public void setMemoriaSD(String memoriaSD) {
-        this.memoriaSD = memoriaSD;
     }
 
     public Boolean getFunda() {

@@ -15,7 +15,7 @@ import java.util.List;
  * @author JMorales
  */
 @Entity
-public class Modelo implements Serializable {
+public class Modelo extends AuditoriaBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -32,7 +32,7 @@ public class Modelo implements Serializable {
     private String almacenamiento;
     
     @Column(name = "Procesador")
-    private String preocesador;
+    private String procesador;
     
     @Column(name = "NoSerie")
     private String noSerie;
@@ -45,7 +45,7 @@ public class Modelo implements Serializable {
         this.marca = marca;
         this.memoriaRam = memoriaRam;
         this.almacenamiento = almacenamiento;
-        this.preocesador = preocesador;
+        this.procesador = preocesador;
         this.noSerie = noSerie;
         this.equipos = new ArrayList<>();
     }
@@ -87,11 +87,11 @@ public class Modelo implements Serializable {
     }
 
     public String getPreocesador() {
-        return preocesador;
+        return procesador;
     }
 
     public void setPreocesador(String preocesador) {
-        this.preocesador = preocesador;
+        this.procesador = preocesador;
     }
 
     public String getNoSerie() {
