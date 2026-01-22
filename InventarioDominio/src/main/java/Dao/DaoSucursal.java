@@ -44,11 +44,11 @@ public class DaoSucursal extends DaoGenerico<Sucursal, Long> implements IDaoSucu
             Root<Sucursal> root = cq.from(Sucursal.class);
 
             if (!nombre.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(root.get("Nombre")), nombre.toLowerCase()));
+                predicados.add(cb.equal(cb.lower(root.get("nombre")), nombre.toLowerCase()));
             }
 
             if (!ubicacion.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(root.get("Ubicacion")), ubicacion.toLowerCase()));
+                predicados.add(cb.equal(cb.lower(root.get("ubicacion")), ubicacion.toLowerCase()));
             }
 
             cq.select(root);

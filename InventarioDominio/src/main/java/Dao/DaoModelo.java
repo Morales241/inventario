@@ -45,7 +45,7 @@ public class DaoModelo extends DaoGenerico<Modelo, Long> implements IDaoModelo {
 
             Root<Modelo> root = cq.from(Modelo.class);
 
-            predicados.add(cb.equal(cb.lower(root.get("Nombre")), nombre.toLowerCase()));
+            predicados.add(cb.equal(cb.lower(root.get("nombre")), nombre.toLowerCase()));
 
             cq.select(root);
 
@@ -71,19 +71,19 @@ public class DaoModelo extends DaoGenerico<Modelo, Long> implements IDaoModelo {
 
 
             if (!marca.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(root.get("Marca")), marca.toLowerCase()));
+                predicados.add(cb.equal(cb.lower(root.get("marca")), marca.toLowerCase()));
             }
 
             if (!memoriaRam.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(root.get("MemoriaRam")), memoriaRam.toLowerCase()));
+                predicados.add(cb.equal(cb.lower(root.get("memoriaRam")), memoriaRam.toLowerCase()));
             }
 
             if (!almacenamiento.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(root.get("Almacenamiento")), almacenamiento.toLowerCase()));
+                predicados.add(cb.equal(cb.lower(root.get("almacenamiento")), almacenamiento.toLowerCase()));
             }
             
             if (!procesador.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(root.get("Procesador")), procesador.toLowerCase()));
+                predicados.add(cb.equal(cb.lower(root.get("procesador")), procesador.toLowerCase()));
             }
 
             cq.select(root);

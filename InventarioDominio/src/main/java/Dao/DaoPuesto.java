@@ -42,7 +42,7 @@ public class DaoPuesto extends DaoGenerico<Puesto, Long> implements IDaoPuesto {
 
             Root<Puesto> root = cq.from(Puesto.class);
 
-            predicados.add(cb.equal(cb.lower(root.get("Nombre")), nombre.toLowerCase()));
+            predicados.add(cb.equal(cb.lower(root.get("nombre")), nombre.toLowerCase()));
 
             cq.select(root);
 

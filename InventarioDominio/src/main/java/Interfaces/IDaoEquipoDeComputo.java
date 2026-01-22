@@ -4,10 +4,14 @@
  */
 package Interfaces;
 
+import Entidades.EquipoDeComputo;
+import Enums.EstadoEquipo;
+import java.util.List;
+
 /**
  *
  * @author JMorales
  */
 public interface IDaoEquipoDeComputo {
-    
+    public List<EquipoDeComputo> buscarConFiltros(Integer gri, Long idSucursal, EstadoEquipo estado, String busquedaModelo);
 }

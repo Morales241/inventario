@@ -4,10 +4,15 @@
  */
 package Dao;
 
+import Entidades.OtroEquipo;
+import Interfaces.IDaoOtroEquipo;
+
 /**
  *
  * @author JMorales
  */
-public class DaoOtroEquipo {
-    
+public class DaoOtroEquipo extends DaoGenerico<OtroEquipo, Long> implements IDaoOtroEquipo {
+    public DaoOtroEquipo() {
+        super(OtroEquipo.class);
+    }
 }

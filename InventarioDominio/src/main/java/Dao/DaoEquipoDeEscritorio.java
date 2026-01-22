@@ -4,10 +4,15 @@
  */
 package Dao;
 
+import Entidades.EquipoDeEscritorio;
+import Interfaces.IDaoEquipoDeEscritorio;
+
 /**
  *
  * @author JMorales
  */
-public class DaoEquipoDeEscritorio {
-    
+public class DaoEquipoDeEscritorio extends DaoGenerico<EquipoDeEscritorio, Long> implements IDaoEquipoDeEscritorio {
+    public DaoEquipoDeEscritorio() {
+        super(EquipoDeEscritorio.class);
+    }
 }

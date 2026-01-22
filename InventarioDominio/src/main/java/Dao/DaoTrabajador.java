@@ -46,11 +46,11 @@ public class DaoTrabajador extends DaoGenerico<Trabajador, Long> implements IDao
             Root<Trabajador> root = cq.from(Trabajador.class);
 
             if (!nombre.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(root.get("Nombre")), nombre.toLowerCase()));
+                predicados.add(cb.equal(cb.lower(root.get("nombre")), nombre.toLowerCase()));
             }
 
             if (!nomina.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(root.get("Nomina")), nomina.toLowerCase()));
+                predicados.add(cb.equal(cb.lower(root.get("nomina")), nomina.toLowerCase()));
             }
 
             cq.select(root);
@@ -78,15 +78,15 @@ public class DaoTrabajador extends DaoGenerico<Trabajador, Long> implements IDao
             Join<Trabajador, Puesto> join = root.join("empresa");
 
             if (!cadena.isEmpty()) {
-                predicados.add(cb.like(cb.lower(root.get("%Nombre%")), cadena.toLowerCase()));
+                predicados.add(cb.like(cb.lower(root.get("%nombre%")), cadena.toLowerCase()));
             }
 
             if (!numero.isEmpty()) {
-                predicados.add(cb.like(cb.lower(root.get("%Nomina%")), numero.toLowerCase()));
+                predicados.add(cb.like(cb.lower(root.get("%nomina%")), numero.toLowerCase()));
             }
 
             if (!puesto.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(join.get("Nombre")), puesto.toLowerCase()));
+                predicados.add(cb.equal(cb.lower(join.get("nombre")), puesto.toLowerCase()));
             }
 
             cq.select(root);

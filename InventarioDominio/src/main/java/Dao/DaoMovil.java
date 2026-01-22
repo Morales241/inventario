@@ -4,10 +4,15 @@
  */
 package Dao;
 
+import Entidades.Movil;
+import Interfaces.IDaoMovil;
+
 /**
  *
  * @author JMorales
  */
-public class DaoMovil {
-    
+public class DaoMovil extends DaoGenerico<Movil, Long> implements IDaoMovil {
+    public DaoMovil() {
+        super(Movil.class);
+    }
 }

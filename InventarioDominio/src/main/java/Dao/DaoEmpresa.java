@@ -37,7 +37,7 @@ public class DaoEmpresa extends DaoGenerico<Empresa, Long> implements IDaoEmpres
 
             Root<Empresa> root = cq.from(Empresa.class);
 
-            Predicate predicate = cb.equal(cb.lower(root.get("Nombre")), nombre.toLowerCase());
+            Predicate predicate = cb.equal(cb.lower(root.get("nombre")), nombre.toLowerCase());
 
             cq.select(root);
 
@@ -58,7 +58,7 @@ public class DaoEmpresa extends DaoGenerico<Empresa, Long> implements IDaoEmpres
 
             Root<Empresa> root = cq.from(Empresa.class);
 
-            Predicate predicate = cb.like(cb.lower(root.get("%Nombre%")), cadena.toLowerCase());
+            Predicate predicate = cb.like(cb.lower(root.get("%nombre%")), cadena.toLowerCase());
             
             cq.select(root);
 

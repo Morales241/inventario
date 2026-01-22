@@ -44,7 +44,7 @@ public class DaoDepartamento extends DaoGenerico<Departamento, Long> implements 
 
             Root<Departamento> root = cq.from(Departamento.class);
 
-            predicados.add(cb.equal(cb.lower(root.get("Nombre")), nombre.toLowerCase()));
+            predicados.add(cb.equal(cb.lower(root.get("nombre")), nombre.toLowerCase()));
 
             cq.select(root);
 
@@ -71,11 +71,11 @@ public class DaoDepartamento extends DaoGenerico<Departamento, Long> implements 
             Join<Departamento, Sucursal> join = root.join("sucursal");
 
             if (!nombre.isEmpty()) {
-                predicados.add(cb.like(cb.lower(root.get("%Nombre%")), nombre.toLowerCase()));
+                predicados.add(cb.like(cb.lower(root.get("%nombre%")), nombre.toLowerCase()));
             }
             
             if (!nombreSucursal.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(join.get("Nombre")), nombreSucursal.toLowerCase()));
+                predicados.add(cb.equal(cb.lower(join.get("nombre")), nombreSucursal.toLowerCase()));
             }
             
 
