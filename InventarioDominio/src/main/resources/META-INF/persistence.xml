@@ -2,18 +2,18 @@
 <persistence version="3.2" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_2.xsd">
   <persistence-unit name="ConexionPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-    <class>Entidades.Trabajador</class>
-    <class>Entidades.Empresa</class>
     <class>Entidades.Departamento</class>
-    <class>Entidades.Puesto</class>
+    <class>Entidades.Empresa</class>
+    <class>Entidades.EquipoAsignado</class>
     <class>Entidades.EquipoDeComputo</class>
     <class>Entidades.EquipoDeEscritorio</class>
+    <class>Entidades.Modelo</class>
     <class>Entidades.Movil</class>
     <class>Entidades.OtroEquipo</class>
-    <class>Entidades.EquipoAsignado</class>
-    <class>Entidades.Modelo</class>
+    <class>Entidades.Puesto</class>
+    <class>Entidades.Sucursal</class>
+    <class>Entidades.Trabajador</class>
     <class>Entidades.UsuarioSistema</class>
-    <class>Entidades.AuditoriaBase</class>
     <properties>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3309/inventario?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="jakarta.persistence.jdbc.user" value="root"/>

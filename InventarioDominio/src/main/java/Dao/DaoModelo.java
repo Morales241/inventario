@@ -28,8 +28,8 @@ public class DaoModelo extends DaoGenerico<Modelo, Long> implements IDaoModelo {
 
     private final EntityManagerFactory emf = Conexion.getInstancia().getEntityManagerFactory();
 
-    public DaoModelo(Class<Modelo> claseEntidad) {
-        super(claseEntidad);
+    public DaoModelo() {
+        super(Modelo.class);
     }
 
     @Override

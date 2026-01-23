@@ -4,10 +4,12 @@
  */
 package Interfaces;
 
+import Entidades.EquipoAsignado;
+
 /**
  *
  * @author JMorales
  */
-public interface IDaoEquipoAsignado {
+public interface IDaoEquipoAsignado extends IDaoGenerico<EquipoAsignado, Long>{
     
 }

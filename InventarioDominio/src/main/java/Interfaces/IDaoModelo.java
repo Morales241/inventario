@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author JMorales
  */
-public interface IDaoModelo {
+public interface IDaoModelo extends IDaoGenerico<Modelo, Long>{
     public Modelo busquedaEspecifica(String nombre);
     
     public List<Modelo> busquedaConFiltros(String marca, String memoriaRam, String almacenamiento, String procesador);

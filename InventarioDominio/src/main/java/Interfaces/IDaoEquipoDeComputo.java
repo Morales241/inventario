@@ -12,6 +12,6 @@ import java.util.List;
  *
  * @author JMorales
  */
-public interface IDaoEquipoDeComputo {
+public interface IDaoEquipoDeComputo extends IDaoGenerico<EquipoDeComputo, Long>{
     public List<EquipoDeComputo> buscarConFiltros(Integer gri, Long idSucursal, EstadoEquipo estado, String busquedaModelo);
 }

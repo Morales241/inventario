@@ -28,8 +28,8 @@ public class DaoTrabajador extends DaoGenerico<Trabajador, Long> implements IDao
 
     private final EntityManagerFactory emf = Conexion.getInstancia().getEntityManagerFactory();
 
-    public DaoTrabajador(Class<Trabajador> claseEntidad) {
-        super(claseEntidad);
+    public DaoTrabajador() {
+        super(Trabajador.class);
     }
 
     @Override
@@ -75,14 +75,14 @@ public class DaoTrabajador extends DaoGenerico<Trabajador, Long> implements IDao
 
             Root<Trabajador> root = cq.from(Trabajador.class);
 
-            Join<Trabajador, Puesto> join = root.join("empresa");
+            Join<Trabajador, Puesto> join = root.join("puesto");
 
             if (!cadena.isEmpty()) {
-                predicados.add(cb.like(cb.lower(root.get("%nombre%")), cadena.toLowerCase()));
+                predicados.add(cb.like(cb.lower(root.get("nombre")), cadena.toLowerCase()));
             }
 
             if (!numero.isEmpty()) {
-                predicados.add(cb.like(cb.lower(root.get("%nomina%")), numero.toLowerCase()));
+                predicados.add(cb.like(cb.lower(root.get("nomina")), numero.toLowerCase()));
             }
 
             if (!puesto.isEmpty()) {

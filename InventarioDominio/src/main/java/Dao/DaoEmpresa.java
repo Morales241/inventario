@@ -23,8 +23,8 @@ public class DaoEmpresa extends DaoGenerico<Empresa, Long> implements IDaoEmpres
 
     private final EntityManagerFactory emf = Conexion.getInstancia().getEntityManagerFactory();
 
-    public DaoEmpresa(Class<Empresa> claseEntidad) {
-        super(claseEntidad);
+    public DaoEmpresa() {
+        super(Empresa.class);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class DaoEmpresa extends DaoGenerico<Empresa, Long> implements IDaoEmpres
 
             Root<Empresa> root = cq.from(Empresa.class);
 
-            Predicate predicate = cb.like(cb.lower(root.get("%nombre%")), cadena.toLowerCase());
+            Predicate predicate = cb.like(cb.lower(root.get("nombre")), cadena.toLowerCase());
             
             cq.select(root);
 

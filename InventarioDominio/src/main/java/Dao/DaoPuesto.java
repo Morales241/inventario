@@ -25,8 +25,8 @@ public class DaoPuesto extends DaoGenerico<Puesto, Long> implements IDaoPuesto {
 
     private final EntityManagerFactory emf = Conexion.getInstancia().getEntityManagerFactory();
 
-    public DaoPuesto(Class<Puesto> claseEntidad) {
-        super(claseEntidad);
+    public DaoPuesto() {
+        super(Puesto.class);
     }
 
     @Override

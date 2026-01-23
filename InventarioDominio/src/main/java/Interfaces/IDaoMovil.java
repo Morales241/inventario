@@ -4,10 +4,12 @@
  */
 package Interfaces;
 
+import Entidades.Movil;
+
 /**
  *
  * @author JMorales
  */
-public interface IDaoMovil {
+public interface IDaoMovil extends IDaoGenerico<Movil, Long>{
     
 }

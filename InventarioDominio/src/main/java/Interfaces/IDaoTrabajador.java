@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author JMorales
  */
-public interface IDaoTrabajador {
+public interface IDaoTrabajador extends IDaoGenerico<Trabajador, Long>{
     public Trabajador busquedaEspecifica(String nombre, String nomina);
     
     public List<Trabajador> busquedaConFiltros(String cadena, String numero, String puesto);

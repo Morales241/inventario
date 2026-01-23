@@ -26,8 +26,8 @@ public class DaoSucursal extends DaoGenerico<Sucursal, Long> implements IDaoSucu
 
     private final EntityManagerFactory emf = Conexion.getInstancia().getEntityManagerFactory();
 
-    public DaoSucursal(Class<Sucursal> claseEntidad) {
-        super(claseEntidad);
+    public DaoSucursal() {
+        super(Sucursal.class);
     }
 
     @Override
@@ -76,11 +76,11 @@ public class DaoSucursal extends DaoGenerico<Sucursal, Long> implements IDaoSucu
             Join<Sucursal, Empresa> join = root.join("empresa");
 
             if (!cadena.isEmpty()) {
-                predicados.add(cb.like(cb.lower(root.get("%Nombre%")), cadena.toLowerCase()));
+                predicados.add(cb.like(cb.lower(root.get("Nombre")), cadena.toLowerCase()));
             }
 
             if (!cadenaUbicacion.isEmpty()) {
-                predicados.add(cb.like(cb.lower(root.get("%Ubicacion%")), cadenaUbicacion.toLowerCase()));
+                predicados.add(cb.like(cb.lower(root.get("Ubicacion")), cadenaUbicacion.toLowerCase()));
             }
             
             if (!nombreEmpresa.isEmpty()) {

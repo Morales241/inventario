@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author JMorales
  */
-public interface IDaoDepartamento{
+public interface IDaoDepartamento extends IDaoGenerico<Departamento, Long>{
     
     public Departamento busquedaEspecifica(String nombre);
     

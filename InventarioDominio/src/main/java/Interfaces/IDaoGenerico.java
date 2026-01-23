@@ -5,6 +5,8 @@ import java.util.List;
 /**
  *
  * @author JMorales
+ * @param <T>
+ * @param <ID>
  */
 public interface IDaoGenerico<T, ID> {
     void guardar(T entidad);

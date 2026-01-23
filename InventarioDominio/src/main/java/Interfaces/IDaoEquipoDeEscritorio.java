@@ -4,10 +4,12 @@
  */
 package Interfaces;
 
+import Entidades.EquipoDeEscritorio;
+
 /**
  *
  * @author JMorales
  */
-public interface IDaoEquipoDeEscritorio {
+public interface IDaoEquipoDeEscritorio extends IDaoGenerico<EquipoDeEscritorio, Long>{
     
 }

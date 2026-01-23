@@ -27,8 +27,8 @@ public class DaoDepartamento extends DaoGenerico<Departamento, Long> implements 
 
     private final EntityManagerFactory emf = Conexion.getInstancia().getEntityManagerFactory();
 
-    public DaoDepartamento(Class<Departamento> claseEntidad) {
-        super(claseEntidad);
+    public DaoDepartamento() {
+        super(Departamento.class);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class DaoDepartamento extends DaoGenerico<Departamento, Long> implements 
             Join<Departamento, Sucursal> join = root.join("sucursal");
 
             if (!nombre.isEmpty()) {
-                predicados.add(cb.like(cb.lower(root.get("%nombre%")), nombre.toLowerCase()));
+                predicados.add(cb.like(cb.lower(root.get("nombre")), nombre.toLowerCase()));
             }
             
             if (!nombreSucursal.isEmpty()) {
