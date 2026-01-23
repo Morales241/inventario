@@ -21,7 +21,8 @@ public class EquipoAsignado extends AuditoriaBase implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Column(name = "Id_Equipo_Asignado")
+    private Long idEquipoAsignado;
 
     @Column(name = "FechaEntrega")
     private LocalDate fechaEntrega;
@@ -48,11 +49,11 @@ public class EquipoAsignado extends AuditoriaBase implements Serializable {
     }
 
     public Long getId() {
-        return id;
+        return idEquipoAsignado;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.idEquipoAsignado = id;
     }
 
     public LocalDate getFechaEntrega() {

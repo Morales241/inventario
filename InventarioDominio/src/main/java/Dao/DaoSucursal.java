@@ -61,7 +61,7 @@ public class DaoSucursal extends DaoGenerico<Sucursal, Long> implements IDaoSucu
     }
 
     @Override
-    public List<Sucursal> busquedaConFiltros(String cadena, String cadenaUbicacion, String nombreEmpresa) {
+    public List<Sucursal> busquedaConFiltros(String cadena, String cadenaUbicacion, Long idEmpresa) {
 
         try (EntityManager em = getEntityManager()) {
 
@@ -83,8 +83,8 @@ public class DaoSucursal extends DaoGenerico<Sucursal, Long> implements IDaoSucu
                 predicados.add(cb.like(cb.lower(root.get("Ubicacion")), cadenaUbicacion.toLowerCase()));
             }
             
-            if (!nombreEmpresa.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(join.get("Nombre")), nombreEmpresa.toLowerCase()));
+            if (idEmpresa != null) {
+                predicados.add(cb.equal(join.get("idEmpresa"), idEmpresa));
             }
 
             cq.select(root);

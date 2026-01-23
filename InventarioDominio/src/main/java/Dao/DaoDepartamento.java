@@ -56,7 +56,7 @@ public class DaoDepartamento extends DaoGenerico<Departamento, Long> implements 
     }
 
     @Override
-    public List<Departamento> busquedaConFiltros(String nombre, String nombreSucursal) {
+    public List<Departamento> busquedaConFiltros(String nombre, Long  idSucursal) {
         
         try (EntityManager em = getEntityManager()) {
 
@@ -74,8 +74,8 @@ public class DaoDepartamento extends DaoGenerico<Departamento, Long> implements 
                 predicados.add(cb.like(cb.lower(root.get("nombre")), nombre.toLowerCase()));
             }
             
-            if (!nombreSucursal.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(join.get("nombre")), nombreSucursal.toLowerCase()));
+            if (idSucursal != null ) {
+                predicados.add(cb.equal(join.get("id"), idSucursal));
             }
             
 

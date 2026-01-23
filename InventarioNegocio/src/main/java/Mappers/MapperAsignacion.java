@@ -2,8 +2,6 @@ package Mappers;
 
 import Dtos.AsignacionDto;
 import Entidades.EquipoAsignado;
-import Entidades.EquipoDeComputo;
-import Entidades.Trabajador;
 
 public class MapperAsignacion {
 

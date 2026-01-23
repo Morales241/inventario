@@ -1,6 +1,7 @@
 package Interfaces;
 
 import Entidades.Puesto;
+import java.util.List;
 
 /**
  *
@@ -8,4 +9,6 @@ import Entidades.Puesto;
  */
 public interface IDaoPuesto extends IDaoGenerico<Puesto, Long>{
     public Puesto busquedaEspecifica(String nombre);
+    
+    public List<Puesto> busquedaPorDepartamento(Long idDepartamento);    
 }

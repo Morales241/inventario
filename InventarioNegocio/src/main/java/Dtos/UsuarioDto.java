@@ -4,24 +4,24 @@ import Enums.RolUsuario;
 
 public class UsuarioDto {
 
-    private Integer id;
+    private Long id;
     private String username;
     private RolUsuario rol;
 
     public UsuarioDto() {
     }
 
-    public UsuarioDto(Integer id, String username, RolUsuario rol) {
+    public UsuarioDto(Long id, String username, RolUsuario rol) {
         this.id = id;
         this.username = username;
         this.rol = rol;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

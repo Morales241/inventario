@@ -20,7 +20,8 @@ public class Modelo extends AuditoriaBase implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Column(name = "Id_Modelo")
+    private Long idModelo;
     
     @Column(name = "Nombre")
     private String nombre;
@@ -59,11 +60,11 @@ public class Modelo extends AuditoriaBase implements Serializable {
     }
     
     public Long getId() {
-        return id;
+        return idModelo;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.idModelo = id;
     }
 
     public String getMarca() {

@@ -11,6 +11,6 @@ public interface IDaoDepartamento extends IDaoGenerico<Departamento, Long>{
     
     public Departamento busquedaEspecifica(String nombre);
     
-    public List<Departamento> busquedaConFiltros(String nombre, String nombreSucursal);
+    public List<Departamento> busquedaConFiltros(String nombre, Long  idSucursal);
     
 }

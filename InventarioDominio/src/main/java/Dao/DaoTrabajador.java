@@ -88,6 +88,8 @@ public class DaoTrabajador extends DaoGenerico<Trabajador, Long> implements IDao
             if (!puesto.isEmpty()) {
                 predicados.add(cb.equal(cb.lower(join.get("nombre")), puesto.toLowerCase()));
             }
+            
+            predicados.add(cb.equal(root.get("activo"), Boolean.TRUE));
 
             cq.select(root);
 

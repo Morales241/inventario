@@ -4,6 +4,8 @@
  */
 package Dao;
 
+import Entidades.Departamento;
+import Entidades.Empresa;
 import Entidades.Puesto;
 import Entidades.Sucursal;
 import Interfaces.IDaoPuesto;
@@ -12,6 +14,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
@@ -49,6 +52,34 @@ public class DaoPuesto extends DaoGenerico<Puesto, Long> implements IDaoPuesto {
             cq.where(predicados);
 
             return em.createQuery(cq).getSingleResult();
+
+        }
+    }
+    
+    @Override
+    public List<Puesto> busquedaPorDepartamento(Long idDepartamento){
+    
+        try (EntityManager em = getEntityManager()) {
+
+            List<Predicate> predicados = new ArrayList<>();
+
+            CriteriaBuilder cb = emf.getCriteriaBuilder();
+
+            CriteriaQuery<Puesto> cq = cb.createQuery(Puesto.class);
+
+            Root<Puesto> root = cq.from(Puesto.class);
+            
+            Join<Puesto, Departamento> join = root.join("departamento");
+
+            if (idDepartamento != null) {
+                predicados.add(cb.equal(join.get("idDepartamento"), idDepartamento));
+            }
+
+            cq.select(root);
+
+            cq.where(predicados);
+
+            return em.createQuery(cq).getResultList();
 
         }
     }

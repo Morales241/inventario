@@ -10,5 +10,5 @@ import java.util.List;
 public interface IDaoSucursal extends IDaoGenerico<Sucursal, Long>{
     public Sucursal busquedaEspecifica(String nombre, String ubicacion);
     
-    public List<Sucursal> busquedaConFiltros(String cadena, String cadenaUbicacion, String nombreEmpresa);
+    public List<Sucursal> busquedaConFiltros(String cadena, String cadenaUbicacion, Long idEmpresa);
 }

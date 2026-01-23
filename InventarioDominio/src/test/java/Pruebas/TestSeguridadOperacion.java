@@ -52,7 +52,7 @@ public class TestSeguridadOperacion {
         user.setUsername("admin_test");
         user.setPassword("secret123");
         user.setRol(RolUsuario.ADMIN);
-        //daoUsuario.guardar(user);
+        daoUsuario.guardar(user);
 
         // ACT
         UsuarioSistema resultado = daoUsuario.login("admin_test", "secret123");
