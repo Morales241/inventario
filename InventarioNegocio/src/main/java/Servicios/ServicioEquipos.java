@@ -11,12 +11,10 @@ import java.util.List;
 
 public class ServicioEquipos {
 
-    private DaoEquipoDeComputo daoEquipo = new DaoEquipoDeComputo();
-    private DaoModelo daoModelo = new DaoModelo();
+    private final DaoEquipoDeComputo daoEquipo = new DaoEquipoDeComputo();
+    private final DaoModelo daoModelo = new DaoModelo();
 
     public List<EquipoDto> buscarEquipos(String criterio) {
-        // Aquí podrías implementar lógica para decidir si buscas por serie, por marca, etc.
-        // Usamos el buscarConFiltros que hicimos en el DAO
         List<EquipoDeComputo> lista = daoEquipo.buscarConFiltros(null, null, null, criterio);
         return MapperEquipo.converter.mapToDtoList(lista);
     }
@@ -30,10 +28,8 @@ public class ServicioEquipos {
         if (dto.getGri() == null) throw new Exception("El GRI es obligatorio");
         if (dto.getSerie() == null) throw new Exception("La serie es obligatoria");
         
-        // El Mapper se encarga de saber si es Movil, Escritorio u Otro
         EquipoDeComputo entidad = MapperEquipo.converter.mapToEntity(dto);
         
-        // Si el ID existe, es edición, si no, es nuevo
         if (dto.getId() != null && dto.getId() > 0) {
             daoEquipo.actualizar(entidad);
         } else {
