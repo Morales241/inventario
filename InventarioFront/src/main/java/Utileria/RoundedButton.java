@@ -25,6 +25,10 @@ public class RoundedButton extends JButton{
         super(text);
         setBorder(new EmptyBorder(10, 20, 10, 20));
         arc = arcp;
+        
+        this.setBackground(new Color(229,231,235));
+        
+        this.setBorder(new EmptyBorder(0, 0, 0, 0));
     }
 
     @Override

@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -26,12 +27,12 @@ public class Home extends javax.swing.JFrame {
 
     boolean menuDesplegado2 = false;
 
-    JButton btnEmpresa = new RoundedButton("   Empresas", 10);
-    JButton btnSucursal = new RoundedButton("   Sucursales", 10);
-    JButton btnDepartamento = new RoundedButton("   Departamentos", 10);
-    JButton btnPuesto = new RoundedButton("   Puestos", 10);
-    JButton btnUsuario = new RoundedButton("   Usuarios", 10);
-    JButton btnAuditoria = new RoundedButton("   Auditoría", 10);
+    JButton btnEmpresa = new RoundedButton("Empresas", 10);
+    JButton btnSucursal = new RoundedButton("Sucursales", 10);
+    JButton btnDepartamento = new RoundedButton("Departamentos", 10);
+    JButton btnPuesto = new RoundedButton("Puestos", 10);
+    JButton btnUsuario = new RoundedButton("Usuarios", 10);
+    JButton btnAuditoria = new RoundedButton("Auditoría", 10);
 
     private final Color COLOR_NORMAL = new Color(229, 231, 235);
     private final Color COLOR_HOVER = new Color(209, 213, 219);
@@ -49,21 +50,55 @@ public class Home extends javax.swing.JFrame {
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
 
         this.setTitle("Sistema de Inventario - v1.0");
+        
+        logo.putClientProperty("rutaIcono", "iconos/svgs/logo.svg");
 
-        btnHome.putClientProperty("rutaIcono", "iconos/svgs/solid/home.svg");
-        configurarBotonMenu(btnHome, "iconos/svgs/solid/home.svg");
+        btnHome.putClientProperty("rutaIcono", "iconos/svgs/regular/house.svg");
+        configurarBotonMenu(btnHome, "iconos/svgs/regular/house.svg");
 
-        btnInventario.putClientProperty("rutaIcono", "iconos/svgs/solid/box-open.svg");
-        configurarBotonMenu(btnInventario, "iconos/svgs/solid/box-open.svg");
+        btnInventario.putClientProperty("rutaIcono", "iconos/svgs/regular/clipboard.svg");
+        configurarBotonMenu(btnInventario, "iconos/svgs/regular/clipboard.svg");
 
-        btnTrabajadores.putClientProperty("rutaIcono", "iconos/svgs/solid/users.svg");
-        configurarBotonMenu(btnTrabajadores, "iconos/svgs/solid/users.svg");
+        btnTrabajadores.putClientProperty("rutaIcono", "iconos/svgs/regular/address-book.svg");
+        configurarBotonMenu(btnTrabajadores, "iconos/svgs/regular/address-book.svg");
+        
+        btnAsignaciones.putClientProperty("rutaIcono", "iconos/svgs/regular/handshake.svg");
+        configurarBotonMenu(btnAsignaciones, "iconos/svgs/regular/handshake.svg");
 
-        btnSubMenuOrganizacion.putClientProperty("rutaIcono", "iconos/svgs/solid/building.svg");
-        configurarBotonMenu(btnSubMenuOrganizacion, "iconos/svgs/solid/building.svg");
+        btnSubMenuOrganizacion.putClientProperty("rutaIcono", "iconos/svgs/regular/building.svg");
+        configurarBotonMenu(btnSubMenuOrganizacion, "iconos/svgs/regular/building.svg");
 
         subMenuConfiguracion.putClientProperty("rutaIcono", "iconos/svgs/solid/gear.svg");
         configurarBotonMenu(subMenuConfiguracion, "iconos/svgs/solid/gear.svg");
+
+        scrollMenu.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        configurarAlturaBotones();
+        
+        scrollMenu.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        
+        scrollMenu.getVerticalScrollBar().setUnitIncrement(16);
+    }
+
+    private void configurarAlturaBotones() {
+        // Define la altura que quieras (ej. 60px o 70px)
+        java.awt.Dimension alturaBoton = new java.awt.Dimension(0, 60);
+
+        // Aplícalo a todos tus botones
+        btnHome.setPreferredSize(alturaBoton);
+        btnTrabajadores.setPreferredSize(alturaBoton);
+        btnInventario.setPreferredSize(alturaBoton);
+        btnAsignaciones.setPreferredSize(alturaBoton);
+        btnSubMenuOrganizacion.setPreferredSize(alturaBoton);
+        subMenuConfiguracion.setPreferredSize(alturaBoton);
+
+        // También a los sub-botones (btnEmpresa, btnSucursal, etc.)
+        btnEmpresa.setPreferredSize(alturaBoton);
+        btnSucursal.setPreferredSize(alturaBoton);
+        btnDepartamento.setPreferredSize(alturaBoton);
+        btnPuesto.setPreferredSize(alturaBoton);
+        btnUsuario.setPreferredSize(alturaBoton);
+        btnAuditoria.setPreferredSize(alturaBoton);
     }
 
     /**
@@ -76,21 +111,25 @@ public class Home extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        barraLateral = new javax.swing.JPanel();
+        titulo = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jPanel7 = new PanelRedondeado(15);
+        logo = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         pnlMenu = new javax.swing.JPanel();
+        scrollMenu = new javax.swing.JScrollPane();
+        panelInterno = new javax.swing.JPanel();
         btnHome = new RoundedButton("Home", 15);
         btnTrabajadores = new RoundedButton("Trabajadores", 15);
         btnInventario = new RoundedButton("Inventario",15);
         btnAsignaciones = new RoundedButton("Asignaciones", 15);
         btnSubMenuOrganizacion = new RoundedButton("Organización", 15);
         subMenuConfiguracion = new RoundedButton("Configuración", 15);
-        jPanel5 = new javax.swing.JPanel();
+        piePagina = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 255));
@@ -106,42 +145,28 @@ public class Home extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
+            .addGap(0, 802, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setBackground(new java.awt.Color(0, 255, 255));
-        jPanel2.setAutoscrolls(true);
-        jPanel2.setPreferredSize(new java.awt.Dimension(280, 490));
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        barraLateral.setBackground(new java.awt.Color(0, 255, 255));
+        barraLateral.setAutoscrolls(true);
+        barraLateral.setPreferredSize(new java.awt.Dimension(280, 490));
+        barraLateral.setLayout(new java.awt.BorderLayout());
 
-        jPanel3.setBackground(new java.awt.Color(229, 231, 235));
-        jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jPanel3.setPreferredSize(new java.awt.Dimension(280, 140));
-        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
+        titulo.setBackground(new java.awt.Color(229, 231, 235));
+        titulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        titulo.setPreferredSize(new java.awt.Dimension(280, 140));
+        titulo.setLayout(new javax.swing.BoxLayout(titulo, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel4.setBackground(new java.awt.Color(229, 231, 235));
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 20, 30, 18));
         jPanel4.setPreferredSize(new java.awt.Dimension(90, 140));
-        jPanel4.setLayout(new java.awt.GridLayout());
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel4.add(logo);
 
-        jPanel7.setBackground(new java.awt.Color(102, 204, 255));
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 65, Short.MAX_VALUE)
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
-        );
-
-        jPanel4.add(jPanel7);
-
-        jPanel3.add(jPanel4);
+        titulo.add(jPanel4);
 
         jPanel6.setBackground(new java.awt.Color(229, 231, 235));
         jPanel6.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 20, 1));
@@ -165,15 +190,20 @@ public class Home extends javax.swing.JFrame {
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel6.add(jLabel2);
 
-        jPanel3.add(jPanel6);
+        titulo.add(jPanel6);
 
-        jPanel2.add(jPanel3, java.awt.BorderLayout.PAGE_START);
+        barraLateral.add(titulo, java.awt.BorderLayout.PAGE_START);
 
         pnlMenu.setBackground(new java.awt.Color(229, 231, 235));
         pnlMenu.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         pnlMenu.setFocusTraversalPolicyProvider(true);
         pnlMenu.setMinimumSize(new java.awt.Dimension(93, 600));
-        pnlMenu.setLayout(new java.awt.GridLayout(12, 0, 10, 10));
+        pnlMenu.setLayout(new java.awt.GridLayout(0, 1, 10, 10));
+
+        scrollMenu.setBorder(null);
+
+        panelInterno.setBackground(new java.awt.Color(229, 231, 235));
+        panelInterno.setLayout(new java.awt.GridLayout(0, 1, 0, 10));
 
         btnHome.setBackground(new java.awt.Color(229, 231, 235));
         btnHome.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
@@ -185,7 +215,7 @@ public class Home extends javax.swing.JFrame {
                 btnHomeActionPerformed(evt);
             }
         });
-        pnlMenu.add(btnHome);
+        panelInterno.add(btnHome);
 
         btnTrabajadores.setBackground(new java.awt.Color(229, 231, 235));
         btnTrabajadores.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
@@ -197,7 +227,7 @@ public class Home extends javax.swing.JFrame {
                 btnTrabajadoresActionPerformed(evt);
             }
         });
-        pnlMenu.add(btnTrabajadores);
+        panelInterno.add(btnTrabajadores);
 
         btnInventario.setBackground(new java.awt.Color(229, 231, 235));
         btnInventario.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
@@ -209,7 +239,7 @@ public class Home extends javax.swing.JFrame {
                 btnInventarioActionPerformed(evt);
             }
         });
-        pnlMenu.add(btnInventario);
+        panelInterno.add(btnInventario);
 
         btnAsignaciones.setBackground(new java.awt.Color(229, 231, 235));
         btnAsignaciones.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
@@ -221,7 +251,7 @@ public class Home extends javax.swing.JFrame {
                 btnAsignacionesActionPerformed(evt);
             }
         });
-        pnlMenu.add(btnAsignaciones);
+        panelInterno.add(btnAsignaciones);
 
         btnSubMenuOrganizacion.setBackground(new java.awt.Color(229, 231, 235));
         btnSubMenuOrganizacion.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
@@ -232,7 +262,7 @@ public class Home extends javax.swing.JFrame {
                 btnSubMenuOrganizacionActionPerformed(evt);
             }
         });
-        pnlMenu.add(btnSubMenuOrganizacion);
+        panelInterno.add(btnSubMenuOrganizacion);
 
         subMenuConfiguracion.setBackground(new java.awt.Color(229, 231, 235));
         subMenuConfiguracion.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
@@ -243,28 +273,30 @@ public class Home extends javax.swing.JFrame {
                 subMenuConfiguracionActionPerformed(evt);
             }
         });
-        pnlMenu.add(subMenuConfiguracion);
+        panelInterno.add(subMenuConfiguracion);
 
-        jPanel2.add(pnlMenu, java.awt.BorderLayout.CENTER);
+        scrollMenu.setViewportView(panelInterno);
 
-        jPanel5.setBackground(new java.awt.Color(51, 0, 204));
-        jPanel5.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel5.setPreferredSize(new java.awt.Dimension(280, 110));
+        pnlMenu.add(scrollMenu);
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 280, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 110, Short.MAX_VALUE)
-        );
+        barraLateral.add(pnlMenu, java.awt.BorderLayout.CENTER);
 
-        jPanel2.add(jPanel5, java.awt.BorderLayout.PAGE_END);
+        piePagina.setBackground(new java.awt.Color(229, 231, 235));
+        piePagina.setForeground(new java.awt.Color(0, 0, 0));
+        piePagina.setPreferredSize(new java.awt.Dimension(280, 110));
+        piePagina.setLayout(new javax.swing.BoxLayout(piePagina, javax.swing.BoxLayout.X_AXIS));
 
-        getContentPane().add(jPanel2, java.awt.BorderLayout.WEST);
+        jLabel3.setText("jLabel3");
+        jLabel3.setPreferredSize(new java.awt.Dimension(100, 100));
+        piePagina.add(jLabel3);
+
+        jLabel4.setText("jLabel4");
+        jLabel4.setMinimumSize(new java.awt.Dimension(100, 100));
+        piePagina.add(jLabel4);
+
+        barraLateral.add(piePagina, java.awt.BorderLayout.PAGE_END);
+
+        getContentPane().add(barraLateral, java.awt.BorderLayout.WEST);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -286,55 +318,49 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAsignacionesActionPerformed
 
     private void btnSubMenuOrganizacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubMenuOrganizacionActionPerformed
-
         int indexBoton = 4;
 
         if (!menuDesplegado) {
-            this.pnlMenu.add(btnEmpresa, indexBoton + 1);
-            this.pnlMenu.add(btnSucursal, indexBoton + 2);
-            this.pnlMenu.add(btnDepartamento, indexBoton + 3);
-            this.pnlMenu.add(btnPuesto, indexBoton + 4);
+            this.panelInterno.add(btnEmpresa, indexBoton + 1);
+            this.panelInterno.add(btnSucursal, indexBoton + 2);
+            this.panelInterno.add(btnDepartamento, indexBoton + 3);
+            this.panelInterno.add(btnPuesto, indexBoton + 4);
 
             menuDesplegado = true;
-
         } else {
-            this.pnlMenu.remove(btnEmpresa);
-            this.pnlMenu.remove(btnSucursal);
-            this.pnlMenu.remove(btnDepartamento);
-            this.pnlMenu.remove(btnPuesto);
+            this.panelInterno.remove(btnEmpresa);
+            this.panelInterno.remove(btnSucursal);
+            this.panelInterno.remove(btnDepartamento);
+            this.panelInterno.remove(btnPuesto);
 
             menuDesplegado = false;
         }
 
-        this.pnlMenu.revalidate();
-        this.pnlMenu.repaint();
+        this.panelInterno.revalidate();
+        this.panelInterno.repaint();
     }//GEN-LAST:event_btnSubMenuOrganizacionActionPerformed
 
     private void subMenuConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuConfiguracionActionPerformed
-
-        int indexBoton;
-
-        if (menuDesplegado == true) {
+        int indexBoton = 5;
+        
+        if (menuDesplegado == true ) {
             indexBoton = 9;
-        } else {
-            indexBoton = 5;
         }
 
         if (!menuDesplegado2) {
-            this.pnlMenu.add(btnUsuario, indexBoton + 1);
-            this.pnlMenu.add(btnAuditoria, indexBoton + 2);
+            this.panelInterno.add(btnUsuario, indexBoton + 1);
+            this.panelInterno.add(btnAuditoria, indexBoton + 2);
 
             menuDesplegado2 = true;
-
         } else {
-            this.pnlMenu.remove(btnUsuario);
-            this.pnlMenu.remove(btnAuditoria);
+            this.panelInterno.remove(btnUsuario);
+            this.panelInterno.remove(btnAuditoria);
 
             menuDesplegado2 = false;
         }
 
-        this.pnlMenu.revalidate();
-        this.pnlMenu.repaint();
+        this.panelInterno.revalidate();
+        this.panelInterno.repaint();
     }//GEN-LAST:event_subMenuConfiguracionActionPerformed
 
     /**
@@ -350,7 +376,7 @@ public class Home extends javax.swing.JFrame {
         boton.setBackground(COLOR_NORMAL);
         boton.setForeground(COLOR_TEXT_NORMAL);
         boton.setIcon(crearIconoColoreado(rutaIcono, 25, 25, COLOR_TEXT_NORMAL));
-
+        boton.setBorder(new EmptyBorder(0, 10, 0, 0));
         boton.addMouseListener(new MouseAdapter() {
 
             @Override
@@ -438,6 +464,7 @@ public class Home extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel barraLateral;
     private javax.swing.JButton btnAsignaciones;
     private javax.swing.JButton btnHome;
     private javax.swing.JButton btnInventario;
@@ -445,14 +472,17 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton btnTrabajadores;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
+    private javax.swing.JLabel logo;
+    private javax.swing.JPanel panelInterno;
+    private javax.swing.JPanel piePagina;
     private javax.swing.JPanel pnlMenu;
+    private javax.swing.JScrollPane scrollMenu;
     private javax.swing.JButton subMenuConfiguracion;
+    private javax.swing.JPanel titulo;
     // End of variables declaration//GEN-END:variables
 }
