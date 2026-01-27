@@ -4,6 +4,8 @@
  */
 package dashboard;
 
+import Utileria.PanelRedondeado;
+import Utileria.RoundedButton;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -23,12 +25,21 @@ public class Home extends javax.swing.JFrame {
     boolean menuDesplegado = false;
 
     boolean menuDesplegado2 = false;
-    JButton btnSub1 = new JButton("   > Item 1");
-    JButton btnSub2 = new JButton("   > Item 2");
-    JButton btnSub3 = new JButton("   > Item 3");
-    JButton btnSub4 = new JButton("   > Item 4");
-    JButton btnSub5 = new JButton("   > Item 5");
-    JButton btnSub6 = new JButton("   > Item 6");
+
+    JButton btnEmpresa = new RoundedButton("   Empresas", 10);
+    JButton btnSucursal = new RoundedButton("   Sucursales", 10);
+    JButton btnDepartamento = new RoundedButton("   Departamentos", 10);
+    JButton btnPuesto = new RoundedButton("   Puestos", 10);
+    JButton btnUsuario = new RoundedButton("   Usuarios", 10);
+    JButton btnAuditoria = new RoundedButton("   Auditoría", 10);
+
+    private final Color COLOR_NORMAL = new Color(229, 231, 235);
+    private final Color COLOR_HOVER = new Color(209, 213, 219);
+    private final Color COLOR_SELECTED_BG = new Color(102, 204, 255);
+    private final Color COLOR_SELECTED_FG = Color.WHITE;
+    private final Color COLOR_TEXT_NORMAL = Color.BLACK;
+
+    private JButton botonActual = null;
 
     /**
      * Creates new form Home
@@ -39,21 +50,20 @@ public class Home extends javax.swing.JFrame {
 
         this.setTitle("Sistema de Inventario - v1.0");
 
-        this.btnHome.setIcon(crearIconoColoreado("iconos/svgs/solid/home.svg", 25, 25, Color.BLACK));
-        agregarEventosHoverABoton(btnHome, crearIconoColoreado("iconos/svgs/solid/home.svg", 25, 25, Color.white), crearIconoColoreado("iconos/svgs/solid/home.svg", 25, 25, Color.BLACK), Color.BLUE, Color.WHITE);
-    
-        this.btnInventario.setIcon(crearIconoColoreado("iconos/svgs/solid/box-open.svg", 25, 25, Color.BLACK));
-        agregarEventosHoverABoton(btnInventario, crearIconoColoreado("iconos/svgs/solid/box-open.svg", 25, 25, Color.white), crearIconoColoreado("iconos/svgs/solid/box-open.svg", 25, 25, Color.BLACK), Color.BLUE, Color.WHITE);
-    
-         this.btnTrabajadores.setIcon(crearIconoColoreado("iconos/svgs/solid/users.svg", 25, 25, Color.BLACK));
-        agregarEventosHoverABoton(btnTrabajadores, crearIconoColoreado("iconos/svgs/solid/users.svg", 25, 25, Color.white), crearIconoColoreado("iconos/svgs/solid/users.svg", 25, 25, Color.BLACK), Color.BLUE, Color.WHITE);
-    
-        this.btnSubMenuOrganizacion.setIcon(crearIconoColoreado("iconos/svgs/solid/building.svg", 25, 25, Color.BLACK));
-        agregarEventosHoverABoton(btnSubMenuOrganizacion, crearIconoColoreado("iconos/svgs/solid/building.svg", 25, 25, Color.white), crearIconoColoreado("iconos/svgs/solid/building.svg", 25, 25, Color.BLACK), Color.BLUE, Color.WHITE);
-    
-         this.subMenuConfiguracion.setIcon(crearIconoColoreado("iconos/svgs/solid/gear.svg", 25, 25, Color.BLACK));
-        agregarEventosHoverABoton(subMenuConfiguracion, crearIconoColoreado("iconos/svgs/solid/gear.svg", 25, 25, Color.white), crearIconoColoreado("iconos/svgs/solid/gear.svg", 25, 25, Color.BLACK), Color.BLUE, Color.WHITE);
-    
+        btnHome.putClientProperty("rutaIcono", "iconos/svgs/solid/home.svg");
+        configurarBotonMenu(btnHome, "iconos/svgs/solid/home.svg");
+
+        btnInventario.putClientProperty("rutaIcono", "iconos/svgs/solid/box-open.svg");
+        configurarBotonMenu(btnInventario, "iconos/svgs/solid/box-open.svg");
+
+        btnTrabajadores.putClientProperty("rutaIcono", "iconos/svgs/solid/users.svg");
+        configurarBotonMenu(btnTrabajadores, "iconos/svgs/solid/users.svg");
+
+        btnSubMenuOrganizacion.putClientProperty("rutaIcono", "iconos/svgs/solid/building.svg");
+        configurarBotonMenu(btnSubMenuOrganizacion, "iconos/svgs/solid/building.svg");
+
+        subMenuConfiguracion.putClientProperty("rutaIcono", "iconos/svgs/solid/gear.svg");
+        configurarBotonMenu(subMenuConfiguracion, "iconos/svgs/solid/gear.svg");
     }
 
     /**
@@ -68,13 +78,18 @@ public class Home extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel7 = new PanelRedondeado(15);
+        jPanel6 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         pnlMenu = new javax.swing.JPanel();
-        btnHome = new javax.swing.JButton();
-        btnInventario = new javax.swing.JButton();
-        btnTrabajadores = new javax.swing.JButton();
-        btnAsignaciones = new javax.swing.JButton();
-        btnSubMenuOrganizacion = new javax.swing.JButton();
-        subMenuConfiguracion = new javax.swing.JButton();
+        btnHome = new RoundedButton("Home", 15);
+        btnTrabajadores = new RoundedButton("Trabajadores", 15);
+        btnInventario = new RoundedButton("Inventario",15);
+        btnAsignaciones = new RoundedButton("Asignaciones", 15);
+        btnSubMenuOrganizacion = new RoundedButton("Organización", 15);
+        subMenuConfiguracion = new RoundedButton("Configuración", 15);
         jPanel5 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -87,11 +102,11 @@ public class Home extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 975, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 800, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -101,28 +116,66 @@ public class Home extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(280, 490));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jPanel3.setBackground(new java.awt.Color(204, 255, 51));
+        jPanel3.setBackground(new java.awt.Color(229, 231, 235));
+        jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel3.setPreferredSize(new java.awt.Dimension(280, 140));
+        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 280, Short.MAX_VALUE)
+        jPanel4.setBackground(new java.awt.Color(229, 231, 235));
+        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 20, 30, 18));
+        jPanel4.setPreferredSize(new java.awt.Dimension(90, 140));
+        jPanel4.setLayout(new java.awt.GridLayout());
+
+        jPanel7.setBackground(new java.awt.Color(102, 204, 255));
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 65, Short.MAX_VALUE)
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 140, Short.MAX_VALUE)
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 60, Short.MAX_VALUE)
         );
+
+        jPanel4.add(jPanel7);
+
+        jPanel3.add(jPanel4);
+
+        jPanel6.setBackground(new java.awt.Color(229, 231, 235));
+        jPanel6.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 20, 1));
+        jPanel6.setMinimumSize(new java.awt.Dimension(170, 82));
+        jPanel6.setLayout(new java.awt.GridLayout(2, 0));
+
+        jLabel1.setFont(new java.awt.Font("Verdana", 1, 20)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Sistema TI");
+        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jLabel1.setPreferredSize(new java.awt.Dimension(126, 50));
+        jPanel6.add(jLabel1);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Gestión de Inventario");
+        jLabel2.setToolTipText("");
+        jLabel2.setFocusable(false);
+        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel6.add(jLabel2);
+
+        jPanel3.add(jPanel6);
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.PAGE_START);
 
-        pnlMenu.setBackground(new java.awt.Color(204, 0, 0));
+        pnlMenu.setBackground(new java.awt.Color(229, 231, 235));
+        pnlMenu.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         pnlMenu.setFocusTraversalPolicyProvider(true);
         pnlMenu.setMinimumSize(new java.awt.Dimension(93, 600));
-        pnlMenu.setLayout(new java.awt.GridLayout(12, 0, 0, 1));
+        pnlMenu.setLayout(new java.awt.GridLayout(12, 0, 10, 10));
 
-        btnHome.setBackground(new java.awt.Color(244, 244, 244));
+        btnHome.setBackground(new java.awt.Color(229, 231, 235));
         btnHome.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         btnHome.setForeground(new java.awt.Color(51, 51, 51));
         btnHome.setText("Home");
@@ -134,19 +187,7 @@ public class Home extends javax.swing.JFrame {
         });
         pnlMenu.add(btnHome);
 
-        btnInventario.setBackground(new java.awt.Color(244, 244, 244));
-        btnInventario.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        btnInventario.setForeground(new java.awt.Color(51, 51, 51));
-        btnInventario.setText("Inventario");
-        btnInventario.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnInventario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInventarioActionPerformed(evt);
-            }
-        });
-        pnlMenu.add(btnInventario);
-
-        btnTrabajadores.setBackground(new java.awt.Color(244, 244, 244));
+        btnTrabajadores.setBackground(new java.awt.Color(229, 231, 235));
         btnTrabajadores.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         btnTrabajadores.setForeground(new java.awt.Color(51, 51, 51));
         btnTrabajadores.setText("Trabajadores");
@@ -158,7 +199,19 @@ public class Home extends javax.swing.JFrame {
         });
         pnlMenu.add(btnTrabajadores);
 
-        btnAsignaciones.setBackground(new java.awt.Color(244, 244, 244));
+        btnInventario.setBackground(new java.awt.Color(229, 231, 235));
+        btnInventario.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
+        btnInventario.setForeground(new java.awt.Color(51, 51, 51));
+        btnInventario.setText("Inventario");
+        btnInventario.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnInventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInventarioActionPerformed(evt);
+            }
+        });
+        pnlMenu.add(btnInventario);
+
+        btnAsignaciones.setBackground(new java.awt.Color(229, 231, 235));
         btnAsignaciones.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         btnAsignaciones.setForeground(new java.awt.Color(51, 51, 51));
         btnAsignaciones.setText("Asignaciones");
@@ -170,10 +223,9 @@ public class Home extends javax.swing.JFrame {
         });
         pnlMenu.add(btnAsignaciones);
 
-        btnSubMenuOrganizacion.setBackground(new java.awt.Color(244, 244, 244));
+        btnSubMenuOrganizacion.setBackground(new java.awt.Color(229, 231, 235));
         btnSubMenuOrganizacion.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         btnSubMenuOrganizacion.setForeground(new java.awt.Color(51, 51, 51));
-        btnSubMenuOrganizacion.setText("subMenu1");
         btnSubMenuOrganizacion.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnSubMenuOrganizacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,10 +234,9 @@ public class Home extends javax.swing.JFrame {
         });
         pnlMenu.add(btnSubMenuOrganizacion);
 
-        subMenuConfiguracion.setBackground(new java.awt.Color(244, 244, 244));
+        subMenuConfiguracion.setBackground(new java.awt.Color(229, 231, 235));
         subMenuConfiguracion.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         subMenuConfiguracion.setForeground(new java.awt.Color(51, 51, 51));
-        subMenuConfiguracion.setText("subMenu2");
         subMenuConfiguracion.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         subMenuConfiguracion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -239,16 +290,18 @@ public class Home extends javax.swing.JFrame {
         int indexBoton = 4;
 
         if (!menuDesplegado) {
-            this.pnlMenu.add(btnSub1, indexBoton + 1);
-            this.pnlMenu.add(btnSub2, indexBoton + 2);
-            this.pnlMenu.add(btnSub3, indexBoton + 3);
+            this.pnlMenu.add(btnEmpresa, indexBoton + 1);
+            this.pnlMenu.add(btnSucursal, indexBoton + 2);
+            this.pnlMenu.add(btnDepartamento, indexBoton + 3);
+            this.pnlMenu.add(btnPuesto, indexBoton + 4);
 
             menuDesplegado = true;
 
         } else {
-            this.pnlMenu.remove(btnSub1);
-            this.pnlMenu.remove(btnSub2);
-            this.pnlMenu.remove(btnSub3);
+            this.pnlMenu.remove(btnEmpresa);
+            this.pnlMenu.remove(btnSucursal);
+            this.pnlMenu.remove(btnDepartamento);
+            this.pnlMenu.remove(btnPuesto);
 
             menuDesplegado = false;
         }
@@ -262,22 +315,20 @@ public class Home extends javax.swing.JFrame {
         int indexBoton;
 
         if (menuDesplegado == true) {
-            indexBoton = 8;
+            indexBoton = 9;
         } else {
             indexBoton = 5;
         }
 
         if (!menuDesplegado2) {
-            this.pnlMenu.add(btnSub4, indexBoton + 1);
-            this.pnlMenu.add(btnSub5, indexBoton + 2);
-            this.pnlMenu.add(btnSub6, indexBoton + 3);
+            this.pnlMenu.add(btnUsuario, indexBoton + 1);
+            this.pnlMenu.add(btnAuditoria, indexBoton + 2);
 
             menuDesplegado2 = true;
 
         } else {
-            this.pnlMenu.remove(btnSub4);
-            this.pnlMenu.remove(btnSub5);
-            this.pnlMenu.remove(btnSub6);
+            this.pnlMenu.remove(btnUsuario);
+            this.pnlMenu.remove(btnAuditoria);
 
             menuDesplegado2 = false;
         }
@@ -286,24 +337,59 @@ public class Home extends javax.swing.JFrame {
         this.pnlMenu.repaint();
     }//GEN-LAST:event_subMenuConfiguracionActionPerformed
 
-    private void agregarEventosHoverABoton(JButton boton, Icon iconoEntered, Icon iconoExited, Color colorBackground, Color colorFont) {
+    /**
+     * Configura el comportamiento visual completo del botón (Hover, Click,
+     * Selección).
+     *
+     * @param boton El botón a configurar.
+     * @param rutaIcono La ruta del SVG (necesaria para repintarlo de
+     * blanco/negro).
+     */
+    private void configurarBotonMenu(JButton boton, String rutaIcono) {
+
+        boton.setBackground(COLOR_NORMAL);
+        boton.setForeground(COLOR_TEXT_NORMAL);
+        boton.setIcon(crearIconoColoreado(rutaIcono, 25, 25, COLOR_TEXT_NORMAL));
 
         boton.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mouseEntered(MouseEvent e) {
-                boton.setIcon(iconoEntered);
-                boton.setBackground(colorBackground);
-                boton.setForeground(colorFont);
+                if (boton != botonActual) {
+                    boton.setBackground(COLOR_HOVER);
+                    boton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                boton.setIcon(iconoExited);
-                boton.setBackground(Color.WHITE);
-                boton.setForeground(Color.BLACK);
+                if (boton != botonActual) {
+                    boton.setBackground(COLOR_NORMAL);
+                }
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (botonActual != null && botonActual != boton) {
+                    resetearEstiloBoton(botonActual);
+                }
+
+                botonActual = boton;
+                boton.setBackground(COLOR_SELECTED_BG);
+                boton.setForeground(COLOR_SELECTED_FG);
+                boton.setIcon(crearIconoColoreado(rutaIcono, 25, 25, COLOR_SELECTED_FG));
             }
         });
+    }
 
+    private void resetearEstiloBoton(JButton boton) {
+        boton.setBackground(COLOR_NORMAL);
+        boton.setForeground(COLOR_TEXT_NORMAL);
+
+        String ruta = (String) boton.getClientProperty("rutaIcono");
+        if (ruta != null) {
+            boton.setIcon(crearIconoColoreado(ruta, 25, 25, COLOR_TEXT_NORMAL));
+        }
     }
 
     /**
@@ -357,10 +443,15 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton btnInventario;
     private javax.swing.JButton btnSubMenuOrganizacion;
     private javax.swing.JButton btnTrabajadores;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel pnlMenu;
     private javax.swing.JButton subMenuConfiguracion;
     // End of variables declaration//GEN-END:variables
