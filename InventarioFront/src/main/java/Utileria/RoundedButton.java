@@ -5,11 +5,11 @@
 package Utileria;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.JButton;
 import javax.swing.border.EmptyBorder;
@@ -26,9 +26,20 @@ public class RoundedButton extends JButton{
         setBorder(new EmptyBorder(10, 20, 10, 20));
         arc = arcp;
         
-        this.setBackground(new Color(229,231,235));
+        setContentAreaFilled(false); 
+        setFocusPainted(false);   
+        setBorderPainted(false);
         
-        this.setBorder(new EmptyBorder(0, 0, 0, 0));
+        Dimension dimension = new Dimension(240, 60);
+        
+        this.setMaximumSize(dimension);
+        this.setMinimumSize(dimension);
+        
+        
+        this.setBackground(new Color(234,244,251));
+        
+        this.setHorizontalAlignment(LEFT);
+//        this.setHorizontalTextPosition(LEFT);
     }
 
     @Override

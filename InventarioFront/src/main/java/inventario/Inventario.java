@@ -12,6 +12,10 @@ public class Inventario extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Inventario.class.getName());
 
+    private int paginaActual = 1;
+    private int filasPorPagina = 10;
+    private int totalPaginas = 0;
+    
     /**
      * Creates new form Inventario
      */
@@ -28,32 +32,216 @@ public class Inventario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        contenido = new javax.swing.JPanel();
+        panelSuperior = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        titulo = new javax.swing.JLabel();
+        subTitulo = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jSeparator4 = new javax.swing.JSeparator();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
+        panelCentral = new javax.swing.JPanel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
+        jTextField2 = new javax.swing.JTextField();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        jcbFiltroMarca = new javax.swing.JComboBox<>();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        jcbFiltroCondicion = new javax.swing.JComboBox<>();
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        jcbFiltroEstado = new javax.swing.JComboBox<>();
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
+        btnAgregarEquipo = new javax.swing.JButton();
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
+        panelInferior = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        txtResultados = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(229, 231, 235));
+        contenido.setBackground(new java.awt.Color(229, 231, 235));
+        contenido.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 30, 20));
+        contenido.setLayout(new javax.swing.BoxLayout(contenido, javax.swing.BoxLayout.Y_AXIS));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 724, Short.MAX_VALUE)
+        panelSuperior.setBackground(new java.awt.Color(229, 231, 235));
+        panelSuperior.setPreferredSize(new java.awt.Dimension(0, 60));
+        panelSuperior.setLayout(new java.awt.GridLayout(1, 0));
+
+        jPanel1.setBackground(new java.awt.Color(229, 231, 235));
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+
+        titulo.setFont(new java.awt.Font("Verdana", 1, 20)); // NOI18N
+        titulo.setForeground(new java.awt.Color(0, 0, 0));
+        titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titulo.setText("Sistema TI");
+        titulo.setPreferredSize(new java.awt.Dimension(126, 50));
+        jPanel1.add(titulo);
+
+        subTitulo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        subTitulo.setForeground(new java.awt.Color(0, 0, 0));
+        subTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        subTitulo.setText("Gestión de equipos de TI");
+        subTitulo.setToolTipText("");
+        subTitulo.setFocusable(false);
+        subTitulo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(subTitulo);
+
+        panelSuperior.add(jPanel1);
+
+        jPanel2.setBackground(new java.awt.Color(229, 231, 235));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 20));
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.X_AXIS));
+
+        jSeparator4.setBackground(new java.awt.Color(229, 231, 235));
+        jSeparator4.setPreferredSize(new java.awt.Dimension(20, 10));
+        jPanel2.add(jSeparator4);
+
+        panelSuperior.add(jPanel2);
+
+        contenido.add(panelSuperior);
+        contenido.add(filler7);
+
+        panelCentral.setBackground(new java.awt.Color(255, 255, 51));
+        panelCentral.setPreferredSize(new java.awt.Dimension(674, 100));
+        panelCentral.setLayout(new javax.swing.BoxLayout(panelCentral, javax.swing.BoxLayout.X_AXIS));
+        panelCentral.add(filler1);
+
+        jTextField2.setText("jTextField2");
+        jTextField2.setMaximumSize(new java.awt.Dimension(200, 40));
+        jTextField2.setMinimumSize(new java.awt.Dimension(200, 40));
+        jTextField2.setPreferredSize(new java.awt.Dimension(200, 40));
+        panelCentral.add(jTextField2);
+        panelCentral.add(filler2);
+
+        jcbFiltroMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbFiltroMarca.setMaximumSize(new java.awt.Dimension(200, 40));
+        jcbFiltroMarca.setMinimumSize(new java.awt.Dimension(200, 40));
+        jcbFiltroMarca.setPreferredSize(new java.awt.Dimension(200, 40));
+        panelCentral.add(jcbFiltroMarca);
+        panelCentral.add(filler3);
+
+        jcbFiltroCondicion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbFiltroCondicion.setMaximumSize(new java.awt.Dimension(200, 40));
+        jcbFiltroCondicion.setMinimumSize(new java.awt.Dimension(200, 40));
+        jcbFiltroCondicion.setPreferredSize(new java.awt.Dimension(200, 40));
+        panelCentral.add(jcbFiltroCondicion);
+        panelCentral.add(filler4);
+
+        jcbFiltroEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbFiltroEstado.setMaximumSize(new java.awt.Dimension(200, 40));
+        jcbFiltroEstado.setMinimumSize(new java.awt.Dimension(200, 40));
+        jcbFiltroEstado.setPreferredSize(new java.awt.Dimension(200, 40));
+        panelCentral.add(jcbFiltroEstado);
+        panelCentral.add(filler5);
+
+        btnAgregarEquipo.setText("Agregar Nuevo Equipo");
+        btnAgregarEquipo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregarEquipo.setMaximumSize(new java.awt.Dimension(200, 40));
+        btnAgregarEquipo.setMinimumSize(new java.awt.Dimension(200, 40));
+        btnAgregarEquipo.setPreferredSize(new java.awt.Dimension(200, 40));
+        panelCentral.add(btnAgregarEquipo);
+        panelCentral.add(filler6);
+
+        contenido.add(panelCentral);
+        contenido.add(filler9);
+
+        panelInferior.setBackground(new java.awt.Color(102, 255, 102));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "GRI", "Tipo Equipo", "Marca", "Modelo", "Condicion", "Estado"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Long.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setMinWidth(60);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(60);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(60);
+        }
+
+        txtResultados.setForeground(new java.awt.Color(0, 0, 0));
+        txtResultados.setText("jLabel1");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 231, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 519, Short.MAX_VALUE)
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 36, Short.MAX_VALUE)
         );
+
+        javax.swing.GroupLayout panelInferiorLayout = new javax.swing.GroupLayout(panelInferior);
+        panelInferior.setLayout(panelInferiorLayout);
+        panelInferiorLayout.setHorizontalGroup(
+            panelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInferiorLayout.createSequentialGroup()
+                .addGroup(panelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelInferiorLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(panelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelInferiorLayout.createSequentialGroup()
+                                .addGap(0, 1967, Short.MAX_VALUE)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelInferiorLayout.createSequentialGroup()
+                                .addComponent(txtResultados)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(panelInferiorLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
+        );
+        panelInferiorLayout.setVerticalGroup(
+            panelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInferiorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtResultados)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        contenido.add(panelInferior);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -85,6 +273,31 @@ public class Inventario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregarEquipo;
+    private javax.swing.JPanel contenido;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
+    private javax.swing.Box.Filler filler9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JComboBox<String> jcbFiltroCondicion;
+    private javax.swing.JComboBox<String> jcbFiltroEstado;
+    private javax.swing.JComboBox<String> jcbFiltroMarca;
+    private javax.swing.JPanel panelCentral;
+    private javax.swing.JPanel panelInferior;
+    private javax.swing.JPanel panelSuperior;
+    private javax.swing.JLabel subTitulo;
+    private javax.swing.JLabel titulo;
+    private javax.swing.JLabel txtResultados;
     // End of variables declaration//GEN-END:variables
 }
