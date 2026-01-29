@@ -34,7 +34,8 @@ public class Inventario extends javax.swing.JFrame {
         titulo = new javax.swing.JLabel();
         subTitulo = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jSeparator4 = new javax.swing.JSeparator();
+        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        btnAgregarEquipo = new javax.swing.JButton();
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         panelCentral = new javax.swing.JPanel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
@@ -46,14 +47,14 @@ public class Inventario extends javax.swing.JFrame {
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         jcbFiltroEstado = new javax.swing.JComboBox<>();
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
-        btnAgregarEquipo = new javax.swing.JButton();
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
         filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         panelInferior = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        txtResultados = new javax.swing.JLabel();
+        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         jPanel3 = new javax.swing.JPanel();
+        txtResultados = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,11 +64,15 @@ public class Inventario extends javax.swing.JFrame {
         contenido.setLayout(new javax.swing.BoxLayout(contenido, javax.swing.BoxLayout.Y_AXIS));
 
         panelSuperior.setBackground(new java.awt.Color(229, 231, 235));
+        panelSuperior.setMaximumSize(new java.awt.Dimension(32767, 80));
         panelSuperior.setPreferredSize(new java.awt.Dimension(0, 60));
         panelSuperior.setLayout(new java.awt.GridLayout(1, 0));
 
         jPanel1.setBackground(new java.awt.Color(229, 231, 235));
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jPanel1.setMaximumSize(new java.awt.Dimension(188, 80));
+        jPanel1.setMinimumSize(new java.awt.Dimension(188, 80));
+        jPanel1.setPreferredSize(new java.awt.Dimension(188, 80));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
         titulo.setFont(new java.awt.Font("Verdana", 1, 20)); // NOI18N
@@ -90,11 +95,19 @@ public class Inventario extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(229, 231, 235));
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 20));
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.X_AXIS));
+        jPanel2.setLayout(new java.awt.GridLayout());
+        jPanel2.add(filler8);
 
-        jSeparator4.setBackground(new java.awt.Color(229, 231, 235));
-        jSeparator4.setPreferredSize(new java.awt.Dimension(20, 10));
-        jPanel2.add(jSeparator4);
+        btnAgregarEquipo.setBackground(new java.awt.Color(19, 80, 125));
+        btnAgregarEquipo.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnAgregarEquipo.setForeground(new java.awt.Color(255, 255, 255));
+        btnAgregarEquipo.setText("Agregar Nuevo Equipo");
+        btnAgregarEquipo.setFocusPainted(false);
+        btnAgregarEquipo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregarEquipo.setMaximumSize(new java.awt.Dimension(200, 60));
+        btnAgregarEquipo.setMinimumSize(new java.awt.Dimension(200, 60));
+        btnAgregarEquipo.setPreferredSize(new java.awt.Dimension(200, 60));
+        jPanel2.add(btnAgregarEquipo);
 
         panelSuperior.add(jPanel2);
 
@@ -102,7 +115,10 @@ public class Inventario extends javax.swing.JFrame {
         contenido.add(filler7);
 
         panelCentral.setBackground(new java.awt.Color(255, 255, 51));
-        panelCentral.setPreferredSize(new java.awt.Dimension(674, 100));
+        panelCentral.setMaximumSize(new java.awt.Dimension(33333, 80));
+        panelCentral.setMinimumSize(new java.awt.Dimension(1090, 80));
+        panelCentral.setName(""); // NOI18N
+        panelCentral.setPreferredSize(new java.awt.Dimension(674, 80));
         panelCentral.setLayout(new javax.swing.BoxLayout(panelCentral, javax.swing.BoxLayout.X_AXIS));
         panelCentral.add(filler1);
 
@@ -133,38 +149,35 @@ public class Inventario extends javax.swing.JFrame {
         jcbFiltroEstado.setPreferredSize(new java.awt.Dimension(200, 40));
         panelCentral.add(jcbFiltroEstado);
         panelCentral.add(filler5);
-
-        btnAgregarEquipo.setText("Agregar Nuevo Equipo");
-        btnAgregarEquipo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAgregarEquipo.setMaximumSize(new java.awt.Dimension(200, 40));
-        btnAgregarEquipo.setMinimumSize(new java.awt.Dimension(200, 40));
-        btnAgregarEquipo.setPreferredSize(new java.awt.Dimension(200, 40));
-        panelCentral.add(btnAgregarEquipo);
         panelCentral.add(filler6);
 
         contenido.add(panelCentral);
         contenido.add(filler9);
 
         panelInferior.setBackground(new java.awt.Color(102, 255, 102));
+        panelInferior.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 10, 1));
+        panelInferior.setLayout(new javax.swing.BoxLayout(panelInferior, javax.swing.BoxLayout.Y_AXIS));
+
+        jScrollPane1.setBorder(null);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "GRI", "Tipo Equipo", "Marca", "Modelo", "Condicion", "Estado"
+                "ID", "GRI", "Tipo Equipo", "Marca", "Modelo", "Condicion", "Estado", "Aciones"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Long.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Long.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -180,53 +193,26 @@ public class Inventario extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(0).setMinWidth(60);
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(60);
             jTable1.getColumnModel().getColumn(0).setMaxWidth(60);
+            jTable1.getColumnModel().getColumn(1).setMinWidth(150);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(1).setMaxWidth(150);
         }
+
+        panelInferior.add(jScrollPane1);
+        panelInferior.add(filler10);
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jPanel3.setMaximumSize(new java.awt.Dimension(1090, 60));
+        jPanel3.setMinimumSize(new java.awt.Dimension(1090, 60));
+        jPanel3.setPreferredSize(new java.awt.Dimension(1090, 60));
+        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
 
         txtResultados.setForeground(new java.awt.Color(0, 0, 0));
         txtResultados.setText("jLabel1");
+        jPanel3.add(txtResultados);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 231, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 36, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout panelInferiorLayout = new javax.swing.GroupLayout(panelInferior);
-        panelInferior.setLayout(panelInferiorLayout);
-        panelInferiorLayout.setHorizontalGroup(
-            panelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelInferiorLayout.createSequentialGroup()
-                .addGroup(panelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelInferiorLayout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(panelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelInferiorLayout.createSequentialGroup()
-                                .addGap(0, 847, Short.MAX_VALUE)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelInferiorLayout.createSequentialGroup()
-                                .addComponent(txtResultados)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(panelInferiorLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1)))
-                .addContainerGap())
-        );
-        panelInferiorLayout.setVerticalGroup(
-            panelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelInferiorLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtResultados)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        panelInferior.add(jPanel3);
 
         contenido.add(panelInferior);
 
@@ -273,18 +259,19 @@ public class Inventario extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregarEquipo;
     private javax.swing.JPanel contenido;
     private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler10;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
     private javax.swing.Box.Filler filler6;
     private javax.swing.Box.Filler filler7;
+    private javax.swing.Box.Filler filler8;
     private javax.swing.Box.Filler filler9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JComboBox<String> jcbFiltroCondicion;
