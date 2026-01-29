@@ -9,9 +9,14 @@ import java.util.List;
  * @author JMorales
  */
 public interface IFachadaPersonas {
+    
     public UsuarioDto login(String user, String pass) throws Exception;
-
-    public List<TrabajadorDto> listarTrabajadores(boolean soloActivos);
-
+    
+    public List<TrabajadorDto> buscarTrabajadores(String busquedaGlobal);
+    
+    public TrabajadorDto obtenerTrabajador(Long id);
+    
     public void guardarTrabajador(TrabajadorDto dto) throws Exception;
+    
+    public void cambiarEstadoTrabajador(Long id, boolean activo) throws Exception;
 }

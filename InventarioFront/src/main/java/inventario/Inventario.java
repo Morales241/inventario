@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package inventario;
 
 /**
@@ -63,6 +59,7 @@ public class Inventario extends javax.swing.JFrame {
 
         contenido.setBackground(new java.awt.Color(229, 231, 235));
         contenido.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 30, 20));
+        contenido.setPreferredSize(new java.awt.Dimension(1200, 683));
         contenido.setLayout(new javax.swing.BoxLayout(contenido, javax.swing.BoxLayout.Y_AXIS));
 
         panelSuperior.setBackground(new java.awt.Color(229, 231, 235));
@@ -209,7 +206,7 @@ public class Inventario extends javax.swing.JFrame {
                         .addGap(16, 16, 16)
                         .addGroup(panelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelInferiorLayout.createSequentialGroup()
-                                .addGap(0, 1967, Short.MAX_VALUE)
+                                .addGap(0, 847, Short.MAX_VALUE)
                                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(panelInferiorLayout.createSequentialGroup()
                                 .addComponent(txtResultados)
@@ -226,7 +223,7 @@ public class Inventario extends javax.swing.JFrame {
                 .addComponent(txtResultados)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );

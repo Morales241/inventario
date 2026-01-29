@@ -12,65 +12,83 @@ public class ServicioOrganizacion {
     private final DaoDepartamento daoDepto = new DaoDepartamento();
     private final DaoPuesto daoPuesto = new DaoPuesto();
 
-    public List<EmpresaDto> listarEmpresas() {
+    public List<EmpresaDto> listarEmpresas(String filtroNombre) {
+        if(filtroNombre != null && !filtroNombre.isEmpty()){
+            return MapperEstructura.empresa.mapToDtoList(daoEmpresa.buscarPorCoincidencias(filtroNombre));
+        }
         return MapperEstructura.empresa.mapToDtoList(daoEmpresa.buscarTodos());
     }
 
-    public List<SucursalDto> listarSucursalesPorEmpresa(Long idEmpresa) {
-        return MapperEstructura.sucursal.mapToDtoList(daoSucursal.busquedaConFiltros("", "", idEmpresa));
+    public void guardarEmpresa(EmpresaDto dto) throws Exception {
+        if (dto.getNombre() == null || dto.getNombre().isEmpty()) throw new Exception("Nombre obligatorio");
+        
+        var entidad = MapperEstructura.empresa.mapToEntity(dto);
+        if (dto.getId() != null && dto.getId() > 0) {
+            daoEmpresa.actualizar(entidad);
+        } else {
+            daoEmpresa.guardar(entidad);
+        }
+    }
+    
+    public void eliminarEmpresa(Long id) throws Exception {
+        try {
+            daoEmpresa.eliminar(id);
+        } catch (Exception e) {
+            throw new Exception("No se puede eliminar: La empresa tiene sucursales vinculadas.");
+        }
     }
 
-    public List<DepartamentoDto> listarDeptosPorSucursal(Long idSucursal) {
-        return MapperEstructura.departamento.mapToDtoList(daoDepto.busquedaConFiltros("", idSucursal));
+    public List<SucursalDto> listarSucursales(String filtro, Long idEmpresa) {
+        // Si no hay filtro, mandamos vacíos para traer todo
+        String busqueda = filtro != null ? filtro : "";
+        return MapperEstructura.sucursal.mapToDtoList(daoSucursal.busquedaConFiltros(busqueda, busqueda, idEmpresa));
     }
 
-    public List<PuestoDto> listarPuestosPorDepto(Long idDepto) {
+    public void guardarSucursal(SucursalDto dto) throws Exception {
+        if (dto.getNombre() == null || dto.getIdEmpresa() == null) throw new Exception("Datos incompletos");
+        
+        var entidad = MapperEstructura.sucursal.mapToEntity(dto);
+        if (dto.getId() != null && dto.getId() > 0) daoSucursal.actualizar(entidad);
+        else daoSucursal.guardar(entidad);
+    }
+    
+    public void eliminarSucursal(Long id) throws Exception {
+         try { daoSucursal.eliminar(id); } 
+         catch (Exception e) { throw new Exception("No se puede eliminar: Tiene departamentos o equipos vinculados."); }
+    }
+
+    public List<DepartamentoDto> listarDepartamentos(String nombre, Long idSucursal) {
+        String busqueda = nombre != null ? nombre : "";
+        return MapperEstructura.departamento.mapToDtoList(daoDepto.busquedaConFiltros(busqueda, idSucursal));
+    }
+
+    public void guardarDepartamento(DepartamentoDto dto) throws Exception {
+        if (dto.getNombre() == null || dto.getIdSucursal() == null) throw new Exception("Datos incompletos");
+        
+        var entidad = MapperEstructura.departamento.mapToEntity(dto);
+        if (dto.getId() != null && dto.getId() > 0) daoDepto.actualizar(entidad);
+        else daoDepto.guardar(entidad);
+    }
+    
+    public void eliminarDepartamento(Long id) throws Exception {
+         try { daoDepto.eliminar(id); } 
+         catch (Exception e) { throw new Exception("No se puede eliminar: Tiene puestos vinculados."); }
+    }
+
+    public List<PuestoDto> listarPuestos(Long idDepto) {
         return MapperEstructura.puesto.mapToDtoList(daoPuesto.busquedaPorDepartamento(idDepto));
     }
 
-
-    public void guardarEmpresa(EmpresaDto dto) throws Exception {
-        if (dto.getNombre() == null || dto.getNombre().isEmpty()) {
-            throw new Exception("El nombre de la Empresa es obligatorio");
-        }
-        daoEmpresa.guardar(MapperEstructura.empresa.mapToEntity(dto));
-    }
-    
-    
-    public void guardarSucursal(SucursalDto dto) throws Exception {
-        if (dto.getNombre() == null || dto.getNombre().isEmpty()) {
-            throw new Exception("El nombre de la sucursal es obligatorio");
-        }
-        if (dto.getNombreEmpresa()== null || dto.getNombreEmpresa().isEmpty()) {
-            throw new Exception("El nombre de la empresa asociada es obligatorio");
-        }
-        if (dto.getUbicacion()== null || dto.getUbicacion().isEmpty()) {
-            throw new Exception("La ubicación de la sucursal es obligatorio");
-        }
-        daoSucursal.guardar(MapperEstructura.sucursal.mapToEntity(dto));
-    }
-    
-    
-    public void guardarDepartamento(DepartamentoDto dto) throws Exception {
-        if (dto.getNombre() == null || dto.getNombre().isEmpty()) {
-            throw new Exception("El nombre del departamento es obligatorio");
-        }
-        if (dto.getNombreSucursal()== null || dto.getNombreSucursal().isEmpty()) {
-            throw new Exception("El nombre de la sucursal es obligatorio");
-        }
-        daoDepto.guardar(MapperEstructura.departamento.mapToEntity(dto));
-    }
-    
-    
     public void guardarPuesto(PuestoDto dto) throws Exception {
-        if (dto.getNombre()== null || dto.getNombre().isEmpty()) {
-            throw new Exception("El nombre de la sucursal es obligatorio");
-        }
-        if (dto.getNombreDepartamento()== null || dto.getNombreDepartamento().isEmpty()) {
-            throw new Exception("El nombre de la sucursal es obligatorio");
-        }
-        daoPuesto.guardar(MapperEstructura.puesto.mapToEntity(dto));
+        if (dto.getNombre() == null || dto.getIdDepartamento() == null) throw new Exception("Datos incompletos");
+        
+        var entidad = MapperEstructura.puesto.mapToEntity(dto);
+        if (dto.getId() != null && dto.getId() > 0) daoPuesto.actualizar(entidad);
+        else daoPuesto.guardar(entidad);
     }
     
-    
+    public void eliminarPuesto(Long id) throws Exception {
+         try { daoPuesto.eliminar(id); } 
+         catch (Exception e) { throw new Exception("No se puede eliminar: Tiene trabajadores vinculados."); }
+    }
 }

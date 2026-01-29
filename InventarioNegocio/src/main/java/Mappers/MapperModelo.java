@@ -6,21 +6,27 @@ import Entidades.Modelo;
 public class MapperModelo {
 
     public static final Mapper<Modelo, ModeloDto> converter = new Mapper<>(
+            
             (m) -> {
                 ModeloDto dto = new ModeloDto();
-                dto.setId(m.getId());
+                dto.setIdModelo(m.getId());
                 dto.setNombre(m.getNombre());
                 dto.setMarca(m.getMarca());
-                dto.setEspecificaciones("RAM: " + m.getMemoriaRam()
-                        + "GB / HDD: " + m.getAlmacenamiento()
-                        + "GB / CPU: " + m.getPreocesador());
+                dto.setMemoriaRam(m.getMemoriaRam());
+                dto.setAlmacenamiento(m.getAlmacenamiento());
+                dto.setProcesador(m.getPreocesador()); 
+                dto.setNoSerie(m.getNoSerie());
                 return dto;
             },
             (dto) -> {
                 Modelo m = new Modelo();
-                m.setId(dto.getId());
+                m.setId(dto.getIdModelo());
                 m.setNombre(dto.getNombre());
                 m.setMarca(dto.getMarca());
+                m.setMemoriaRam(dto.getMemoriaRam());
+                m.setAlmacenamiento(dto.getAlmacenamiento());
+                m.setPreocesador(dto.getProcesador());
+                m.setNoSerie(dto.getNoSerie());
                 return m;
             }
     );

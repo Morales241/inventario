@@ -1,7 +1,12 @@
 package Interfaces;
 
-import Dtos.EquipoDto;
+import Dtos.AsignacionDto;
+import Dtos.EquipoBaseDTO;
+import Dtos.EquipoEscritorioDTO;
 import Dtos.ModeloDto;
+import Dtos.MovilDTO;
+import Dtos.OtroEquipoDTO;
+import Enums.EstadoEquipo;
 import java.util.List;
 
 /**
@@ -10,9 +15,20 @@ import java.util.List;
  */
 public interface IFachadaEquipos {
     
-    public List<EquipoDto> buscarEquipos(String criterio);
+    public List<EquipoBaseDTO> buscarEquipos(Integer gri, Long idSucursal, EstadoEquipo estado, String criterioBusqueda);
+    
+    public EquipoBaseDTO obtenerEquipoPorId(Long id) throws Exception;
+    
+    public void guardarEscritorio(EquipoEscritorioDTO dto) throws Exception;
+    
+    public void guardarMovil(MovilDTO dto) throws Exception;
+    
+    public void guardarOtro(OtroEquipoDTO dto) throws Exception;
+    
+    public void eliminarEquipo(Long id) throws Exception;
     
     public List<ModeloDto> listarModelos();
     
-    public void guardarEquipo(EquipoDto dto) throws Exception;
+    public void guardarModelo(ModeloDto dto) throws Exception;
+    
 }

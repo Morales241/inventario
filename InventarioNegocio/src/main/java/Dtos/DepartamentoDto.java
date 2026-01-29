@@ -5,7 +5,6 @@ public class DepartamentoDto {
     private Long id;
     private String nombre;
     private Long idSucursal;
-    private String nombreSucursal;
 
     public DepartamentoDto() {
     }
@@ -32,14 +31,6 @@ public class DepartamentoDto {
 
     public void setIdSucursal(Long idSucursal) {
         this.idSucursal = idSucursal;
-    }
-
-    public String getNombreSucursal() {
-        return nombreSucursal;
-    }
-
-    public void setNombreSucursal(String nombreSucursal) {
-        this.nombreSucursal = nombreSucursal;
     }
 
     @Override

@@ -2,92 +2,84 @@ package Mappers;
 
 import Dtos.*;
 import Entidades.*;
-import java.util.function.Function;
 
 public class MapperEstructura {
-
+    
     public static final Mapper<Empresa, EmpresaDto> empresa = new Mapper<>(
-            (entity) -> new EmpresaDto(entity.getIdEmpresa(), entity.getNombre()),
-            (dto) -> {
+            (e) -> new EmpresaDto(e.getIdEmpresa(), e.getNombre()),
+            (d) -> {
                 Empresa e = new Empresa();
-                e.setIdEmpresa(dto.getId());
-                e.setNombre(dto.getNombre());
+                e.setIdEmpresa(d.getId());
+                e.setNombre(d.getNombre());
                 return e;
             }
     );
 
     public static final Mapper<Sucursal, SucursalDto> sucursal = new Mapper<>(
-            (entity) -> {
+            (e) -> {
                 SucursalDto dto = new SucursalDto();
-                dto.setId(entity.getIdSucursal());
-                dto.setNombre(entity.getNombre());
-                dto.setUbicacion(entity.getUbicacion());
-                if (entity.getEmpresa() != null) {
-                    dto.setIdEmpresa(entity.getEmpresa().getIdEmpresa());
-                    dto.setNombreEmpresa(entity.getEmpresa().getNombre());
-                }
+                dto.setId(e.getIdSucursal());
+                dto.setNombre(e.getNombre());
+                dto.setUbicacion(e.getUbicacion());
+                if (e.getEmpresa() != null) dto.setIdEmpresa(e.getEmpresa().getIdEmpresa());
                 return dto;
             },
-            (dto) -> {
+            (d) -> {
                 Sucursal s = new Sucursal();
-                s.setIdSucursal(dto.getId());
-                s.setNombre(dto.getNombre());
-                s.setUbicacion(dto.getUbicacion());
-                // Relación (Solo ID para guardar)
-                if (dto.getIdEmpresa() != null) {
-                    Empresa e = new Empresa();
-                    e.setIdEmpresa(dto.getIdEmpresa());
-                    s.setEmpresa(e);
+                s.setIdSucursal(d.getId());
+                s.setNombre(d.getNombre());
+                s.setUbicacion(d.getUbicacion());
+                if (d.getIdEmpresa() != null) {
+                    Empresa emp = new Empresa();
+                    emp.setIdEmpresa(d.getIdEmpresa());
+                    s.setEmpresa(emp);
                 }
                 return s;
             }
     );
 
-    // DEPARTAMENTO
     public static final Mapper<Departamento, DepartamentoDto> departamento = new Mapper<>(
-            (entity) -> {
+            (e) -> {
                 DepartamentoDto dto = new DepartamentoDto();
-                dto.setId(entity.getIdDepartamento());
-                dto.setNombre(entity.getNombre());
-                if (entity.getSucursal() != null) {
-                    dto.setIdSucursal(entity.getSucursal().getIdSucursal());
-                    dto.setNombreSucursal(entity.getSucursal().getNombre());
+                dto.setId(e.getIdDepartamento());
+                dto.setNombre(e.getNombre());
+                if (e.getSucursal() != null) {
+                    dto.setIdSucursal(e.getSucursal().getIdSucursal());
                 }
                 return dto;
             },
-            (dto) -> {
-                Departamento d = new Departamento();
-                d.setIdDepartamento(dto.getId());
-                d.setNombre(dto.getNombre());
-                if (dto.getIdSucursal() != null) {
+            (d) -> {
+                Departamento dep = new Departamento();
+                dep.setIdDepartamento(d.getId());
+                dep.setNombre(d.getNombre());
+                if (d.getIdSucursal() != null) {
                     Sucursal s = new Sucursal();
-                    s.setIdSucursal(dto.getIdSucursal());
-                    d.setSucursal(s);
+                    s.setIdSucursal(d.getIdSucursal());
+                    dep.setSucursal(s);
                 }
-                return d;
+                return dep;
             }
     );
-
-    // PUESTO 
+    
     public static final Mapper<Puesto, PuestoDto> puesto = new Mapper<>(
-            (entity) -> {
+            (e) -> {
                 PuestoDto dto = new PuestoDto();
-                dto.setId(entity.getIdPuesto());
-                dto.setNombre(entity.getNombre());
-                if (entity.getDepartamento() != null) {
-                    dto.setIdDepartamento(entity.getDepartamento().getIdDepartamento());
-                    dto.setNombreDepartamento(entity.getDepartamento().getNombre());
+                dto.setId(e.getIdPuesto());
+                dto.setNombre(e.getNombre());
+                if (e.getDepartamento() != null) {
+                    dto.setIdDepartamento(e.getDepartamento().getIdDepartamento());
+                    dto.setNombreDepartamento(e.getDepartamento().getNombre());
                 }
                 return dto;
             },
-            (dto) -> {
+            (d) -> {
                 Puesto p = new Puesto();
-                p.setIdPuesto(dto.getId());
-                p.setNombre(dto.getNombre());
-                if (dto.getIdDepartamento() != null) {
-                    Departamento d = new Departamento();
-                    d.setIdDepartamento(dto.getIdDepartamento());
-                    p.setDepartamento(d);
+                p.setIdPuesto(d.getId());
+                p.setNombre(d.getNombre());
+                if (d.getIdDepartamento() != null) {
+                    Departamento dep = new Departamento();
+                    dep.setIdDepartamento(d.getIdDepartamento());
+                    p.setDepartamento(dep);
                 }
                 return p;
             }

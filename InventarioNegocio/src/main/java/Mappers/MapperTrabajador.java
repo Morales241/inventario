@@ -16,10 +16,6 @@ public class MapperTrabajador {
             
             if (t.getPuesto() != null) {
                 dto.setIdPuesto(t.getPuesto().getIdPuesto());
-                dto.setNombrePuesto(t.getPuesto().getNombre());
-                if (t.getPuesto().getDepartamento() != null) {
-                    dto.setNombreDepartamento(t.getPuesto().getDepartamento().getNombre());
-                }
             }
             return dto;
         },

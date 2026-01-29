@@ -6,10 +6,7 @@ public class TrabajadorDto {
     private String nombre;
     private String noNomina;
     private Boolean activo;
-
     private Long idPuesto;
-    private String nombrePuesto;
-    private String nombreDepartamento;
 
     public TrabajadorDto() {
     }
@@ -54,19 +51,4 @@ public class TrabajadorDto {
         this.idPuesto = idPuesto;
     }
 
-    public String getNombrePuesto() {
-        return nombrePuesto;
-    }
-
-    public void setNombrePuesto(String nombrePuesto) {
-        this.nombrePuesto = nombrePuesto;
-    }
-
-    public String getNombreDepartamento() {
-        return nombreDepartamento;
-    }
-
-    public void setNombreDepartamento(String nombreDepartamento) {
-        this.nombreDepartamento = nombreDepartamento;
-    }
 }
