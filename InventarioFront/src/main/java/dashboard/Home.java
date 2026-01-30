@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.Box;
@@ -96,6 +97,8 @@ public class Home extends javax.swing.JFrame {
      * Configura iconos, fuentes y dimensiones de todos los botones.
      */
     private void initEstilosVisuales() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/logo.png")));
+        
         // Icono usuario superior
         miniUser.setIcon(crearIconoColoreado("iconos/svgs/solid/circle-user.svg", 40, 40, COLOR_SELECTED_BG));
 
@@ -221,7 +224,7 @@ public class Home extends javax.swing.JFrame {
         jPanel6.setMinimumSize(new java.awt.Dimension(170, 82));
         jPanel6.setLayout(new java.awt.GridLayout(2, 0));
 
-        titulo.setFont(new java.awt.Font("Font Awesome 6 Brands Regular", 0, 14)); // NOI18N
+        titulo.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         titulo.setForeground(new java.awt.Color(0, 0, 0));
         titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titulo.setText("Sistema TI");
@@ -229,7 +232,7 @@ public class Home extends javax.swing.JFrame {
         titulo.setPreferredSize(new java.awt.Dimension(126, 50));
         jPanel6.add(titulo);
 
-        subTitulo.setFont(new java.awt.Font("Open Sans", 0, 14)); // NOI18N
+        subTitulo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         subTitulo.setForeground(new java.awt.Color(0, 0, 0));
         subTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         subTitulo.setText("Gestión de Inventario");
