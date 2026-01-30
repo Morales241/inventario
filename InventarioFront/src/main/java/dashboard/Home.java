@@ -6,6 +6,7 @@ package dashboard;
 
 import Utileria.RoundedButton;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import inventario.Inventario;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -15,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -71,6 +73,39 @@ public class Home extends javax.swing.JFrame {
         initEstructuraMenu();
 
         initEstilosVisuales();
+
+        agregarEstilos();
+    }
+
+    private void agregarEstilos() {
+
+        // 1. ELIMINAR O COMENTAR EL BLOQUE DE NIMBUS QUE NETBEANS GENERA AUTOMÁTICAMENTE
+        /* try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
+            }
+        }
+    } catch (...) { ... } 
+         */
+        // 2. CONFIGURAR EL TEMA DE FLATLAF AQUÍ
+        try {
+            // Opción A: Tema Oscuro (Dark)
+//            com.formdev.flatlaf.FlatDarkLaf.setup();
+
+            // Opción B: Tema Claro (Light)
+            com.formdev.flatlaf.FlatLightLaf.setup();
+            // Opción C: Tema tipo IntelliJ o Darcula
+            // com.formdev.flatlaf.FlatIntelliJLaf.setup();
+            // com.formdev.flatlaf.FlatDarculaLaf.setup();
+            // Opción D: Temas Extras (requiere la dependencia flatlaf-intellij-themes)
+            // com.formdev.flatlaf.intellijthemes.FlatNordIJTheme.setup();
+            // com.formdev.flatlaf.intellijthemes.materialthemeutil.FlatMaterialDeepOceanIJTheme.setup();
+        } catch (Exception ex) {
+            System.err.println("Error al iniciar el tema");
+        }
+
     }
 
     /**
@@ -98,7 +133,7 @@ public class Home extends javax.swing.JFrame {
      */
     private void initEstilosVisuales() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/logo.png")));
-        
+
         // Icono usuario superior
         miniUser.setIcon(crearIconoColoreado("iconos/svgs/solid/circle-user.svg", 40, 40, COLOR_SELECTED_BG));
 
@@ -143,6 +178,7 @@ public class Home extends javax.swing.JFrame {
             btn.setPreferredSize(ALTURA_BOTON_PRINCIPAL);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -152,7 +188,7 @@ public class Home extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        panelDeContenido = new javax.swing.JPanel();
         barraLateral = new javax.swing.JPanel();
         panelSuperior = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -183,21 +219,21 @@ public class Home extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 255));
 
-        jPanel1.setBackground(new java.awt.Color(250, 249, 246));
-        jPanel1.setToolTipText("");
+        panelDeContenido.setBackground(new java.awt.Color(250, 249, 246));
+        panelDeContenido.setToolTipText("");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelDeContenidoLayout = new javax.swing.GroupLayout(panelDeContenido);
+        panelDeContenido.setLayout(panelDeContenidoLayout);
+        panelDeContenidoLayout.setHorizontalGroup(
+            panelDeContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 975, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panelDeContenidoLayout.setVerticalGroup(
+            panelDeContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 980, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(panelDeContenido, java.awt.BorderLayout.CENTER);
 
         barraLateral.setBackground(new java.awt.Color(234, 244, 251));
         barraLateral.setAutoscrolls(true);
@@ -228,7 +264,6 @@ public class Home extends javax.swing.JFrame {
         titulo.setForeground(new java.awt.Color(0, 0, 0));
         titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titulo.setText("Sistema TI");
-        titulo.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         titulo.setPreferredSize(new java.awt.Dimension(126, 50));
         jPanel6.add(titulo);
 
@@ -237,6 +272,7 @@ public class Home extends javax.swing.JFrame {
         subTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         subTitulo.setText("Gestión de Inventario");
         subTitulo.setToolTipText("");
+        subTitulo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         subTitulo.setFocusable(false);
         subTitulo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel6.add(subTitulo);
@@ -422,7 +458,13 @@ public class Home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
-        // TODO add your handling code here:
+        Inventario inventario = new Inventario();
+        System.out.println("clic a boton inventario");
+        this.panelDeContenido.removeAll();
+        panelDeContenido.setLayout(new java.awt.BorderLayout());
+        panelDeContenido.add(inventario.getContenido(), java.awt.BorderLayout.CENTER);
+        this.panelDeContenido.revalidate();
+        this.panelDeContenido.repaint();
     }//GEN-LAST:event_btnInventarioActionPerformed
 
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
@@ -444,6 +486,7 @@ public class Home extends javax.swing.JFrame {
     private void subMenuConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuConfiguracionActionPerformed
         toggleMenuConfiguracion();
     }//GEN-LAST:event_subMenuConfiguracionActionPerformed
+
     private void toggleMenuOrganizacion() {
         int indexBase = panelInterno.getComponentZOrder(btnSubMenuOrganizacion);
 
@@ -453,7 +496,7 @@ public class Home extends javax.swing.JFrame {
 
         if (!menuOrganizacionDesplegado) {
             this.panelInterno.add(gapOrganizacion, indexBase + 1);
-            
+
             this.panelInterno.add(wrapperEmpresa, indexBase + 2);
             this.panelInterno.add(gapEmpresa, indexBase + 3);
 
@@ -495,10 +538,10 @@ public class Home extends javax.swing.JFrame {
 
         if (!menuConfiguracionDesplegado) {
             this.panelInterno.add(gapConfiguracion, indexBase + 1);
-            
+
             this.panelInterno.add(wrapperUsuario, indexBase + 2);
             this.panelInterno.add(gapUsuario, indexBase + 3);
-            
+
             this.panelInterno.add(wrapperAuditoria, indexBase + 4);
 
             menuConfiguracionDesplegado = true;
@@ -607,6 +650,10 @@ public class Home extends javax.swing.JFrame {
         return icono;
     }
 
+    public void setPanelDeContenido(JPanel panelDeContenido) {
+        this.panelDeContenido = panelDeContenido;
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -645,13 +692,13 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JLabel logo;
     private javax.swing.JLabel miniUser;
+    private javax.swing.JPanel panelDeContenido;
     private javax.swing.JPanel panelInterno;
     private javax.swing.JPanel panelSuperior;
     private javax.swing.JPanel piePagina;

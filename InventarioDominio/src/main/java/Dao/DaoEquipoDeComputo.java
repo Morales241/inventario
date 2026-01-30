@@ -24,6 +24,7 @@ public class DaoEquipoDeComputo extends DaoGenerico<EquipoDeComputo, Long> imple
         super(EquipoDeComputo.class);
     }
 
+    @Override
     public List<EquipoDeComputo> buscarConFiltros(Integer gri, Long idSucursal, EstadoEquipo estado, String busquedaModelo) {
         
         try (EntityManager em = getEntityManager()) {

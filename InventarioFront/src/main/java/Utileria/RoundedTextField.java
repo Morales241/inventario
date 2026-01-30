@@ -4,6 +4,7 @@
  */
 package Utileria;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -16,14 +17,30 @@ import javax.swing.border.EmptyBorder;
  *
  * @author tacot
  */
-public class RoundedTextField extends JTextField{
-    private final int arcWidth = 20;
-    private final int arcHeight = 20;
+public class RoundedTextField extends JTextField {
+
+    private final int arcWidth = 10;
+    private final int arcHeight = 10;
+
+    private java.awt.Color borderColor = new Color(176, 176, 176);
+    private java.awt.Color focusBorderColor = new Color(0,0,255);
 
     public RoundedTextField(int columns) {
         super(columns);
-        setOpaque(false); 
-        setBorder(new EmptyBorder(10, 10, 10, 10)); // Espaciado interno
+        setOpaque(false);
+        setBorder(new EmptyBorder(8, 10, 8, 10));
+
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                repaint();
+            }
+
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                repaint();
+            }
+        });
     }
 
     @Override
@@ -48,11 +65,35 @@ public class RoundedTextField extends JTextField{
     @Override
     protected void paintBorder(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
-
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(getForeground().darker());
 
-        g2.draw(new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, arcWidth, arcHeight));
+        if (hasFocus()) {
+            g2.setColor(focusBorderColor);
+        } else {
+            g2.setColor(borderColor);
+        }
+
+        g2.setStroke(new java.awt.BasicStroke(1f));
+
+        g2.draw(new RoundRectangle2D.Float(
+                0, 0,
+                getWidth() - 1,
+                getHeight() - 1,
+                arcWidth,
+                arcHeight
+        ));
+
         g2.dispose();
     }
+
+    public void setBorderColor(java.awt.Color color) {
+        this.borderColor = color;
+        repaint();
+    }
+
+    public void setFocusBorderColor(java.awt.Color color) {
+        this.focusBorderColor = color;
+        repaint();
+    }
+
 }

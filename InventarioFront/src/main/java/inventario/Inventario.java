@@ -1,16 +1,27 @@
 package inventario;
 
 import Utileria.IconoColoreado;
+import Utileria.PanelRedondeado;
+import Utileria.RoundedButton;
 import Utileria.RoundedTextField;
+import com.formdev.flatlaf.ui.FlatLineBorder;
+import com.formdev.flatlaf.ui.FlatRoundBorder;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Insets;
 import static java.util.Arrays.asList;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.UIManager;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -22,7 +33,9 @@ public class Inventario extends javax.swing.JFrame {
 
     private int paginaActual = 1;
     private int filasPorPagina = 10;
-    private int totalPaginas = 0;
+    private int totalPaginas = 1;
+
+    private TableRowSorter sorter;
 
     private final IconoColoreado iconoColoreado;
 
@@ -57,9 +70,9 @@ public class Inventario extends javax.swing.JFrame {
         });
 
         JTableHeader header = tablaEquipos.getTableHeader();
-        header.setOpaque(false); 
-        header.setBackground(new Color(255, 255, 255)); 
-        header.setForeground(new Color(50, 50, 50));    
+        header.setOpaque(false);
+        header.setBackground(new Color(250, 249, 246));
+        header.setForeground(new Color(50, 50, 50));
         header.setFont(new Font("SansSerif", Font.BOLD, 14));
 
         header.setDefaultRenderer(new DefaultTableCellRenderer() {
@@ -69,9 +82,8 @@ public class Inventario extends javax.swing.JFrame {
 
                 Component com = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-                // Colores forzados dentro del render
-                com.setBackground(new Color(245, 245, 245)); // Fondo del Título
-                com.setForeground(new Color(0, 0, 0));       // Color Texto Título
+                com.setBackground(new Color(250, 249, 246));
+                com.setForeground(new Color(0, 0, 0));
                 com.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
                 setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -79,6 +91,35 @@ public class Inventario extends javax.swing.JFrame {
                 return com;
             }
         });
+
+        tablaEquipos.getTableHeader().setReorderingAllowed(false);
+        
+        configurarPaginacion();
+
+        jcbFiltroCondicion.putClientProperty("FlatLaf.style",
+                "arc: 15;"
+                + "borderWidth: 1;"
+                + "borderColor: #B0B0B0;"
+                + "focusedBorderColor: #3B82F6;"
+                + "background: #FAF9F6;"
+        );
+
+        jcbFiltroStatus.putClientProperty("FlatLaf.style",
+                "arc: 15;"
+                + "borderWidth: 1;"
+                + "borderColor: #B0B0B0;"
+                + "focusedBorderColor: #3B82F6;"
+                + "background: #FAF9F6;"
+        );
+
+        jcbFiltroTipo.putClientProperty("FlatLaf.style",
+                "arc: 15;"
+                + "borderWidth: 1;"
+                + "borderColor: #B0B0B0;"
+                + "focusedBorderColor: #3B82F6;"
+                + "background: #FAF9F6;"
+        );
+
     }
 
     /**
@@ -93,36 +134,38 @@ public class Inventario extends javax.swing.JFrame {
         contenido = new javax.swing.JPanel();
         panelSuperior = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        titulo = new javax.swing.JLabel();
+        filler13 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         subTitulo = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        btnAgregarEquipo = new javax.swing.JButton();
+        filler14 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        btnAgregarEquipo = new RoundedButton("+   Agregar Nuevo Equipo", 10);
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
-        panelCentral = new javax.swing.JPanel();
+        panelCentral = new PanelRedondeado(15);
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
-        jTextField2 = new RoundedTextField(10);
+        busquedaGri = new RoundedTextField(2);
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
-        jcbFiltroTipo = new javax.swing.JComboBox<>();
+        jcbFiltroTipo = new JComboBox<String>();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
-        jcbFiltroCondicion = new javax.swing.JComboBox<>();
+        jcbFiltroCondicion = new JComboBox<String>();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
-        jcbFiltroStatus = new javax.swing.JComboBox<>();
+        jcbFiltroStatus = new JComboBox<String>();
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
         filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
-        panelInferior = new javax.swing.JPanel();
+        panelInferior = new PanelRedondeado(15);
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaEquipos = new javax.swing.JTable();
         filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         jPanel3 = new javax.swing.JPanel();
         txtResultados = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        btnAtras = new RoundedButton("<", 10);
+        filler12 = new javax.swing.Box.Filler(new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 32767));
+        btnAdelante = new RoundedButton(">", 10);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        contenido.setBackground(new java.awt.Color(229, 231, 235));
+        contenido.setBackground(new java.awt.Color(238, 235, 237));
         contenido.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 30, 20));
         contenido.setPreferredSize(new java.awt.Dimension(1200, 683));
         contenido.setLayout(new javax.swing.BoxLayout(contenido, javax.swing.BoxLayout.Y_AXIS));
@@ -132,19 +175,12 @@ public class Inventario extends javax.swing.JFrame {
         panelSuperior.setPreferredSize(new java.awt.Dimension(0, 60));
         panelSuperior.setLayout(new java.awt.GridLayout(1, 0));
 
-        jPanel1.setBackground(new java.awt.Color(229, 231, 235));
-        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jPanel1.setBackground(new java.awt.Color(238, 235, 237));
         jPanel1.setMaximumSize(new java.awt.Dimension(188, 80));
         jPanel1.setMinimumSize(new java.awt.Dimension(188, 80));
         jPanel1.setPreferredSize(new java.awt.Dimension(188, 80));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
-
-        titulo.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
-        titulo.setForeground(new java.awt.Color(0, 0, 0));
-        titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titulo.setText("Sistema TI");
-        titulo.setPreferredSize(new java.awt.Dimension(126, 50));
-        jPanel1.add(titulo);
+        jPanel1.add(filler13);
 
         subTitulo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         subTitulo.setForeground(new java.awt.Color(0, 0, 0));
@@ -157,10 +193,10 @@ public class Inventario extends javax.swing.JFrame {
 
         panelSuperior.add(jPanel1);
 
-        jPanel2.setBackground(new java.awt.Color(229, 231, 235));
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 20));
+        jPanel2.setBackground(new java.awt.Color(238, 235, 237));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 5));
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
-        jPanel2.add(filler8);
+        jPanel2.add(filler14);
 
         btnAgregarEquipo.setBackground(new java.awt.Color(19, 80, 125));
         btnAgregarEquipo.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -171,6 +207,11 @@ public class Inventario extends javax.swing.JFrame {
         btnAgregarEquipo.setMaximumSize(new java.awt.Dimension(200, 60));
         btnAgregarEquipo.setMinimumSize(new java.awt.Dimension(200, 60));
         btnAgregarEquipo.setPreferredSize(new java.awt.Dimension(200, 60));
+        btnAgregarEquipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarEquipoActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnAgregarEquipo);
 
         panelSuperior.add(jPanel2);
@@ -178,7 +219,7 @@ public class Inventario extends javax.swing.JFrame {
         contenido.add(panelSuperior);
         contenido.add(filler7);
 
-        panelCentral.setBackground(new java.awt.Color(229, 231, 235));
+        panelCentral.setBackground(new java.awt.Color(250, 249, 246));
         panelCentral.setMaximumSize(new java.awt.Dimension(33333, 80));
         panelCentral.setMinimumSize(new java.awt.Dimension(1090, 80));
         panelCentral.setName(""); // NOI18N
@@ -186,17 +227,19 @@ public class Inventario extends javax.swing.JFrame {
         panelCentral.setLayout(new javax.swing.BoxLayout(panelCentral, javax.swing.BoxLayout.X_AXIS));
         panelCentral.add(filler1);
 
-        jTextField2.setBackground(new java.awt.Color(229, 231, 235));
-        jTextField2.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(51, 51, 51));
-        jTextField2.setMaximumSize(new java.awt.Dimension(240, 40));
-        jTextField2.setMinimumSize(new java.awt.Dimension(240, 40));
-        jTextField2.setPreferredSize(new java.awt.Dimension(240, 40));
-        panelCentral.add(jTextField2);
+        busquedaGri.setBackground(new java.awt.Color(250, 249, 246));
+        busquedaGri.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        busquedaGri.setForeground(new java.awt.Color(0, 0, 0));
+        busquedaGri.setBorder(null);
+        busquedaGri.setMaximumSize(new java.awt.Dimension(240, 40));
+        busquedaGri.setMinimumSize(new java.awt.Dimension(240, 40));
+        busquedaGri.setPreferredSize(new java.awt.Dimension(240, 40));
+        panelCentral.add(busquedaGri);
         panelCentral.add(filler2);
 
+        jcbFiltroTipo.setBackground(new java.awt.Color(250, 249, 246));
         jcbFiltroTipo.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jcbFiltroTipo.setForeground(new java.awt.Color(51, 51, 51));
+        jcbFiltroTipo.setForeground(new java.awt.Color(0, 0, 0));
         jcbFiltroTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbFiltroTipo.setMaximumSize(new java.awt.Dimension(240, 45));
         jcbFiltroTipo.setMinimumSize(new java.awt.Dimension(240, 45));
@@ -204,8 +247,9 @@ public class Inventario extends javax.swing.JFrame {
         panelCentral.add(jcbFiltroTipo);
         panelCentral.add(filler3);
 
+        jcbFiltroCondicion.setBackground(new java.awt.Color(250, 249, 246));
         jcbFiltroCondicion.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jcbFiltroCondicion.setForeground(new java.awt.Color(51, 51, 51));
+        jcbFiltroCondicion.setForeground(new java.awt.Color(0, 0, 0));
         jcbFiltroCondicion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbFiltroCondicion.setMaximumSize(new java.awt.Dimension(240, 45));
         jcbFiltroCondicion.setMinimumSize(new java.awt.Dimension(240, 45));
@@ -213,8 +257,9 @@ public class Inventario extends javax.swing.JFrame {
         panelCentral.add(jcbFiltroCondicion);
         panelCentral.add(filler4);
 
+        jcbFiltroStatus.setBackground(new java.awt.Color(250, 249, 246));
         jcbFiltroStatus.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jcbFiltroStatus.setForeground(new java.awt.Color(51, 51, 51));
+        jcbFiltroStatus.setForeground(new java.awt.Color(0, 0, 0));
         jcbFiltroStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbFiltroStatus.setMaximumSize(new java.awt.Dimension(240, 45));
         jcbFiltroStatus.setMinimumSize(new java.awt.Dimension(240, 45));
@@ -226,14 +271,16 @@ public class Inventario extends javax.swing.JFrame {
         contenido.add(panelCentral);
         contenido.add(filler9);
 
-        panelInferior.setBackground(new java.awt.Color(102, 255, 102));
-        panelInferior.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 10, 1));
+        panelInferior.setBackground(new java.awt.Color(250, 249, 246));
+        panelInferior.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelInferior.setLayout(new javax.swing.BoxLayout(panelInferior, javax.swing.BoxLayout.Y_AXIS));
 
-        jScrollPane1.setBackground(new java.awt.Color(229, 231, 235));
-        jScrollPane1.setBorder(null);
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane1.setForeground(new java.awt.Color(255, 255, 255));
 
-        tablaEquipos.setBackground(new java.awt.Color(229, 231, 235));
+        tablaEquipos.setBackground(new java.awt.Color(255, 255, 255));
+        tablaEquipos.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         tablaEquipos.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         tablaEquipos.setForeground(new java.awt.Color(0, 0, 0));
         tablaEquipos.setModel(new javax.swing.table.DefaultTableModel(
@@ -253,7 +300,7 @@ public class Inventario extends javax.swing.JFrame {
                 java.lang.Long.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -279,7 +326,7 @@ public class Inventario extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jPanel3.setMaximumSize(new java.awt.Dimension(1150, 60));
+        jPanel3.setMaximumSize(new java.awt.Dimension(33333, 60));
         jPanel3.setMinimumSize(new java.awt.Dimension(1150, 60));
         jPanel3.setPreferredSize(new java.awt.Dimension(1150, 60));
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
@@ -288,12 +335,36 @@ public class Inventario extends javax.swing.JFrame {
         txtResultados.setForeground(new java.awt.Color(0, 0, 0));
         txtResultados.setText("jLabel1");
         jPanel3.add(txtResultados);
+        jPanel3.add(filler11);
 
-        jButton1.setText("jButton1");
-        jPanel3.add(jButton1);
+        btnAtras.setBackground(new java.awt.Color(19, 80, 125));
+        btnAtras.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        btnAtras.setForeground(new java.awt.Color(255, 255, 255));
+        btnAtras.setText("<");
+        btnAtras.setMaximumSize(new java.awt.Dimension(60, 40));
+        btnAtras.setMinimumSize(new java.awt.Dimension(60, 40));
+        btnAtras.setPreferredSize(new java.awt.Dimension(60, 40));
+        btnAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtrasActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnAtras);
+        jPanel3.add(filler12);
 
-        jButton2.setText("jButton2");
-        jPanel3.add(jButton2);
+        btnAdelante.setBackground(new java.awt.Color(19, 80, 125));
+        btnAdelante.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        btnAdelante.setForeground(new java.awt.Color(255, 255, 255));
+        btnAdelante.setText(">");
+        btnAdelante.setMaximumSize(new java.awt.Dimension(60, 40));
+        btnAdelante.setMinimumSize(new java.awt.Dimension(60, 40));
+        btnAdelante.setPreferredSize(new java.awt.Dimension(60, 40));
+        btnAdelante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdelanteActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnAdelante);
 
         panelInferior.add(jPanel3);
 
@@ -312,6 +383,100 @@ public class Inventario extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAdelanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdelanteActionPerformed
+        if (paginaActual < totalPaginas) {
+            paginaActual++;
+            actualizarPaginacion();
+        }
+    }//GEN-LAST:event_btnAdelanteActionPerformed
+
+    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
+        if (paginaActual > 1) {
+            paginaActual--;
+            actualizarPaginacion();
+        }
+    }//GEN-LAST:event_btnAtrasActionPerformed
+
+    private void btnAgregarEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarEquipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregarEquipoActionPerformed
+
+    private void configurarPaginacion() {
+
+        sorter = new TableRowSorter<>(tablaEquipos.getModel());
+        tablaEquipos.setRowSorter(sorter);
+
+        tablaEquipos.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                actualizarPaginacion();
+            }
+        });
+
+        tablaEquipos.getModel().addTableModelListener((TableModelEvent e) -> {
+            actualizarPaginacion();
+        });
+
+        actualizarPaginacion();
+    }
+
+    private int calcularFilasVisibles() {
+        int alturaTabla = tablaEquipos.getHeight();
+        int alturaFila = tablaEquipos.getRowHeight();
+
+        if (alturaFila == 0) {
+            return 10;
+        }
+
+        return Math.max(1, alturaTabla / alturaFila);
+    }
+
+    private void actualizarPaginacion() {
+
+        filasPorPagina = calcularFilasVisibles();
+
+        int totalFilas = tablaEquipos.getModel().getRowCount();
+        totalPaginas = (int) Math.ceil((double) totalFilas / filasPorPagina);
+
+        if (totalPaginas == 0) {
+            totalPaginas = 1;
+        }
+        if (paginaActual > totalPaginas) {
+            paginaActual = totalPaginas;
+        }
+        if (paginaActual < 1) {
+            paginaActual = 1;
+        }
+
+        aplicarPaginacion();
+        actualizarTextoResultados();
+    }
+
+    private void aplicarPaginacion() {
+
+        int inicio = (paginaActual - 1) * filasPorPagina;
+        int fin = inicio + filasPorPagina - 1;
+
+        sorter.setRowFilter(new RowFilter<Object, Object>() {
+            @Override
+            public boolean include(Entry<?, ?> entry) {
+                int index = entry.getValueCount();
+                return index >= inicio && index <= fin;
+            }
+        });
+    }
+
+    private void actualizarTextoResultados() {
+        txtResultados.setText(
+                "Página " + paginaActual + " de " + totalPaginas
+                + " | Total registros: " + tablaEquipos.getModel().getRowCount()
+        );
+    }
+
+    public JPanel getContenido() {
+        return contenido;
+    }
 
     /**
      * @param args the command line arguments
@@ -339,25 +504,28 @@ public class Inventario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdelante;
     private javax.swing.JButton btnAgregarEquipo;
+    private javax.swing.JButton btnAtras;
+    private javax.swing.JTextField busquedaGri;
     private javax.swing.JPanel contenido;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler10;
+    private javax.swing.Box.Filler filler11;
+    private javax.swing.Box.Filler filler12;
+    private javax.swing.Box.Filler filler13;
+    private javax.swing.Box.Filler filler14;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
     private javax.swing.Box.Filler filler6;
     private javax.swing.Box.Filler filler7;
-    private javax.swing.Box.Filler filler8;
     private javax.swing.Box.Filler filler9;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JComboBox<String> jcbFiltroCondicion;
     private javax.swing.JComboBox<String> jcbFiltroStatus;
     private javax.swing.JComboBox<String> jcbFiltroTipo;
@@ -366,7 +534,6 @@ public class Inventario extends javax.swing.JFrame {
     private javax.swing.JPanel panelSuperior;
     private javax.swing.JLabel subTitulo;
     private javax.swing.JTable tablaEquipos;
-    private javax.swing.JLabel titulo;
     private javax.swing.JLabel txtResultados;
     // End of variables declaration//GEN-END:variables
 }

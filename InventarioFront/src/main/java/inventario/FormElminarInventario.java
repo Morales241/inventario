@@ -89,7 +89,7 @@ public class FormElminarInventario extends javax.swing.JDialog {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(229, 231, 235));
+        jPanel1.setBackground(new java.awt.Color(238, 235, 237));
 
         btnEliminar.setBackground(new java.awt.Color(204, 0, 0));
         btnEliminar.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N

@@ -27,8 +27,6 @@ public class RoundedButton extends JButton{
         arc = arcp;
         
         setContentAreaFilled(false); 
-        setFocusPainted(false);   
-        setBorderPainted(false);
         
         Dimension dimension = new Dimension(240, 60);
         
@@ -38,7 +36,7 @@ public class RoundedButton extends JButton{
         
         this.setBackground(new Color(234,244,251));
         
-        this.setHorizontalAlignment(LEFT);
+        this.setHorizontalAlignment(CENTER);
 //        this.setHorizontalTextPosition(LEFT);
     }
 
