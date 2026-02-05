@@ -31,7 +31,6 @@ public class MapperEquipos {
             MovilDTO dto = new MovilDTO();
             mapCommonToDto(e, dto);
             
-            dto.setImei(e.getImei());
             dto.setNumCelular(e.getNumCelular());
             dto.setCargador(e.getCargador());
             dto.setFunda(e.getFunda());
@@ -42,7 +41,6 @@ public class MapperEquipos {
             Movil e = new Movil();
             mapCommonToEntity(d, e);
             
-            e.setImei(d.getImei());
             e.setNumCelular(d.getNumCelular());
             e.setCargador(d.getCargador());
             e.setFunda(d.getFunda());
@@ -57,7 +55,6 @@ public class MapperEquipos {
             mapCommonToDto(e, dto);
             
             // Específico de Otro
-            dto.setNoSerie(e.getNoSerie());
             dto.setTipo(e.getTipo());
             dto.setTituloCampoExtra(e.getTituloCampoExtra());
             dto.setContenidoCampoExtra(e.getContenidoCampoExtra());
@@ -69,7 +66,6 @@ public class MapperEquipos {
             OtroEquipo e = new OtroEquipo();
             mapCommonToEntity(d, e);
             
-            e.setNoSerie(d.getNoSerie());
             e.setTipo(d.getTipo());
             e.setTituloCampoExtra(d.getTituloCampoExtra());
             e.setContenidoCampoExtra(d.getContenidoCampoExtra());

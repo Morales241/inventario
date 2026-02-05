@@ -59,7 +59,7 @@ public class TestInventario {
         modelo.setNombre("iPhone 15");
         daoModelo.guardar(modelo);
 
-        Movil celular = new Movil(Boolean.TRUE, "123456789012345", "55-5555-5555", Boolean.TRUE, Boolean.TRUE);
+        Movil celular = new Movil(Boolean.TRUE, "55-5555-5555", Boolean.TRUE, Boolean.TRUE);
         celular.setGri(500);
         celular.setCondicion(CondicionFisica.NUEVO);
         celular.setEstado(EstadoEquipo.DISPONIBLE);

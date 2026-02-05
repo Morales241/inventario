@@ -28,7 +28,7 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable {
     @Column(name = "GRI", nullable = false)
     private Integer gri;
 
-    @Column(name = "Factura", nullable = false)
+    @Column(name = "Factura")
     private String factura;
 
     @Enumerated(EnumType.STRING)

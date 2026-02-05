@@ -11,9 +11,6 @@ public class Movil extends EquipoDeComputo {
     @Column(nullable = false)
     private Boolean cargador;
 
-    @Column(name = "IMEI", nullable = false)
-    private String imei;
-
     @Column(name = "NumCelular", nullable = false)
     private String numCelular;
 
@@ -26,9 +23,8 @@ public class Movil extends EquipoDeComputo {
     public Movil() {
     }
 
-    public Movil(Boolean cargador, String imei, String numCelular, Boolean funda, Boolean manosLibres) {
+    public Movil(Boolean cargador, String numCelular, Boolean funda, Boolean manosLibres) {
         this.cargador = cargador;
-        this.imei = imei;
         this.numCelular = numCelular;
         this.funda = funda;
         this.manosLibres = manosLibres;
@@ -40,14 +36,6 @@ public class Movil extends EquipoDeComputo {
 
     public void setCargador(Boolean cargador) {
         this.cargador = cargador;
-    }
-
-    public String getImei() {
-        return imei;
-    }
-
-    public void setImei(String imei) {
-        this.imei = imei;
     }
 
     public String getNumCelular() {

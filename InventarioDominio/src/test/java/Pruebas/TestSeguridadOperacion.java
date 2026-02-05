@@ -84,7 +84,7 @@ public class TestSeguridadOperacion {
         
         t = daoTrab.buscarPorId(1L);
         
-        EquipoDeComputo celular = new Movil(Boolean.TRUE, "123456789012345", "55-5555-5555", Boolean.TRUE, Boolean.TRUE);
+        EquipoDeComputo celular = new Movil(Boolean.TRUE, "55-5555-5555", Boolean.TRUE, Boolean.TRUE);
         
         celular.setGri(500);
         celular.setCondicion(CondicionFisica.NUEVO);

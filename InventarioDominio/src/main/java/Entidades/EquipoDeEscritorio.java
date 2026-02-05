@@ -15,7 +15,7 @@ public class EquipoDeEscritorio extends EquipoDeComputo {
     @Column(name = "FinalGarantia")
     private LocalDate finalGarantia;
 
-    @Column(nullable = false)
+    @Column()
     private String cuenta;
 
     public EquipoDeEscritorio() {

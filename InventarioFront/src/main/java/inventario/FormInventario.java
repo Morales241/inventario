@@ -4,19 +4,38 @@
  */
 package inventario;
 
+import Enums.CondicionFisica;
+import java.util.ArrayList;
+import static java.util.Arrays.asList;
+import java.util.List;
+import javax.swing.JPanel;
+
 /**
  *
  * @author JMorales
  */
 public class FormInventario extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormInventario.class.getName());
+
+
+    private final List<String> opcionesEquipoCompudo;
+    private final List<String> opcionesOtros;
 
     /**
      * Creates new form FormInventario
      */
     public FormInventario() {
         initComponents();
+
+        opcionesEquipoCompudo = asList("Laptop", "Desktop");
+        opcionesOtros = asList("Impresora", "Monitor", "Proyector", "Otro");
+        
+        
+            this.panelInfoEspecificaEquipo.removeAll();
+            this.panelInfoEspecificaEquipo.add(new PanelParaEquiposDeEscritorioYLaptops());
+            this.panelInfoEspecificaEquipo.revalidate();
+            this.panelInfoEspecificaEquipo.repaint();
     }
 
     /**
@@ -31,9 +50,8 @@ public class FormInventario extends javax.swing.JFrame {
         panelContenido = new javax.swing.JPanel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         panelSuperior = new javax.swing.JPanel();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 32767));
-        btnVolver = new javax.swing.JButton();
-        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
+        jPanel3 = new javax.swing.JPanel();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         jLabel1 = new javax.swing.JLabel();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 15), new java.awt.Dimension(0, 15), new java.awt.Dimension(32767, 15));
         panelInferior = new javax.swing.JPanel();
@@ -71,47 +89,24 @@ public class FormInventario extends javax.swing.JFrame {
         filler15 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 15), new java.awt.Dimension(0, 15), new java.awt.Dimension(32767, 15));
         jPanel15 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
+        filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 6), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 6));
         jScrollPane1 = new javax.swing.JScrollPane();
         txtObservaciones = new javax.swing.JTextArea();
         filler17 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         jPanel4 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel16 = new javax.swing.JPanel();
-        filler18 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
-        jPanel17 = new javax.swing.JPanel();
-        tituloEmpresa = new javax.swing.JLabel();
-        filler19 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        txtFactura1 = new javax.swing.JTextField();
-        filler43 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
-        jPanel35 = new javax.swing.JPanel();
-        tituloEmpresa3 = new javax.swing.JLabel();
-        filler44 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        txtFactura5 = new javax.swing.JTextField();
-        jPanel30 = new javax.swing.JPanel();
-        filler36 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
-        jPanel31 = new javax.swing.JPanel();
-        tituloSucursal = new javax.swing.JLabel();
-        filler37 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        txtFactura2 = new javax.swing.JTextField();
-        filler45 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
-        jPanel37 = new javax.swing.JPanel();
-        tituloEmpresa4 = new javax.swing.JLabel();
-        filler46 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        txtFactura6 = new javax.swing.JTextField();
+        panelInfoEspecificaEquipo = new javax.swing.JPanel();
         panelInformacionModelo = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        filler39 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 15), new java.awt.Dimension(0, 15), new java.awt.Dimension(32767, 15));
         jPanel5 = new javax.swing.JPanel();
         jPanel36 = new javax.swing.JPanel();
         tituloSeleccionModelo = new javax.swing.JLabel();
         filler40 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        jComboBox3 = new javax.swing.JComboBox<>();
+        cbxModelos = new javax.swing.JComboBox<>();
         jPanel21 = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
-        filler22 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        filler22 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 8), new java.awt.Dimension(0, 8), new java.awt.Dimension(32767, 8));
         jPanel23 = new javax.swing.JPanel();
         tituloNombre = new javax.swing.JLabel();
         filler23 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
@@ -121,7 +116,7 @@ public class FormInventario extends javax.swing.JFrame {
         tituloNoSerie = new javax.swing.JLabel();
         filler25 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         txtNoSerie = new javax.swing.JTextField();
-        filler26 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 15), new java.awt.Dimension(0, 15), new java.awt.Dimension(32767, 15));
+        filler26 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         jPanel25 = new javax.swing.JPanel();
         tituloRam = new javax.swing.JLabel();
         filler27 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
@@ -142,6 +137,7 @@ public class FormInventario extends javax.swing.JFrame {
         tituloProcesador = new javax.swing.JLabel();
         filler33 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         txtProcesador = new javax.swing.JTextField();
+        filler39 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         jPanel12 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jPanel18 = new javax.swing.JPanel();
@@ -150,13 +146,16 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel32 = new javax.swing.JPanel();
         tituloEmpresa1 = new javax.swing.JLabel();
         filler21 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        cbxEmpresa1 = new javax.swing.JComboBox<>();
-        jPanel33 = new javax.swing.JPanel();
+        cbxEmpresa = new javax.swing.JComboBox<>();
         filler38 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         jPanel34 = new javax.swing.JPanel();
         tituloSucursal1 = new javax.swing.JLabel();
-        filler41 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        cbxSucursal1 = new javax.swing.JComboBox<>();
+        cbxSucursal = new javax.swing.JComboBox<>();
+        jPanel33 = new javax.swing.JPanel();
+        filler41 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 36), new java.awt.Dimension(0, 36), new java.awt.Dimension(32767, 36));
+        btnVolver1 = new javax.swing.JButton();
+        filler34 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 30), new java.awt.Dimension(0, 30), new java.awt.Dimension(32767, 30));
+        btnVolver2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -166,27 +165,26 @@ public class FormInventario extends javax.swing.JFrame {
         panelContenido.setLayout(new javax.swing.BoxLayout(panelContenido, javax.swing.BoxLayout.Y_AXIS));
         panelContenido.add(filler1);
 
-        panelSuperior.setBackground(new java.awt.Color(255, 255, 255));
-        panelSuperior.setMaximumSize(new java.awt.Dimension(33333, 50));
+        panelSuperior.setBackground(new java.awt.Color(238, 235, 237));
+        panelSuperior.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        panelSuperior.setMaximumSize(new java.awt.Dimension(3333, 50));
+        panelSuperior.setMinimumSize(new java.awt.Dimension(500, 50));
+        panelSuperior.setPreferredSize(new java.awt.Dimension(500, 50));
         panelSuperior.setLayout(new javax.swing.BoxLayout(panelSuperior, javax.swing.BoxLayout.X_AXIS));
-        panelSuperior.add(filler2);
 
-        btnVolver.setText("Volver");
-        btnVolver.setBackground(new java.awt.Color(19, 80, 125));
-        btnVolver.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        btnVolver.setForeground(new java.awt.Color(255, 255, 255));
-        btnVolver.setMaximumSize(new java.awt.Dimension(120, 50));
-        btnVolver.setMinimumSize(new java.awt.Dimension(120, 50));
-        btnVolver.setPreferredSize(new java.awt.Dimension(120, 50));
-        panelSuperior.add(btnVolver);
-        panelSuperior.add(filler3);
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel3.add(filler3);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel1.setText("Registrar nuevo equipo en el inventario");
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 20)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setToolTipText("");
-        panelSuperior.add(jLabel1);
+        jPanel3.add(jLabel1);
+
+        panelSuperior.add(jPanel3);
 
         panelContenido.add(panelSuperior);
         panelContenido.add(filler4);
@@ -320,7 +318,7 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel6.add(jPanel13);
         jPanel6.add(filler12);
 
-        cbxCondicion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxCondicion.setModel(new javax.swing.DefaultComboBoxModel<>(new CondicionFisica[] { CondicionFisica.NUEVO, CondicionFisica.BUENO, CondicionFisica.REGULAR, CondicionFisica.MALO }));
         cbxCondicion.setMaximumSize(new java.awt.Dimension(335, 40));
         cbxCondicion.setMinimumSize(new java.awt.Dimension(335, 40));
         cbxCondicion.setPreferredSize(new java.awt.Dimension(335, 40));
@@ -342,10 +340,15 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel6.add(jPanel14);
         jPanel6.add(filler14);
 
-        cbxTipoEquipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxTipoEquipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Desktop", "Laptop", "Movil", "Impresora", "Monitor", "Proyector", "Otro" }));
         cbxTipoEquipo.setMaximumSize(new java.awt.Dimension(335, 40));
         cbxTipoEquipo.setMinimumSize(new java.awt.Dimension(335, 40));
         cbxTipoEquipo.setPreferredSize(new java.awt.Dimension(335, 40));
+        cbxTipoEquipo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxTipoEquipoItemStateChanged(evt);
+            }
+        });
         jPanel6.add(cbxTipoEquipo);
         jPanel6.add(filler15);
 
@@ -365,17 +368,17 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel6.add(filler16);
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane1.setMaximumSize(new java.awt.Dimension(32767, 118));
-        jScrollPane1.setMinimumSize(new java.awt.Dimension(16, 118));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(234, 118));
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(32767, 127));
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(16, 127));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(234, 125));
 
         txtObservaciones.setColumns(20);
         txtObservaciones.setRows(5);
         txtObservaciones.setBackground(new java.awt.Color(255, 255, 255));
-        txtObservaciones.setMaximumSize(new java.awt.Dimension(335, 70));
+        txtObservaciones.setMaximumSize(new java.awt.Dimension(333, 70));
         txtObservaciones.setMinimumSize(new java.awt.Dimension(13, 70));
         txtObservaciones.setName(""); // NOI18N
-        txtObservaciones.setPreferredSize(new java.awt.Dimension(232, 70));
+        txtObservaciones.setPreferredSize(new java.awt.Dimension(230, 70));
         jScrollPane1.setViewportView(txtObservaciones);
 
         jPanel6.add(jScrollPane1);
@@ -400,119 +403,12 @@ public class FormInventario extends javax.swing.JFrame {
 
         panelInformacionGeneral.add(jPanel4);
 
-        jPanel3.setBackground(new java.awt.Color(204, 204, 255));
-        jPanel3.setMaximumSize(new java.awt.Dimension(33333, 190));
-        jPanel3.setMinimumSize(new java.awt.Dimension(0, 190));
-        jPanel3.setPreferredSize(new java.awt.Dimension(528, 190));
-        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
-
-        jPanel16.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel16.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jPanel16.setMaximumSize(new java.awt.Dimension(3333, 220));
-        jPanel16.setMinimumSize(new java.awt.Dimension(94, 220));
-        jPanel16.setPreferredSize(new java.awt.Dimension(94, 220));
-        jPanel16.setLayout(new javax.swing.BoxLayout(jPanel16, javax.swing.BoxLayout.Y_AXIS));
-        jPanel16.add(filler18);
-
-        jPanel17.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel17.setMaximumSize(new java.awt.Dimension(32767, 30));
-        jPanel17.setLayout(new java.awt.GridLayout(1, 0));
-
-        tituloEmpresa.setText("Empresa:");
-        tituloEmpresa.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        tituloEmpresa.setForeground(new java.awt.Color(61, 61, 61));
-        tituloEmpresa.setMaximumSize(new java.awt.Dimension(335, 40));
-        jPanel17.add(tituloEmpresa);
-
-        jPanel16.add(jPanel17);
-        jPanel16.add(filler19);
-
-        txtFactura1.setBackground(new java.awt.Color(255, 255, 255));
-        txtFactura1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtFactura1.setForeground(new java.awt.Color(0, 0, 0));
-        txtFactura1.setMaximumSize(new java.awt.Dimension(335, 40));
-        txtFactura1.setMinimumSize(new java.awt.Dimension(335, 40));
-        txtFactura1.setPreferredSize(new java.awt.Dimension(335, 40));
-        jPanel16.add(txtFactura1);
-        jPanel16.add(filler43);
-
-        jPanel35.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel35.setMaximumSize(new java.awt.Dimension(32767, 30));
-        jPanel35.setLayout(new java.awt.GridLayout());
-
-        tituloEmpresa3.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        tituloEmpresa3.setForeground(new java.awt.Color(61, 61, 61));
-        tituloEmpresa3.setText("Empresa:");
-        tituloEmpresa3.setMaximumSize(new java.awt.Dimension(335, 40));
-        jPanel35.add(tituloEmpresa3);
-
-        jPanel16.add(jPanel35);
-        jPanel16.add(filler44);
-
-        txtFactura5.setBackground(new java.awt.Color(255, 255, 255));
-        txtFactura5.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtFactura5.setForeground(new java.awt.Color(0, 0, 0));
-        txtFactura5.setMaximumSize(new java.awt.Dimension(335, 40));
-        txtFactura5.setMinimumSize(new java.awt.Dimension(335, 40));
-        txtFactura5.setPreferredSize(new java.awt.Dimension(335, 40));
-        jPanel16.add(txtFactura5);
-
-        jPanel3.add(jPanel16);
-
-        jPanel30.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel30.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jPanel30.setMaximumSize(new java.awt.Dimension(3333, 220));
-        jPanel30.setMinimumSize(new java.awt.Dimension(94, 220));
-        jPanel30.setPreferredSize(new java.awt.Dimension(94, 220));
-        jPanel30.setLayout(new javax.swing.BoxLayout(jPanel30, javax.swing.BoxLayout.Y_AXIS));
-        jPanel30.add(filler36);
-
-        jPanel31.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel31.setMaximumSize(new java.awt.Dimension(32767, 30));
-        jPanel31.setLayout(new java.awt.GridLayout(1, 0));
-
-        tituloSucursal.setText("Sucursal:");
-        tituloSucursal.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        tituloSucursal.setForeground(new java.awt.Color(61, 61, 61));
-        tituloSucursal.setMaximumSize(new java.awt.Dimension(335, 40));
-        jPanel31.add(tituloSucursal);
-
-        jPanel30.add(jPanel31);
-        jPanel30.add(filler37);
-
-        txtFactura2.setBackground(new java.awt.Color(255, 255, 255));
-        txtFactura2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtFactura2.setForeground(new java.awt.Color(0, 0, 0));
-        txtFactura2.setMaximumSize(new java.awt.Dimension(335, 40));
-        txtFactura2.setMinimumSize(new java.awt.Dimension(335, 40));
-        txtFactura2.setPreferredSize(new java.awt.Dimension(335, 40));
-        jPanel30.add(txtFactura2);
-        jPanel30.add(filler45);
-
-        jPanel37.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel37.setMaximumSize(new java.awt.Dimension(32767, 30));
-        jPanel37.setLayout(new java.awt.GridLayout());
-
-        tituloEmpresa4.setText("Empresa:");
-        tituloEmpresa4.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        tituloEmpresa4.setForeground(new java.awt.Color(61, 61, 61));
-        tituloEmpresa4.setMaximumSize(new java.awt.Dimension(335, 40));
-        jPanel37.add(tituloEmpresa4);
-
-        jPanel30.add(jPanel37);
-        jPanel30.add(filler46);
-
-        txtFactura6.setBackground(new java.awt.Color(255, 255, 255));
-        txtFactura6.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtFactura6.setForeground(new java.awt.Color(0, 0, 0));
-        txtFactura6.setMaximumSize(new java.awt.Dimension(335, 40));
-        txtFactura6.setMinimumSize(new java.awt.Dimension(335, 40));
-        txtFactura6.setPreferredSize(new java.awt.Dimension(335, 40));
-        jPanel30.add(txtFactura6);
-
-        jPanel3.add(jPanel30);
-
-        panelInformacionGeneral.add(jPanel3);
+        panelInfoEspecificaEquipo.setBackground(new java.awt.Color(204, 204, 255));
+        panelInfoEspecificaEquipo.setMaximumSize(new java.awt.Dimension(33333, 190));
+        panelInfoEspecificaEquipo.setMinimumSize(new java.awt.Dimension(0, 190));
+        panelInfoEspecificaEquipo.setPreferredSize(new java.awt.Dimension(528, 190));
+        panelInfoEspecificaEquipo.setLayout(new javax.swing.BoxLayout(panelInfoEspecificaEquipo, javax.swing.BoxLayout.LINE_AXIS));
+        panelInformacionGeneral.add(panelInfoEspecificaEquipo);
 
         panelInferior.add(panelInformacionGeneral);
 
@@ -538,12 +434,12 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel20.add(jLabel12);
 
         panelInformacionModelo.add(jPanel20);
-        panelInformacionModelo.add(filler39);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
-        jPanel5.setMaximumSize(new java.awt.Dimension(32767, 80));
-        jPanel5.setMinimumSize(new java.awt.Dimension(0, 80));
+        jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(13, 10, 7, 10));
+        jPanel5.setMaximumSize(new java.awt.Dimension(32767, 100));
+        jPanel5.setMinimumSize(new java.awt.Dimension(0, 100));
+        jPanel5.setPreferredSize(new java.awt.Dimension(530, 100));
         jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.Y_AXIS));
 
         jPanel36.setBackground(new java.awt.Color(255, 255, 255));
@@ -561,23 +457,25 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel5.add(jPanel36);
         jPanel5.add(filler40);
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox3.setMaximumSize(new java.awt.Dimension(510, 40));
-        jComboBox3.setMinimumSize(new java.awt.Dimension(72, 40));
-        jComboBox3.setPreferredSize(new java.awt.Dimension(510, 40));
-        jPanel5.add(jComboBox3);
+        cbxModelos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxModelos.setMaximumSize(new java.awt.Dimension(510, 40));
+        cbxModelos.setMinimumSize(new java.awt.Dimension(72, 40));
+        cbxModelos.setPreferredSize(new java.awt.Dimension(510, 40));
+        jPanel5.add(cbxModelos);
 
         panelInformacionModelo.add(jPanel5);
 
         jPanel21.setBackground(new java.awt.Color(204, 102, 0));
-        jPanel21.setMaximumSize(new java.awt.Dimension(32767, 300));
-        jPanel21.setMinimumSize(new java.awt.Dimension(168, 300));
-        jPanel21.setPreferredSize(new java.awt.Dimension(528, 300));
+        jPanel21.setMaximumSize(new java.awt.Dimension(32767, 283));
+        jPanel21.setMinimumSize(new java.awt.Dimension(500, 283));
+        jPanel21.setPreferredSize(new java.awt.Dimension(500, 283));
         jPanel21.setLayout(new java.awt.GridLayout(1, 0));
 
         jPanel22.setBackground(java.awt.Color.white);
-        jPanel22.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 10, 10));
-        jPanel22.setMaximumSize(new java.awt.Dimension(2147483647, 333333));
+        jPanel22.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        jPanel22.setMaximumSize(new java.awt.Dimension(330, 333333));
+        jPanel22.setMinimumSize(new java.awt.Dimension(330, 230));
+        jPanel22.setPreferredSize(new java.awt.Dimension(330, 242));
         jPanel22.setLayout(new javax.swing.BoxLayout(jPanel22, javax.swing.BoxLayout.Y_AXIS));
         jPanel22.add(filler22);
 
@@ -616,8 +514,8 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel22.add(jPanel24);
         jPanel22.add(filler25);
 
-        txtNoSerie.setBackground(new java.awt.Color(255, 255, 255));
         txtNoSerie.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtNoSerie.setBackground(new java.awt.Color(255, 255, 255));
         txtNoSerie.setForeground(new java.awt.Color(0, 0, 0));
         txtNoSerie.setMaximumSize(new java.awt.Dimension(335, 40));
         jPanel22.add(txtNoSerie);
@@ -704,8 +602,8 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel26.add(jPanel29);
         jPanel26.add(filler33);
 
-        txtProcesador.setBackground(new java.awt.Color(255, 255, 255));
         txtProcesador.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtProcesador.setBackground(new java.awt.Color(255, 255, 255));
         txtProcesador.setForeground(new java.awt.Color(0, 0, 0));
         txtProcesador.setMaximumSize(new java.awt.Dimension(335, 40));
         jPanel26.add(txtProcesador);
@@ -713,15 +611,16 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel21.add(jPanel26);
 
         panelInformacionModelo.add(jPanel21);
+        panelInformacionModelo.add(filler39);
 
         jPanel12.setBackground(new java.awt.Color(255, 255, 255));
         jPanel12.setMaximumSize(new java.awt.Dimension(32767, 40));
         jPanel12.setMinimumSize(new java.awt.Dimension(100, 40));
-        jPanel12.setLayout(new java.awt.GridLayout());
+        jPanel12.setLayout(new java.awt.GridLayout(1, 0));
 
+        jLabel10.setText("Informacion de ubicación:");
         jLabel10.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(41, 41, 41));
-        jLabel10.setText("Informacion de ubicación:");
         jLabel10.setMaximumSize(new java.awt.Dimension(33333, 20));
         jLabel10.setMinimumSize(new java.awt.Dimension(37, 20));
         jLabel10.setPreferredSize(new java.awt.Dimension(37, 20));
@@ -745,7 +644,7 @@ public class FormInventario extends javax.swing.JFrame {
 
         jPanel32.setBackground(new java.awt.Color(255, 255, 255));
         jPanel32.setMaximumSize(new java.awt.Dimension(32767, 30));
-        jPanel32.setLayout(new java.awt.GridLayout());
+        jPanel32.setLayout(new java.awt.GridLayout(1, 0));
 
         tituloEmpresa1.setText("Empresa:");
         tituloEmpresa1.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
@@ -756,9 +655,26 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel19.add(jPanel32);
         jPanel19.add(filler21);
 
-        cbxEmpresa1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbxEmpresa1.setMaximumSize(new java.awt.Dimension(335, 40));
-        jPanel19.add(cbxEmpresa1);
+        cbxEmpresa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxEmpresa.setMaximumSize(new java.awt.Dimension(335, 40));
+        jPanel19.add(cbxEmpresa);
+        jPanel19.add(filler38);
+
+        jPanel34.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel34.setMaximumSize(new java.awt.Dimension(32767, 30));
+        jPanel34.setLayout(new java.awt.GridLayout(1, 0));
+
+        tituloSucursal1.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        tituloSucursal1.setForeground(new java.awt.Color(61, 61, 61));
+        tituloSucursal1.setText("Sucursal:");
+        tituloSucursal1.setMaximumSize(new java.awt.Dimension(335, 40));
+        jPanel34.add(tituloSucursal1);
+
+        jPanel19.add(jPanel34);
+
+        cbxSucursal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxSucursal.setMaximumSize(new java.awt.Dimension(335, 40));
+        jPanel19.add(cbxSucursal);
 
         jPanel18.add(jPanel19);
 
@@ -768,24 +684,26 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel33.setMinimumSize(new java.awt.Dimension(94, 220));
         jPanel33.setPreferredSize(new java.awt.Dimension(94, 220));
         jPanel33.setLayout(new javax.swing.BoxLayout(jPanel33, javax.swing.BoxLayout.Y_AXIS));
-        jPanel33.add(filler38);
-
-        jPanel34.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel34.setMaximumSize(new java.awt.Dimension(32767, 30));
-        jPanel34.setLayout(new java.awt.GridLayout());
-
-        tituloSucursal1.setText("Sucursal:");
-        tituloSucursal1.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        tituloSucursal1.setForeground(new java.awt.Color(61, 61, 61));
-        tituloSucursal1.setMaximumSize(new java.awt.Dimension(335, 40));
-        jPanel34.add(tituloSucursal1);
-
-        jPanel33.add(jPanel34);
         jPanel33.add(filler41);
 
-        cbxSucursal1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbxSucursal1.setMaximumSize(new java.awt.Dimension(335, 40));
-        jPanel33.add(cbxSucursal1);
+        btnVolver1.setBackground(new java.awt.Color(19, 80, 125));
+        btnVolver1.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnVolver1.setForeground(new java.awt.Color(255, 255, 255));
+        btnVolver1.setText("Guardar");
+        btnVolver1.setMaximumSize(new java.awt.Dimension(335, 50));
+        btnVolver1.setMinimumSize(new java.awt.Dimension(335, 50));
+        btnVolver1.setPreferredSize(new java.awt.Dimension(335, 50));
+        jPanel33.add(btnVolver1);
+        jPanel33.add(filler34);
+
+        btnVolver2.setBackground(new java.awt.Color(161, 14, 22));
+        btnVolver2.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnVolver2.setForeground(new java.awt.Color(255, 255, 255));
+        btnVolver2.setText("Cancelar");
+        btnVolver2.setMaximumSize(new java.awt.Dimension(335, 50));
+        btnVolver2.setMinimumSize(new java.awt.Dimension(335, 50));
+        btnVolver2.setPreferredSize(new java.awt.Dimension(335, 50));
+        jPanel33.add(btnVolver2);
 
         jPanel18.add(jPanel33);
 
@@ -808,6 +726,32 @@ public class FormInventario extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cbxTipoEquipoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxTipoEquipoItemStateChanged
+
+        if (evt.getStateChange() == evt.SELECTED) {
+
+            String seleccion = String.valueOf(cbxTipoEquipo.getSelectedItem());
+
+            JPanel panelSeleccionado = new JPanel();
+
+            if (opcionesEquipoCompudo.contains(seleccion)) {
+
+                panelSeleccionado = new PanelParaEquiposDeEscritorioYLaptops();
+            } else if (opcionesOtros.contains(seleccion)) {
+
+                panelSeleccionado = new PanelParaOtroTipoDeEquipos();
+            } else {
+            
+                panelSeleccionado = new PanelParaMoviles();
+            }
+
+            this.panelInfoEspecificaEquipo.removeAll();
+            this.panelInfoEspecificaEquipo.add(panelSeleccionado);
+            this.panelInfoEspecificaEquipo.revalidate();
+            this.panelInfoEspecificaEquipo.repaint();
+        }
+    }//GEN-LAST:event_cbxTipoEquipoItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -835,10 +779,12 @@ public class FormInventario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnVolver;
-    private javax.swing.JComboBox<String> cbxCondicion;
-    private javax.swing.JComboBox<String> cbxEmpresa1;
-    private javax.swing.JComboBox<String> cbxSucursal1;
+    private javax.swing.JButton btnVolver1;
+    private javax.swing.JButton btnVolver2;
+    private javax.swing.JComboBox<CondicionFisica> cbxCondicion;
+    private javax.swing.JComboBox<String> cbxEmpresa;
+    private javax.swing.JComboBox<String> cbxModelos;
+    private javax.swing.JComboBox<String> cbxSucursal;
     private javax.swing.JComboBox<String> cbxTipoEquipo;
     private com.github.lgooddatepicker.components.DatePicker fechaCompra;
     private javax.swing.Box.Filler filler1;
@@ -850,9 +796,6 @@ public class FormInventario extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler15;
     private javax.swing.Box.Filler filler16;
     private javax.swing.Box.Filler filler17;
-    private javax.swing.Box.Filler filler18;
-    private javax.swing.Box.Filler filler19;
-    private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler20;
     private javax.swing.Box.Filler filler21;
     private javax.swing.Box.Filler filler22;
@@ -868,23 +811,17 @@ public class FormInventario extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler31;
     private javax.swing.Box.Filler filler32;
     private javax.swing.Box.Filler filler33;
-    private javax.swing.Box.Filler filler36;
-    private javax.swing.Box.Filler filler37;
+    private javax.swing.Box.Filler filler34;
     private javax.swing.Box.Filler filler38;
     private javax.swing.Box.Filler filler39;
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler40;
     private javax.swing.Box.Filler filler41;
-    private javax.swing.Box.Filler filler43;
-    private javax.swing.Box.Filler filler44;
-    private javax.swing.Box.Filler filler45;
-    private javax.swing.Box.Filler filler46;
     private javax.swing.Box.Filler filler5;
     private javax.swing.Box.Filler filler6;
     private javax.swing.Box.Filler filler7;
     private javax.swing.Box.Filler filler8;
     private javax.swing.Box.Filler filler9;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -898,8 +835,6 @@ public class FormInventario extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
@@ -914,14 +849,10 @@ public class FormInventario extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel30;
-    private javax.swing.JPanel jPanel31;
     private javax.swing.JPanel jPanel32;
     private javax.swing.JPanel jPanel33;
     private javax.swing.JPanel jPanel34;
-    private javax.swing.JPanel jPanel35;
     private javax.swing.JPanel jPanel36;
-    private javax.swing.JPanel jPanel37;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
@@ -931,15 +862,13 @@ public class FormInventario extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelContenido;
     private javax.swing.JPanel panelInferior;
+    private javax.swing.JPanel panelInfoEspecificaEquipo;
     private javax.swing.JPanel panelInformacionGeneral;
     private javax.swing.JPanel panelInformacionModelo;
     private javax.swing.JPanel panelSuperior;
     private javax.swing.JLabel tituloAlmacenamiento;
     private javax.swing.JLabel tituloCondicion;
-    private javax.swing.JLabel tituloEmpresa;
     private javax.swing.JLabel tituloEmpresa1;
-    private javax.swing.JLabel tituloEmpresa3;
-    private javax.swing.JLabel tituloEmpresa4;
     private javax.swing.JLabel tituloFechaCompra;
     private javax.swing.JLabel tituloGRI;
     private javax.swing.JLabel tituloMarca;
@@ -948,15 +877,10 @@ public class FormInventario extends javax.swing.JFrame {
     private javax.swing.JLabel tituloProcesador;
     private javax.swing.JLabel tituloRam;
     private javax.swing.JLabel tituloSeleccionModelo;
-    private javax.swing.JLabel tituloSucursal;
     private javax.swing.JLabel tituloSucursal1;
     private javax.swing.JLabel tituloTipoEquipo;
     private javax.swing.JTextField txtAlmacenamiento;
     private javax.swing.JTextField txtFactura;
-    private javax.swing.JTextField txtFactura1;
-    private javax.swing.JTextField txtFactura2;
-    private javax.swing.JTextField txtFactura5;
-    private javax.swing.JTextField txtFactura6;
     private javax.swing.JTextField txtGRI;
     private javax.swing.JTextField txtMarca;
     private javax.swing.JTextField txtNoSerie;

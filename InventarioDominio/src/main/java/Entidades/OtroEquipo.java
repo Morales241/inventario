@@ -9,9 +9,6 @@ import jakarta.persistence.*;
 @DiscriminatorValue("OTROEQUIPO")
 public class OtroEquipo extends EquipoDeComputo {
 
-    @Column(name = "NoSerie", nullable = false)
-    private String noSerie;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "Tipo", nullable = false)
     private TipoOtroEquipo tipo;
@@ -28,8 +25,7 @@ public class OtroEquipo extends EquipoDeComputo {
     @Column(name = "ContenidoCampoExtra2", nullable = false)
     private String contenidoCampoExtra2;
 
-    public OtroEquipo(String noSerie, TipoOtroEquipo tipo, String tituloCampoExtra, String tituloCampoExtra2, String contenidoCampoExtra, String contenidoCampoExtra2) {
-        this.noSerie = noSerie;
+    public OtroEquipo(TipoOtroEquipo tipo, String tituloCampoExtra, String tituloCampoExtra2, String contenidoCampoExtra, String contenidoCampoExtra2) {
         this.tipo = tipo;
         this.tituloCampoExtra = tituloCampoExtra;
         this.tituloCampoExtra2 = tituloCampoExtra2;
@@ -38,14 +34,6 @@ public class OtroEquipo extends EquipoDeComputo {
     }
 
     public OtroEquipo() {
-    }
-
-    public String getNoSerie() {
-        return noSerie;
-    }
-
-    public void setNoSerie(String noSerie) {
-        this.noSerie = noSerie;
     }
 
     public TipoOtroEquipo getTipo() {
