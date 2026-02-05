@@ -95,9 +95,9 @@ public class Home extends javax.swing.JFrame {
 //            com.formdev.flatlaf.FlatDarkLaf.setup();
 
             // Opción B: Tema Claro (Light)
-            com.formdev.flatlaf.FlatLightLaf.setup();
+//            com.formdev.flatlaf.FlatLightLaf.setup();
             // Opción C: Tema tipo IntelliJ o Darcula
-            // com.formdev.flatlaf.FlatIntelliJLaf.setup();
+             com.formdev.flatlaf.FlatIntelliJLaf.setup();
             // com.formdev.flatlaf.FlatDarculaLaf.setup();
             // Opción D: Temas Extras (requiere la dependencia flatlaf-intellij-themes)
             // com.formdev.flatlaf.intellijthemes.FlatNordIJTheme.setup();

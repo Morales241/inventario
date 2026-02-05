@@ -55,7 +55,7 @@ public class PanelParaEquiposDeEscritorioYLaptops extends javax.swing.JPanel {
         jPanel16.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel16.setMaximumSize(new java.awt.Dimension(3333, 220));
         jPanel16.setMinimumSize(new java.awt.Dimension(94, 220));
-        jPanel16.setPreferredSize(new java.awt.Dimension(94, 220));
+        jPanel16.setPreferredSize(new java.awt.Dimension(150, 190));
         jPanel16.setLayout(new javax.swing.BoxLayout(jPanel16, javax.swing.BoxLayout.Y_AXIS));
         jPanel16.add(filler18);
 
@@ -108,7 +108,7 @@ public class PanelParaEquiposDeEscritorioYLaptops extends javax.swing.JPanel {
         jPanel30.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel30.setMaximumSize(new java.awt.Dimension(3333, 220));
         jPanel30.setMinimumSize(new java.awt.Dimension(94, 220));
-        jPanel30.setPreferredSize(new java.awt.Dimension(94, 220));
+        jPanel30.setPreferredSize(new java.awt.Dimension(150, 190));
         jPanel30.setLayout(new javax.swing.BoxLayout(jPanel30, javax.swing.BoxLayout.Y_AXIS));
         jPanel30.add(filler36);
 

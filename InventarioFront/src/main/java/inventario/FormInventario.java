@@ -173,7 +173,6 @@ public class FormInventario extends javax.swing.JFrame {
         panelSuperior.setLayout(new javax.swing.BoxLayout(panelSuperior, javax.swing.BoxLayout.X_AXIS));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setMaximumSize(new java.awt.Dimension(32767, 32767));
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
         jPanel3.add(filler3);
 
@@ -319,6 +318,7 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel6.add(filler12);
 
         cbxCondicion.setModel(new javax.swing.DefaultComboBoxModel<>(new CondicionFisica[] { CondicionFisica.NUEVO, CondicionFisica.BUENO, CondicionFisica.REGULAR, CondicionFisica.MALO }));
+        cbxCondicion.setSelectedItem(CondicionFisica.NUEVO);
         cbxCondicion.setMaximumSize(new java.awt.Dimension(335, 40));
         cbxCondicion.setMinimumSize(new java.awt.Dimension(335, 40));
         cbxCondicion.setPreferredSize(new java.awt.Dimension(335, 40));
@@ -457,7 +457,7 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel5.add(jPanel36);
         jPanel5.add(filler40);
 
-        cbxModelos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxModelos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Crear Modelo" }));
         cbxModelos.setMaximumSize(new java.awt.Dimension(510, 40));
         cbxModelos.setMinimumSize(new java.awt.Dimension(72, 40));
         cbxModelos.setPreferredSize(new java.awt.Dimension(510, 40));
