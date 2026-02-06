@@ -1,10 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package inventario;
 
+import Dtos.EmpresaDto;
+import Dtos.SucursalDto;
 import Enums.CondicionFisica;
+import Implementaciones.FachadaEquipos;
+import Implementaciones.FachadaOrganizacion;
 import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import java.util.List;
@@ -18,9 +18,11 @@ public class FormInventario extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormInventario.class.getName());
 
-
     private final List<String> opcionesEquipoCompudo;
     private final List<String> opcionesOtros;
+
+    private final FachadaEquipos equipos;
+    private final FachadaOrganizacion organizacion;
 
     /**
      * Creates new form FormInventario
@@ -28,14 +30,18 @@ public class FormInventario extends javax.swing.JFrame {
     public FormInventario() {
         initComponents();
 
+        this.equipos = new FachadaEquipos();
+        this.organizacion = new FachadaOrganizacion();
+
         opcionesEquipoCompudo = asList("Laptop", "Desktop");
         opcionesOtros = asList("Impresora", "Monitor", "Proyector", "Otro");
-        
-        
-            this.panelInfoEspecificaEquipo.removeAll();
-            this.panelInfoEspecificaEquipo.add(new PanelParaEquiposDeEscritorioYLaptops());
-            this.panelInfoEspecificaEquipo.revalidate();
-            this.panelInfoEspecificaEquipo.repaint();
+
+        this.panelInfoEspecificaEquipo.removeAll();
+        this.panelInfoEspecificaEquipo.add(new PanelParaEquiposDeEscritorioYLaptops());
+        this.panelInfoEspecificaEquipo.revalidate();
+        this.panelInfoEspecificaEquipo.repaint();
+
+        cargarOrganizaciones();
     }
 
     /**
@@ -122,7 +128,7 @@ public class FormInventario extends javax.swing.JFrame {
         filler27 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         txtRam = new javax.swing.JTextField();
         jPanel26 = new javax.swing.JPanel();
-        filler28 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        filler28 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 8), new java.awt.Dimension(0, 8), new java.awt.Dimension(32767, 8));
         jPanel27 = new javax.swing.JPanel();
         tituloMarca = new javax.swing.JLabel();
         filler29 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
@@ -132,7 +138,7 @@ public class FormInventario extends javax.swing.JFrame {
         tituloAlmacenamiento = new javax.swing.JLabel();
         filler31 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         txtAlmacenamiento = new javax.swing.JTextField();
-        filler32 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 15), new java.awt.Dimension(0, 15), new java.awt.Dimension(32767, 15));
+        filler32 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         jPanel29 = new javax.swing.JPanel();
         tituloProcesador = new javax.swing.JLabel();
         filler33 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
@@ -153,9 +159,9 @@ public class FormInventario extends javax.swing.JFrame {
         cbxSucursal = new javax.swing.JComboBox<>();
         jPanel33 = new javax.swing.JPanel();
         filler41 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 36), new java.awt.Dimension(0, 36), new java.awt.Dimension(32767, 36));
-        btnVolver1 = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         filler34 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 30), new java.awt.Dimension(0, 30), new java.awt.Dimension(32767, 30));
-        btnVolver2 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -561,8 +567,8 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel26.add(jPanel27);
         jPanel26.add(filler29);
 
-        txtMarca.setBackground(new java.awt.Color(255, 255, 255));
         txtMarca.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtMarca.setBackground(new java.awt.Color(255, 255, 255));
         txtMarca.setForeground(new java.awt.Color(0, 0, 0));
         txtMarca.setMaximumSize(new java.awt.Dimension(335, 40));
         txtMarca.setMinimumSize(new java.awt.Dimension(64, 40));
@@ -582,8 +588,8 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel26.add(jPanel28);
         jPanel26.add(filler31);
 
-        txtAlmacenamiento.setBackground(new java.awt.Color(255, 255, 255));
         txtAlmacenamiento.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtAlmacenamiento.setBackground(new java.awt.Color(255, 255, 255));
         txtAlmacenamiento.setForeground(new java.awt.Color(0, 0, 0));
         txtAlmacenamiento.setMaximumSize(new java.awt.Dimension(335, 40));
         jPanel26.add(txtAlmacenamiento);
@@ -657,6 +663,11 @@ public class FormInventario extends javax.swing.JFrame {
 
         cbxEmpresa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbxEmpresa.setMaximumSize(new java.awt.Dimension(335, 40));
+        cbxEmpresa.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxEmpresaItemStateChanged(evt);
+            }
+        });
         jPanel19.add(cbxEmpresa);
         jPanel19.add(filler38);
 
@@ -686,24 +697,34 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel33.setLayout(new javax.swing.BoxLayout(jPanel33, javax.swing.BoxLayout.Y_AXIS));
         jPanel33.add(filler41);
 
-        btnVolver1.setBackground(new java.awt.Color(19, 80, 125));
-        btnVolver1.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        btnVolver1.setForeground(new java.awt.Color(255, 255, 255));
-        btnVolver1.setText("Guardar");
-        btnVolver1.setMaximumSize(new java.awt.Dimension(335, 50));
-        btnVolver1.setMinimumSize(new java.awt.Dimension(335, 50));
-        btnVolver1.setPreferredSize(new java.awt.Dimension(335, 50));
-        jPanel33.add(btnVolver1);
+        btnGuardar.setText("Guardar");
+        btnGuardar.setBackground(new java.awt.Color(19, 80, 125));
+        btnGuardar.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
+        btnGuardar.setMaximumSize(new java.awt.Dimension(335, 50));
+        btnGuardar.setMinimumSize(new java.awt.Dimension(335, 50));
+        btnGuardar.setPreferredSize(new java.awt.Dimension(335, 50));
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+        jPanel33.add(btnGuardar);
         jPanel33.add(filler34);
 
-        btnVolver2.setBackground(new java.awt.Color(161, 14, 22));
-        btnVolver2.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        btnVolver2.setForeground(new java.awt.Color(255, 255, 255));
-        btnVolver2.setText("Cancelar");
-        btnVolver2.setMaximumSize(new java.awt.Dimension(335, 50));
-        btnVolver2.setMinimumSize(new java.awt.Dimension(335, 50));
-        btnVolver2.setPreferredSize(new java.awt.Dimension(335, 50));
-        jPanel33.add(btnVolver2);
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setBackground(new java.awt.Color(161, 14, 22));
+        btnCancelar.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancelar.setMaximumSize(new java.awt.Dimension(335, 50));
+        btnCancelar.setMinimumSize(new java.awt.Dimension(335, 50));
+        btnCancelar.setPreferredSize(new java.awt.Dimension(335, 50));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+        jPanel33.add(btnCancelar);
 
         jPanel18.add(jPanel33);
 
@@ -727,6 +748,17 @@ public class FormInventario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cargarOrganizaciones() {
+        List<EmpresaDto> empresas = organizacion.listarEmpresas(null);
+
+        this.cbxEmpresa.removeAllItems();
+
+        empresas.forEach(e -> {
+            cbxEmpresa.addItem(e.toString());
+        });
+
+    }
+
     private void cbxTipoEquipoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxTipoEquipoItemStateChanged
 
         if (evt.getStateChange() == evt.SELECTED) {
@@ -742,7 +774,7 @@ public class FormInventario extends javax.swing.JFrame {
 
                 panelSeleccionado = new PanelParaOtroTipoDeEquipos();
             } else {
-            
+
                 panelSeleccionado = new PanelParaMoviles();
             }
 
@@ -752,6 +784,163 @@ public class FormInventario extends javax.swing.JFrame {
             this.panelInfoEspecificaEquipo.repaint();
         }
     }//GEN-LAST:event_cbxTipoEquipoItemStateChanged
+
+    private void cbxEmpresaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxEmpresaItemStateChanged
+        if (evt.getStateChange() == evt.SELECTED) {
+
+            String nombreEmpresa = cbxEmpresa.getSelectedItem().toString();
+
+            EmpresaDto empresa = organizacion.listarEmpresas(nombreEmpresa).getFirst();
+
+            List<SucursalDto> sucursales = organizacion.listarSucursales(null, empresa.getId());
+
+            this.cbxSucursal.removeAllItems();
+
+            sucursales.forEach(s -> {
+                cbxSucursal.addItem(s.toString());
+            });
+        }
+    }//GEN-LAST:event_cbxEmpresaItemStateChanged
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        if (!validarFormulario()) {
+            return;
+        }
+
+        try {
+
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Equipo registrado correctamente!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            mostrarError("Ocurrió un error al guardar: \n" + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void mostrarAdvertencia(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Faltan Datos", javax.swing.JOptionPane.WARNING_MESSAGE);
+    }
+
+    private void mostrarError(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Error Crítico", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+
+    public boolean validarFormulario() {
+
+        if (cbxEmpresa.getSelectedItem() == null || cbxEmpresa.getSelectedIndex() == -1) {
+            mostrarAdvertencia("Debes seleccionar la 'Empresa' propietaria del equipo.");
+            cbxEmpresa.requestFocus();
+            return false;
+        }
+
+        if (cbxSucursal.getSelectedItem() == null || cbxSucursal.getSelectedIndex() == -1) {
+            mostrarAdvertencia("Debes seleccionar la 'Sucursal' donde estará el equipo.");
+            cbxSucursal.requestFocus();
+            return false;
+        }
+
+        if (cbxTipoEquipo.getSelectedItem() == null || cbxTipoEquipo.getSelectedIndex() == -1) {
+            mostrarAdvertencia("Selecciona el 'Tipo de Equipo'.");
+            cbxTipoEquipo.requestFocus();
+            return false;
+        }
+
+        if (cbxCondicion.getSelectedItem() == null || cbxCondicion.getSelectedIndex() == -1) {
+            mostrarAdvertencia("Selecciona la 'Condición' actual del equipo.");
+            cbxCondicion.requestFocus();
+            return false;
+        }
+
+        if (txtNoSerie.getText().trim().isEmpty()) {
+            mostrarAdvertencia("El 'Número de Serie' es obligatorio.");
+            txtNoSerie.requestFocus();
+            return false;
+        }
+        if (txtNoSerie.getText().trim().length() < 3) {
+            mostrarAdvertencia("El Número de Serie parece demasiado corto. Verifícalo.");
+            txtNoSerie.requestFocus();
+            return false;
+        }
+
+        if (txtGRI.getText().trim().isEmpty()) {
+            mostrarAdvertencia("El código 'GRI' (Etiqueta de Activo) es obligatorio.");
+            txtGRI.requestFocus();
+            return false;
+        }
+
+        if (txtMarca.getText().trim().isEmpty()) {
+            mostrarAdvertencia("Ingresa la 'Marca' del equipo.");
+            txtMarca.requestFocus();
+            return false;
+        }
+
+        if (txtNombreModelo.getText().trim().isEmpty()) {
+            mostrarAdvertencia("Ingresa el nombre del 'Modelo'.");
+            txtNombreModelo.requestFocus();
+            return false;
+        }
+
+        if (txtProcesador.getText().trim().isEmpty()) {
+            mostrarAdvertencia("Ingresa el 'Procesador' (Ej: Intel i5, M1, Ryzen 5).");
+            txtProcesador.requestFocus();
+            return false;
+        }
+
+        String ram = txtRam.getText().trim();
+        if (ram.isEmpty()) {
+            mostrarAdvertencia("Ingresa la cantidad de 'RAM'.");
+            txtRam.requestFocus();
+            return false;
+        }
+
+        if (!ram.toUpperCase().contains("GB") && !ram.toUpperCase().contains("TB") && !ram.toUpperCase().contains("MB")) {
+            int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+                    "Escribiste '" + ram + "' en RAM.\nSe recomienda especificar la unidad (Ej: 16GB).\n¿Deseas corregirlo?",
+                    "Verificar Formato", javax.swing.JOptionPane.YES_NO_OPTION);
+            if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                txtRam.requestFocus();
+                return false;
+            }
+        }
+
+        if (txtAlmacenamiento.getText().trim().isEmpty()) {
+            mostrarAdvertencia("Ingresa el 'Almacenamiento' (Ej: 512GB SSD).");
+            txtAlmacenamiento.requestFocus();
+            return false;
+        }
+
+        if (txtFactura.getText().trim().isEmpty()) {
+            mostrarAdvertencia("El número de 'Factura' es obligatorio para auditoría.");
+            txtFactura.requestFocus();
+            return false;
+        }
+
+        java.time.LocalDate fecha = fechaCompra.getDate();
+
+        if (fecha == null) {
+            mostrarAdvertencia("Debes seleccionar la 'Fecha de Compra' en el calendario.");
+            fechaCompra.requestFocus();
+            return false;
+        }
+
+        if (fecha.isAfter(java.time.LocalDate.now())) {
+            mostrarError("La fecha de compra no puede ser una fecha futura.");
+            fechaCompra.requestFocus();
+            return false;
+        }
+
+        if (txtObservaciones.getText().length() > 500) {
+            mostrarAdvertencia("Las observaciones son demasiado largas (Máx 500 caracteres).");
+            txtObservaciones.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
 
     /**
      * @param args the command line arguments
@@ -779,8 +968,8 @@ public class FormInventario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnVolver1;
-    private javax.swing.JButton btnVolver2;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox<CondicionFisica> cbxCondicion;
     private javax.swing.JComboBox<String> cbxEmpresa;
     private javax.swing.JComboBox<String> cbxModelos;

@@ -44,6 +44,6 @@ public class SucursalDto {
 
     @Override
     public String toString() {
-        return nombre;
+        return nombre + ", Ubicación: "+ ubicacion;
     }
 }
