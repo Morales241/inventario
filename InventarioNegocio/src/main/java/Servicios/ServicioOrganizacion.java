@@ -40,8 +40,19 @@ public class ServicioOrganizacion {
 
     public List<SucursalDto> listarSucursales(String filtro, Long idEmpresa) {
         // Si no hay filtro, mandamos vacíos para traer todo
-        String busqueda = filtro != null ? filtro : "";
-        return MapperEstructura.sucursal.mapToDtoList(daoSucursal.busquedaConFiltros(busqueda, busqueda, idEmpresa));
+        
+        String nombre = "";
+        
+        String ubicacion = "";
+        
+        if (filtro != null) {
+            String[] cadenas = filtro.split(",");
+            
+            nombre = cadenas[0];
+            ubicacion = cadenas[1];
+        }
+        
+        return MapperEstructura.sucursal.mapToDtoList(daoSucursal.busquedaConFiltros(nombre, ubicacion, idEmpresa));
     }
 
     public void guardarSucursal(SucursalDto dto) throws Exception {

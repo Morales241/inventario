@@ -1,10 +1,13 @@
 package inventario;
 
+import Dtos.MovilDTO;
+import Utileria.IValidaciones;
+
 /**
  *
  * @author JMorales
  */
-public class PanelParaMoviles extends javax.swing.JPanel {
+public class PanelParaMoviles extends javax.swing.JPanel implements IValidaciones<MovilDTO> {
 
     /**
      * Creates new form PanelParaEquiposDeEscritorioYLaptops
@@ -175,6 +178,49 @@ public class PanelParaMoviles extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void mostrarAdvertencia(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Faltan Datos", javax.swing.JOptionPane.WARNING_MESSAGE);
+    }
+
+    @Override
+    public boolean validarFormulario() {
+
+        if (txtCelular.getText().trim().isEmpty()) {
+            mostrarAdvertencia("El Numero de telefono es obligatorio.");
+            txtCelular.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public MovilDTO getDatosEntidad() {
+        MovilDTO movil = new MovilDTO();
+
+        Boolean cargador = false;
+        Boolean manosLibres = false;
+        Boolean funda = false;
+
+        if (cbxCargador.getSelectedItem().toString().contains("SI")) {
+            cargador = true;
+        }
+
+        if (cbxFunda.getSelectedItem().toString().contains("SI")) {
+            funda = true;
+        }
+
+        if (cbxFunda.getSelectedItem().toString().contains("SI")) {
+            funda = true;
+        }
+
+        movil.setCargador(cargador);
+        movil.setFunda(funda);
+        movil.setManosLibres(manosLibres);
+        movil.setNumCelular(txtCelular.getText());
+
+        return movil;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
@@ -204,4 +250,5 @@ public class PanelParaMoviles extends javax.swing.JPanel {
     private javax.swing.JLabel tituloEmpresa4;
     private javax.swing.JTextField txtCelular;
     // End of variables declaration//GEN-END:variables
+
 }

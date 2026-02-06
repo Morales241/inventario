@@ -1,10 +1,17 @@
 package inventario;
 
 import Dtos.EmpresaDto;
+import Dtos.EquipoBaseDTO;
+import Dtos.EquipoEscritorioDTO;
+import Dtos.ModeloDto;
+import Dtos.MovilDTO;
+import Dtos.OtroEquipoDTO;
 import Dtos.SucursalDto;
 import Enums.CondicionFisica;
+import Enums.EstadoEquipo;
 import Implementaciones.FachadaEquipos;
 import Implementaciones.FachadaOrganizacion;
+import Utileria.IValidaciones;
 import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import java.util.List;
@@ -20,7 +27,7 @@ public class FormInventario extends javax.swing.JFrame {
 
     private final List<String> opcionesEquipoCompudo;
     private final List<String> opcionesOtros;
-
+    private IValidaciones panelSeleccionado;
     private final FachadaEquipos equipos;
     private final FachadaOrganizacion organizacion;
 
@@ -42,6 +49,12 @@ public class FormInventario extends javax.swing.JFrame {
         this.panelInfoEspecificaEquipo.repaint();
 
         cargarOrganizaciones();
+
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
     }
 
     /**
@@ -531,7 +544,7 @@ public class FormInventario extends javax.swing.JFrame {
         jPanel25.setMaximumSize(new java.awt.Dimension(32767, 30));
         jPanel25.setLayout(new java.awt.GridLayout(1, 0));
 
-        tituloRam.setText("Memoria Ram:");
+        tituloRam.setText("Memoria Ram (GB):");
         tituloRam.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         tituloRam.setForeground(new java.awt.Color(61, 61, 61));
         tituloRam.setMaximumSize(new java.awt.Dimension(335, 40));
@@ -704,11 +717,6 @@ public class FormInventario extends javax.swing.JFrame {
         btnGuardar.setMaximumSize(new java.awt.Dimension(335, 50));
         btnGuardar.setMinimumSize(new java.awt.Dimension(335, 50));
         btnGuardar.setPreferredSize(new java.awt.Dimension(335, 50));
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
         jPanel33.add(btnGuardar);
         jPanel33.add(filler34);
 
@@ -765,8 +773,6 @@ public class FormInventario extends javax.swing.JFrame {
 
             String seleccion = String.valueOf(cbxTipoEquipo.getSelectedItem());
 
-            JPanel panelSeleccionado = new JPanel();
-
             if (opcionesEquipoCompudo.contains(seleccion)) {
 
                 panelSeleccionado = new PanelParaEquiposDeEscritorioYLaptops();
@@ -779,7 +785,7 @@ public class FormInventario extends javax.swing.JFrame {
             }
 
             this.panelInfoEspecificaEquipo.removeAll();
-            this.panelInfoEspecificaEquipo.add(panelSeleccionado);
+            this.panelInfoEspecificaEquipo.add((JPanel) panelSeleccionado);
             this.panelInfoEspecificaEquipo.revalidate();
             this.panelInfoEspecificaEquipo.repaint();
         }
@@ -806,20 +812,108 @@ public class FormInventario extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    private <T extends EquipoBaseDTO> void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {
+        
         if (!validarFormulario()) {
             return;
         }
 
-        try {
+        if (!panelSeleccionado.validarFormulario()) {
+            return;
+        }
 
+        try {
+            ModeloDto modelo = new ModeloDto();
+
+            modelo = guardarModelo();
+
+            EmpresaDto empresa = organizacion.listarEmpresas(cbxEmpresa.getSelectedItem().toString()).getFirst();
+
+            SucursalDto sucursal = organizacion.listarSucursales(cbxSucursal.getSelectedItem().toString(), empresa.getId()).getFirst();
+           
+            T equipo = (T) panelSeleccionado.getDatosEntidad();
+            
+            equipo = armarEquipo(modelo, sucursal, equipo);
+            
+            if (equipo instanceof EquipoEscritorioDTO) {
+                
+                equipos.guardarEscritorio((EquipoEscritorioDTO) equipo);
+            }else if (equipo instanceof MovilDTO) {
+                
+                equipos.guardarMovil((MovilDTO) equipo);
+            }else if (equipo instanceof OtroEquipoDTO) {
+                
+                equipos.guardarOtro((OtroEquipoDTO) equipo);
+            }
+            
             javax.swing.JOptionPane.showMessageDialog(this, "¡Equipo registrado correctamente!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
         } catch (Exception e) {
             mostrarError("Ocurrió un error al guardar: \n" + e.getMessage());
             e.printStackTrace();
         }
-    }//GEN-LAST:event_btnGuardarActionPerformed
+    }
+
+    private ModeloDto guardarModelo() throws Exception {
+        ModeloDto modelo = new ModeloDto();
+
+        modelo.setNombre(txtNombreModelo.getText());
+        modelo.setMarca(txtMarca.getText());
+        modelo.setNoSerie(txtNoSerie.getText());
+        modelo.setAlmacenamiento(Integer.parseInt(txtAlmacenamiento.getText()));
+        modelo.setMemoriaRam(Integer.parseInt(txtRam.getText()));
+        modelo.setProcesador(txtProcesador.getText());
+
+        equipos.guardarModelo(modelo);
+
+        return equipos.listarModelos(modelo.getNoSerie()).getFirst();
+    }
+
+    private <T extends EquipoBaseDTO> T armarEquipo(ModeloDto modelo, SucursalDto sucursal, T equipo) {
+
+        EquipoBaseDTO baseDTO = equipo;
+
+        baseDTO.setCondicion(CondicionFisica.valueOf(cbxCondicion.getSelectedItem().toString()));
+        baseDTO.setEstado(EstadoEquipo.DISPONIBLE);
+        baseDTO.setFactura(txtFactura.getText());
+        baseDTO.setFechaCompra(fechaCompra.getDate());
+        baseDTO.setGri(Integer.valueOf(txtGRI.getText()));
+        baseDTO.setIdModelo(modelo.getIdModelo());
+        baseDTO.setIdSucursal(sucursal.getId());
+        baseDTO.setNombreModelo(modelo.getNombre());
+        baseDTO.setNombreSucursal(sucursal.getNombre());
+
+        if (equipo instanceof EquipoEscritorioDTO) {
+            EquipoEscritorioDTO equipoEscritorio = (EquipoEscritorioDTO) baseDTO;
+
+            equipoEscritorio.setCuenta(((EquipoEscritorioDTO) equipo).getCuenta());
+            equipoEscritorio.setFinalGarantia(((EquipoEscritorioDTO) equipo).getFinalGarantia());
+            equipoEscritorio.setNombreEquipo(((EquipoEscritorioDTO) equipo).getNombreEquipo());
+
+        }
+        if (equipo instanceof MovilDTO) {
+            MovilDTO movil = (MovilDTO) baseDTO;
+
+            movil.setCargador(((MovilDTO) equipo).getCargador());
+            movil.setFunda(((MovilDTO) equipo).getFunda());
+            movil.setManosLibres(((MovilDTO) equipo).getManosLibres());
+            movil.setNumCelular(((MovilDTO) equipo).getNumCelular());
+
+        }
+        if (equipo instanceof OtroEquipoDTO) {
+            OtroEquipoDTO otro = (OtroEquipoDTO) baseDTO;
+
+            otro.setContenidoCampoExtra(((OtroEquipoDTO) equipo).getContenidoCampoExtra());
+            otro.setContenidoCampoExtra2(((OtroEquipoDTO) equipo).getContenidoCampoExtra2());
+            otro.setTituloCampoExtra(((OtroEquipoDTO) equipo).getTituloCampoExtra());
+            otro.setTituloCampoExtra2(((OtroEquipoDTO) equipo).getTituloCampoExtra2());
+        }
+
+        String observacion = (txtObservaciones.getText() != null) ? txtObservaciones.getText() : "";
+        equipo.setObservaciones(observacion);
+
+        return (T) baseDTO;
+    }
 
     private void mostrarAdvertencia(String mensaje) {
         javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Faltan Datos", javax.swing.JOptionPane.WARNING_MESSAGE);
@@ -860,14 +954,14 @@ public class FormInventario extends javax.swing.JFrame {
             txtNoSerie.requestFocus();
             return false;
         }
-        if (txtNoSerie.getText().trim().length() < 3) {
+        if (txtNoSerie.getText().trim().length() < 5) {
             mostrarAdvertencia("El Número de Serie parece demasiado corto. Verifícalo.");
             txtNoSerie.requestFocus();
             return false;
         }
 
         if (txtGRI.getText().trim().isEmpty()) {
-            mostrarAdvertencia("El código 'GRI' (Etiqueta de Activo) es obligatorio.");
+            mostrarAdvertencia("El código 'GRI' (Etiqueta de inventario) es obligatorio.");
             txtGRI.requestFocus();
             return false;
         }
@@ -879,13 +973,13 @@ public class FormInventario extends javax.swing.JFrame {
         }
 
         if (txtNombreModelo.getText().trim().isEmpty()) {
-            mostrarAdvertencia("Ingresa el nombre del 'Modelo'.");
+            mostrarAdvertencia("Ingresa el nombre del Modelo.");
             txtNombreModelo.requestFocus();
             return false;
         }
 
         if (txtProcesador.getText().trim().isEmpty()) {
-            mostrarAdvertencia("Ingresa el 'Procesador' (Ej: Intel i5, M1, Ryzen 5).");
+            mostrarAdvertencia("Ingresa el Procesador.");
             txtProcesador.requestFocus();
             return false;
         }
@@ -908,7 +1002,7 @@ public class FormInventario extends javax.swing.JFrame {
         }
 
         if (txtAlmacenamiento.getText().trim().isEmpty()) {
-            mostrarAdvertencia("Ingresa el 'Almacenamiento' (Ej: 512GB SSD).");
+            mostrarAdvertencia("Ingresa el Almacenamiento (Ej: 512GB SSD).");
             txtAlmacenamiento.requestFocus();
             return false;
         }

@@ -1,14 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package inventario;
+
+import Dtos.EquipoEscritorioDTO;
+import Utileria.IValidaciones;
 
 /**
  *
  * @author JMorales
  */
-public class PanelParaEquiposDeEscritorioYLaptops extends javax.swing.JPanel {
+public class PanelParaEquiposDeEscritorioYLaptops extends javax.swing.JPanel implements IValidaciones<EquipoEscritorioDTO>{
 
     /**
      * Creates new form PanelParaEquiposDeEscritorioYLaptops
@@ -32,18 +31,18 @@ public class PanelParaEquiposDeEscritorioYLaptops extends javax.swing.JPanel {
         jPanel17 = new javax.swing.JPanel();
         tituloEmpresa = new javax.swing.JLabel();
         filler19 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        txtFactura1 = new javax.swing.JTextField();
+        txtNombreEquipo = new javax.swing.JTextField();
         filler43 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         jPanel35 = new javax.swing.JPanel();
         tituloEmpresa3 = new javax.swing.JLabel();
         filler44 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        txtFactura5 = new javax.swing.JTextField();
+        txtCuentaEquipo = new javax.swing.JTextField();
         jPanel30 = new javax.swing.JPanel();
         filler36 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         jPanel31 = new javax.swing.JPanel();
         tituloSucursal = new javax.swing.JLabel();
         filler37 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
+        dateGarantia = new com.github.lgooddatepicker.components.DatePicker();
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 255));
         jPanel3.setMaximumSize(new java.awt.Dimension(33333, 190));
@@ -72,13 +71,13 @@ public class PanelParaEquiposDeEscritorioYLaptops extends javax.swing.JPanel {
         jPanel16.add(jPanel17);
         jPanel16.add(filler19);
 
-        txtFactura1.setBackground(new java.awt.Color(255, 255, 255));
-        txtFactura1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtFactura1.setForeground(new java.awt.Color(0, 0, 0));
-        txtFactura1.setMaximumSize(new java.awt.Dimension(335, 40));
-        txtFactura1.setMinimumSize(new java.awt.Dimension(335, 40));
-        txtFactura1.setPreferredSize(new java.awt.Dimension(335, 40));
-        jPanel16.add(txtFactura1);
+        txtNombreEquipo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtNombreEquipo.setBackground(new java.awt.Color(255, 255, 255));
+        txtNombreEquipo.setForeground(new java.awt.Color(0, 0, 0));
+        txtNombreEquipo.setMaximumSize(new java.awt.Dimension(335, 40));
+        txtNombreEquipo.setMinimumSize(new java.awt.Dimension(335, 40));
+        txtNombreEquipo.setPreferredSize(new java.awt.Dimension(335, 40));
+        jPanel16.add(txtNombreEquipo);
         jPanel16.add(filler43);
 
         jPanel35.setBackground(new java.awt.Color(255, 255, 255));
@@ -94,13 +93,13 @@ public class PanelParaEquiposDeEscritorioYLaptops extends javax.swing.JPanel {
         jPanel16.add(jPanel35);
         jPanel16.add(filler44);
 
-        txtFactura5.setBackground(new java.awt.Color(255, 255, 255));
-        txtFactura5.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtFactura5.setForeground(new java.awt.Color(0, 0, 0));
-        txtFactura5.setMaximumSize(new java.awt.Dimension(335, 40));
-        txtFactura5.setMinimumSize(new java.awt.Dimension(335, 40));
-        txtFactura5.setPreferredSize(new java.awt.Dimension(335, 40));
-        jPanel16.add(txtFactura5);
+        txtCuentaEquipo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtCuentaEquipo.setBackground(new java.awt.Color(255, 255, 255));
+        txtCuentaEquipo.setForeground(new java.awt.Color(0, 0, 0));
+        txtCuentaEquipo.setMaximumSize(new java.awt.Dimension(335, 40));
+        txtCuentaEquipo.setMinimumSize(new java.awt.Dimension(335, 40));
+        txtCuentaEquipo.setPreferredSize(new java.awt.Dimension(335, 40));
+        jPanel16.add(txtCuentaEquipo);
 
         jPanel3.add(jPanel16);
 
@@ -125,10 +124,10 @@ public class PanelParaEquiposDeEscritorioYLaptops extends javax.swing.JPanel {
         jPanel30.add(jPanel31);
         jPanel30.add(filler37);
 
-        datePicker1.setMaximumSize(new java.awt.Dimension(335, 40));
-        datePicker1.setMinimumSize(new java.awt.Dimension(335, 40));
-        datePicker1.setPreferredSize(new java.awt.Dimension(335, 40));
-        jPanel30.add(datePicker1);
+        dateGarantia.setMaximumSize(new java.awt.Dimension(335, 40));
+        dateGarantia.setMinimumSize(new java.awt.Dimension(335, 40));
+        dateGarantia.setPreferredSize(new java.awt.Dimension(335, 40));
+        jPanel30.add(dateGarantia);
 
         jPanel3.add(jPanel30);
 
@@ -154,9 +153,40 @@ public class PanelParaEquiposDeEscritorioYLaptops extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void mostrarAdvertencia(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Faltan Datos", javax.swing.JOptionPane.WARNING_MESSAGE);
+    }
+    
+     @Override
+    public EquipoEscritorioDTO getDatosEntidad() {
+        EquipoEscritorioDTO equipoEscritorio = new EquipoEscritorioDTO();
+        equipoEscritorio.setNombreEquipo(txtNombreEquipo.getText());
+        equipoEscritorio.setCuenta(txtCuentaEquipo.getText());
+        equipoEscritorio.setFinalGarantia(dateGarantia.getDate());
+        
+        return equipoEscritorio;
+    }
+    
+    @Override
+    public boolean validarFormulario() {
+
+        if (txtNombreEquipo.getText().trim().isEmpty()) {
+            mostrarAdvertencia("El Nombre del equipo es obligatorio.");
+            txtNombreEquipo.requestFocus();
+            return false;
+        }
+        
+        if (txtCuentaEquipo.getText().trim().isEmpty()) {
+            mostrarAdvertencia("La cuenta de equipo es obligatoria.");
+            txtCuentaEquipo.requestFocus();
+            return false;
+        }
+        
+        return true;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.github.lgooddatepicker.components.DatePicker datePicker1;
+    private com.github.lgooddatepicker.components.DatePicker dateGarantia;
     private javax.swing.Box.Filler filler18;
     private javax.swing.Box.Filler filler19;
     private javax.swing.Box.Filler filler36;
@@ -172,7 +202,8 @@ public class PanelParaEquiposDeEscritorioYLaptops extends javax.swing.JPanel {
     private javax.swing.JLabel tituloEmpresa;
     private javax.swing.JLabel tituloEmpresa3;
     private javax.swing.JLabel tituloSucursal;
-    private javax.swing.JTextField txtFactura1;
-    private javax.swing.JTextField txtFactura5;
+    private javax.swing.JTextField txtCuentaEquipo;
+    private javax.swing.JTextField txtNombreEquipo;
     // End of variables declaration//GEN-END:variables
+
 }

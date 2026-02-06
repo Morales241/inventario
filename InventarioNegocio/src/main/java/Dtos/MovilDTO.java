@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Dtos;
 
 /**
@@ -11,7 +7,6 @@ package Dtos;
 public class MovilDTO extends EquipoBaseDTO{
     
     private Boolean cargador;
-    private String imei;
     private String numCelular;
     private Boolean funda;
     private Boolean manosLibres;
@@ -25,14 +20,6 @@ public class MovilDTO extends EquipoBaseDTO{
 
     public void setCargador(Boolean cargador) {
         this.cargador = cargador;
-    }
-
-    public String getImei() {
-        return imei;
-    }
-
-    public void setImei(String imei) {
-        this.imei = imei;
     }
 
     public String getNumCelular() {

@@ -1346,7 +1346,7 @@
                           <SubComponents>
                             <Component class="javax.swing.JLabel" name="tituloRam">
                               <Properties>
-                                <Property name="text" type="java.lang.String" value="Memoria Ram:"/>
+                                <Property name="text" type="java.lang.String" value="Memoria Ram (GB):"/>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                                   <Font name="SansSerif" size="16" style="1"/>
                                 </Property>
@@ -1970,9 +1970,6 @@
                               <Dimension value="[335, 50]"/>
                             </Property>
                           </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>
-                          </Events>
                         </Component>
                         <Component class="javax.swing.Box$Filler" name="filler34">
                           <Properties>

@@ -71,7 +71,6 @@ public class ServicioEquipos {
 
     public void guardarMovil(MovilDTO dto) throws Exception {
         validarDatosComunes(dto);
-        if (dto.getImei() == null || dto.getImei().isEmpty()) throw new Exception("El IMEI es obligatorio");
         
         Movil entidad = MapperEquipos.movil.mapToEntity(dto);
         
@@ -101,7 +100,10 @@ public class ServicioEquipos {
         daoGeneral.eliminar(id);
     }
 
-    public List<ModeloDto> listarModelos() {
+    public List<ModeloDto> listarModelos(String noSerie) {
+        if(noSerie != null && !noSerie.isEmpty()){
+            return MapperModelo.converter.mapToDtoList((List<Modelo>) daoModelo.busquedaEspecifica(noSerie));
+        }
         return MapperModelo.converter.mapToDtoList(daoModelo.buscarTodos());
     }
     
@@ -113,5 +115,10 @@ public class ServicioEquipos {
     private void validarDatosComunes(EquipoBaseDTO dto) throws Exception {
         if (dto.getGri() == null || dto.getGri() <= 0) throw new Exception("El GRI es obligatorio y válido");
         if (dto.getIdSucursal() == null) throw new Exception("Debe seleccionar una sucursal");
+    }
+    
+    public List<ModeloDto> busquedaConFiltros(String marca, String memoriaRam, String almacenamiento, String procesador){
+        
+        return MapperModelo.converter.mapToDtoList(daoModelo.busquedaConFiltros(marca, memoriaRam, almacenamiento, procesador));
     }
 }

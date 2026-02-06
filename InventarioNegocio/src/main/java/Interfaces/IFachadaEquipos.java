@@ -27,8 +27,9 @@ public interface IFachadaEquipos {
     
     public void eliminarEquipo(Long id) throws Exception;
     
-    public List<ModeloDto> listarModelos();
+    public List<ModeloDto> listarModelos(String nombreModelo);
     
     public void guardarModelo(ModeloDto dto) throws Exception;
     
+    public List<ModeloDto> busquedaConFiltros(String marca, String memoriaRam, String almacenamiento, String procesador);
 }

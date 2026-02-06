@@ -33,7 +33,7 @@ public class DaoModelo extends DaoGenerico<Modelo, Long> implements IDaoModelo {
     }
 
     @Override
-    public Modelo busquedaEspecifica(String nombre) {
+    public Modelo busquedaEspecifica(String noSerie) {
 
         try (EntityManager em = getEntityManager()) {
 
@@ -45,7 +45,7 @@ public class DaoModelo extends DaoGenerico<Modelo, Long> implements IDaoModelo {
 
             Root<Modelo> root = cq.from(Modelo.class);
 
-            predicados.add(cb.equal(cb.lower(root.get("nombre")), nombre.toLowerCase()));
+            predicados.add(cb.equal(cb.lower(root.get("noSerie")), noSerie.toLowerCase()));
 
             cq.select(root);
 

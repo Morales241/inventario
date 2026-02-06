@@ -1,10 +1,13 @@
 package inventario;
 
+import Dtos.OtroEquipoDTO;
+import Utileria.IValidaciones;
+
 /**
  *
  * @author JMorales
  */
-public class PanelParaOtroTipoDeEquipos extends javax.swing.JPanel {
+public class PanelParaOtroTipoDeEquipos extends javax.swing.JPanel implements IValidaciones<OtroEquipoDTO>{
 
     /**
      * Creates new form PanelParaEquiposDeEscritorioYLaptops
@@ -180,6 +183,50 @@ public class PanelParaOtroTipoDeEquipos extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void mostrarAdvertencia(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Faltan Datos", javax.swing.JOptionPane.WARNING_MESSAGE);
+    }
+    
+    @Override
+    public boolean validarFormulario() {
+
+        if (txtTce1.getText().trim().isEmpty()) {
+            mostrarAdvertencia("El primer titulo para campo extra es obligatorio.");
+            txtTce1.requestFocus();
+            return false;
+        }
+        
+        if (txtCce1.getText().trim().isEmpty()) {
+            mostrarAdvertencia("El primer contenido para el campo extra es obligatorio.");
+            txtCce1.requestFocus();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    @Override
+    public OtroEquipoDTO getDatosEntidad() {
+        OtroEquipoDTO equipo = new OtroEquipoDTO();
+        
+        equipo.setTituloCampoExtra(txtTce1.getText());
+        equipo.setContenidoCampoExtra(txtCce1.getText());
+        
+        String titulo ="";
+        String contenido = "";
+        
+        if (txtTce2 != null) {
+            titulo = txtTce2.getText();
+        }
+        if (txtCce2 != null) {
+            contenido = txtCce2.getText();
+        }
+        
+        equipo.setTituloCampoExtra2(titulo);
+        equipo.setContenidoCampoExtra2(contenido);
+        
+        return equipo;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler18;
@@ -206,4 +253,5 @@ public class PanelParaOtroTipoDeEquipos extends javax.swing.JPanel {
     private javax.swing.JTextField txtTce1;
     private javax.swing.JTextField txtTce2;
     // End of variables declaration//GEN-END:variables
+
 }

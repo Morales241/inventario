@@ -53,12 +53,17 @@ public class FachadaEquipos implements IFachadaEquipos{
     }
 
     @Override
-    public List<ModeloDto> listarModelos() {
-        return servicioEquipos.listarModelos();
+    public List<ModeloDto> listarModelos(String noSerie) {
+        return servicioEquipos.listarModelos(noSerie);
     }
 
     @Override
     public void guardarModelo(ModeloDto dto) throws Exception {
         servicioEquipos.guardarModelo(dto);
     }    
+    
+    @Override
+    public List<ModeloDto> busquedaConFiltros(String marca, String memoriaRam, String almacenamiento, String procesador){
+        return servicioEquipos.busquedaConFiltros(marca, memoriaRam, almacenamiento, procesador);
+    }
 }
