@@ -26,10 +26,16 @@ import java.util.List;
  */
 public class DaoPuesto extends DaoGenerico<Puesto, Long> implements IDaoPuesto {
 
-    private final EntityManagerFactory emf = Conexion.getInstancia().getEntityManagerFactory();
+    private EntityManagerFactory emf;
 
     public DaoPuesto() {
         super(Puesto.class);
+        this.emf = Conexion.getInstancia().getEntityManagerFactory();
+    }
+    
+    public DaoPuesto(EntityManagerFactory emf) {
+        super(Puesto.class,emf);
+        this.emf = emf;
     }
 
     @Override

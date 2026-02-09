@@ -18,10 +18,16 @@ public abstract class DaoGenerico<T, ID> implements IDaoGenerico<T, ID>{
 
     private final Class<T> claseEntidad;
     private final Conexion conexion = Conexion.getInstancia();
-    private final EntityManagerFactory emf = conexion.getEntityManagerFactory();
+    private EntityManagerFactory emf;
 
     public DaoGenerico(Class<T> claseEntidad) {
         this.claseEntidad = claseEntidad;
+        this.emf = conexion.getEntityManagerFactory();
+    }
+    
+    public DaoGenerico(Class<T> claseEntidad, EntityManagerFactory emf) {
+        this.claseEntidad = claseEntidad;
+        this.emf = emf;
     }
 
     public EntityManager getEntityManager() {

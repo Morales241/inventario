@@ -4,9 +4,7 @@
  */
 package Dao;
 
-import Entidades.Empresa;
 import Entidades.Puesto;
-import Entidades.Sucursal;
 import Entidades.Trabajador;
 import Interfaces.IDaoTrabajador;
 import conexion.Conexion;
@@ -26,10 +24,16 @@ import java.util.List;
  */
 public class DaoTrabajador extends DaoGenerico<Trabajador, Long> implements IDaoTrabajador {
 
-    private final EntityManagerFactory emf = Conexion.getInstancia().getEntityManagerFactory();
+    private final EntityManagerFactory emf;
 
     public DaoTrabajador() {
         super(Trabajador.class);
+        this.emf = Conexion.getInstancia().getEntityManagerFactory();
+    }
+    
+    public DaoTrabajador(EntityManagerFactory emf) {
+        super(Trabajador.class,emf);
+        this.emf = emf;
     }
 
     @Override

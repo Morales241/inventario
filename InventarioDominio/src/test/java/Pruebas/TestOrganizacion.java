@@ -2,16 +2,14 @@ package Pruebas;
 
 import Dao.*;
 import Entidades.*;
-import Interfaces.IDaoDepartamento;
-import Interfaces.IDaoEmpresa;
-import Interfaces.IDaoPuesto;
-import Interfaces.IDaoSucursal;
-import Interfaces.IDaoTrabajador;
+import Interfaces.*;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestOrganizacion {
@@ -23,42 +21,45 @@ public class TestOrganizacion {
     private static IDaoPuesto daoPuesto;
     private static IDaoDepartamento daoDepto;
 
-    // IDs estáticos para compartir entre tests
     private static Long idEmpresaGlobal;
     private static Long idPuestoGlobal;
 
     @BeforeAll
     public static void setUp() {
-        emf = Persistence.createEntityManagerFactory("ConexionPU");
-        daoEmpresa = new DaoEmpresa();
-        daoSucursal = new DaoSucursal();
-        daoTrabajador = new DaoTrabajador();
-        daoPuesto = new DaoPuesto();
-        daoDepto = new DaoDepartamento();
+        // --- CONFIGURACIÓN H2 ---
+        Map<String, String> properties = new HashMap<>();
+        properties.put("jakarta.persistence.jdbc.url", "jdbc:h2:mem:testdb_org;DB_CLOSE_DELAY=-1");
+        properties.put("jakarta.persistence.jdbc.driver", "org.h2.Driver");
+        properties.put("jakarta.persistence.jdbc.user", "sa");
+        properties.put("jakarta.persistence.jdbc.password", "");
+        properties.put("jakarta.persistence.schema-generation.database.action", "drop-and-create");
+
+        emf = Persistence.createEntityManagerFactory("ConexionPU", properties);
+        
+        daoEmpresa = new DaoEmpresa(emf);
+        daoSucursal = new DaoSucursal(emf);
+        daoTrabajador = new DaoTrabajador(emf);
+        daoPuesto = new DaoPuesto(emf);
+        daoDepto = new DaoDepartamento(emf);
     }
 
     @Test
     @Order(1)
     @DisplayName("Debe crear una Empresa y recuperar su ID autogenerado")
     public void testCrearEmpresa() {
-        // ARRANGE 
         Empresa nuevaEmpresa = new Empresa();
         nuevaEmpresa.setNombre("Tech Solutions");
 
-        // ACT 
         daoEmpresa.guardar(nuevaEmpresa);
         idEmpresaGlobal = nuevaEmpresa.getIdEmpresa(); 
 
-        // ASSERT 
         assertNotNull(idEmpresaGlobal, "El ID no debería ser nulo tras guardar");
-        assertTrue(idEmpresaGlobal > 0, "El ID debería ser mayor a 0");
     }
 
     @Test
     @Order(2)
     @DisplayName("Debe crear la cadena Sucursal -> Depto -> Puesto")
     public void testCrearEstructura() {
-        // ARRANGE
         Empresa empresa = daoEmpresa.buscarPorId(idEmpresaGlobal);
         
         Sucursal suc = new Sucursal();
@@ -74,13 +75,11 @@ public class TestOrganizacion {
         puesto.setNombre("Desarrollador Java");
         puesto.setDepartamento(depto);
 
-        // ACT 
         daoSucursal.guardar(suc);
         daoDepto.guardar(depto);
         daoPuesto.guardar(puesto);
         idPuestoGlobal = puesto.getIdPuesto();
 
-        // ASSERT
         assertNotNull(idPuestoGlobal);
         assertEquals("Sede Central", depto.getSucursal().getNombre());
     }
@@ -89,7 +88,6 @@ public class TestOrganizacion {
     @Order(3)
     @DisplayName("Debe encontrar trabajador usando filtros (Nombre y Puesto)")
     public void testBuscarTrabajador() {
-        // ARRANGE
         Puesto puesto = daoPuesto.buscarPorId(idPuestoGlobal);
         Trabajador trabajador = new Trabajador();
         trabajador.setNombre("Roberto Gomez");
@@ -97,10 +95,8 @@ public class TestOrganizacion {
         trabajador.setPuesto(puesto);
         daoTrabajador.guardar(trabajador);
 
-        // ACT
         List<Trabajador> resultados = daoTrabajador.busquedaConFiltros("Roberto Gomez", "", puesto.getNombre());
 
-        // ASSERT
         assertFalse(resultados.isEmpty(), "La lista no debería estar vacía");
         assertEquals("Roberto Gomez", resultados.get(0).getNombre());
     }

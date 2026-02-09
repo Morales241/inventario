@@ -5,11 +5,12 @@
 package Interfaces;
 
 import Entidades.EquipoAsignado;
+import java.util.List;
 
 /**
  *
  * @author JMorales
  */
 public interface IDaoEquipoAsignado extends IDaoGenerico<EquipoAsignado, Long>{
-    
+    public List<EquipoAsignado> buscarPorTrabajadorActivo(Long idTrabajador);
 }

@@ -15,10 +15,16 @@ import java.util.List;
 
 public class DaoUsuario extends DaoGenerico<UsuarioSistema, Long> implements IDaoUsuario {
 
-    private final EntityManagerFactory emf = Conexion.getInstancia().getEntityManagerFactory();
+    private final EntityManagerFactory emf;
 
     public DaoUsuario() {
         super(UsuarioSistema.class);
+        this.emf = Conexion.getInstancia().getEntityManagerFactory();
+    }
+    
+    public DaoUsuario(EntityManagerFactory emf) {
+        super(UsuarioSistema.class,emf);
+        this.emf = emf;
     }
 
     @Override

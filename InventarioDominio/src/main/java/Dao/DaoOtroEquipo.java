@@ -6,13 +6,23 @@ package Dao;
 
 import Entidades.OtroEquipo;
 import Interfaces.IDaoOtroEquipo;
+import conexion.Conexion;
+import jakarta.persistence.EntityManagerFactory;
 
 /**
  *
  * @author JMorales
  */
 public class DaoOtroEquipo extends DaoGenerico<OtroEquipo, Long> implements IDaoOtroEquipo {
+    private EntityManagerFactory emf;
+    
     public DaoOtroEquipo() {
         super(OtroEquipo.class);
+        this.emf = Conexion.getInstancia().getEntityManagerFactory();
+    }
+    
+    public DaoOtroEquipo(EntityManagerFactory emf) {
+        super(OtroEquipo.class,emf);
+        this.emf = emf;
     }
 }

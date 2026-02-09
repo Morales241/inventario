@@ -37,6 +37,10 @@ public class EquipoAsignado extends AuditoriaBase implements Serializable {
     @ManyToOne
     @JoinColumn(name = "IdEquipoDeComputo")
     private EquipoDeComputo equipoDeComputo;
+    
+    @ManyToOne
+    @JoinColumn(name = "IdSucursal")
+    private Sucursal sucursal;
 
     public EquipoAsignado() {
     }
@@ -88,5 +92,11 @@ public class EquipoAsignado extends AuditoriaBase implements Serializable {
         this.equipoDeComputo = equipoDeComputo;
     }
     
-    
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
 }

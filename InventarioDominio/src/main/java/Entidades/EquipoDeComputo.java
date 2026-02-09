@@ -42,10 +42,6 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable {
     private LocalDate fechaCompra;
 
     @ManyToOne
-    @JoinColumn(name = "IdSucursal")
-    private Sucursal sucursal;
-
-    @ManyToOne
     @JoinColumn(name = "IdModelo")
     private Modelo modelo;
 
@@ -53,14 +49,13 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable {
     @OneToMany(mappedBy = "equipoDeComputo")
     private List<EquipoAsignado> equiposAsignados;
 
-    public EquipoDeComputo(CondicionFisica condicion, Integer gri, String factura, EstadoEquipo estado, String observaciones, LocalDate fechaCompra, Sucursal sucursal, Modelo modelo) {
+    public EquipoDeComputo(CondicionFisica condicion, Integer gri, String factura, EstadoEquipo estado, String observaciones, LocalDate fechaCompra, Modelo modelo) {
         this.condicion = condicion;
         this.gri = gri;
         this.factura = factura;
         this.estado = estado;
         this.observaciones = observaciones;
         this.fechaCompra = fechaCompra;
-        this.sucursal = sucursal;
         this.modelo = modelo;
         this.equiposAsignados = new ArrayList<>();
     }
@@ -123,14 +118,6 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable {
 
     public void setFechaCompra(LocalDate fechaCompra) {
         this.fechaCompra = fechaCompra;
-    }
-
-    public Sucursal getSucursal() {
-        return sucursal;
-    }
-
-    public void setSucursal(Sucursal sucursal) {
-        this.sucursal = sucursal;
     }
 
     public Modelo getModelo() {

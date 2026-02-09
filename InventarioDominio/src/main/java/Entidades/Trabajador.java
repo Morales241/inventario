@@ -19,7 +19,7 @@ public class Trabajador extends AuditoriaBase implements Serializable {
     @Column(name = "Nombre", nullable = false)
     private String nombre;
     
-    @Column(name = "NoNomina", nullable = false)
+    @Column(name = "NoNomina")
     private String noNomina;
 
     @ManyToOne

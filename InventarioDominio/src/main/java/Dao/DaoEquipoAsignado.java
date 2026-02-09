@@ -15,12 +15,19 @@ import java.util.List;
 
 public class DaoEquipoAsignado extends DaoGenerico<EquipoAsignado, Long> implements IDaoEquipoAsignado {
 
-    private final EntityManagerFactory emf = Conexion.getInstancia().getEntityManagerFactory();
+    private EntityManagerFactory emf;
 
     public DaoEquipoAsignado() {
         super(EquipoAsignado.class);
+        this.emf = Conexion.getInstancia().getEntityManagerFactory();
+    }
+    
+    public DaoEquipoAsignado(EntityManagerFactory emf) {
+        super(EquipoAsignado.class, emf);
+        this.emf = emf;
     }
 
+    @Override
     public List<EquipoAsignado> buscarPorTrabajadorActivo(Long idTrabajador) {
         try (EntityManager em = getEntityManager()) {
             CriteriaBuilder cb = emf.getCriteriaBuilder();

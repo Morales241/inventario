@@ -16,13 +16,13 @@ public class OtroEquipo extends EquipoDeComputo {
     @Column(name = "TituloCampoExtra", nullable = false)
     private String tituloCampoExtra;
 
-    @Column(name = "TituloCampoExtra2", nullable = false)
+    @Column(name = "TituloCampoExtra2")
     private String tituloCampoExtra2;
 
     @Column(name = "ContenidoCampoExtra", nullable = false)
     private String contenidoCampoExtra;
 
-    @Column(name = "ContenidoCampoExtra2", nullable = false)
+    @Column(name = "ContenidoCampoExtra2")
     private String contenidoCampoExtra2;
 
     public OtroEquipo(TipoOtroEquipo tipo, String tituloCampoExtra, String tituloCampoExtra2, String contenidoCampoExtra, String contenidoCampoExtra2) {

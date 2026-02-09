@@ -18,10 +18,16 @@ import java.util.List;
 
 public class DaoEquipoDeComputo extends DaoGenerico<EquipoDeComputo, Long> implements IDaoEquipoDeComputo {
 
-    private final EntityManagerFactory emf = Conexion.getInstancia().getEntityManagerFactory();
+    private EntityManagerFactory emf;
 
     public DaoEquipoDeComputo() {
         super(EquipoDeComputo.class);
+        this.emf = Conexion.getInstancia().getEntityManagerFactory();
+    }
+    
+    public DaoEquipoDeComputo(EntityManagerFactory emf) {
+        super(EquipoDeComputo.class, emf);
+        this.emf = emf;
     }
 
     @Override

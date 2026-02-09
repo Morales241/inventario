@@ -39,21 +39,21 @@ public class Sucursal extends AuditoriaBase implements Serializable {
     @Column(name = "Nombre")
     private String nombre;
     
-    
     @Column(name = "Departamentos")
     @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL)
     private List<Departamento> departamentos;
     
     @Column(name = "Equipos")
     @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL)
-    private List<EquipoDeComputo> equipos;
+    private List<EquipoAsignado> equipos;
     
 
-    public Sucursal(Empresa empresa, String ubicacion, String Nombre) {
+    public Sucursal(Empresa empresa, String ubicacion, String Nombre, List<EquipoAsignado> equipos) {
         this.empresa = empresa;
         this.ubicacion = ubicacion;
         this.nombre = Nombre;
         this.departamentos = new ArrayList<>();
+        this.equipos = equipos;
         this.equipos = new ArrayList<>();
     }
 
@@ -110,12 +110,11 @@ public class Sucursal extends AuditoriaBase implements Serializable {
         this.departamentos = departamentos;
     }
 
-    public List<EquipoDeComputo> getEquipos() {
+    public List<EquipoAsignado> getEquipos() {
         return equipos;
     }
 
-    public void setEquipos(List<EquipoDeComputo> equipos) {
+    public void setEquipos(List<EquipoAsignado> equipos) {
         this.equipos = equipos;
     }
-
 }

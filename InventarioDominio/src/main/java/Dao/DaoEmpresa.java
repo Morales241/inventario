@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Dao;
 
 import Entidades.Empresa;
@@ -21,10 +17,17 @@ import java.util.List;
  */
 public class DaoEmpresa extends DaoGenerico<Empresa, Long> implements IDaoEmpresa {
 
-    private final EntityManagerFactory emf = Conexion.getInstancia().getEntityManagerFactory();
+    private EntityManagerFactory emf;
 
     public DaoEmpresa() {
         super(Empresa.class);
+        
+        this.emf = Conexion.getInstancia().getEntityManagerFactory();
+    }
+    
+    public DaoEmpresa(EntityManagerFactory emf) {
+        super(Empresa.class, emf);
+        this.emf = emf;
     }
 
     @Override

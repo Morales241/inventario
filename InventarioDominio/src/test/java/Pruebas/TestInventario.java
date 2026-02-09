@@ -4,16 +4,14 @@ import Dao.*;
 import Entidades.*;
 import Enums.CondicionFisica;
 import Enums.EstadoEquipo;
-import Interfaces.IDaoEmpresa;
-import Interfaces.IDaoEquipoDeComputo;
-import Interfaces.IDaoModelo;
-import Interfaces.IDaoMovil;
-import Interfaces.IDaoSucursal;
+import Interfaces.*;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestInventario {
@@ -29,16 +27,26 @@ public class TestInventario {
 
     @BeforeAll
     public static void setUp() {
-        emf = Persistence.createEntityManagerFactory("ConexionPU");
-        daoEquipo = new DaoEquipoDeComputo();
-        daoMovil = new DaoMovil();
-        daoModelo = new DaoModelo();
-        daoEmp = new DaoEmpresa();
-        daoSuc = new DaoSucursal();
+        // --- CONFIGURACIÓN H2 ---
+        Map<String, String> properties = new HashMap<>();
+        properties.put("jakarta.persistence.jdbc.url", "jdbc:h2:mem:testdb_inventario;DB_CLOSE_DELAY=-1");
+        properties.put("jakarta.persistence.jdbc.driver", "org.h2.Driver");
+        properties.put("jakarta.persistence.jdbc.user", "sa");
+        properties.put("jakarta.persistence.jdbc.password", "");
+        properties.put("jakarta.persistence.schema-generation.database.action", "drop-and-create");
+
+        emf = Persistence.createEntityManagerFactory("ConexionPU", properties);
+        
+        daoEquipo = new DaoEquipoDeComputo(emf);
+        daoMovil = new DaoMovil(emf);
+        daoModelo = new DaoModelo(emf);
+        daoEmp = new DaoEmpresa(emf);
+        daoSuc = new DaoSucursal(emf); 
 
         Empresa e = new Empresa();
         e.setNombre("X");
         daoEmp.guardar(e);
+        
         Sucursal s = new Sucursal();
         s.setNombre("Bodega Test");
         s.setEmpresa(e);
@@ -63,10 +71,8 @@ public class TestInventario {
         celular.setGri(500);
         celular.setCondicion(CondicionFisica.NUEVO);
         celular.setEstado(EstadoEquipo.DISPONIBLE);
-        celular.setSucursal(sucursal);
         celular.setModelo(modelo);
         celular.setFactura("X");
-        
 
         // ACT
         daoMovil.guardar(celular);
@@ -85,7 +91,6 @@ public class TestInventario {
         EstadoEquipo estado = EstadoEquipo.DISPONIBLE;
 
         // ACT
-        // nulls en los campos que no queremos filtrar
         List<EquipoDeComputo> resultados = daoEquipo.buscarConFiltros(null, idSucursalTest, estado, busquedaTexto);
 
         // ASSERT

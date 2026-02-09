@@ -24,10 +24,16 @@ import java.util.List;
  */
 public class DaoSucursal extends DaoGenerico<Sucursal, Long> implements IDaoSucursal {
 
-    private final EntityManagerFactory emf = Conexion.getInstancia().getEntityManagerFactory();
+    private final EntityManagerFactory emf;
 
     public DaoSucursal() {
         super(Sucursal.class);
+        this.emf = Conexion.getInstancia().getEntityManagerFactory();
+    }
+    
+    public DaoSucursal(EntityManagerFactory emf) {
+        super(Sucursal.class,emf);
+        this.emf = emf;
     }
 
     @Override
