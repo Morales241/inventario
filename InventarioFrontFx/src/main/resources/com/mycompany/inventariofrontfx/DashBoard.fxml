@@ -11,7 +11,7 @@
    <left>
       <VBox prefHeight="517.0" prefWidth="200.0" spacing="15.0" style="-fx-background-color: #FAF9F6;" BorderPane.alignment="CENTER">
          <children>
-            <ToggleButton mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" styleClass="menu-btn" text="DashBoard">
+            <ToggleButton mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" selected="true" styleClass="menu-btn" text="DashBoard">
                <toggleGroup>
                   <ToggleGroup fx:id="menu" />
                </toggleGroup>
@@ -50,7 +50,7 @@
       </VBox>
    </left>
    <center>
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <ScrollPane fx:id="centerContainer" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
    <top>
       <VBox prefHeight="106.0" prefWidth="1072.0" BorderPane.alignment="CENTER" />
