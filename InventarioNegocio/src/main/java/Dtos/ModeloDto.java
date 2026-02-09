@@ -69,9 +69,8 @@ public class ModeloDto {
         this.noSerie = noSerie;
     }
 
-
     @Override
     public String toString() {
-        return marca + " " + nombre;
+        return idModelo + ".- " + nombre + ", Marca:" + marca ;
     }
 }

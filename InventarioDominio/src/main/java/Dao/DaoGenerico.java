@@ -37,7 +37,7 @@ public abstract class DaoGenerico<T, ID> implements IDaoGenerico<T, ID>{
     //CRUD basico
     
     @Override
-    public void guardar(T entidad) {
+    public T guardar(T entidad) {
 
         try (EntityManager em = getEntityManager()) {
             em.getTransaction().begin();
@@ -46,6 +46,8 @@ public abstract class DaoGenerico<T, ID> implements IDaoGenerico<T, ID>{
 
             em.getTransaction().commit();
         }
+        
+        return entidad;
     }
 
     @Override
@@ -61,7 +63,7 @@ public abstract class DaoGenerico<T, ID> implements IDaoGenerico<T, ID>{
     }
 
     @Override
-    public void actualizar(T entidad) {
+    public T actualizar(T entidad) {
 
         try (EntityManager em = getEntityManager()) {
             em.getTransaction().begin();
@@ -70,6 +72,8 @@ public abstract class DaoGenerico<T, ID> implements IDaoGenerico<T, ID>{
 
             em.getTransaction().commit();
         }
+        
+        return entidad;
     }
     
     @Override

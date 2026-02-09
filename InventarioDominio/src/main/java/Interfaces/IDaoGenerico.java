@@ -9,8 +9,8 @@ import java.util.List;
  * @param <ID>
  */
 public interface IDaoGenerico<T, ID> {
-    void guardar(T entidad);
-    void actualizar(T entidad);
+    T guardar(T entidad);
+    T actualizar(T entidad);
     void eliminar(ID id);
     T buscarPorId(ID id);
     List<T> buscarTodos();

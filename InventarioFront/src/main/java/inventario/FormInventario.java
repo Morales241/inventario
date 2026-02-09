@@ -49,6 +49,7 @@ public class FormInventario extends javax.swing.JFrame {
         this.panelInfoEspecificaEquipo.repaint();
 
         cargarOrganizaciones();
+        cargarModelos();
 
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -767,6 +768,16 @@ public class FormInventario extends javax.swing.JFrame {
 
     }
 
+    public void cargarModelos() {
+        List<ModeloDto> modelos = equipos.busquedaConFiltros(null, null, null, null);
+
+        this.cbxModelos.removeAllItems();
+
+        modelos.forEach(m -> {
+            cbxModelos.addItem(m.toString());
+        });
+    }
+
     private void cbxTipoEquipoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxTipoEquipoItemStateChanged
 
         if (evt.getStateChange() == evt.SELECTED) {
@@ -813,7 +824,7 @@ public class FormInventario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private <T extends EquipoBaseDTO> void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {
-        
+
         if (!validarFormulario()) {
             return;
         }
@@ -830,22 +841,22 @@ public class FormInventario extends javax.swing.JFrame {
             EmpresaDto empresa = organizacion.listarEmpresas(cbxEmpresa.getSelectedItem().toString()).getFirst();
 
             SucursalDto sucursal = organizacion.listarSucursales(cbxSucursal.getSelectedItem().toString(), empresa.getId()).getFirst();
-           
+
             T equipo = (T) panelSeleccionado.getDatosEntidad();
-            
+
             equipo = armarEquipo(modelo, sucursal, equipo);
-            
-            if (equipo instanceof EquipoEscritorioDTO) {
-                
-                equipos.guardarEscritorio((EquipoEscritorioDTO) equipo);
-            }else if (equipo instanceof MovilDTO) {
-                
-                equipos.guardarMovil((MovilDTO) equipo);
-            }else if (equipo instanceof OtroEquipoDTO) {
-                
-                equipos.guardarOtro((OtroEquipoDTO) equipo);
+
+            switch (equipo) {
+                case EquipoEscritorioDTO equipoEscritorioDTO ->
+                    equipos.guardarEscritorio(equipoEscritorioDTO);
+                case MovilDTO movilDTO ->
+                    equipos.guardarMovil(movilDTO);
+                case OtroEquipoDTO otroEquipoDTO ->
+                    equipos.guardarOtro(otroEquipoDTO);
+                default -> {
+                }
             }
-            
+
             javax.swing.JOptionPane.showMessageDialog(this, "¡Equipo registrado correctamente!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
         } catch (Exception e) {
@@ -854,8 +865,21 @@ public class FormInventario extends javax.swing.JFrame {
         }
     }
 
+    private ModeloDto modeloExist() {
+        String[] cadenas = cbxModelos.getSelectedItem().toString().split("\\.");
+
+        ModeloDto modelo = equipos.busquedarModeloPorId(Long.valueOf(cadenas[0]));
+
+        if (modelo != null) {
+            return modelo;
+        }
+
+        return null;
+    }
+
     private ModeloDto guardarModelo() throws Exception {
         ModeloDto modelo = new ModeloDto();
+        ModeloDto modeloAux = modeloExist();
 
         modelo.setNombre(txtNombreModelo.getText());
         modelo.setMarca(txtMarca.getText());
@@ -864,9 +888,40 @@ public class FormInventario extends javax.swing.JFrame {
         modelo.setMemoriaRam(Integer.parseInt(txtRam.getText()));
         modelo.setProcesador(txtProcesador.getText());
 
-        equipos.guardarModelo(modelo);
+        if (modeloAux == null) {
 
-        return equipos.listarModelos(modelo.getNoSerie()).getFirst();
+            return equipos.guardarModelo(modelo);
+        }
+
+        if (comprobarModelo(modeloAux, modelo)) {
+
+            return modeloAux;
+        }
+        
+        modelo.setIdModelo(modeloAux.getIdModelo());
+
+        return modelo;
+    }
+
+    private Boolean comprobarModelo(ModeloDto modeloBD, ModeloDto modeloForm) {
+
+        if (!modeloBD.getNombre().equalsIgnoreCase(modeloForm.getNombre())) {
+            return false;
+        }
+        if (modeloBD.getAlmacenamiento() != modeloForm.getAlmacenamiento()) {
+            return false;
+        }
+        if (!modeloBD.getMarca().equalsIgnoreCase(modeloForm.getMarca())) {
+            return false;
+        }
+        if (modeloBD.getMemoriaRam() != modeloForm.getMemoriaRam()) {
+            return false;
+        }
+        if (!modeloBD.getProcesador().equalsIgnoreCase(modeloForm.getProcesador())) {
+            return false;
+        }
+
+        return true;
     }
 
     private <T extends EquipoBaseDTO> T armarEquipo(ModeloDto modelo, SucursalDto sucursal, T equipo) {
@@ -883,30 +938,30 @@ public class FormInventario extends javax.swing.JFrame {
         baseDTO.setNombreModelo(modelo.getNombre());
         baseDTO.setNombreSucursal(sucursal.getNombre());
 
-        if (equipo instanceof EquipoEscritorioDTO) {
+        if (equipo instanceof EquipoEscritorioDTO equipoEscritorioDTO) {
             EquipoEscritorioDTO equipoEscritorio = (EquipoEscritorioDTO) baseDTO;
 
-            equipoEscritorio.setCuenta(((EquipoEscritorioDTO) equipo).getCuenta());
-            equipoEscritorio.setFinalGarantia(((EquipoEscritorioDTO) equipo).getFinalGarantia());
-            equipoEscritorio.setNombreEquipo(((EquipoEscritorioDTO) equipo).getNombreEquipo());
+            equipoEscritorio.setCuenta(equipoEscritorioDTO.getCuenta());
+            equipoEscritorio.setFinalGarantia(equipoEscritorioDTO.getFinalGarantia());
+            equipoEscritorio.setNombreEquipo(equipoEscritorioDTO.getNombreEquipo());
 
         }
-        if (equipo instanceof MovilDTO) {
+        if (equipo instanceof MovilDTO movilDTO) {
             MovilDTO movil = (MovilDTO) baseDTO;
 
-            movil.setCargador(((MovilDTO) equipo).getCargador());
-            movil.setFunda(((MovilDTO) equipo).getFunda());
-            movil.setManosLibres(((MovilDTO) equipo).getManosLibres());
-            movil.setNumCelular(((MovilDTO) equipo).getNumCelular());
+            movil.setCargador(movilDTO.getCargador());
+            movil.setFunda(movilDTO.getFunda());
+            movil.setManosLibres(movilDTO.getManosLibres());
+            movil.setNumCelular(movilDTO.getNumCelular());
 
         }
-        if (equipo instanceof OtroEquipoDTO) {
+        if (equipo instanceof OtroEquipoDTO otroEquipoDTO) {
             OtroEquipoDTO otro = (OtroEquipoDTO) baseDTO;
 
-            otro.setContenidoCampoExtra(((OtroEquipoDTO) equipo).getContenidoCampoExtra());
-            otro.setContenidoCampoExtra2(((OtroEquipoDTO) equipo).getContenidoCampoExtra2());
-            otro.setTituloCampoExtra(((OtroEquipoDTO) equipo).getTituloCampoExtra());
-            otro.setTituloCampoExtra2(((OtroEquipoDTO) equipo).getTituloCampoExtra2());
+            otro.setContenidoCampoExtra(otroEquipoDTO.getContenidoCampoExtra());
+            otro.setContenidoCampoExtra2(otroEquipoDTO.getContenidoCampoExtra2());
+            otro.setTituloCampoExtra(otroEquipoDTO.getTituloCampoExtra());
+            otro.setTituloCampoExtra2(otroEquipoDTO.getTituloCampoExtra2());
         }
 
         String observacion = (txtObservaciones.getText() != null) ? txtObservaciones.getText() : "";

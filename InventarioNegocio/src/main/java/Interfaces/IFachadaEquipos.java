@@ -15,21 +15,23 @@ import java.util.List;
  */
 public interface IFachadaEquipos {
     
-    public List<EquipoBaseDTO> buscarEquipos(Integer gri, Long idSucursal, EstadoEquipo estado, String criterioBusqueda);
+    public List<EquipoBaseDTO> buscarEquipos(Integer gri, EstadoEquipo estado, String criterioBusqueda);
     
     public EquipoBaseDTO obtenerEquipoPorId(Long id) throws Exception;
     
-    public void guardarEscritorio(EquipoEscritorioDTO dto) throws Exception;
+    public EquipoEscritorioDTO guardarEscritorio(EquipoEscritorioDTO dto) throws Exception;
     
-    public void guardarMovil(MovilDTO dto) throws Exception;
+    public MovilDTO guardarMovil(MovilDTO dto) throws Exception;
     
-    public void guardarOtro(OtroEquipoDTO dto) throws Exception;
+    public OtroEquipoDTO guardarOtro(OtroEquipoDTO dto) throws Exception;
     
     public void eliminarEquipo(Long id) throws Exception;
     
     public List<ModeloDto> listarModelos(String nombreModelo);
     
-    public void guardarModelo(ModeloDto dto) throws Exception;
+    public ModeloDto guardarModelo(ModeloDto dto) throws Exception;
     
     public List<ModeloDto> busquedaConFiltros(String marca, String memoriaRam, String almacenamiento, String procesador);
+    
+    public ModeloDto busquedarModeloPorId(Long id);
 }

@@ -26,8 +26,8 @@ public class ServicioEquipos {
      * @param criterioBusqueda
      * @return 
      */
-    public List<EquipoBaseDTO> buscarEquipos(Integer gri, Long idSucursal, EstadoEquipo estado, String criterioBusqueda) {
-        List<EquipoDeComputo> lista = daoGeneral.buscarConFiltros(gri, idSucursal, estado, criterioBusqueda);
+    public List<EquipoBaseDTO> buscarEquipos(Integer gri, EstadoEquipo estado, String criterioBusqueda) {
+        List<EquipoDeComputo> lista = daoGeneral.buscarConFiltros(gri, estado, criterioBusqueda);
         
         return lista.stream().map(equipo -> {
             if (equipo instanceof EquipoDeEscritorio) {
@@ -58,38 +58,44 @@ public class ServicioEquipos {
         }
     }
 
-    public void guardarEscritorio(EquipoEscritorioDTO dto) throws Exception {
+    public EquipoEscritorioDTO guardarEscritorio(EquipoEscritorioDTO dto) throws Exception {
         validarDatosComunes(dto);
         EquipoDeEscritorio entidad = MapperEquipos.escritorio.mapToEntity(dto);
         
         if (dto.getIdEquipo() != null && dto.getIdEquipo() > 0) {
-            daoEscritorio.actualizar(entidad);
+            entidad = daoEscritorio.actualizar(entidad);
         } else {
-            daoEscritorio.guardar(entidad);
+            entidad = daoEscritorio.guardar(entidad);
         }
+        
+        return MapperEquipos.escritorio.mapToDto(entidad);
     }
 
-    public void guardarMovil(MovilDTO dto) throws Exception {
+    public MovilDTO guardarMovil(MovilDTO dto) throws Exception {
         validarDatosComunes(dto);
         
         Movil entidad = MapperEquipos.movil.mapToEntity(dto);
         
         if (dto.getIdEquipo() != null && dto.getIdEquipo() > 0) {
-            daoMovil.actualizar(entidad);
+            entidad = daoMovil.actualizar(entidad);
         } else {
-            daoMovil.guardar(entidad);
+            entidad = daoMovil.guardar(entidad);
         }
+        
+        return MapperEquipos.movil.mapToDto(entidad);
     }
 
-    public void guardarOtro(OtroEquipoDTO dto) throws Exception {
+    public OtroEquipoDTO guardarOtro(OtroEquipoDTO dto) throws Exception {
         validarDatosComunes(dto);
         OtroEquipo entidad = MapperEquipos.otro.mapToEntity(dto);
         
         if (dto.getIdEquipo() != null && dto.getIdEquipo() > 0) {
-            daoOtro.actualizar(entidad);
+            entidad = daoOtro.actualizar(entidad);
         } else {
-            daoOtro.guardar(entidad);
+            entidad = daoOtro.guardar(entidad);
         }
+        
+        return MapperEquipos.otro.mapToDto(entidad);
     }
 
     public void eliminarEquipo(Long id) throws Exception {
@@ -107,9 +113,10 @@ public class ServicioEquipos {
         return MapperModelo.converter.mapToDtoList(daoModelo.buscarTodos());
     }
     
-    public void guardarModelo(ModeloDto dto) throws Exception {
+    public ModeloDto guardarModelo(ModeloDto dto) throws Exception {
         if(dto.getNombre().isEmpty()) throw new Exception("El nombre del modelo es requerido");
-        daoModelo.guardar(MapperModelo.converter.mapToEntity(dto));
+        
+        return MapperModelo.converter.mapToDto(daoModelo.guardar(MapperModelo.converter.mapToEntity(dto)));
     }
 
     private void validarDatosComunes(EquipoBaseDTO dto) throws Exception {
@@ -120,5 +127,9 @@ public class ServicioEquipos {
     public List<ModeloDto> busquedaConFiltros(String marca, String memoriaRam, String almacenamiento, String procesador){
         
         return MapperModelo.converter.mapToDtoList(daoModelo.busquedaConFiltros(marca, memoriaRam, almacenamiento, procesador));
+    }
+    
+    public ModeloDto busquedarModeloPorId(Long id){
+        return MapperModelo.converter.mapToDto(daoModelo.buscarPorId(id));
     }
 }

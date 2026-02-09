@@ -31,7 +31,7 @@ public class DaoEquipoDeComputo extends DaoGenerico<EquipoDeComputo, Long> imple
     }
 
     @Override
-    public List<EquipoDeComputo> buscarConFiltros(Integer gri, Long idSucursal, EstadoEquipo estado, String busquedaModelo) {
+    public List<EquipoDeComputo> buscarConFiltros(Integer gri, EstadoEquipo estado, String busquedaModelo) {
         
         try (EntityManager em = getEntityManager()) {
             CriteriaBuilder cb = emf.getCriteriaBuilder();
@@ -46,11 +46,6 @@ public class DaoEquipoDeComputo extends DaoGenerico<EquipoDeComputo, Long> imple
 
             if (estado != null) {
                 predicados.add(cb.equal(root.get("estado"), estado));
-            }
-
-            if (idSucursal != null) {
-                Join<EquipoDeComputo, Sucursal> joinSucursal = root.join("sucursal");
-                predicados.add(cb.equal(joinSucursal.get("idSucursal"), idSucursal));
             }
 
             if (busquedaModelo != null && !busquedaModelo.isEmpty()) {

@@ -1,0 +1,21 @@
+.menu-btn {
+    -fx-background-color: transparent; 
+    -fx-text-fill: #13507d;
+    -fx-background-insets: 0; 
+    -fx-background-color: #FAF9F6; 
+    -fx-background-radius: 0;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 20 10 20;
+    -fx-background-radius: 8; 
+    -fx-border-radius: 8;
+}
+
+.menu-btn:hover {
+    -fx-background-color: #13507d; 
+    -fx-text-fill: white;           
+}
+
+.menu-btn:selected {
+    -fx-background-color: #13507d; 
+    -fx-text-fill: white;          
+}

@@ -91,7 +91,7 @@ public class TestInventario {
         EstadoEquipo estado = EstadoEquipo.DISPONIBLE;
 
         // ACT
-        List<EquipoDeComputo> resultados = daoEquipo.buscarConFiltros(null, idSucursalTest, estado, busquedaTexto);
+        List<EquipoDeComputo> resultados = daoEquipo.buscarConFiltros(null, estado, busquedaTexto);
 
         // ASSERT
         assertFalse(resultados.isEmpty(), "Debería encontrar el iPhone creado antes");

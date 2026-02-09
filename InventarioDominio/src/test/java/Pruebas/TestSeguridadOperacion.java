@@ -111,7 +111,6 @@ public class TestSeguridadOperacion {
         Modelo modelo = daoModelo.buscarTodos().get(0);
         Sucursal sucursal = daoSucursal.buscarTodos().get(0);
 
-        celular.setSucursal(sucursal);
         celular.setModelo(modelo);
         
         IDaoMovil daoMovil = new DaoMovil(emf); 

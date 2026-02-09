@@ -84,10 +84,6 @@ public class MapperEquipos {
         dto.setObservaciones(e.getObservaciones());
         dto.setFechaCompra(e.getFechaCompra());
         
-        if (e.getSucursal() != null) {
-            dto.setIdSucursal(e.getSucursal().getIdSucursal());
-            dto.setNombreSucursal(e.getSucursal().getNombre());
-        }
         if (e.getModelo() != null) {
             dto.setIdModelo(e.getModelo().getId());
             dto.setNombreModelo(e.getModelo().getMarca() + " " + e.getModelo().getNombre());
@@ -102,12 +98,6 @@ public class MapperEquipos {
         e.setCondicion(dto.getCondicion());
         e.setObservaciones(dto.getObservaciones());
         e.setFechaCompra(dto.getFechaCompra());
-        
-        if (dto.getIdSucursal() != null) {
-            Sucursal s = new Sucursal();
-            s.setIdSucursal(dto.getIdSucursal());
-            e.setSucursal(s);
-        }
         
         if (dto.getIdModelo() != null) {
             Modelo m = new Modelo();

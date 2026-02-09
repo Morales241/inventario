@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="623.0" prefWidth="1072.0" stylesheets="@dashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.DashBoardController">
+   <left>
+      <VBox prefHeight="517.0" prefWidth="200.0" spacing="15.0" style="-fx-background-color: #FAF9F6;" BorderPane.alignment="CENTER">
+         <children>
+            <ToggleButton mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" styleClass="menu-btn" text="DashBoard">
+               <toggleGroup>
+                  <ToggleGroup fx:id="menu" />
+               </toggleGroup>
+            </ToggleButton>
+            <ToggleButton mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" styleClass="menu-btn" text="Inventario" toggleGroup="$menu" />
+            <ToggleButton mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" styleClass="menu-btn" text="Colaboradores" toggleGroup="$menu" />
+            <ToggleButton mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" styleClass="menu-btn" text="Asignaciones" toggleGroup="$menu" />
+            <ToggleButton mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" styleClass="menu-btn" text="Organizacion" toggleGroup="$menu" />
+            <VBox nodeOrientation="LEFT_TO_RIGHT" prefHeight="160.0" prefWidth="180.0" spacing="10.0">
+               <children>
+                  <ToggleButton mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" styleClass="menu-btn" text="Configuracion" toggleGroup="$menu" />
+                  <VBox nodeOrientation="LEFT_TO_RIGHT" prefHeight="111.0" prefWidth="104.0" spacing="10.0">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="30.0" />
+                     </padding>
+                     <children>
+                        <ToggleButton mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" styleClass="menu-btn" text="Usuarios" toggleGroup="$menu" />
+                        <ToggleButton mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" styleClass="menu-btn" text="Auditoria" toggleGroup="$menu" />
+                     </children>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </VBox>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </left>
+   <center>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
+   <top>
+      <VBox prefHeight="106.0" prefWidth="1072.0" BorderPane.alignment="CENTER" />
+   </top>
+</BorderPane>
