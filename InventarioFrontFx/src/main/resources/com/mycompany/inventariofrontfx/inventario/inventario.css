@@ -1,0 +1,41 @@
+.btn-agregar {
+    -fx-background-color: #13507d;
+    -fx-text-fill: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-alignment: CENTER;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+.btn-agregar:hover{
+    -fx-background-color: #176ca8;
+}
+
+.btn-cancelar {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-alignment: CENTER;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+.btn-cancelar:hover{
+    -fx-text-fill: #f1213a;
+}
+
+.panel-menu{
+    -fx-text-fill: #ebecec;
+}
+
+.panel-isla{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+.panel-isla-padre{
+    -fx-border-color: lightgray;
+}

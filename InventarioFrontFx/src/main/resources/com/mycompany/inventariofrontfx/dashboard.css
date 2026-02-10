@@ -1,6 +1,6 @@
 .menu-btn {
     -fx-background-color: transparent; 
-    -fx-text-fill: #13507d;
+    -fx-text-fill: #4d4d4d;
     -fx-background-insets: 0; 
     -fx-background-color: #FAF9F6; 
     -fx-background-radius: 0;
@@ -10,12 +10,43 @@
     -fx-border-radius: 8;
 }
 
-.menu-btn:hover {
-    -fx-background-color: #13507d; 
-    -fx-text-fill: white;           
+.menu-icon {
+    -fx-icon-color: #4d4d4d; 
+    -fx-icon-size: 20px;
 }
 
-.menu-btn:selected {
+.menu-btn:hover{
     -fx-background-color: #13507d; 
-    -fx-text-fill: white;          
+    -fx-text-fill: white;
+}
+
+.menu-btn:hover .menu-icon {
+    -fx-icon-color: white; 
+}
+
+.menu-btn:selected{
+    -fx-background-color: #13507d; 
+    -fx-text-fill: white;
+}
+
+.menu-btn:selected .menu-icon {
+    -fx-icon-color: #ffffff; 
+}
+
+.panel-menu{
+    -fx-background-color: #ebecec; 
+    
+}
+
+.panel-lateral{
+    -fx-background-color: #FAF9F6; 
+    -fx-border-width: 0px 1px 0px 0px; 
+    -fx-border-color: lightgray;
+    -fx-border-style: solid;
+}
+
+.panel-superior{
+    -fx-border-width: 0px 0px 1px 0px; 
+    -fx-border-color: lightgray;
+    -fx-border-style: solid;
 }

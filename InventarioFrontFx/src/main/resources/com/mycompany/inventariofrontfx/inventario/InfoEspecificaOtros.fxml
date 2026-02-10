@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+
+<FlowPane hgap="20.0" vgap="15.0" styleClass="panel-isla" stylesheets="@inventario.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.InfoEspecificaOtrosController">
+   <children>
+      
+      <VBox spacing="5.0">
+         <children>
+            <Label text="Titulo de campo extra:" />
+            <TextField fx:id="txtTCE" prefHeight="35.0" prefWidth="300.0" />
+         </children>
+      </VBox>
+
+      <VBox spacing="5.0">
+         <children>
+            <Label text="Contenido de campo extra:" />
+            <TextField fx:id="txtCCE" prefHeight="35.0" prefWidth="300.0" />
+         </children>
+      </VBox>
+
+      <VBox spacing="5.0">
+         <children>
+            <Label text="Titulo de campo extra:" />
+            <TextField fx:id="txtTCE2" prefHeight="35.0" prefWidth="300.0" />
+         </children>
+      </VBox>
+
+      <VBox spacing="5.0">
+         <children>
+            <Label text="Contenido de campo extra:" />
+            <TextField fx:id="txtCCE2" prefHeight="35.0" prefWidth="300.0" />
+         </children>
+      </VBox>
+
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</FlowPane>

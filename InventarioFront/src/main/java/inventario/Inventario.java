@@ -227,40 +227,40 @@ public class Inventario extends javax.swing.JFrame {
         panelCentral.setLayout(new javax.swing.BoxLayout(panelCentral, javax.swing.BoxLayout.X_AXIS));
         panelCentral.add(filler1);
 
-        busquedaGri.setBackground(new java.awt.Color(250, 249, 246));
         busquedaGri.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        busquedaGri.setForeground(new java.awt.Color(0, 0, 0));
+        busquedaGri.setBackground(new java.awt.Color(250, 249, 246));
         busquedaGri.setBorder(null);
+        busquedaGri.setForeground(new java.awt.Color(0, 0, 0));
         busquedaGri.setMaximumSize(new java.awt.Dimension(240, 40));
         busquedaGri.setMinimumSize(new java.awt.Dimension(240, 40));
         busquedaGri.setPreferredSize(new java.awt.Dimension(240, 40));
         panelCentral.add(busquedaGri);
         panelCentral.add(filler2);
 
+        jcbFiltroTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbFiltroTipo.setBackground(new java.awt.Color(250, 249, 246));
         jcbFiltroTipo.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jcbFiltroTipo.setForeground(new java.awt.Color(0, 0, 0));
-        jcbFiltroTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbFiltroTipo.setMaximumSize(new java.awt.Dimension(240, 45));
         jcbFiltroTipo.setMinimumSize(new java.awt.Dimension(240, 45));
         jcbFiltroTipo.setPreferredSize(new java.awt.Dimension(240, 45));
         panelCentral.add(jcbFiltroTipo);
         panelCentral.add(filler3);
 
+        jcbFiltroCondicion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbFiltroCondicion.setBackground(new java.awt.Color(250, 249, 246));
         jcbFiltroCondicion.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jcbFiltroCondicion.setForeground(new java.awt.Color(0, 0, 0));
-        jcbFiltroCondicion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbFiltroCondicion.setMaximumSize(new java.awt.Dimension(240, 45));
         jcbFiltroCondicion.setMinimumSize(new java.awt.Dimension(240, 45));
         jcbFiltroCondicion.setPreferredSize(new java.awt.Dimension(240, 45));
         panelCentral.add(jcbFiltroCondicion);
         panelCentral.add(filler4);
 
+        jcbFiltroStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbFiltroStatus.setBackground(new java.awt.Color(250, 249, 246));
         jcbFiltroStatus.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jcbFiltroStatus.setForeground(new java.awt.Color(0, 0, 0));
-        jcbFiltroStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbFiltroStatus.setMaximumSize(new java.awt.Dimension(240, 45));
         jcbFiltroStatus.setMinimumSize(new java.awt.Dimension(240, 45));
         jcbFiltroStatus.setPreferredSize(new java.awt.Dimension(240, 45));
@@ -279,10 +279,7 @@ public class Inventario extends javax.swing.JFrame {
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jScrollPane1.setForeground(new java.awt.Color(255, 255, 255));
 
-        tablaEquipos.setBackground(new java.awt.Color(255, 255, 255));
         tablaEquipos.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        tablaEquipos.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        tablaEquipos.setForeground(new java.awt.Color(0, 0, 0));
         tablaEquipos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
@@ -311,6 +308,9 @@ public class Inventario extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaEquipos.setBackground(new java.awt.Color(255, 255, 255));
+        tablaEquipos.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tablaEquipos.setForeground(new java.awt.Color(0, 0, 0));
         jScrollPane1.setViewportView(tablaEquipos);
         if (tablaEquipos.getColumnModel().getColumnCount() > 0) {
             tablaEquipos.getColumnModel().getColumn(0).setMinWidth(60);
