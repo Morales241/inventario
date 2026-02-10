@@ -4,23 +4,29 @@
  */
 package com.mycompany.inventariofrontfx.inventario;
 
+import Dtos.EquipoEscritorioDTO;
+import Dtos.MovilDTO;
 import com.mycompany.inventariofrontfx.BaseController;
 import com.mycompany.inventariofrontfx.DashBoardController;
+import com.mycompany.inventariofrontfx.IValidaciones;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
  * @author tacot
  */
-public class InfoEspecidicaMovilController implements Initializable, BaseController {
+public class InfoEspecidicaMovilController implements Initializable, BaseController, IValidaciones<MovilDTO> {
 
     private DashBoardController dbc;
     
@@ -84,6 +90,48 @@ public class InfoEspecidicaMovilController implements Initializable, BaseControl
     public void setDashBoard(DashBoardController dbc) {
         this.dbc = dbc;
     }
+
+    @Override
+    public boolean validarFormulario() {
+        if (phoneField.getText().trim().isEmpty()) {
+            mostrarAdvertencia("El Numero de telefono es obligatorio.");
+            phoneField.requestFocus();
+            return false;
+        }
+        
+        return true;
+    }
+
+    @Override
+    public MovilDTO getDatosEntidad() {
+        MovilDTO movil = new MovilDTO();
+
+        Boolean cargador = false;
+        Boolean manosLibres = false;
+        Boolean funda = false;
+
+        cargador = rbtCargador.isSelected();
+
+        funda = rbtFunda.isSelected();
+        
+        manosLibres = rbtManosLibres.isSelected();
+
+        movil.setCargador(cargador);
+        movil.setFunda(funda);
+        movil.setManosLibres(manosLibres);
+        movil.setNumCelular(phoneField.getText());
+
+        return movil;
+    }
     
+    private void mostrarAdvertencia(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Faltan Datos");
+        alert.setHeaderText(mensaje);
+        System.out.println(mensaje);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("imagenes/logo.png"));
+        alert.showAndWait();
+    }
     
 }

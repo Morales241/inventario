@@ -1,24 +1,31 @@
 package com.mycompany.inventariofrontfx.inventario;
 
+import Dtos.EquipoBaseDTO;
 import com.mycompany.inventariofrontfx.BaseController;
 import com.mycompany.inventariofrontfx.DashBoardController;
+import com.mycompany.inventariofrontfx.IValidaciones;
 import java.io.IOException;
 import java.net.URL;
 import static java.util.Arrays.asList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -44,12 +51,12 @@ public class FormInventarioController implements Initializable, BaseController {
     @FXML
     private TextField txtModelo;
     @FXML
-    private DatePicker fechaCopmra; //ya
+    private DatePicker fechaCompra; //ya
     @FXML
     private TextField txtFactura; //ya
     @FXML
     private TextField txtObservaciones; //ya
-    
+
     @FXML
     private ComboBox<String> cbxTipoEquipo; //ya
     @FXML
@@ -60,7 +67,7 @@ public class FormInventarioController implements Initializable, BaseController {
     private ComboBox<String> cbxCondicion; //ya
     @FXML
     private ComboBox<String> cbxModelo;
-    
+
     @FXML
     private CheckBox ckbCrearNuevoModelo;
     @FXML
@@ -70,7 +77,7 @@ public class FormInventarioController implements Initializable, BaseController {
     @FXML
     private Button btnAgregar;
 
-    private Object controladorActual;
+    private IValidaciones<?> controladorHijoActual;
 
     /**
      * Initializes the controller class.
@@ -102,7 +109,6 @@ public class FormInventarioController implements Initializable, BaseController {
             }
         });
 
-        btnAgregar.setOnAction(e -> guardarDatos());
     }
 
     /**
@@ -115,7 +121,7 @@ public class FormInventarioController implements Initializable, BaseController {
             case "Movil":
                 fxml = "InfoEspecidicaMovil.fxml";
                 break;
-            case "Escritorio": 
+            case "Escritorio":
             case "Laptop":
                 fxml = "InfoEspecificaEscritorio.fxml";
                 break;
@@ -128,7 +134,8 @@ public class FormInventarioController implements Initializable, BaseController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Parent vista = loader.load();
 
-            this.controladorActual = loader.getController();
+            this.controladorHijoActual = loader.getController();
+            
 
             containerEspecifico.getChildren().clear();
             containerEspecifico.getChildren().add(vista);
@@ -138,16 +145,37 @@ public class FormInventarioController implements Initializable, BaseController {
             ex.printStackTrace();
         }
     }
+    
+    @FXML
+    private <T extends EquipoBaseDTO> void guardarDatos() {
 
-    private void guardarDatos() {
-        System.out.println("Guardando datos...");
-        System.out.println("GRY: " + txtGry.getText());
-        System.out.println("Tipo: " + cbxTipoEquipo.getValue());
+        if (!validarFormulario()) {
+            return;
+        }
+        
+        if (!controladorHijoActual.validarFormulario()) {
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmar Guardado");
+        alert.setHeaderText("¿Estás seguro de guardar este equipo?");
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("imagenes/logo.png"));
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+
+            System.out.println("Guardando datos...");
+            System.out.println("GRY: " + txtGry.getText());
+            System.out.println("Tipo: " + cbxTipoEquipo.getValue());
+        }
 
     }
 
     private void cargarDatosFicticios() {
-        List<String> itemsCbxTipos = asList("Laptop", "Escritorio", "Movil",  "Otros");
+        List<String> itemsCbxTipos = asList("Laptop", "Escritorio", "Movil", "Otros");
 
         List<String> itemsCbxCondicion = asList("Nuevo", "Bueno", "Regular", "Malo");
 
@@ -156,7 +184,130 @@ public class FormInventarioController implements Initializable, BaseController {
 
         cbxTipoEquipo.getSelectionModel().selectFirst();
         cbxCondicion.getSelectionModel().selectFirst();
-        
+
         cargarVistaEspecifica("Laptop");
+    }
+
+    private void mostrarAdvertencia(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Faltan Datos");
+        alert.setHeaderText(mensaje);
+        System.out.println(mensaje);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("imagenes/logo.png"));
+        alert.showAndWait();
+    }
+
+    private void mostrarError(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error Crítico");
+        alert.setHeaderText(mensaje);
+        System.out.println(mensaje);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("imagenes/logo.png"));
+        alert.showAndWait();
+    }
+
+    public boolean validarFormulario() {
+
+        if (cbxEmpresa.getSelectionModel().getSelectedItem() == null || cbxEmpresa.getSelectionModel().getSelectedIndex() == -1) {
+            mostrarAdvertencia("Debes seleccionar la 'Empresa' propietaria del equipo.");
+            cbxEmpresa.requestFocus();
+            return false;
+        }
+
+        if (cbxSucursal.getSelectionModel().getSelectedItem() == null || cbxSucursal.getSelectionModel().getSelectedIndex() == -1) {
+            mostrarAdvertencia("Debes seleccionar la 'Sucursal' donde estará el equipo.");
+            cbxSucursal.requestFocus();
+            return false;
+        }
+
+        if (cbxTipoEquipo.getSelectionModel().getSelectedItem() == null || cbxTipoEquipo.getSelectionModel().getSelectedIndex() == -1) {
+            mostrarAdvertencia("Selecciona el 'Tipo de Equipo'.");
+            cbxTipoEquipo.requestFocus();
+            return false;
+        }
+
+        if (cbxCondicion.getSelectionModel().getSelectedItem() == null || cbxCondicion.getSelectionModel().getSelectedIndex() == -1) {
+            mostrarAdvertencia("Selecciona la 'Condición' actual del equipo.");
+            cbxCondicion.requestFocus();
+            return false;
+        }
+
+        if (txtIdentificador.getText().trim().isEmpty()) {
+            mostrarAdvertencia("El 'Número de Serie' es obligatorio.");
+            txtIdentificador.requestFocus();
+            return false;
+        }
+        if (txtIdentificador.getText().trim().length() < 10) {
+            mostrarAdvertencia("El Número de Serie parece demasiado corto. Verifícalo.");
+            txtIdentificador.requestFocus();
+            return false;
+        }
+
+        if (txtGry.getText().trim().isEmpty()) {
+            mostrarAdvertencia("El código 'GRI' (Etiqueta de inventario) es obligatorio.");
+            txtGry.requestFocus();
+            return false;
+        }
+
+        if (txtMarca.getText().trim().isEmpty()) {
+            mostrarAdvertencia("Ingresa la 'Marca' del equipo.");
+            txtMarca.requestFocus();
+            return false;
+        }
+
+        if (txtModelo.getText().trim().isEmpty()) {
+            mostrarAdvertencia("Ingresa el nombre del Modelo.");
+            txtModelo.requestFocus();
+            return false;
+        }
+
+        if (txtProcesador.getText().trim().isEmpty()) {
+            mostrarAdvertencia("Ingresa el Procesador.");
+            txtProcesador.requestFocus();
+            return false;
+        }
+
+        String ram = txtRam.getText().trim();
+        if (ram.isEmpty()) {
+            mostrarAdvertencia("Ingresa la cantidad de 'RAM'.");
+            txtRam.requestFocus();
+            return false;
+        }
+
+        if (txtAlmacenamiento.getText().trim().isEmpty()) {
+            mostrarAdvertencia("Ingresa el Almacenamiento (Ej: 512GB SSD).");
+            txtAlmacenamiento.requestFocus();
+            return false;
+        }
+
+        if (txtFactura.getText().trim().isEmpty()) {
+            mostrarAdvertencia("El número de 'Factura' es obligatorio para auditoría.");
+            txtFactura.requestFocus();
+            return false;
+        }
+
+        java.time.LocalDate fecha = fechaCompra.getValue();
+
+        if (fecha == null) {
+            mostrarAdvertencia("Debes seleccionar la 'Fecha de Compra' en el calendario.");
+            fechaCompra.requestFocus();
+            return false;
+        }
+
+        if (fecha.isAfter(java.time.LocalDate.now())) {
+            mostrarError("La fecha de compra no puede ser una fecha futura.");
+            fechaCompra.requestFocus();
+            return false;
+        }
+
+        if (txtObservaciones.getText().length() > 500) {
+            mostrarAdvertencia("Las observaciones son demasiado largas (Máx 500 caracteres).");
+            txtObservaciones.requestFocus();
+            return false;
+        }
+
+        return true;
     }
 }

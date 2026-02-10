@@ -15,7 +15,6 @@ public class MapperModelo {
                 dto.setMemoriaRam(m.getMemoriaRam());
                 dto.setAlmacenamiento(m.getAlmacenamiento());
                 dto.setProcesador(m.getPreocesador()); 
-                dto.setNoSerie(m.getNoSerie());
                 return dto;
             },
             (dto) -> {
@@ -26,7 +25,6 @@ public class MapperModelo {
                 m.setMemoriaRam(dto.getMemoriaRam());
                 m.setAlmacenamiento(dto.getAlmacenamiento());
                 m.setPreocesador(dto.getProcesador());
-                m.setNoSerie(dto.getNoSerie());
                 return m;
             }
     );

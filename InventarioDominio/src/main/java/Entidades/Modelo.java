@@ -38,20 +38,16 @@ public class Modelo extends AuditoriaBase implements Serializable {
     @Column(name = "Procesador")
     private String procesador;
     
-    @Column(name = "NoSerie")
-    private String noSerie;
-    
     @Column(name = "Equipos")
     @OneToMany(mappedBy = "modelo") 
     private List<EquipoDeComputo> equipos;
 
-    public Modelo(String marca,String nombre, int memoriaRam, int almacenamiento, String preocesador, String noSerie) {
+    public Modelo(String marca,String nombre, int memoriaRam, int almacenamiento, String preocesador) {
         this.marca = marca;
         this.nombre = nombre;
         this.memoriaRam = memoriaRam;
         this.almacenamiento = almacenamiento;
         this.procesador = preocesador;
-        this.noSerie = noSerie;
         this.equipos = new ArrayList<>();
     }
 
@@ -97,14 +93,6 @@ public class Modelo extends AuditoriaBase implements Serializable {
 
     public void setPreocesador(String preocesador) {
         this.procesador = preocesador;
-    }
-
-    public String getNoSerie() {
-        return noSerie;
-    }
-
-    public void setNoSerie(String noSerie) {
-        this.noSerie = noSerie;
     }
 
     public List<EquipoDeComputo> getEquipos() {

@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" styleClass="panel-menu" stylesheets="@inventario.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.FormInventarioController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" styleClass="panel-menu" stylesheets="@inventario.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.FormInventarioController">
    
    <center>
       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
@@ -41,7 +41,7 @@
                            <children>
                               
                               <VBox spacing="5.0">
-                                 <Label text="GRI:" />
+                                 <Label text="GRY:" />
                                  <TextField fx:id="txtGry" prefHeight="35.0" prefWidth="300.0" />
                               </VBox>
                               
@@ -52,7 +52,7 @@
                               
                               <VBox spacing="5.0">
                                  <Label text="Fecha de compra:" />
-                                 <DatePicker fx:id="fechaCopmra" prefHeight="35.0" prefWidth="300.0" />
+                                 <DatePicker fx:id="fechaCompra" prefHeight="35.0" prefWidth="300.0" />
                               </VBox>
                               
                               <VBox spacing="5.0">
@@ -67,12 +67,12 @@
                               
                               <VBox spacing="5.0">
                                  <Label text="Empresa:" />
-                                 <ComboBox fx:id="cbxEmpresa" prefHeight="35.0" prefWidth="300.0" />
+                                 <ComboBox fx:id="cbxEmpresa" prefHeight="35.0" prefWidth="300.0" visibleRowCount="5" />
                               </VBox>
 
                               <VBox spacing="5.0">
                                  <Label text="Sucursal:" />
-                                 <ComboBox fx:id="cbxSucursal" prefHeight="35.0" prefWidth="300.0" />
+                                 <ComboBox fx:id="cbxSucursal" prefHeight="35.0" prefWidth="300.0" visibleRowCount="5" />
                               </VBox>
 
                               <VBox spacing="5.0">
@@ -123,7 +123,7 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="cbxModelo" maxWidth="1.7976931348623157E308" prefHeight="35.0" HBox.hgrow="ALWAYS" />
+                              <ComboBox fx:id="cbxModelo" maxWidth="1.7976931348623157E308" prefHeight="35.0" visibleRowCount="5" HBox.hgrow="ALWAYS" />
                               <CheckBox fx:id="ckbCrearNuevoModelo" mnemonicParsing="false" text="Crear Nuevo" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
@@ -186,7 +186,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="btnAgregar" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" styleClass="btn-agregar" text="+ Agregar Nuevo Equipo" textFill="WHITE">
+            <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#guardarDatos" prefHeight="45.0" prefWidth="200.0" styleClass="btn-agregar" text="+ Agregar Nuevo Equipo" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

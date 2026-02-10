@@ -8,7 +8,6 @@ public class ModeloDto {
     private int memoriaRam;
     private int almacenamiento;
     private String procesador;
-    private String noSerie;
 
     public ModeloDto() {
     }
@@ -59,14 +58,6 @@ public class ModeloDto {
 
     public void setProcesador(String procesador) {
         this.procesador = procesador;
-    }
-
-    public String getNoSerie() {
-        return noSerie;
-    }
-
-    public void setNoSerie(String noSerie) {
-        this.noSerie = noSerie;
     }
 
     @Override

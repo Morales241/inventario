@@ -16,7 +16,7 @@ public class EquipoBaseDTO {
     private EstadoEquipo estado;
     private String observaciones;
     private LocalDate fechaCompra;
-    
+    private String identificador;
     
     private Long idSucursal;
     private String nombreSucursal;
@@ -112,6 +112,14 @@ public class EquipoBaseDTO {
 
     public void setNombreModelo(String nombreModelo) {
         this.nombreModelo = nombreModelo;
+    }
+
+    public String getIdentificador() {
+        return identificador;
+    }
+
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
     }
     
 }

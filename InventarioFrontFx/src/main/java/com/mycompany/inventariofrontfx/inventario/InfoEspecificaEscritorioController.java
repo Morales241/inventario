@@ -1,25 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.mycompany.inventariofrontfx.inventario;
 
+import Dtos.EquipoEscritorioDTO;
 import com.mycompany.inventariofrontfx.BaseController;
 import com.mycompany.inventariofrontfx.DashBoardController;
+import com.mycompany.inventariofrontfx.IValidaciones;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
  * @author tacot
  */
-public class InfoEspecificaEscritorioController implements Initializable, BaseController {
+public class InfoEspecificaEscritorioController implements Initializable, BaseController, IValidaciones<EquipoEscritorioDTO>{
 
     private DashBoardController dbc;
     
@@ -32,6 +33,8 @@ public class InfoEspecificaEscritorioController implements Initializable, BaseCo
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -65,5 +68,43 @@ public class InfoEspecificaEscritorioController implements Initializable, BaseCo
     @Override
     public void setDashBoard(DashBoardController dbc) {
         this.dbc = dbc;
+    }
+
+    private void mostrarAdvertencia(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Faltan Datos");
+        alert.setHeaderText(mensaje);
+        System.out.println(mensaje);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("imagenes/logo.png"));
+        alert.showAndWait();
+    }
+    
+     @Override
+    public EquipoEscritorioDTO getDatosEntidad() {
+        EquipoEscritorioDTO equipoEscritorio = new EquipoEscritorioDTO();
+        equipoEscritorio.setNombreEquipo(txtNombreEquipo.getText());
+        equipoEscritorio.setCuenta(txtCuentaEquipo.getText());
+        equipoEscritorio.setFinalGarantia(fechaGarantia.getValue());
+        
+        return equipoEscritorio;
+    }
+    
+    @Override
+    public boolean validarFormulario() {
+
+        if (txtNombreEquipo.getText().trim().isEmpty()) {
+            mostrarAdvertencia("El Nombre del equipo es obligatorio.");
+            txtNombreEquipo.requestFocus();
+            return false;
+        }
+        
+        if (txtCuentaEquipo.getText().trim().isEmpty()) {
+            mostrarAdvertencia("La cuenta de equipo es obligatoria.");
+            txtCuentaEquipo.requestFocus();
+            return false;
+        }
+        
+        return true;
     }
 }

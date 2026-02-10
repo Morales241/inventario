@@ -13,6 +13,7 @@ public class MapperEquipos {
             dto.setNombreEquipo(e.getNombreEquipo());
             dto.setCuenta(e.getCuenta());
             dto.setFinalGarantia(e.getFinalGarantia());
+            dto.setIdentificador(e.getIdentificador());
             return dto;
         },
         (d) -> {
@@ -22,6 +23,7 @@ public class MapperEquipos {
             e.setNombreEquipo(d.getNombreEquipo());
             e.setCuenta(d.getCuenta());
             e.setFinalGarantia(d.getFinalGarantia());
+            e.setIdentificador(d.getIdentificador());
             return e;
         }
     );
