@@ -26,7 +26,8 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable {
     @Column(name = "Condicion", nullable = false)
     private CondicionFisica condicion;
 
-    @Column(name = "GRY", nullable = false)
+    @Column(name = "GRY", nullable = false, unique = true)
+
     private Integer gry;
 
     @Column(name = "Factura")
@@ -41,7 +42,7 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable {
 
     @Column(name = "FechaCompra")
     private LocalDate fechaCompra;
-    
+
     @Column(name = "Identificador")
     private String identificador;
 
@@ -52,7 +53,7 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable {
     @Column(name = "EquiposAsignados")
     @OneToMany(mappedBy = "equipoDeComputo")
     private List<EquipoAsignado> equiposAsignados;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(name = "Tipo", nullable = false)
     private TipoEquipo tipo;
@@ -149,5 +150,15 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable {
         this.tipo = tipo;
     }
 
-    
+    public boolean estaAsignado() {
+        return this.equiposAsignados.stream()
+                .anyMatch(a -> a.getFechaDevolucion() == null);
+    }
+
+    public void validarDisponible() {
+        if (this.estado == EstadoEquipo.ASIGNADO) {
+            throw new IllegalStateException("El equipo ya está asignado.");
+        }
+    }
+
 }

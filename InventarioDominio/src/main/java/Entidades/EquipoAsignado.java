@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class EquipoAsignado extends AuditoriaBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id_Equipo_Asignado")
@@ -26,18 +26,18 @@ public class EquipoAsignado extends AuditoriaBase implements Serializable {
 
     @Column(name = "FechaEntrega")
     private LocalDate fechaEntrega;
-    
+
     @Column(name = "FechaDevolucion")
     private LocalDate fechaDevolucion;
-    
+
     @ManyToOne
     @JoinColumn(name = "IdTrabajador")
     private Trabajador trabajador;
-    
+
     @ManyToOne
     @JoinColumn(name = "IdEquipoDeComputo")
     private EquipoDeComputo equipoDeComputo;
-    
+
     @ManyToOne
     @JoinColumn(name = "IdSucursal")
     private Sucursal sucursal;
@@ -91,7 +91,7 @@ public class EquipoAsignado extends AuditoriaBase implements Serializable {
     public void setEquipoDeComputo(EquipoDeComputo equipoDeComputo) {
         this.equipoDeComputo = equipoDeComputo;
     }
-    
+
     public Sucursal getSucursal() {
         return sucursal;
     }
@@ -99,4 +99,13 @@ public class EquipoAsignado extends AuditoriaBase implements Serializable {
     public void setSucursal(Sucursal sucursal) {
         this.sucursal = sucursal;
     }
+
+    public void devolver() {
+        if (this.fechaDevolucion != null) {
+            throw new IllegalStateException("Ya fue devuelto");
+        }
+
+        this.fechaDevolucion = LocalDate.now();
+    }
+
 }

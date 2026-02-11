@@ -6,7 +6,5 @@ package Enums;
  */
 public enum EstadoEquipo {
     DISPONIBLE,
-    ASIGNADO,
-    EN_MANTENIMIENTO,
-    BAJA
+    ASIGNADO
 }
