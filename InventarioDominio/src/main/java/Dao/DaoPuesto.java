@@ -1,13 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Dao;
 
 import Entidades.Departamento;
-import Entidades.Empresa;
 import Entidades.Puesto;
-import Entidades.Sucursal;
 import Interfaces.IDaoPuesto;
 import conexion.Conexion;
 import jakarta.persistence.EntityManager;
@@ -21,8 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author JMorales
+ * Implementación del DAO para la entidad {@link Puesto}.
+ * Gestiona los cargos laborales y su relación con los departamentos.
+ * * @author JMorales
  */
 public class DaoPuesto extends DaoGenerico<Puesto, Long> implements IDaoPuesto {
 
@@ -38,41 +33,40 @@ public class DaoPuesto extends DaoGenerico<Puesto, Long> implements IDaoPuesto {
         this.emf = emf;
     }
 
+    /**
+     * Busca un puesto por su nombre exacto.
+     * @param nombre Nombre del puesto.
+     * @return Objeto {@link Puesto} encontrado.
+     */
     @Override
     public Puesto busquedaEspecifica(String nombre) {
 
         try (EntityManager em = getEntityManager()) {
-
             List<Predicate> predicados = new ArrayList<>();
-
             CriteriaBuilder cb = emf.getCriteriaBuilder();
-
             CriteriaQuery<Puesto> cq = cb.createQuery(Puesto.class);
-
             Root<Puesto> root = cq.from(Puesto.class);
 
             predicados.add(cb.equal(cb.lower(root.get("nombre")), nombre.toLowerCase()));
-
             cq.select(root);
-
-            cq.where(predicados);
+            cq.where(predicados.toArray(new Predicate[0]));
 
             return em.createQuery(cq).getSingleResult();
-
         }
     }
     
+    /**
+     * Obtiene todos los puestos asociados a un departamento en particular.
+     * @param idDepartamento Identificador del departamento.
+     * @return Lista de puestos pertenecientes a dicho departamento.
+     */
     @Override
     public List<Puesto> busquedaPorDepartamento(Long idDepartamento){
     
         try (EntityManager em = getEntityManager()) {
-
             List<Predicate> predicados = new ArrayList<>();
-
             CriteriaBuilder cb = emf.getCriteriaBuilder();
-
             CriteriaQuery<Puesto> cq = cb.createQuery(Puesto.class);
-
             Root<Puesto> root = cq.from(Puesto.class);
             
             Join<Puesto, Departamento> join = root.join("departamento");
@@ -82,11 +76,9 @@ public class DaoPuesto extends DaoGenerico<Puesto, Long> implements IDaoPuesto {
             }
 
             cq.select(root);
-
-            cq.where(predicados);
+            cq.where(predicados.toArray(new Predicate[0]));
 
             return em.createQuery(cq).getResultList();
-
         }
     }
 }

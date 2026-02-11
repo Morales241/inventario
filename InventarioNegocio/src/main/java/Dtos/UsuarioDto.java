@@ -2,6 +2,14 @@ package Dtos;
 
 import Enums.RolUsuario;
 
+/**
+ * Transferencia de datos para usuarios del sistema.
+ * <p>
+ * Contiene información de autenticación y autorización del usuario.
+ * El rol determina los permisos y acceso a diferentes funcionalidades del sistema.
+ * La contraseña se maneja por separado por razones de seguridad.
+ * </p>
+ */
 public class UsuarioDto {
 
     private Long id;

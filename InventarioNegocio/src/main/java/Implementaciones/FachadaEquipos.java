@@ -13,7 +13,11 @@ import Servicios.ServicioEquipos;
 import java.util.List;
 
 /**
- *
+ * Implementación de la fachada para operaciones de gestión de equipos de cómputo.
+ * <p>
+ * Proporciona acceso simplificado a la lógica de negocio del servicio de equipos.
+ * Utiliza el patrón Facade para abstraer la complejidad de las operaciones.
+ * </p>
  * @author JMorales
  */
 public class FachadaEquipos implements IFachadaEquipos{

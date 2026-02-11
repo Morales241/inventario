@@ -6,7 +6,12 @@ import Servicios.ServicioPrestamos;
 import java.util.List;
 
 /**
- *
+ * Implementación de la fachada para operaciones de asignación y devolución de equipos.
+ * <p>
+ * Proporciona acceso simplificado a la lógica de negocio del servicio de asignaciones.
+ * Gestiona el ciclo de vida de los préstamos de equipos a trabajadores.
+ * Utiliza el patrón Facade para abstraer la complejidad de las operaciones.
+ * </p>
  * @author JMorales
  */
 public class FachadaPrestamos implements IFachadaPrestamos{

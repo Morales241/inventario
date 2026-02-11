@@ -10,7 +10,7 @@ import conexion.Conexion;
 import jakarta.persistence.EntityManagerFactory;
 
 /**
- *
+ * DAO para la gestión de equipos diversos (periféricos u otros) representados por {@link OtroEquipo}.
  * @author JMorales
  */
 public class DaoOtroEquipo extends DaoGenerico<OtroEquipo, Long> implements IDaoOtroEquipo {

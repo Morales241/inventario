@@ -1,5 +1,12 @@
 package Dtos;
 
+/**
+ * Transferencia de datos para departamentos de empresa.
+ * <p>
+ * Representa un departamento u área dentro de una sucursal de la organización.
+ * Un departamento contiene múltiples puestos de trabajo.
+ * </p>
+ */
 public class DepartamentoDto {
 
     private Long id;

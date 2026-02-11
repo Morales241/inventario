@@ -6,6 +6,8 @@ import conexion.Conexion;
 import jakarta.persistence.EntityManagerFactory;
 
 /**
+ * DAO para la gestión de dispositivos de tipo {@link Movil}.
+ * Hereda las operaciones CRUD de {@link DaoGenerico}.
  * @author JMorales
  */
 public class DaoMovil extends DaoGenerico<Movil, Long> implements IDaoMovil {

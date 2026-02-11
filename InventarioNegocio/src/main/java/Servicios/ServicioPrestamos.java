@@ -14,16 +14,29 @@ import java.util.List;
 
 public class ServicioPrestamos {
 
-    private final DaoEquipoAsignado daoAsignacion = new DaoEquipoAsignado();
-    private final DaoEquipoDeComputo daoEquipo = new DaoEquipoDeComputo();
-    private final DaoTrabajador daoTrabajador = new DaoTrabajador();
+    private final DaoEquipoAsignado daoAsignacion;
+    private final DaoEquipoDeComputo daoEquipo;
+    private final DaoTrabajador daoTrabajador;
 
+    public ServicioPrestamos() {
+        daoAsignacion = new DaoEquipoAsignado();
+        daoEquipo = new DaoEquipoDeComputo();
+        daoTrabajador = new DaoTrabajador();
+    }
+    
     /**
-     * Asigna un equipo a un trabajador.
-     * Cambia el estado del equipo a ASIGNADO y crea el registro en historial.
-     * @param idEquipo
-     * @param idTrabajador
-     * @throws java.lang.Exception
+     * Realiza la entrega formal de un equipo a un trabajador.
+     * <p>
+     * <b>Reglas de Negocio:</b>
+     * <ul>
+     * <li>El equipo debe existir en la base de datos.</li>
+     * <li>El trabajador debe estar en estado <b>Activo</b>.</li>
+     * <li>Tras la asignación, el estado del equipo cambia automáticamente a {@code EstadoEquipo.ASIGNADO}.</li>
+     * </ul>
+     * </p>
+     * @param idEquipo ID del equipo a entregar.
+     * @param idTrabajador ID del beneficiario.
+     * @throws Exception Si el equipo/trabajador no existen o si el trabajador está inactivo.
      */
     public void asignarEquipo(Long idEquipo, Long idTrabajador) throws Exception {
         EquipoDeComputo equipo = daoEquipo.buscarPorId(idEquipo);
@@ -52,10 +65,13 @@ public class ServicioPrestamos {
     }
 
     /**
-     * Devuelve un equipo (Termina la asignación).
-     * Pone fecha de devolución y libera el equipo a DISPONIBLE.
-     * @param idAsignacion
-     * @throws java.lang.Exception
+     * Procesa la devolución de un equipo, finalizando el préstamo actual.
+     * <p>
+     * Establece la fecha de devolución en el registro de asignación y libera el equipo 
+     * cambiando su estado a {@code EstadoEquipo.DISPONIBLE}.
+     * </p>
+     * @param idAsignacion ID del registro de préstamo a cerrar.
+     * @throws Exception Si la asignación no existe o si el equipo ya había sido devuelto.
      */
     public void devolverEquipo(Long idAsignacion) throws Exception {
         EquipoAsignado asignacion = daoAsignacion.buscarPorId(idAsignacion);
@@ -75,9 +91,13 @@ public class ServicioPrestamos {
     }
     
     /**
-     * Obtiene los equipos que tiene asignados un trabajador actualmente.
-     * @param idTrabajador
-     * @return 
+     * Obtiene los equipos que tiene actualmente asignados un trabajador.
+     * <p>
+     * Solo devuelve asignaciones <b>activas</b> (sin fecha de devolución).
+     * Permite visualizar el inventario en poder de cada empleado.
+     * </p>
+     * @param idTrabajador ID del trabajador del cual obtener sus equipos.
+     * @return Lista de AsignacionDto con los equipos asignados sin devolver.
      */
     public List<AsignacionDto> obtenerEquiposDeTrabajador(Long idTrabajador) {
         List<EquipoAsignado> lista = daoAsignacion.buscarPorTrabajadorActivo(idTrabajador);

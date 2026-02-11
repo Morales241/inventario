@@ -1,6 +1,13 @@
 package com.mycompany.inventariofrontfx.inventario;
 
+import Dtos.EmpresaDto;
 import Dtos.EquipoBaseDTO;
+import Dtos.ModeloDto;
+import Dtos.SucursalDto;
+import Implementaciones.FachadaEquipos;
+import Implementaciones.FachadaOrganizacion;
+import Interfaces.IFachadaEquipos;
+import Interfaces.IFachadaOrganizacion;
 import com.mycompany.inventariofrontfx.BaseController;
 import com.mycompany.inventariofrontfx.DashBoardController;
 import com.mycompany.inventariofrontfx.IValidaciones;
@@ -60,13 +67,13 @@ public class FormInventarioController implements Initializable, BaseController {
     @FXML
     private ComboBox<String> cbxTipoEquipo; //ya
     @FXML
-    private ComboBox<String> cbxEmpresa; //ya
+    private ComboBox<EmpresaDto> cbxEmpresa; //ya
     @FXML
-    private ComboBox<String> cbxSucursal; //ya
+    private ComboBox<SucursalDto> cbxSucursal; //ya
     @FXML
     private ComboBox<String> cbxCondicion; //ya
     @FXML
-    private ComboBox<String> cbxModelo;
+    private ComboBox<ModeloDto> cbxModelo;
 
     @FXML
     private CheckBox ckbCrearNuevoModelo;
@@ -79,13 +86,31 @@ public class FormInventarioController implements Initializable, BaseController {
 
     private IValidaciones<?> controladorHijoActual;
 
+    private IFachadaOrganizacion FachadaOrganizacion;
+
+    private IFachadaEquipos FachadaEquipos;
+
+    private List<EmpresaDto> empresas;
+
+    private List<SucursalDto> sucursales;
+
+    private List<ModeloDto> modelos;
+
     /**
      * Initializes the controller class.
+     *
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cargarDatosFicticios();
+        FachadaOrganizacion = new FachadaOrganizacion();
+        FachadaEquipos = new FachadaEquipos();
+
+        cargarDatosComboBox();
         configurarListeners();
+        checkBoxAction();
+        cbxEmpresaAction();
     }
 
     @Override
@@ -135,7 +160,6 @@ public class FormInventarioController implements Initializable, BaseController {
             Parent vista = loader.load();
 
             this.controladorHijoActual = loader.getController();
-            
 
             containerEspecifico.getChildren().clear();
             containerEspecifico.getChildren().add(vista);
@@ -145,14 +169,14 @@ public class FormInventarioController implements Initializable, BaseController {
             ex.printStackTrace();
         }
     }
-    
+
     @FXML
     private <T extends EquipoBaseDTO> void guardarDatos() {
 
         if (!validarFormulario()) {
             return;
         }
-        
+
         if (!controladorHijoActual.validarFormulario()) {
             return;
         }
@@ -174,16 +198,70 @@ public class FormInventarioController implements Initializable, BaseController {
 
     }
 
-    private void cargarDatosFicticios() {
+    @FXML
+    private void checkBoxAction() {
+        if (ckbCrearNuevoModelo.isSelected()) {
+            this.cbxModelo.setDisable(true);
+            
+            this.txtModelo.setDisable(false);
+            this.txtMarca.setDisable(false);
+            this.txtRam.setDisable(false);
+            this.txtProcesador.setDisable(false);
+            this.txtAlmacenamiento.setDisable(false);
+        } else {
+            this.txtModelo.setDisable(true);
+            this.txtMarca.setDisable(true);
+            this.txtRam.setDisable(true);
+            this.txtProcesador.setDisable(true);
+            this.txtAlmacenamiento.setDisable(true);
+            
+            this.cbxModelo.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void cbxEmpresaAction() {
+        Long idEmpresa = cbxEmpresa.getSelectionModel().getSelectedItem().getId();
+
+        this.sucursales = FachadaOrganizacion.listarSucursales(null, idEmpresa);
+
+        cbxSucursal.setItems(FXCollections.observableArrayList(sucursales));
+
+        cbxSucursal.getSelectionModel().selectFirst();
+    }
+
+    @FXML
+    private void cbxModeloAction() {
+        ModeloDto modeloDto = cbxModelo.getSelectionModel().getSelectedItem();
+        
+        this.txtModelo.setText(modeloDto.getNombre());
+        this.txtMarca.setText(modeloDto.getMarca());
+        this.txtRam.setText(String.valueOf(modeloDto.getMemoriaRam()));
+        this.txtProcesador.setText(modeloDto.getProcesador());
+        this.txtAlmacenamiento.setText(String.valueOf(modeloDto.getAlmacenamiento()));
+    }
+
+    private void cargarDatosComboBox() {
         List<String> itemsCbxTipos = asList("Laptop", "Escritorio", "Movil", "Otros");
 
         List<String> itemsCbxCondicion = asList("Nuevo", "Bueno", "Regular", "Malo");
 
+        empresas = FachadaOrganizacion.listarEmpresas(null);
+
+        modelos = FachadaEquipos.listarModelos(null);
+
         cbxTipoEquipo.setItems(FXCollections.observableArrayList(itemsCbxTipos));
+
         cbxCondicion.setItems(FXCollections.observableArrayList(itemsCbxCondicion));
+
+        cbxEmpresa.setItems(FXCollections.observableArrayList(empresas));
+
+        cbxModelo.setItems(FXCollections.observableArrayList(modelos));
 
         cbxTipoEquipo.getSelectionModel().selectFirst();
         cbxCondicion.getSelectionModel().selectFirst();
+        cbxEmpresa.getSelectionModel().selectFirst();
+        cbxModelo.getSelectionModel().selectFirst();
 
         cargarVistaEspecifica("Laptop");
     }
@@ -235,18 +313,18 @@ public class FormInventarioController implements Initializable, BaseController {
         }
 
         if (txtIdentificador.getText().trim().isEmpty()) {
-            mostrarAdvertencia("El 'Número de Serie' es obligatorio.");
+            mostrarAdvertencia("El Identificador es obligatorio.");
             txtIdentificador.requestFocus();
             return false;
         }
         if (txtIdentificador.getText().trim().length() < 10) {
-            mostrarAdvertencia("El Número de Serie parece demasiado corto. Verifícalo.");
+            mostrarAdvertencia("El Identificador parece demasiado corto. Verifícalo.");
             txtIdentificador.requestFocus();
             return false;
         }
 
         if (txtGry.getText().trim().isEmpty()) {
-            mostrarAdvertencia("El código 'GRI' (Etiqueta de inventario) es obligatorio.");
+            mostrarAdvertencia("El código 'GRY' (Etiqueta de inventario) es obligatorio.");
             txtGry.requestFocus();
             return false;
         }

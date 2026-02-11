@@ -3,6 +3,13 @@ package Mappers;
 import Dtos.ModeloDto;
 import Entidades.Modelo;
 
+/**
+ * Mapeador para transformaciones entre la entidad Modelo de equipo y su DTO.
+ * <p>
+ * Convierte especificaciones técnicas del modelo (marca, RAM, almacenamiento, procesador)
+ * entre la entidad y su representación en DTO para catálogos y búsquedas.
+ * </p>
+ */
 public class MapperModelo {
 
     public static final Mapper<Modelo, ModeloDto> converter = new Mapper<>(

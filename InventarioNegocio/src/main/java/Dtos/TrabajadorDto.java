@@ -1,5 +1,13 @@
 package Dtos;
 
+/**
+ * Transferencia de datos para trabajadores/empleados.
+ * <p>
+ * Representa la información básica de una persona empleada en la organización.
+ * Contiene datos personales, número de nómina y referencia al puesto de trabajo.
+ * El estado {@code activo} determina si el trabajador puede recibir asignaciones de equipos.
+ * </p>
+ */
 public class TrabajadorDto {
 
     private Long id;

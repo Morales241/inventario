@@ -1,5 +1,12 @@
 package Dtos;
 
+/**
+ * Transferencia de datos para puestos de trabajo.
+ * <p>
+ * Representa un puesto laboral específicos dentro de un departamento.
+ * Los trabajadores están asignados a puestos de trabajo específicos.
+ * </p>
+ */
 public class PuestoDto {
 
     private Long id;

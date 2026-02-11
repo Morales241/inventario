@@ -1,5 +1,12 @@
 package Dtos;
 
+/**
+ * Transferencia de datos para empresas.
+ * <p>
+ * Representa la estructura de nivel superior de la organización.
+ * Una empresa puede tener más sucursales, que a su vez contienen departamentos y puestos.
+ * </p>
+ */
 public class EmpresaDto {
 
     private Long id;

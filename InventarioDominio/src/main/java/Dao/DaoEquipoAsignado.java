@@ -13,6 +13,11 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.List;
 
+/**
+ * Implementación del DAO para la entidad {@link EquipoAsignado}.
+ * Gestiona la relación de asignación entre equipos y trabajadores.
+ * * @author JMorales
+ */
 public class DaoEquipoAsignado extends DaoGenerico<EquipoAsignado, Long> implements IDaoEquipoAsignado {
 
     private EntityManagerFactory emf;
@@ -27,6 +32,12 @@ public class DaoEquipoAsignado extends DaoGenerico<EquipoAsignado, Long> impleme
         this.emf = emf;
     }
 
+    /**
+     * Busca los equipos actualmente asignados a un trabajador específico que no han sido devueltos.
+     * Un equipo se considera activo si su fecha de devolución es nula.
+     * * @param idTrabajador Identificador único del trabajador.
+     * @return Lista de {@link EquipoAsignado} que el trabajador posee actualmente.
+     */
     @Override
     public List<EquipoAsignado> buscarPorTrabajadorActivo(Long idTrabajador) {
         try (EntityManager em = getEntityManager()) {

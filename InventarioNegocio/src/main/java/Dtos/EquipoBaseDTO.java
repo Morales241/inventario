@@ -5,13 +5,18 @@ import Enums.EstadoEquipo;
 import java.time.LocalDate;
 
 /**
- *
+ * Transferencia de datos para equipos de cómputo.
+ * <p>
+ * Representa la información base común a todos los tipos de equipos.
+ * Contiene propiedades administrativas (GRY, factura, estado) y técnicas (modelo, condición).
+ * Es la clase base para DTOs específicos de cada tipo de equipo.
+ * </p>
  * @author JMorales
  */
 public class EquipoBaseDTO {
     private Long idEquipo;
     private CondicionFisica condicion;
-    private Integer gri;
+    private Integer gry;
     private String factura;
     private EstadoEquipo estado;
     private String observaciones;
@@ -42,12 +47,12 @@ public class EquipoBaseDTO {
         this.condicion = condicion;
     }
 
-    public Integer getGri() {
-        return gri;
+    public Integer getGry() {
+        return gry;
     }
 
-    public void setGri(Integer gri) {
-        this.gri = gri;
+    public void setGry(Integer gry) {
+        this.gry = gry;
     }
 
     public String getFactura() {

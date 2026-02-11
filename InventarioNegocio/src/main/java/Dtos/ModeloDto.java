@@ -1,5 +1,13 @@
 package Dtos;
 
+/**
+ * Transferencia de datos para modelos de equipos en el catálogo.
+ * <p>
+ * Contiene especificaciones técnicas estandarizadas para un modelo de equipo.
+ * Permite categorizar y buscar equipos por características hardware (RAM, almacenamiento, procesador).
+ * Actualmente se usa para todos los tipos de equipos (escritorio, móvil, otro).
+ * </p>
+ */
 public class ModeloDto {
 
     private Long idModelo;
@@ -62,6 +70,6 @@ public class ModeloDto {
 
     @Override
     public String toString() {
-        return idModelo + ".- " + nombre + ", Marca:" + marca ;
+        return idModelo + ".- " + nombre + ", marca=" + marca + ", memoria Ram=" + memoriaRam + ", almacenamiento=" + almacenamiento + ", procesador=" + procesador;
     }
 }

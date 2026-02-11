@@ -3,6 +3,13 @@ package Mappers;
 import Dtos.*;
 import Entidades.*;
 
+/**
+ * Mapeador centralizado para transformaciones de la estructura organizacional.
+ * <p>
+ * Proporciona instancias de {@link Mapper} para Empresa, Sucursal, Departamento y Puesto.
+ * Maneja las conversiones bidireccionales preservando las relaciones jerárquicas.
+ * </p>
+ */
 public class MapperEstructura {
     
     public static final Mapper<Empresa, EmpresaDto> empresa = new Mapper<>(

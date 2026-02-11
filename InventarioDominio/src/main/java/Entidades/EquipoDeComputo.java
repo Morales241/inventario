@@ -25,8 +25,8 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable {
     @Column(name = "Condicion", nullable = false)
     private CondicionFisica condicion;
 
-    @Column(name = "GRI", nullable = false)
-    private Integer gri;
+    @Column(name = "GRY", nullable = false)
+    private Integer gry;
 
     @Column(name = "Factura")
     private String factura;
@@ -72,12 +72,12 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable {
         this.condicion = condicion;
     }
 
-    public Integer getGri() {
-        return gri;
+    public Integer getGry() {
+        return gry;
     }
 
-    public void setGri(Integer gri) {
-        this.gri = gri;
+    public void setGry(Integer gry) {
+        this.gry = gry;
     }
 
     public String getFactura() {

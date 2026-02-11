@@ -7,7 +7,11 @@ import Servicios.ServicioPersonas;
 import java.util.List;
 
 /**
- *
+ * Implementación de la fachada para operaciones de gestión de personas.
+ * <p>
+ * Proporciona acceso simplificado a la lógica de negocio del servicio de personas (usuarios y trabajadores).
+ * Utiliza el patrón Facade para abstraer la complejidad de las operaciones.
+ * </p>
  * @author JMorales
  */
 public class FachadaPersonas implements IFachadaPersonas {

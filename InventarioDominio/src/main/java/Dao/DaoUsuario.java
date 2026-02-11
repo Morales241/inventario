@@ -13,6 +13,11 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.List;
 
+/**
+ * Implementación del DAO para la entidad {@link UsuarioSistema}.
+ * Encargado de la seguridad, autenticación y gestión de cuentas de usuario.
+ * * @author JMorales
+ */
 public class DaoUsuario extends DaoGenerico<UsuarioSistema, Long> implements IDaoUsuario {
 
     private final EntityManagerFactory emf;
@@ -27,6 +32,13 @@ public class DaoUsuario extends DaoGenerico<UsuarioSistema, Long> implements IDa
         this.emf = emf;
     }
 
+    /**
+     * Valida las credenciales de un usuario para el acceso al sistema.
+     * * @param username Nombre de usuario.
+     * @param password Contraseña (debe estar pre-procesada/hasheada si aplica).
+     * @return El objeto {@link UsuarioSistema} si las credenciales son válidas, 
+     * o {@code null} si el usuario o la contraseña son incorrectos.
+     */
     @Override
     public UsuarioSistema login(String username, String password) {
         try (EntityManager em = getEntityManager()) {
@@ -47,6 +59,11 @@ public class DaoUsuario extends DaoGenerico<UsuarioSistema, Long> implements IDa
         }
     }
 
+    /**
+     * Busca un usuario únicamente por su nombre de usuario (identificador único).
+     * * @param username Nombre de usuario a localizar.
+     * @return El {@link UsuarioSistema} correspondiente o {@code null} si no existe.
+     */
     @Override
     public UsuarioSistema busquedaEspecifica(String username) {
         try (EntityManager em = getEntityManager()) {
@@ -61,9 +78,8 @@ public class DaoUsuario extends DaoGenerico<UsuarioSistema, Long> implements IDa
             try {
                 return em.createQuery(cq).getSingleResult();
             } catch (NoResultException e) {
-                return null; 
+                return null;
             }
         }
     }
-
 }

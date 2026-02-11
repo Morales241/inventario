@@ -13,7 +13,12 @@ import Servicios.ServicioOrganizacion;
 import java.util.List;
 
 /**
- *
+ * Implementación de la fachada para operaciones de gestión de la estructura organizacional.
+ * <p>
+ * Proporciona acceso simplificado a la lógica de negocio del servicio organizacional.
+ * Utiliza el patrón Facade para abstraer la complejidad de las operaciones de empresas,
+ * sucursales, departamentos y puestos.
+ * </p>
  * @author JMorales
  */
 public class FachadaOrganizacion implements IFachadaOrganizacion{

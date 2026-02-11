@@ -10,8 +10,6 @@ import Entidades.Empresa;
 import Entidades.Modelo;
 import Entidades.Puesto;
 import Entidades.Sucursal;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 

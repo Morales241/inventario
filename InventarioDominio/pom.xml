@@ -55,4 +55,17 @@
         <maven.compiler.release>24</maven.compiler.release>
         <exec.mainClass>com.mycompany.inventariodominio.InventarioDominio</exec.mainClass>
     </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.12.0</version>
+                <configuration>
+                    <doclint>none</doclint>
+                    <failOnError>false</failOnError>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

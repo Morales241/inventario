@@ -4,6 +4,13 @@ import Dtos.TrabajadorDto;
 import Entidades.Puesto;
 import Entidades.Trabajador;
 
+/**
+ * Mapeador para transformaciones entre la entidad Trabajador y su DTO.
+ * <p>
+ * Maneja la conversión bidireccional de Trabajador ↔ TrabajadorDto,
+ * incluyendo la relación con la entidad Puesto.
+ * </p>
+ */
 public class MapperTrabajador {
 
     public static final Mapper<Trabajador, TrabajadorDto> converter = new Mapper<>(

@@ -3,6 +3,14 @@ package Mappers;
 import Dtos.*;
 import Entidades.*;
 
+/**
+ * Mapeador especializado para transformaciones entre entidades de equipos y sus DTOs.
+ * <p>
+ * Proporciona instancias de {@link Mapper} para cada tipo de equipo (Escritorio, Móvil, Otro),
+ * manejando las conversiones bidireccionales de propiedades comunes y específicas de cada tipo.
+ * Utiliza expresiones lambda para definir las transformaciones de forma declarativa.
+ * </p>
+ */
 public class MapperEquipos {
 
     public static final Mapper<EquipoDeEscritorio, EquipoEscritorioDTO> escritorio = new Mapper<>(
@@ -79,7 +87,7 @@ public class MapperEquipos {
 
     private static void mapCommonToDto(EquipoDeComputo e, EquipoBaseDTO dto) {
         dto.setIdEquipo(e.getIdEquipo());
-        dto.setGri(e.getGri());
+        dto.setGry(e.getGry());
         dto.setFactura(e.getFactura());
         dto.setEstado(e.getEstado());
         dto.setCondicion(e.getCondicion());
@@ -94,7 +102,7 @@ public class MapperEquipos {
 
     private static void mapCommonToEntity(EquipoBaseDTO dto, EquipoDeComputo e) {
         e.setIdEquipo(dto.getIdEquipo());
-        e.setGri(dto.getGri());
+        e.setGry(dto.getGry());
         e.setFactura(dto.getFactura());
         e.setEstado(dto.getEstado());
         e.setCondicion(dto.getCondicion());

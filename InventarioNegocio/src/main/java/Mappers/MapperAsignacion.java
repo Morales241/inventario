@@ -3,6 +3,13 @@ package Mappers;
 import Dtos.AsignacionDto;
 import Entidades.EquipoAsignado;
 
+/**
+ * Mapeador para transformaciones entre la entidad EquipoAsignado y su DTO.
+ * <p>
+ * Convierte los registros de asignaciones/préstamos de equipos entre entidadesy DTO,
+ * incluyendo información transformada del trabajador y el equipo para presentación.
+ * </p>
+ */
 public class MapperAsignacion {
 
     public static final Mapper<EquipoAsignado, AsignacionDto> converter = new Mapper<>(
@@ -16,7 +23,7 @@ public class MapperAsignacion {
                 dto.setNombreTrabajador(entity.getTrabajador().getNombre());
             }
             if (entity.getEquipoDeComputo() != null) {
-                String desc = "GRI: " + entity.getEquipoDeComputo().getGri();
+                String desc = "GRI: " + entity.getEquipoDeComputo().getGry();
                 if (entity.getEquipoDeComputo().getModelo() != null) {
                     desc += " (" + entity.getEquipoDeComputo().getModelo().getNombre() + ")";
                 }

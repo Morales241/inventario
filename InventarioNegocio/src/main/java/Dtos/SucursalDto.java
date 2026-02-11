@@ -1,5 +1,13 @@
 package Dtos;
 
+/**
+ * Transferencia de datos para sucursales de empresa.
+ * <p>
+ * Representa una ubicación física de la empresa con su información de localización.
+ * Una sucursal pertenece a una empresa y puede contener médios
+ departamentos, empleados y equipos.
+ * </p>
+ */
 public class SucursalDto {
 
     private Long id;

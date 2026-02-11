@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" styleClass="panel-menu" stylesheets="@inventario.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.FormInventarioController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" styleClass="panel-menu" stylesheets="@inventario.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.FormInventarioController">
    
    <center>
       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
@@ -67,7 +67,7 @@
                               
                               <VBox spacing="5.0">
                                  <Label text="Empresa:" />
-                                 <ComboBox fx:id="cbxEmpresa" prefHeight="35.0" prefWidth="300.0" visibleRowCount="5" />
+                                 <ComboBox fx:id="cbxEmpresa" onAction="#cbxEmpresaAction" prefHeight="35.0" prefWidth="300.0" visibleRowCount="5" />
                               </VBox>
 
                               <VBox spacing="5.0">
@@ -78,6 +78,12 @@
                               <VBox spacing="5.0">
                                  <Label text="Observaciones:" />
                                  <TextField fx:id="txtObservaciones" prefHeight="35.0" prefWidth="300.0" />
+                              </VBox>
+                              <VBox spacing="5.0">
+                                 <children>
+                                    <Label text="Identificador:" />
+                                    <TextField fx:id="txtIdentificador" prefHeight="35.0" prefWidth="300.0" />
+                                 </children>
                               </VBox>
                               
                            </children>
@@ -123,8 +129,8 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="cbxModelo" maxWidth="1.7976931348623157E308" prefHeight="35.0" visibleRowCount="5" HBox.hgrow="ALWAYS" />
-                              <CheckBox fx:id="ckbCrearNuevoModelo" mnemonicParsing="false" text="Crear Nuevo" HBox.hgrow="ALWAYS" />
+                              <ComboBox fx:id="cbxModelo" maxWidth="1.7976931348623157E308" onAction="#cbxModeloAction" prefHeight="35.0" visibleRowCount="5" HBox.hgrow="ALWAYS" />
+                              <CheckBox fx:id="ckbCrearNuevoModelo" mnemonicParsing="false" onAction="#checkBoxAction" text="Crear Nuevo" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
 
@@ -135,32 +141,26 @@
                            <children>
                                <VBox spacing="5.0">
                                  <Label text="Nombre:" />
-                                 <TextField fx:id="txtModelo" prefHeight="35.0" prefWidth="300.0" />
+                                 <TextField fx:id="txtModelo" disable="true" prefHeight="35.0" prefWidth="300.0" />
                               </VBox>
                               <VBox spacing="5.0">
                                  <Label text="Marca:" />
-                                 <TextField fx:id="txtMarca" prefHeight="35.0" prefWidth="300.0" />
+                                 <TextField fx:id="txtMarca" disable="true" prefHeight="35.0" prefWidth="300.0" />
                               </VBox>
                                <VBox spacing="5.0">
                                  <Label text="Almacenamiento (GB):" />
-                                 <TextField fx:id="txtAlmacenamiento" prefHeight="35.0" prefWidth="300.0" />
-                              </VBox>
-                              <VBox spacing="5.0">
-                                 <children>
-                                    <Label text="Identificador:" />
-                                    <TextField fx:id="txtIdentificador" prefHeight="35.0" prefWidth="300.0" />
-                                 </children>
+                                 <TextField fx:id="txtAlmacenamiento" disable="true" prefHeight="35.0" prefWidth="300.0" />
                               </VBox>
                               <VBox spacing="5.0">
                                  <children>
                                     <Label text="Memoria Ram (GB):" />
-                                    <TextField fx:id="txtRam" prefHeight="35.0" prefWidth="300.0" />
+                                    <TextField fx:id="txtRam" disable="true" prefHeight="35.0" prefWidth="300.0" />
                                  </children>
                               </VBox>
                               <VBox spacing="5.0">
                                  <children>
                                     <Label text="Procesador:" />
-                                    <TextField fx:id="txtProcesador" prefHeight="35.0" prefWidth="300.0" />
+                                    <TextField fx:id="txtProcesador" disable="true" prefHeight="35.0" prefWidth="300.0" />
                                  </children>
                               </VBox>
                            </children>

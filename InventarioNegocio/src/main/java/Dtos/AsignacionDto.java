@@ -2,6 +2,14 @@ package Dtos;
 
 import java.time.LocalDate;
 
+/**
+ * Transferencia de datos para asignaciones/préstamos de equipos.
+ * <p>
+ * Representa el registro de entrega de un equipo a un trabajador.
+ * Contiene fechas del ciclo de vida del préstamo y referencias al trabajador y equipo.
+ * Permite rastrear qué equipos tiene cada empleado y cuándo fueron entregados/devueltos.
+ * </p>
+ */
 public class AsignacionDto {
 
     private Long id;

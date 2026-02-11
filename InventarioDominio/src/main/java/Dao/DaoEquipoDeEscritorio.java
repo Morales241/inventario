@@ -10,7 +10,7 @@ import conexion.Conexion;
 import jakarta.persistence.EntityManagerFactory;
 
 /**
- *
+ * DAO especializado en la persistencia de equipos de cómputo de tipo {@link EquipoDeEscritorio}.
  * @author JMorales
  */
 public class DaoEquipoDeEscritorio extends DaoGenerico<EquipoDeEscritorio, Long> implements IDaoEquipoDeEscritorio {

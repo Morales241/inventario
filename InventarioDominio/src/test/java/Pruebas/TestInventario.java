@@ -68,7 +68,7 @@ public class TestInventario {
         daoModelo.guardar(modelo);
 
         Movil celular = new Movil(Boolean.TRUE, "55-5555-5555", Boolean.TRUE, Boolean.TRUE);
-        celular.setGri(500);
+        celular.setGry(500);
         celular.setCondicion(CondicionFisica.NUEVO);
         celular.setEstado(EstadoEquipo.DISPONIBLE);
         celular.setModelo(modelo);
