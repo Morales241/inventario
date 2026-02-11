@@ -6,15 +6,29 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.Version;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  
+ *
  * @author JMorales
  */
 @Entity
+@Table(
+        uniqueConstraints = @UniqueConstraint(
+                columnNames = {
+                    "marca",
+                    "nombre",
+                    "memoriaRam",
+                    "almacenamiento",
+                    "procesador"
+                }
+        )
+)
 public class Modelo extends AuditoriaBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -22,27 +36,31 @@ public class Modelo extends AuditoriaBase implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id_Modelo")
     private Long idModelo;
-    
+
+    @Version
+    @Column(name = "version")
+    private Long version;
+
     @Column(name = "Nombre")
     private String nombre;
 
     @Column(name = "Marca")
     private String marca;
-    
+
     @Column(name = "MemoriaRam")
     private int memoriaRam;
-    
+
     @Column(name = "Almacenamiento")
     private int almacenamiento;
-    
+
     @Column(name = "Procesador")
     private String procesador;
-    
+
     @Column(name = "Equipos")
-    @OneToMany(mappedBy = "modelo") 
+    @OneToMany(mappedBy = "modelo")
     private List<EquipoDeComputo> equipos;
 
-    public Modelo(String marca,String nombre, int memoriaRam, int almacenamiento, String preocesador) {
+    public Modelo(String marca, String nombre, int memoriaRam, int almacenamiento, String preocesador) {
         this.marca = marca;
         this.nombre = nombre;
         this.memoriaRam = memoriaRam;
@@ -54,7 +72,7 @@ public class Modelo extends AuditoriaBase implements Serializable {
     public Modelo() {
         this.equipos = new ArrayList<>();
     }
-    
+
     public Long getId() {
         return idModelo;
     }
@@ -118,5 +136,20 @@ public class Modelo extends AuditoriaBase implements Serializable {
     public void setProcesador(String procesador) {
         this.procesador = procesador;
     }
-    
+
+    public Long getIdModelo() {
+        return idModelo;
+    }
+
+    public void setIdModelo(Long idModelo) {
+        this.idModelo = idModelo;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 }

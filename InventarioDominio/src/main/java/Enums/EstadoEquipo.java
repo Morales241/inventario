@@ -5,6 +5,7 @@ package Enums;
  * @author tacot
  */
 public enum EstadoEquipo {
-    DISPONIBLE,
-    ASIGNADO
+    EN_STOCK,
+    ASIGNADO,
+    EN_ESPERA_BAJA
 }

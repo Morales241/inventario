@@ -104,8 +104,11 @@ public class EquipoAsignado extends AuditoriaBase implements Serializable {
         if (this.fechaDevolucion != null) {
             throw new IllegalStateException("Ya fue devuelto");
         }
-
         this.fechaDevolucion = LocalDate.now();
+    }
+
+    public boolean estaActiva() {
+        return this.fechaDevolucion == null;
     }
 
 }

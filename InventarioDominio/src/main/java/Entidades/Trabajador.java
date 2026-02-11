@@ -18,13 +18,17 @@ public class Trabajador extends AuditoriaBase implements Serializable {
 
     @Column(name = "Nombre", nullable = false)
     private String nombre;
-    
+
     @Column(name = "NoNomina")
     private String noNomina;
 
     @ManyToOne
     @JoinColumn(name = "IdPuesto", nullable = false)
     private Puesto puesto;
+
+    @Version
+    @Column(name = "version")
+    private Long version;
 
     @Column(name = "EquiposAsignados")
     @OneToMany(mappedBy = "trabajador")
@@ -91,6 +95,14 @@ public class Trabajador extends AuditoriaBase implements Serializable {
 
     public void setNoNomina(String noNomina) {
         this.noNomina = noNomina;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
 }
