@@ -1,6 +1,6 @@
 package Entidades;
 
-import Enums.TipoOtroEquipo;
+import Enums.TipoEquipo;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,10 +8,6 @@ import jakarta.persistence.*;
 @PrimaryKeyJoinColumn(name = "id_OtroEquipo")
 @DiscriminatorValue("OTROEQUIPO")
 public class OtroEquipo extends EquipoDeComputo {
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "Tipo", nullable = false)
-    private TipoOtroEquipo tipo;
 
     @Column(name = "TituloCampoExtra", nullable = false)
     private String tituloCampoExtra;
@@ -25,8 +21,7 @@ public class OtroEquipo extends EquipoDeComputo {
     @Column(name = "ContenidoCampoExtra2")
     private String contenidoCampoExtra2;
 
-    public OtroEquipo(TipoOtroEquipo tipo, String tituloCampoExtra, String tituloCampoExtra2, String contenidoCampoExtra, String contenidoCampoExtra2) {
-        this.tipo = tipo;
+    public OtroEquipo(String tituloCampoExtra, String tituloCampoExtra2, String contenidoCampoExtra, String contenidoCampoExtra2) {
         this.tituloCampoExtra = tituloCampoExtra;
         this.tituloCampoExtra2 = tituloCampoExtra2;
         this.contenidoCampoExtra = contenidoCampoExtra;
@@ -34,14 +29,6 @@ public class OtroEquipo extends EquipoDeComputo {
     }
 
     public OtroEquipo() {
-    }
-
-    public TipoOtroEquipo getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoOtroEquipo tipo) {
-        this.tipo = tipo;
     }
 
     public String getTituloCampoExtra() {

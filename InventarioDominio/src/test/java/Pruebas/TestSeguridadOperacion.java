@@ -107,6 +107,7 @@ public class TestSeguridadOperacion {
         celular.setGry(500);
         celular.setCondicion(CondicionFisica.NUEVO);
         celular.setEstado(EstadoEquipo.DISPONIBLE);
+        celular.setTipo(TipoEquipo.MOVIL);
    
         Modelo modelo = daoModelo.buscarTodos().get(0);
         Sucursal sucursal = daoSucursal.buscarTodos().get(0);

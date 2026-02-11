@@ -4,10 +4,12 @@ package Enums;
  *
  * @author tacot
  */
-public enum TipoOtroEquipo {
+public enum TipoEquipo {
+    LAPTOP, 
+    DESKTOP,
+    MOVIL,
     IMPRESORA,
     PROYECTOR,
     SCANNER,
-    MONITOR,
-    OTRO
+    MONITOR
 }

@@ -4,6 +4,7 @@ import Dtos.EmpresaDto;
 import Dtos.EquipoBaseDTO;
 import Dtos.ModeloDto;
 import Dtos.SucursalDto;
+import Enums.CondicionFisica;
 import Implementaciones.FachadaEquipos;
 import Implementaciones.FachadaOrganizacion;
 import Interfaces.IFachadaEquipos;
@@ -14,10 +15,14 @@ import com.mycompany.inventariofrontfx.IValidaciones;
 import java.io.IOException;
 import java.net.URL;
 import static java.util.Arrays.asList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -42,233 +47,164 @@ import javafx.stage.Stage;
 public class FormInventarioController implements Initializable, BaseController {
 
     private DashBoardController dbc;
+    private IFachadaOrganizacion fachadaOrganizacion;
+    private IFachadaEquipos fachadaEquipos;
+    private EquipoBaseDTO equipoEdicion = null;
 
-    @FXML
-    private TextField txtGry; //ya
-    @FXML
-    private TextField txtIdentificador;
-    @FXML
-    private TextField txtAlmacenamiento;
-    @FXML
-    private TextField txtRam;
-    @FXML
-    private TextField txtProcesador;
-    @FXML
-    private TextField txtMarca;
-    @FXML
-    private TextField txtModelo;
-    @FXML
-    private DatePicker fechaCompra; //ya
-    @FXML
-    private TextField txtFactura; //ya
-    @FXML
-    private TextField txtObservaciones; //ya
+    @FXML private TextField txtGry, txtIdentificador, txtAlmacenamiento, txtRam, txtProcesador, txtMarca, txtModelo, txtFactura, txtObservaciones;
+    @FXML private DatePicker fechaCompra;
+    @FXML private ComboBox<String> cbxTipoEquipo;
+    @FXML private ComboBox<EmpresaDto> cbxEmpresa;
+    @FXML private ComboBox<SucursalDto> cbxSucursal;
+    @FXML private ComboBox<CondicionFisica> cbxCondicion;
+    @FXML private ComboBox<ModeloDto> cbxModelo;
+    @FXML private FlowPane containerEspecifico;
+    @FXML private Button btnCancelar, btnAgregar;
 
-    @FXML
-    private ComboBox<String> cbxTipoEquipo; //ya
-    @FXML
-    private ComboBox<EmpresaDto> cbxEmpresa; //ya
-    @FXML
-    private ComboBox<SucursalDto> cbxSucursal; //ya
-    @FXML
-    private ComboBox<String> cbxCondicion; //ya
-    @FXML
-    private ComboBox<ModeloDto> cbxModelo;
-
-    @FXML
-    private CheckBox ckbCrearNuevoModelo;
-    @FXML
-    private FlowPane containerEspecifico;
-    @FXML
-    private Button btnCancelar;
-    @FXML
-    private Button btnAgregar;
-
-    private IValidaciones<?> controladorHijoActual;
-
-    private IFachadaOrganizacion FachadaOrganizacion;
-
-    private IFachadaEquipos FachadaEquipos;
-
-    private List<EmpresaDto> empresas;
-
-    private List<SucursalDto> sucursales;
-
-    private List<ModeloDto> modelos;
-
-    /**
-     * Initializes the controller class.
-     *
-     * @param url
-     * @param rb
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        FachadaOrganizacion = new FachadaOrganizacion();
-        FachadaEquipos = new FachadaEquipos();
-
-        cargarDatosComboBox();
-        configurarListeners();
-        checkBoxAction();
-        cbxEmpresaAction();
+        fachadaEquipos = new FachadaEquipos();
+        fachadaOrganizacion = new FachadaOrganizacion();
+        
+        configurarComponentes();
+        cargarDatosIniciales();
     }
 
-    @Override
-    public void setDashBoard(DashBoardController dbc) {
-        this.dbc = dbc;
-    }
+    private void configurarComponentes() {
+        cbxTipoEquipo.setItems(FXCollections.observableArrayList("Laptop", "Escritorio", "Movil", "Otros"));
+        cbxCondicion.setItems(FXCollections.observableArrayList(CondicionFisica.values()));
+        
+        cbxModelo.setEditable(true);
 
-    /**
-     * Configura los eventos (qué pasa cuando seleccionas algo)
-     */
-    private void configurarListeners() {
         cbxTipoEquipo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) cargarVistaEspecifica(newVal);
+        });
+
+        cbxModelo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
-                cargarVistaEspecifica(newVal);
+                txtModelo.setText(newVal.getNombre());
+                txtMarca.setText(newVal.getMarca());
+                txtProcesador.setText(newVal.getProcesador());
+                txtRam.setText(String.valueOf(newVal.getMemoriaRam()));
+                txtAlmacenamiento.setText(String.valueOf(newVal.getAlmacenamiento()));
+                bloquearCamposModelo(true);
+            } else {
+                bloquearCamposModelo(false);
             }
         });
 
-        btnCancelar.setOnAction(e -> {
-            if (dbc != null) {
-                dbc.cambiarDePantalla("inventario/Inventario.fxml");
+        btnCancelar.setOnAction(e -> regresarADashboard());
+    }
+
+    private void bloquearCamposModelo(boolean bloquear) {
+        txtModelo.setDisable(bloquear);
+        txtMarca.setDisable(bloquear);
+        txtProcesador.setDisable(bloquear);
+        txtRam.setDisable(bloquear);
+        txtAlmacenamiento.setDisable(bloquear);
+    }
+
+    private void cargarDatosIniciales() {
+        Task<Map<String, List<?>>> task = new Task<>() {
+            @Override
+            protected Map<String, List<?>> call() throws Exception {
+                Map<String, List<?>> datos = new HashMap<>();
+                datos.put("empresas", fachadaOrganizacion.listarEmpresas(null));
+                datos.put("modelos", fachadaEquipos.listarModelos(null));
+                return datos;
             }
+        };
+
+        task.setOnSucceeded(e -> {
+            cbxEmpresa.setItems(FXCollections.observableArrayList((List<EmpresaDto>) task.getValue().get("empresas")));
+            cbxModelo.setItems(FXCollections.observableArrayList((List<ModeloDto>) task.getValue().get("modelos")));
+            
+            // Valores por defecto
+            cbxTipoEquipo.getSelectionModel().selectFirst();
+            cbxCondicion.getSelectionModel().selectFirst();
         });
 
-    }
-
-    /**
-     * Carga dinámicamente el FXML hijo dentro del VBox containerEspecifico
-     */
-    private void cargarVistaEspecifica(String tipo) {
-        String fxml = "";
-
-        switch (tipo) {
-            case "Movil":
-                fxml = "InfoEspecidicaMovil.fxml";
-                break;
-            case "Escritorio":
-            case "Laptop":
-                fxml = "InfoEspecificaEscritorio.fxml";
-                break;
-            default:
-                fxml = "InfoEspecificaOtros.fxml";
-                break;
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-            Parent vista = loader.load();
-
-            this.controladorHijoActual = loader.getController();
-
-            containerEspecifico.getChildren().clear();
-            containerEspecifico.getChildren().add(vista);
-
-        } catch (IOException ex) {
-            System.err.println("Error cargando vista especifica: " + ex.getMessage());
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML
-    private <T extends EquipoBaseDTO> void guardarDatos() {
-
-        if (!validarFormulario()) {
-            return;
-        }
-
-        if (!controladorHijoActual.validarFormulario()) {
-            return;
-        }
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmar Guardado");
-        alert.setHeaderText("¿Estás seguro de guardar este equipo?");
-
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image("imagenes/logo.png"));
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-
-            System.out.println("Guardando datos...");
-            System.out.println("GRY: " + txtGry.getText());
-            System.out.println("Tipo: " + cbxTipoEquipo.getValue());
-        }
-
-    }
-
-    @FXML
-    private void checkBoxAction() {
-        if (ckbCrearNuevoModelo.isSelected()) {
-            this.cbxModelo.setDisable(true);
-            
-            this.txtModelo.setDisable(false);
-            this.txtMarca.setDisable(false);
-            this.txtRam.setDisable(false);
-            this.txtProcesador.setDisable(false);
-            this.txtAlmacenamiento.setDisable(false);
-        } else {
-            this.txtModelo.setDisable(true);
-            this.txtMarca.setDisable(true);
-            this.txtRam.setDisable(true);
-            this.txtProcesador.setDisable(true);
-            this.txtAlmacenamiento.setDisable(true);
-            
-            this.cbxModelo.setDisable(false);
-        }
+        new Thread(task).start();
     }
 
     @FXML
     private void cbxEmpresaAction() {
-        Long idEmpresa = cbxEmpresa.getSelectionModel().getSelectedItem().getId();
-
-        this.sucursales = FachadaOrganizacion.listarSucursales(null, idEmpresa);
-
-        cbxSucursal.setItems(FXCollections.observableArrayList(sucursales));
-
-        cbxSucursal.getSelectionModel().selectFirst();
+        EmpresaDto emp = cbxEmpresa.getSelectionModel().getSelectedItem();
+        if (emp != null) {
+            // Filtrar sucursales por empresa
+            List<SucursalDto> sucursales = fachadaOrganizacion.listarSucursales(null, emp.getId());
+            cbxSucursal.setItems(FXCollections.observableArrayList(sucursales));
+        }
     }
 
     @FXML
-    private void cbxModeloAction() {
-        ModeloDto modeloDto = cbxModelo.getSelectionModel().getSelectedItem();
+    private void guardarDatos() {
+        if (!validarFormulario()) return;
+
+        ModeloDto modeloFinal = cbxModelo.getSelectionModel().getSelectedItem();
+        if (modeloFinal == null) {
+            modeloFinal = new ModeloDto();
+            modeloFinal.setNombre(txtModelo.getText());
+            modeloFinal.setMarca(txtMarca.getText());
+            modeloFinal.setProcesador(txtProcesador.getText());
+            modeloFinal.setMemoriaRam(Integer.parseInt(txtRam.getText()));
+            modeloFinal.setAlmacenamiento(Integer.parseInt(txtAlmacenamiento.getText()));
+        }
+
+        EquipoBaseDTO equipo = (equipoEdicion != null) ? equipoEdicion : new EquipoBaseDTO();
+        equipo.setGry(Integer.parseInt(txtGry.getText()));
+        equipo.setIdentificador(txtIdentificador.getText());
+        equipo.setFactura(txtFactura.getText());
+        equipo.setFechaCompra(fechaCompra.getValue());
+        equipo.setCondicion(cbxCondicion.getValue());
+        equipo.setNombreModelo(modeloFinal.getNombre());
+        equipo.setObservaciones(txtObservaciones.getText());
+
+        Task<Void> saveTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                if (equipoEdicion == null) fachadaEquipos.guardarEquipo(equipo);
+                else fachadaEquipos.actualizarEquipo(equipo);
+                return null;
+            }
+        };
+
+        saveTask.setOnSucceeded(e -> {
+            mostrarMensaje("Equipo guardado con éxito.");
+            regresarADashboard();
+        });
         
-        this.txtModelo.setText(modeloDto.getNombre());
-        this.txtMarca.setText(modeloDto.getMarca());
-        this.txtRam.setText(String.valueOf(modeloDto.getMemoriaRam()));
-        this.txtProcesador.setText(modeloDto.getProcesador());
-        this.txtAlmacenamiento.setText(String.valueOf(modeloDto.getAlmacenamiento()));
+        saveTask.setOnFailed(e -> mostrarError("Error: " + saveTask.getException().getMessage()));
+        new Thread(saveTask).start();
     }
 
-    private void cargarDatosComboBox() {
-        List<String> itemsCbxTipos = asList("Laptop", "Escritorio", "Movil", "Otros");
+    public void setEquipoParaEditar(EquipoBaseDTO equipo) {
+        this.equipoEdicion = equipo;
+        if (equipo != null) {
+            btnAgregar.setText("Actualizar Equipo");
+            txtGry.setText(String.valueOf(equipo.getGry()));
+            txtIdentificador.setText(equipo.getIdentificador());
+//            cbxModelo.setValue(equipo.getModelo());
+        }
+    }
 
-        List<String> itemsCbxCondicion = asList("Nuevo", "Bueno", "Regular", "Malo");
-
-        empresas = FachadaOrganizacion.listarEmpresas(null);
-
-        modelos = FachadaEquipos.listarModelos(null);
-
-        cbxTipoEquipo.setItems(FXCollections.observableArrayList(itemsCbxTipos));
-
-        cbxCondicion.setItems(FXCollections.observableArrayList(itemsCbxCondicion));
-
-        cbxEmpresa.setItems(FXCollections.observableArrayList(empresas));
-
-        cbxModelo.setItems(FXCollections.observableArrayList(modelos));
-
-        cbxTipoEquipo.getSelectionModel().selectFirst();
-        cbxCondicion.getSelectionModel().selectFirst();
-        cbxEmpresa.getSelectionModel().selectFirst();
-        cbxModelo.getSelectionModel().selectFirst();
-
-        cargarVistaEspecifica("Laptop");
+    private void regresarADashboard() {
+        if (dbc != null) dbc.cambiarDePantalla("inventario/Inventario.fxml");
     }
 
     private void mostrarAdvertencia(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Faltan Datos");
+        alert.setHeaderText(mensaje);
+        System.out.println(mensaje);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("imagenes/logo.png"));
+        alert.showAndWait();
+    }
+    
+    private void mostrarMensaje(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Guardar equipo");
         alert.setHeaderText(mensaje);
         System.out.println(mensaje);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -387,5 +323,10 @@ public class FormInventarioController implements Initializable, BaseController {
         }
 
         return true;
+    }
+
+    @Override
+    public void setDashBoard(DashBoardController dbc) {
+        this.dbc = dbc;
     }
 }

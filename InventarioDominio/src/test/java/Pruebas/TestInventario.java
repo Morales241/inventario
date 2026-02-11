@@ -4,6 +4,7 @@ import Dao.*;
 import Entidades.*;
 import Enums.CondicionFisica;
 import Enums.EstadoEquipo;
+import Enums.TipoEquipo;
 import Interfaces.*;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -72,6 +73,7 @@ public class TestInventario {
         celular.setCondicion(CondicionFisica.NUEVO);
         celular.setEstado(EstadoEquipo.DISPONIBLE);
         celular.setModelo(modelo);
+        celular.setTipo(TipoEquipo.MOVIL);
         celular.setFactura("X");
 
         // ACT

@@ -2,6 +2,7 @@ package Entidades;
 
 import Enums.CondicionFisica;
 import Enums.EstadoEquipo;
+import Enums.TipoEquipo;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -51,6 +52,10 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable {
     @Column(name = "EquiposAsignados")
     @OneToMany(mappedBy = "equipoDeComputo")
     private List<EquipoAsignado> equiposAsignados;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Tipo", nullable = false)
+    private TipoEquipo tipo;
 
     public EquipoDeComputo() {
         this.equiposAsignados = new ArrayList<>();
@@ -136,4 +141,13 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable {
         this.identificador = identificador;
     }
 
+    public TipoEquipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoEquipo tipo) {
+        this.tipo = tipo;
+    }
+
+    
 }

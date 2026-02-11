@@ -2,6 +2,7 @@ package Dtos;
 
 import Enums.CondicionFisica;
 import Enums.EstadoEquipo;
+import Enums.TipoEquipo;
 import java.time.LocalDate;
 
 /**
@@ -23,6 +24,7 @@ public class EquipoBaseDTO {
     private LocalDate fechaCompra;
     private String identificador;
     
+    private TipoEquipo tipo;
     private Long idSucursal;
     private String nombreSucursal;
     private Long idModelo;
@@ -125,6 +127,14 @@ public class EquipoBaseDTO {
 
     public void setIdentificador(String identificador) {
         this.identificador = identificador;
+    }
+
+    public TipoEquipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoEquipo tipo) {
+        this.tipo = tipo;
     }
     
 }

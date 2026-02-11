@@ -1,6 +1,6 @@
 package Dtos;
 
-import Enums.TipoOtroEquipo;
+import Enums.TipoEquipo;
 
 /**
  *
@@ -8,31 +8,12 @@ import Enums.TipoOtroEquipo;
  */
 public class OtroEquipoDTO extends EquipoBaseDTO{
 
-    private String noSerie;
-    private TipoOtroEquipo tipo;
-    
     private String tituloCampoExtra;
     private String tituloCampoExtra2;
     private String contenidoCampoExtra;
     private String contenidoCampoExtra2;
     
     public OtroEquipoDTO() {
-    }
-
-    public String getNoSerie() {
-        return noSerie;
-    }
-
-    public void setNoSerie(String noSerie) {
-        this.noSerie = noSerie;
-    }
-
-    public TipoOtroEquipo getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoOtroEquipo tipo) {
-        this.tipo = tipo;
     }
 
     public String getTituloCampoExtra() {
