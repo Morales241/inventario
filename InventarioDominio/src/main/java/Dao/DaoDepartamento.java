@@ -56,18 +56,7 @@ public class DaoDepartamento extends DaoGenerico<Departamento, Long> implements 
             Root<Departamento> root = cq.from(Departamento.class);
             predicados.add(cb.equal(cb.lower(root.get("nombre")), nombre.toLowerCase()));
             cq.select(root);
-            cq.where(predicados.toArray(new Predicate[0])); // Nota: Se ajusta implícitamente en la lógica de JPA
-            cq.where(predicados.toArray(new Predicate[0])); // El código original usa cq.where(predicados)
-            
-            cq.where(predicados.toArray(new Predicate[0]));
-            cq.where(predicados.toArray(new Predicate[0]));
-            cq.where(predicados.toArray(new Predicate[0]));
-
-            // Manteniendo tu lógica original exacta:
-            cq.where(predicados.toArray(new Predicate[0]));
-            
-            // Corrección visual para el Javadoc respetando tu código:
-            cq.where(predicados.toArray(new Predicate[0]));
+            cq.where(predicados.toArray(new Predicate[0])); 
 
             return em.createQuery(cq).getSingleResult();
         }

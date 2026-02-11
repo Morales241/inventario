@@ -2,25 +2,25 @@ package com.mycompany.inventariofrontfx.inventario;
 
 import Dtos.EmpresaDto;
 import Dtos.EquipoBaseDTO;
+import Dtos.EquipoEscritorioDTO;
 import Dtos.ModeloDto;
+import Dtos.MovilDTO;
+import Dtos.OtroEquipoDTO;
 import Dtos.SucursalDto;
 import Enums.CondicionFisica;
+import Enums.TipoEquipo;
 import Implementaciones.FachadaEquipos;
 import Implementaciones.FachadaOrganizacion;
 import Interfaces.IFachadaEquipos;
 import Interfaces.IFachadaOrganizacion;
 import com.mycompany.inventariofrontfx.BaseController;
 import com.mycompany.inventariofrontfx.DashBoardController;
-import com.mycompany.inventariofrontfx.IValidaciones;
 import java.io.IOException;
 import java.net.URL;
-import static java.util.Arrays.asList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -29,14 +29,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -51,33 +49,46 @@ public class FormInventarioController implements Initializable, BaseController {
     private IFachadaEquipos fachadaEquipos;
     private EquipoBaseDTO equipoEdicion = null;
 
-    @FXML private TextField txtGry, txtIdentificador, txtAlmacenamiento, txtRam, txtProcesador, txtMarca, txtModelo, txtFactura, txtObservaciones;
-    @FXML private DatePicker fechaCompra;
-    @FXML private ComboBox<String> cbxTipoEquipo;
-    @FXML private ComboBox<EmpresaDto> cbxEmpresa;
-    @FXML private ComboBox<SucursalDto> cbxSucursal;
-    @FXML private ComboBox<CondicionFisica> cbxCondicion;
-    @FXML private ComboBox<ModeloDto> cbxModelo;
-    @FXML private FlowPane containerEspecifico;
-    @FXML private Button btnCancelar, btnAgregar;
+    @FXML
+    private TextField txtGry, txtIdentificador, txtAlmacenamiento, txtRam, txtProcesador, txtMarca, txtModelo, txtFactura, txtObservaciones;
+    @FXML
+    private DatePicker fechaCompra;
+    @FXML
+    private ComboBox<TipoEquipo> cbxTipoEquipo;
+    @FXML
+    private ComboBox<EmpresaDto> cbxEmpresa;
+    @FXML
+    private ComboBox<SucursalDto> cbxSucursal;
+    @FXML
+    private ComboBox<CondicionFisica> cbxCondicion;
+    @FXML
+    private ComboBox<ModeloDto> cbxModelo;
+    @FXML
+    private FlowPane containerEspecifico;
+    @FXML
+    private Button btnCancelar, btnAgregar;
+    @FXML
+    private CheckBox ckbCrearNuevoModelo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fachadaEquipos = new FachadaEquipos();
         fachadaOrganizacion = new FachadaOrganizacion();
-        
+
         configurarComponentes();
         cargarDatosIniciales();
     }
 
     private void configurarComponentes() {
-        cbxTipoEquipo.setItems(FXCollections.observableArrayList("Laptop", "Escritorio", "Movil", "Otros"));
+        cbxTipoEquipo.setItems(FXCollections.observableArrayList(TipoEquipo.values()));
         cbxCondicion.setItems(FXCollections.observableArrayList(CondicionFisica.values()));
-        
+
         cbxModelo.setEditable(true);
 
         cbxTipoEquipo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null) cargarVistaEspecifica(newVal);
+            if (newVal != null) {
+                cargarVistaEspecifica(newVal);
+            }
         });
 
         cbxModelo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -118,7 +129,7 @@ public class FormInventarioController implements Initializable, BaseController {
         task.setOnSucceeded(e -> {
             cbxEmpresa.setItems(FXCollections.observableArrayList((List<EmpresaDto>) task.getValue().get("empresas")));
             cbxModelo.setItems(FXCollections.observableArrayList((List<ModeloDto>) task.getValue().get("modelos")));
-            
+
             // Valores por defecto
             cbxTipoEquipo.getSelectionModel().selectFirst();
             cbxCondicion.getSelectionModel().selectFirst();
@@ -139,43 +150,109 @@ public class FormInventarioController implements Initializable, BaseController {
 
     @FXML
     private void guardarDatos() {
-        if (!validarFormulario()) return;
 
-        ModeloDto modeloFinal = cbxModelo.getSelectionModel().getSelectedItem();
-        if (modeloFinal == null) {
-            modeloFinal = new ModeloDto();
-            modeloFinal.setNombre(txtModelo.getText());
-            modeloFinal.setMarca(txtMarca.getText());
-            modeloFinal.setProcesador(txtProcesador.getText());
-            modeloFinal.setMemoriaRam(Integer.parseInt(txtRam.getText()));
-            modeloFinal.setAlmacenamiento(Integer.parseInt(txtAlmacenamiento.getText()));
+        if (!validarFormulario()) {
+            return;
         }
 
-        EquipoBaseDTO equipo = (equipoEdicion != null) ? equipoEdicion : new EquipoBaseDTO();
-        equipo.setGry(Integer.parseInt(txtGry.getText()));
-        equipo.setIdentificador(txtIdentificador.getText());
-        equipo.setFactura(txtFactura.getText());
-        equipo.setFechaCompra(fechaCompra.getValue());
-        equipo.setCondicion(cbxCondicion.getValue());
-        equipo.setNombreModelo(modeloFinal.getNombre());
-        equipo.setObservaciones(txtObservaciones.getText());
-
         Task<Void> saveTask = new Task<>() {
+
             @Override
             protected Void call() throws Exception {
-                if (equipoEdicion == null) fachadaEquipos.guardarEquipo(equipo);
-                else fachadaEquipos.actualizarEquipo(equipo);
+
+                ModeloDto modeloFinal;
+
+                if (ckbCrearNuevoModelo.isSelected()) {
+
+                    ModeloDto nuevoModelo = new ModeloDto();
+                    nuevoModelo.setNombre(txtModelo.getText());
+                    nuevoModelo.setMarca(txtMarca.getText());
+                    nuevoModelo.setProcesador(txtProcesador.getText());
+                    nuevoModelo.setMemoriaRam(Integer.parseInt(txtRam.getText()));
+                    nuevoModelo.setAlmacenamiento(Integer.parseInt(txtAlmacenamiento.getText()));
+
+                    modeloFinal = fachadaEquipos.guardarModelo(nuevoModelo);
+
+                } else {
+
+                    modeloFinal = cbxModelo.getSelectionModel().getSelectedItem();
+
+                    if (modeloFinal == null) {
+                        throw new Exception("Debe seleccionar un modelo.");
+                    }
+                }
+
+                TipoEquipo tipo = cbxTipoEquipo.getSelectionModel().getSelectedItem();
+
+                EquipoBaseDTO equipo;
+
+                if (equipoEdicion != null) {
+                    equipo = equipoEdicion;
+                } else {
+                    equipo = switch (tipo) {
+                        case DESKTOP, LAPTOP -> new EquipoEscritorioDTO();
+                        case MOVIL -> new MovilDTO();
+                        default -> new OtroEquipoDTO();
+                    };
+                }
+
+                equipo.setGry(Integer.parseInt(txtGry.getText()));
+                equipo.setIdentificador(txtIdentificador.getText());
+                equipo.setFactura(txtFactura.getText());
+                equipo.setFechaCompra(fechaCompra.getValue());
+                equipo.setCondicion(cbxCondicion.getValue());
+                equipo.setObservaciones(txtObservaciones.getText());
+                equipo.setNombreModelo(modeloFinal.getNombre());
+
+                equipo.setIdSucursal(
+                        cbxSucursal.getSelectionModel().getSelectedItem().getId()
+                );
+
+                switch (tipo) {
+                    case DESKTOP, LAPTOP -> fachadaEquipos.guardarEscritorio((EquipoEscritorioDTO) equipo);
+                    case MOVIL -> fachadaEquipos.guardarMovil((MovilDTO) equipo);
+                    default -> fachadaEquipos.guardarOtro((OtroEquipoDTO) equipo);
+                }
+
                 return null;
             }
         };
 
         saveTask.setOnSucceeded(e -> {
-            mostrarMensaje("Equipo guardado con éxito.");
+            mostrarMensaje("Equipo guardado correctamente.");
             regresarADashboard();
         });
-        
-        saveTask.setOnFailed(e -> mostrarError("Error: " + saveTask.getException().getMessage()));
+
+        saveTask.setOnFailed(e
+                -> mostrarError("Error: " + saveTask.getException().getMessage())
+        );
+
         new Thread(saveTask).start();
+    }
+
+    @FXML
+    private void checkBoxAction() {
+
+        boolean crearNuevo = ckbCrearNuevoModelo.isSelected();
+
+        if (crearNuevo) {
+            ModeloDto seleccionado = cbxModelo.getSelectionModel().getSelectedItem();
+
+            if (seleccionado != null) {
+                txtModelo.setText(seleccionado.getNombre());
+                txtMarca.setText(seleccionado.getMarca());
+                txtProcesador.setText(seleccionado.getProcesador());
+                txtRam.setText(String.valueOf(seleccionado.getMemoriaRam()));
+                txtAlmacenamiento.setText(String.valueOf(seleccionado.getAlmacenamiento()));
+            }
+
+            bloquearCamposModelo(false);
+            cbxModelo.setDisable(true);
+
+        } else {
+            cbxModelo.setDisable(false);
+            bloquearCamposModelo(true);
+        }
     }
 
     public void setEquipoParaEditar(EquipoBaseDTO equipo) {
@@ -189,7 +266,9 @@ public class FormInventarioController implements Initializable, BaseController {
     }
 
     private void regresarADashboard() {
-        if (dbc != null) dbc.cambiarDePantalla("inventario/Inventario.fxml");
+        if (dbc != null) {
+            dbc.cambiarDePantalla("inventario/Inventario.fxml");
+        }
     }
 
     private void mostrarAdvertencia(String mensaje) {
@@ -201,7 +280,7 @@ public class FormInventarioController implements Initializable, BaseController {
         stage.getIcons().add(new Image("imagenes/logo.png"));
         alert.showAndWait();
     }
-    
+
     private void mostrarMensaje(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Guardar equipo");
@@ -328,5 +407,28 @@ public class FormInventarioController implements Initializable, BaseController {
     @Override
     public void setDashBoard(DashBoardController dbc) {
         this.dbc = dbc;
+    }
+
+    public void cargarVistaEspecifica(TipoEquipo tipoEquipo) {
+        try {
+            String rutaFXML = "InfoEspecificaEscritorio.fxml";
+
+            if (tipoEquipo == TipoEquipo.DESKTOP || tipoEquipo == TipoEquipo.LAPTOP) {
+                rutaFXML = "InfoEspecificaEscritorio.fxml";
+            }
+            if (tipoEquipo == TipoEquipo.MOVIL) {
+                rutaFXML = "InfoEspecificaMovil.fxml";
+            } else {
+                rutaFXML = "InfoEspecificaOtros.fxml";
+            }
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
+            Parent vista = loader.load();
+
+            Object controller = loader.getController();
+
+        } catch (IOException e) {
+            System.err.println("Error cargando la vista");
+        }
     }
 }

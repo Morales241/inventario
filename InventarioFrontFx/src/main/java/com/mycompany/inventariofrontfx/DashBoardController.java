@@ -145,10 +145,7 @@ public class DashBoardController implements Initializable {
                     baseController.setDashBoard(this);
                 }
 
-                // Mostrar la vista
                 centerContainer.setContent(vista);
-
-                // Resetear scrolleo
                 centerContainer.setVvalue(0);
 
             }

@@ -10,29 +10,34 @@ import jakarta.persistence.criteria.Root;
 import java.util.List;
 
 /**
- * Clase abstracta que implementa las operaciones CRUD básicas de forma genérica.
- * Proporciona una base sólida para reducir la duplicación de código en los DAOs específicos.
+ * Clase abstracta que implementa las operaciones CRUD básicas de forma
+ * genérica. Proporciona una base sólida para reducir la duplicación de código
+ * en los DAOs específicos.
+ *
  * @author JMorales
  * @param <T> El tipo de la entidad de dominio.
  * @param <ID> El tipo del identificador único de la entidad.
  */
-public abstract class DaoGenerico<T, ID> implements IDaoGenerico<T, ID>{
+public abstract class DaoGenerico<T, ID> implements IDaoGenerico<T, ID> {
 
     private final Class<T> claseEntidad;
     private final Conexion conexion = Conexion.getInstancia();
     private EntityManagerFactory emf;
 
     /**
-     * Constructor que inicializa el DAO con la clase de la entidad y la fábrica de EntityManager por defecto.
+     * Constructor que inicializa el DAO con la clase de la entidad y la fábrica
+     * de EntityManager por defecto.
+     *
      * @param claseEntidad Clase de la entidad para la que se crea el DAO.
      */
     public DaoGenerico(Class<T> claseEntidad) {
         this.claseEntidad = claseEntidad;
         this.emf = conexion.getEntityManagerFactory();
     }
-    
+
     /**
      * Constructor que permite inyectar una fábrica de EntityManager específica.
+     *
      * @param claseEntidad Clase de la entidad para la que se crea el DAO.
      * @param emf Fábrica de gestores de entidades a utilizar.
      */
@@ -43,7 +48,9 @@ public abstract class DaoGenerico<T, ID> implements IDaoGenerico<T, ID>{
 
     /**
      * Crea y devuelve un nuevo {@link EntityManager}.
-     * @return Una instancia de EntityManager para realizar operaciones en la base de datos.
+     *
+     * @return Una instancia de EntityManager para realizar operaciones en la
+     * base de datos.
      */
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
@@ -63,7 +70,10 @@ public abstract class DaoGenerico<T, ID> implements IDaoGenerico<T, ID>{
     public void eliminar(ID id) {
         try (EntityManager em = getEntityManager()) {
             em.getTransaction().begin();
-            em.remove(id);
+            T entidad = em.find(claseEntidad, id);
+            if (entidad != null) {
+                em.remove(entidad);
+            }
             em.getTransaction().commit();
         }
     }
@@ -77,7 +87,7 @@ public abstract class DaoGenerico<T, ID> implements IDaoGenerico<T, ID>{
         }
         return entidad;
     }
-    
+
     @Override
     public List<T> buscarTodos() {
         try (EntityManager em = getEntityManager()) {
@@ -88,7 +98,7 @@ public abstract class DaoGenerico<T, ID> implements IDaoGenerico<T, ID>{
             return em.createQuery(cq).getResultList();
         }
     }
-    
+
     @Override
     public T buscarPorId(ID id) {
         try (EntityManager em = getEntityManager()) {

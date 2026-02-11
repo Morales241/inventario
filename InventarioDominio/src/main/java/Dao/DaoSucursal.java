@@ -91,10 +91,10 @@ public class DaoSucursal extends DaoGenerico<Sucursal, Long> implements IDaoSucu
             Join<Sucursal, Empresa> join = root.join("empresa");
 
             if (!cadena.isEmpty()) {
-                predicados.add(cb.like(cb.lower(root.get("Nombre")), "%" + cadena.toLowerCase() + "%"));
+                predicados.add(cb.like(cb.lower(root.get("nombre")), "%" + cadena.toLowerCase() + "%"));
             }
             if (!cadenaUbicacion.isEmpty()) {
-                predicados.add(cb.like(cb.lower(root.get("Ubicacion")), "%" + cadenaUbicacion.toLowerCase() + "%"));
+                predicados.add(cb.like(cb.lower(root.get("ubicacion")), "%" + cadenaUbicacion.toLowerCase() + "%"));
             }
             if (idEmpresa != null) {
                 predicados.add(cb.equal(join.get("id"), idEmpresa));
