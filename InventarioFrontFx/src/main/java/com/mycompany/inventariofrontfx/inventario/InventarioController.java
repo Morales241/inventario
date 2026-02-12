@@ -4,21 +4,37 @@
  */
 package com.mycompany.inventariofrontfx.inventario;
 
+import Dtos.EquipoBaseDTO;
+import Enums.CondicionFisica;
+import Enums.TipoEquipo;
+import InterfacesFachada.IFachadaEquipos;
 import com.mycompany.inventariofrontfx.BaseController;
 import com.mycompany.inventariofrontfx.DashBoardController;
+import fabricaFachadas.FabricaFachadas;
 import java.io.IOException;
 import java.net.URL;
 import static java.util.Arrays.asList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -28,19 +44,34 @@ import javafx.scene.control.TextField;
 public class InventarioController implements Initializable, BaseController {
 
     private DashBoardController dbc;
+    private final IFachadaEquipos fachadaEquipos = FabricaFachadas.getFachadaEquipos();
 
     @FXML
-    private Button btnAgregar;
+    private TableView<EquipoBaseDTO> tablaEquipos;
+
     @FXML
-    private ComboBox<String> cbxTipo;
+    private TableColumn<EquipoBaseDTO, Long> colId;
     @FXML
-    private ComboBox<String> cbxCondicion;
+    private TableColumn<EquipoBaseDTO, Integer> colGry;
     @FXML
-    private ComboBox<String> cbxStatus;
+    private TableColumn<EquipoBaseDTO, String> colTipo;
+    @FXML
+    private TableColumn<EquipoBaseDTO, String> colMarca;
+    @FXML
+    private TableColumn<EquipoBaseDTO, String> colModelo;
+    @FXML
+    private TableColumn<EquipoBaseDTO, String> colCondicion;
+    @FXML
+    private TableColumn<EquipoBaseDTO, String> colEstado;
+    @FXML
+    private TableColumn<EquipoBaseDTO, Void> colAcciones;
+
     @FXML
     private TextField txtFiltro;
     @FXML
-    private TableView tablaEquipos;
+    private ComboBox<TipoEquipo> cbxTipo;
+    @FXML
+    private ComboBox<CondicionFisica> cbxCondicion;
 
     /**
      * Initializes the controller class.
@@ -48,106 +79,112 @@ public class InventarioController implements Initializable, BaseController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        cargarDatosComboBox();
-
-        cbxTipo.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-//                logica
-            }
-        });
-
-        cbxCondicion.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-//                logica
-            }
-        });
-
-        cbxStatus.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-//                logica
-            }
-        });
-
-        btnAgregar.setOnAction(evento -> {
-            actionListenerBtnAgregar(evento);
-        });
+        configurarColumnas();
+        configurarAcciones();
+        cargarDatos();
 
     }
 
-    private void actionListenerBtnAgregar(Event evento) {
-        if (this.dbc != null) {
-            try {
-                this.dbc.cambiarDePantalla("inventario/FormInventario.fxml");
-            } catch (IOException ex) {
-                System.getLogger(InventarioController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+    private void configurarColumnas() {
+
+        colId.setCellValueFactory(data
+                -> new SimpleObjectProperty<>(data.getValue().getIdEquipo()));
+
+        colGry.setCellValueFactory(data
+                -> new SimpleObjectProperty<>(data.getValue().getGry()));
+
+        colTipo.setCellValueFactory(data
+                -> new SimpleStringProperty(data.getValue().getTipo()));
+
+        colMarca.setCellValueFactory(data
+                -> new SimpleStringProperty(data.getValue().getNombreModelo()));
+
+        colModelo.setCellValueFactory(data
+                -> new SimpleStringProperty(data.getValue().getFechaCompra().toString()));
+
+        colCondicion.setCellValueFactory(data
+                -> new SimpleStringProperty(data.getValue().getCondicion()));
+
+        colEstado.setCellValueFactory(data
+                -> new SimpleStringProperty(data.getValue().getEstado()));
+    }
+
+    private void configurarAcciones() {
+
+        colAcciones.setCellFactory(col -> new TableCell<>() {
+
+            private final Button btnEditar = new Button("✏");
+            private final Button btnEliminar = new Button("🗑");
+            private final HBox container
+                    = new HBox(8, btnEditar, btnEliminar);
+
+            {
+                btnEditar.setOnAction(e -> {
+                    EquipoBaseDTO equipo = getTableView().getItems().get(getIndex());
+                    editarEquipo(equipo);
+                });
+
+                btnEliminar.setOnAction(e -> {
+                    EquipoBaseDTO equipo
+                            = getTableView().getItems().get(getIndex());
+                    eliminarEquipo(equipo);
+                });
             }
-        } else {
-            System.out.println("ERROR CRÍTICO: 'dbc' es null. Revisa el DashBoardController.");
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : container);
+            }
+        });
+    }
+
+    private void cargarDatos() {
+
+        List<EquipoBaseDTO> lista
+                = fachadaEquipos.buscarEquipos(null, null, null);
+
+        tablaEquipos.getItems().setAll(lista);
+    }
+
+    private void eliminarEquipo(EquipoBaseDTO equipo) {
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setHeaderText("Eliminar equipo");
+        confirm.setContentText("¿Seguro que desea eliminar este equipo?");
+
+        confirm.showAndWait().ifPresent(r -> {
+            if (r == ButtonType.OK) {
+                try {
+                    fachadaEquipos.eliminarEquipo(equipo.getIdEquipo());
+                } catch (Exception ex) {
+                    System.getLogger(InventarioController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                }
+                cargarDatos();
+            }
+        });
+    }
+
+    private void editarEquipo(EquipoBaseDTO equipo) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("FormInventario.fxml"));
+
+            Parent view = loader.load();
+
+            FormInventarioController controller
+                    = loader.getController();
+
+            controller.cargarEquipoParaEditar(equipo);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(view));
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
-
-    private void cargarDatosComboBox() {
-        List<String> itemsCbxTipos = asList("Todos los tipos", "Movil", "Laptop", "Escritorio", "Otros");
-
-        List<String> itemsCbxCondicion = asList("Todas las condiciones", "Nuevo", "Bueno", "Regular", "Malo");
-
-        List<String> itemsCbxStatus = asList("Todos los estados", "Disponible", "Asignado", "En mantenimiento", "Baja");
-
-        cbxTipo.setItems(FXCollections.observableArrayList(itemsCbxTipos));
-        cbxCondicion.setItems(FXCollections.observableArrayList(itemsCbxCondicion));
-        cbxStatus.setItems(FXCollections.observableArrayList(itemsCbxStatus));
-
-        cbxTipo.getSelectionModel().selectFirst();
-        cbxCondicion.getSelectionModel().selectFirst();
-        cbxStatus.getSelectionModel().selectFirst();
-    }
-
-    public Button getBtnAgregar() {
-        return btnAgregar;
-    }
-
-    public void setBtnAgregar(Button btnAgregar) {
-        this.btnAgregar = btnAgregar;
-    }
-
-    public ComboBox<String> getCbxTipo() {
-        return cbxTipo;
-    }
-
-    public void setCbxTipo(ComboBox<String> cbxTipo) {
-        this.cbxTipo = cbxTipo;
-    }
-
-    public ComboBox<String> getCbxCondicion() {
-        return cbxCondicion;
-    }
-
-    public void setCbxCondicion(ComboBox<String> cbxCondicion) {
-        this.cbxCondicion = cbxCondicion;
-    }
-
-    public ComboBox<String> getCbxStatus() {
-        return cbxStatus;
-    }
-
-    public void setCbxStatus(ComboBox<String> cbxStatus) {
-        this.cbxStatus = cbxStatus;
-    }
-
-    public TextField getTxtFiltro() {
-        return txtFiltro;
-    }
-
-    public void setTxtFiltro(TextField txtFiltro) {
-        this.txtFiltro = txtFiltro;
-    }
-
-    public TableView getTablaEquipos() {
-        return tablaEquipos;
-    }
-
-    public void setTablaEquipos(TableView tablaEquipos) {
-        this.tablaEquipos = tablaEquipos;
     }
 
     @Override

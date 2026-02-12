@@ -1,70 +1,51 @@
 package com.mycompany.inventariodominio;
 
-import Dao.DaoDepartamento;
-import Dao.DaoEmpresa;
-import Dao.DaoModelo;
-import Dao.DaoPuesto;
-import Dao.DaoSucursal;
-import Entidades.Departamento;
-import Entidades.Empresa;
-import Entidades.Modelo;
-import Entidades.Puesto;
-import Entidades.Sucursal;
+import Dao.*;
+import Entidades.*;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
+
         System.out.println("--- Iniciando Generación de Base de Datos ---");
 
-        try {
-            cargarMockDatos();
+        EntityManagerFactory emf =
+                Persistence.createEntityManagerFactory("ConexionPU");
 
-            System.out.println("¡Tablas creadas exitosamente en la base de datos!");
+        EntityManager em = emf.createEntityManager();
+
+        try {
+
+            em.getTransaction().begin();
+
+            cargarMockDatos(em);
+
+            em.getTransaction().commit();
+
+            System.out.println("Base de datos generada correctamente");
 
         } catch (Exception e) {
-            System.err.println("Ocurrió un error al generar la BD: " + e.getMessage());
+
+            em.getTransaction().rollback();
+
+            System.err.println("Error al generar la BD: "
+                    + e.getMessage());
             e.printStackTrace();
+
+        } finally {
+            em.close();
+            emf.close();
         }
     }
 
-    public static void cargarMockDatos() {
-        // 1. EMPRESAS
-        List<Empresa> empresas = new ArrayList<>();
-        empresas.add(new Empresa("Tech Solutions SA"));
-        empresas.add(new Empresa("Global Logistics"));
-        empresas.add(new Empresa("Mega Market"));
-        empresas.add(new Empresa("Finanzas del Norte"));
-        empresas.add(new Empresa("Innovación Digital"));
-
-        List<Sucursal> sucursales = new ArrayList<>();
-        sucursales.add(new Sucursal(empresas.get(0), "Av. Central 123", "Matriz CDMX", new ArrayList<>()));
-        sucursales.add(new Sucursal(empresas.get(0), "Calle Norte 45", "Sucursal Querétaro", new ArrayList<>()));
-        sucursales.add(new Sucursal(empresas.get(1), "Puerto Industrial S/N", "Bodega Veracruz", new ArrayList<>()));
-        sucursales.add(new Sucursal(empresas.get(2), "Centro Comercial Altabrisa", "Punto de Venta Merida", new ArrayList<>()));
-        sucursales.add(new Sucursal(empresas.get(4), "Silicon Drive 88", "Hub Tecnológico", new ArrayList<>()));
-
-        List<Departamento> departamentos = new ArrayList<>();
-        departamentos.add(new Departamento("Sistemas e TI", sucursales.get(0)));
-        departamentos.add(new Departamento("Recursos Humanos", sucursales.get(0)));
-        departamentos.add(new Departamento("Contabilidad", sucursales.get(1)));
-        departamentos.add(new Departamento("Ventas", sucursales.get(3)));
-        departamentos.add(new Departamento("Operaciones", sucursales.get(2)));
-
-        List<Puesto> puestos = new ArrayList<>();
-        puestos.add(new Puesto("Desarrollador Senior", departamentos.get(0)));
-        puestos.add(new Puesto("Analista de Soporte", departamentos.get(0)));
-        puestos.add(new Puesto("Gerente de RH", departamentos.get(1)));
-        puestos.add(new Puesto("Contador General", departamentos.get(2)));
-        puestos.add(new Puesto("Ejecutivo de Ventas", departamentos.get(3)));
-
-//        List<Modelo> modelos = new ArrayList<>();
-//        modelos.add(new Modelo("Dell", "Optiplex 7090", 16, 512, "Intel i7 11th Gen"));
-//        modelos.add(new Modelo("HP", "EliteBook 840 G8", 8, 256, "Intel i5 11th Gen"));
-//        modelos.add(new Modelo("Apple", "MacBook Pro M2", 16, 512, "Apple M2 Chip"));
-//        modelos.add(new Modelo("Lenovo", "ThinkPad X1 Carbon", 32, 1000, "Intel i7 12th Gen"));
-//        modelos.add(new Modelo("Samsung", "Galaxy S23", 8, 256, "Snapdragon 8 Gen 2"));
+    private static void cargarMockDatos(EntityManager em) {
 
         DaoEmpresa daoEmpresa = new DaoEmpresa();
         DaoSucursal daoSucursal = new DaoSucursal();
@@ -72,12 +53,72 @@ public class Main {
         DaoPuesto daoPuesto = new DaoPuesto();
         DaoModelo daoModelo = new DaoModelo();
 
-        empresas.forEach(e -> daoEmpresa.guardar(e));
-        sucursales.forEach(s -> daoSucursal.guardar(s));
-        departamentos.forEach(d -> daoDepartamento.guardar(d));
-        puestos.forEach(p -> daoPuesto.guardar(p));
-//        modelos.forEach(m -> daoModelo.guardar(m));
+        // Inyectar EntityManager
+        daoEmpresa.setEntityManager(em);
+        daoSucursal.setEntityManager(em);
+        daoDepartamento.setEntityManager(em);
+        daoPuesto.setEntityManager(em);
+        daoModelo.setEntityManager(em);
 
-        System.out.println("=== DATA CARGADO EXITOSAMENTE ===");
+        // ===============================
+        // 1️⃣ EMPRESAS
+        // ===============================
+
+        Empresa tech = daoEmpresa.guardar(new Empresa("Tech Solutions SA"));
+        Empresa logistics = daoEmpresa.guardar(new Empresa("Global Logistics"));
+        Empresa market = daoEmpresa.guardar(new Empresa("Mega Market"));
+        Empresa finanzas = daoEmpresa.guardar(new Empresa("Finanzas del Norte"));
+        Empresa innovacion = daoEmpresa.guardar(new Empresa("Innovación Digital"));
+
+        // ===============================
+        // 2️⃣ SUCURSALES
+        // ===============================
+
+        Sucursal s1 = daoSucursal.guardar(
+                new Sucursal(tech, "Av. Central 123", "Matriz CDMX", new ArrayList<>()));
+
+        Sucursal s2 = daoSucursal.guardar(
+                new Sucursal(tech, "Calle Norte 45", "Sucursal Querétaro", new ArrayList<>()));
+
+        Sucursal s3 = daoSucursal.guardar(
+                new Sucursal(logistics, "Puerto Industrial S/N", "Bodega Veracruz", new ArrayList<>()));
+
+        Sucursal s4 = daoSucursal.guardar(
+                new Sucursal(market, "Centro Comercial Altabrisa", "Punto de Venta Mérida", new ArrayList<>()));
+
+        Sucursal s5 = daoSucursal.guardar(
+                new Sucursal(innovacion, "Silicon Drive 88", "Hub Tecnológico", new ArrayList<>()));
+
+        // ===============================
+        // 3️⃣ DEPARTAMENTOS
+        // ===============================
+
+        Departamento d1 = daoDepartamento.guardar(new Departamento("Sistemas TI", s1));
+        Departamento d2 = daoDepartamento.guardar(new Departamento("Recursos Humanos", s1));
+        Departamento d3 = daoDepartamento.guardar(new Departamento("Contabilidad", s2));
+        Departamento d4 = daoDepartamento.guardar(new Departamento("Ventas", s4));
+        Departamento d5 = daoDepartamento.guardar(new Departamento("Operaciones", s3));
+
+        // ===============================
+        // 4️⃣ PUESTOS
+        // ===============================
+
+        daoPuesto.guardar(new Puesto("Desarrollador Senior", d1));
+        daoPuesto.guardar(new Puesto("Analista de Soporte", d1));
+        daoPuesto.guardar(new Puesto("Gerente de RH", d2));
+        daoPuesto.guardar(new Puesto("Contador General", d3));
+        daoPuesto.guardar(new Puesto("Ejecutivo de Ventas", d4));
+
+        // ===============================
+        // 5️⃣ MODELOS DE EQUIPO
+        // ===============================
+
+        daoModelo.guardar(new Modelo("Dell", "Optiplex 7090", 16, 512, "Intel i7 11th Gen"));
+        daoModelo.guardar(new Modelo("HP", "EliteBook 840 G8", 8, 256, "Intel i5 11th Gen"));
+        daoModelo.guardar(new Modelo("Apple", "MacBook Pro M2", 16, 512, "Apple M2 Chip"));
+        daoModelo.guardar(new Modelo("Lenovo", "ThinkPad X1 Carbon", 32, 1000, "Intel i7 12th Gen"));
+        daoModelo.guardar(new Modelo("Samsung", "Galaxy S23", 8, 256, "Snapdragon 8 Gen 2"));
+
+        System.out.println("✔ Datos mock cargados correctamente");
     }
 }

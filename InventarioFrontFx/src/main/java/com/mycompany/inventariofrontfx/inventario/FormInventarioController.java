@@ -9,11 +9,20 @@ import Dtos.OtroEquipoDTO;
 import Dtos.SucursalDTO;
 import Enums.CondicionFisica;
 import Enums.TipoEquipo;
+import static Enums.TipoEquipo.DESKTOP;
 import static Enums.TipoEquipo.IMPRESORA;
+import static Enums.TipoEquipo.LAPTOP;
+import static Enums.TipoEquipo.MONITOR;
+import static Enums.TipoEquipo.MOVIL;
+import static Enums.TipoEquipo.PROYECTOR;
+import static Enums.TipoEquipo.SCANNER;
 import InterfacesFachada.IFachadaEquipos;
 import InterfacesFachada.IFachadaOrganizacion;
+import com.mycompany.inventariofrontfx.BaseController;
+import com.mycompany.inventariofrontfx.DashBoardController;
 import fabricaFachadas.FabricaFachadas;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,7 +39,7 @@ import javafx.scene.layout.FlowPane;
  *
  * @author tacot
  */
-public class FormInventarioController {
+public class FormInventarioController implements BaseController {
 
     private final IFachadaEquipos fachadaEquipos = FabricaFachadas.getFachadaEquipos();
 
@@ -38,6 +47,7 @@ public class FormInventarioController {
 
     private Parent panelEspecificoActual;
     private Object controllerEspecifico;
+    private DashBoardController dbc;
 
     @FXML
     private TextField txtGry;
@@ -102,17 +112,13 @@ public class FormInventarioController {
             FXMLLoader loader = null;
 
             switch (tipo) {
-                case LAPTOP:
-                case DESKTOP:
-                    loader = new FXMLLoader(getClass().getResource("InfoEspecificaEscritorio.fxml"));
 
-                case MOVIL:
+                case LAPTOP, DESKTOP ->
+                    loader = new FXMLLoader(getClass().getResource("InfoEspecificaEscritorio.fxml"));
+                case MOVIL ->
                     loader = new FXMLLoader(getClass().getResource("InfoEspecificaDeMovil.fxml"));
 
-                case IMPRESORA:
-                case MONITOR:
-                case SCANNER:
-                case PROYECTOR:
+                case IMPRESORA, MONITOR, SCANNER, PROYECTOR ->
                     loader = new FXMLLoader(getClass().getResource("InfoEspecificaOtros.fxml"));
             }
 
@@ -151,17 +157,20 @@ public class FormInventarioController {
     }
 
     private void llenarModeloSeleccionado() {
+        try {
+            ModeloDTO modelo = cbxModelo.getValue();
+            if (modelo == null) {
+                return;
+            }
 
-        ModeloDTO modelo = cbxModelo.getValue();
-        if (modelo == null) {
-            return;
+            txtModelo.setText(modelo.getNombre());
+            txtMarca.setText(modelo.getMarca());
+            txtAlmacenamiento.setText(String.valueOf(modelo.getAlmacenamiento()));
+            txtRam.setText(String.valueOf(modelo.getMemoriaRam()));
+            txtProcesador.setText(modelo.getProcesador());
+        } catch (ClassCastException e) {
+            System.out.println(e.getMessage());
         }
-
-        txtModelo.setText(modelo.getNombre());
-        txtMarca.setText(modelo.getMarca());
-        txtAlmacenamiento.setText(String.valueOf(modelo.getAlmacenamiento()));
-        txtRam.setText(String.valueOf(modelo.getMemoriaRam()));
-        txtProcesador.setText(modelo.getProcesador());
     }
 
     @FXML
@@ -179,6 +188,34 @@ public class FormInventarioController {
     }
 
     @FXML
+    private void btnCancelar() {
+        cambiarDePantalla("Inventario.fxml");
+    }
+
+    public void cambiarDePantalla(String rutaFXML) {
+        try {
+
+            if (rutaFXML != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
+                Parent vista = loader.load();
+
+                Object controller = loader.getController();
+                if (controller instanceof BaseController baseController) {
+                    baseController.setDashBoard(dbc);
+                }
+
+                this.dbc.cambiarDePantalla(rutaFXML);
+                this.dbc.getCenterContainer().setVvalue(0);
+
+            }
+
+        } catch (IOException e) {
+//            System.err.println("Error cargando la vista: " + rutaFXML);
+            System.out.println(Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    @FXML
     private void guardarDatos() {
 
         try {
@@ -187,20 +224,14 @@ public class FormInventarioController {
 
             switch (cbxTipoEquipo.getValue()) {
 
-                case DESKTOP -> {
-                    EquipoEscritorioDTO dto = construirEscritorio(modelo);
-                    fachadaEquipos.guardarEscritorio(dto);
-                }
+                case LAPTOP, DESKTOP ->
+                    fachadaEquipos.guardarEscritorio(construirEscritorio(modelo));
 
-                case MOVIL -> {
-                    MovilDTO dto = construirMovil(modelo);
-                    fachadaEquipos.guardarMovil(dto);
-                }
+                case MOVIL ->
+                    fachadaEquipos.guardarMovil(construirMovil(modelo));
 
-                default -> {
-                    OtroEquipoDTO dto = construirOtro(modelo);
-                    fachadaEquipos.guardarOtro(dto);
-                }
+                case IMPRESORA, MONITOR, SCANNER, PROYECTOR ->
+                    fachadaEquipos.guardarOtro(construirOtro(modelo));
             }
 
             limpiarFormulario();
@@ -241,7 +272,7 @@ public class FormInventarioController {
 
         return dto;
     }
-    
+
     private OtroEquipoDTO construirOtro(ModeloDTO modelo) {
 
         InfoEspecificaOtrosController c = (InfoEspecificaOtrosController) controllerEspecifico;
@@ -252,7 +283,7 @@ public class FormInventarioController {
 
         return dto;
     }
-    
+
     private MovilDTO construirMovil(ModeloDTO modelo) {
 
         InfoEspecificaMovilController c = (InfoEspecificaMovilController) controllerEspecifico;
@@ -260,7 +291,7 @@ public class FormInventarioController {
         MovilDTO dto = c.getDatosEntidad();
 
         llenarBase(dto, modelo);
-        
+
         return dto;
     }
 
@@ -286,7 +317,7 @@ public class FormInventarioController {
     }
 
     private void limpiarFormulario() {
-        
+
         txtGry.clear();
         txtFactura.clear();
         txtObservaciones.clear();
@@ -295,7 +326,7 @@ public class FormInventarioController {
         txtMarca.clear();
         txtAlmacenamiento.clear();
         txtRam.clear();
-        
+
         cbxCondicion.getSelectionModel().clearSelection();
         cbxTipoEquipo.getSelectionModel().clearSelection();
         cbxEmpresa.getSelectionModel().clearSelection();
@@ -308,6 +339,41 @@ public class FormInventarioController {
 
         // limpiar los datos del contenedor especifico
 //        containerEspecifico.getChildren().clear();
+    }
+
+    public DashBoardController getDbc() {
+        return dbc;
+    }
+
+    public void setDbc(DashBoardController dbc) {
+        this.dbc = dbc;
+    }
+
+    @Override
+    public void setDashBoard(DashBoardController dbc) {
+        this.dbc = dbc;
+    }
+
+    public void cargarEquipoParaEditar(EquipoBaseDTO equipo) {
+
+        txtGry.setText(String.valueOf(equipo.getGry()));
+        txtFactura.setText(equipo.getFactura());
+        txtObservaciones.setText(equipo.getObservaciones());
+        txtIdentificador.setText(equipo.getIdentificador());
+
+        cbxCondicion.setValue(
+                CondicionFisica.valueOf(equipo.getCondicion()));
+
+        cbxTipoEquipo.setValue(
+                TipoEquipo.valueOf(equipo.getTipo()));
+
+        fechaCompra.setValue(equipo.getFechaCompra());
+
+        // Cargar modelo existente
+        cbxModelo.getItems().stream()
+                .filter(m -> m.getIdModelo().equals(equipo.getIdModelo()))
+                .findFirst()
+                .ifPresent(m -> cbxModelo.setValue(m));
     }
 
 }

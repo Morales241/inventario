@@ -42,7 +42,7 @@
                               
                               <VBox spacing="5.0">
                                  <Label text="GRY:" />
-                                 <TextField prefHeight="35.0" prefWidth="300.0" />
+                                 <TextField fx:id="txtGry" prefHeight="35.0" prefWidth="300.0" />
                               </VBox>
                               
                               <VBox spacing="5.0">
@@ -52,7 +52,7 @@
                               
                               <VBox spacing="5.0">
                                  <Label text="Fecha de compra:" />
-                                 <DatePicker fx:id="fechaCompra" prefHeight="35.0" prefWidth="300.0" />
+                                 <DatePicker fx:id="fechaCompra" editable="false" prefHeight="35.0" prefWidth="300.0" />
                               </VBox>
                               
                               <VBox spacing="5.0">
@@ -67,7 +67,7 @@
                               
                               <VBox spacing="5.0">
                                  <Label text="Empresa:" />
-                                 <ComboBox fx:id="cbxEmpresa" editable="true" onAction="#cbxEmpresaAction" prefHeight="35.0" prefWidth="300.0" visibleRowCount="5" />
+                                 <ComboBox fx:id="cbxEmpresa" prefHeight="35.0" prefWidth="300.0" visibleRowCount="5" />
                               </VBox>
 
                               <VBox spacing="5.0">
@@ -129,7 +129,7 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="cbxModelo" editable="true" maxWidth="1.7976931348623157E308" onAction="#cbxModeloAction" prefHeight="35.0" visibleRowCount="5" HBox.hgrow="ALWAYS" />
+                              <ComboBox fx:id="cbxModelo" maxWidth="1.7976931348623157E308" prefHeight="35.0" visibleRowCount="5" HBox.hgrow="ALWAYS" />
                               <CheckBox fx:id="ckbCrearNuevoModelo" mnemonicParsing="false" onAction="#checkBoxAction" text="Crear Nuevo" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>

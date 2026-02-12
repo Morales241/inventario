@@ -12,10 +12,11 @@ import Mappers.MapperAsignacion;
 import excepciones.RecursoNoEncontradoException;
 import excepciones.ReglaNegocioException;
 import interfacesServicios.IServicioPrestamos;
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 
-public class ServicioPrestamos implements IServicioPrestamos{
+public class ServicioPrestamos extends ServicioBase implements IServicioPrestamos {
 
     private final DaoEquipoAsignado daoAsignacion;
     private final DaoEquipoDeComputo daoEquipo;
@@ -27,6 +28,11 @@ public class ServicioPrestamos implements IServicioPrestamos{
         this.daoTrabajador = new DaoTrabajador();
     }
 
+    private void configurar(EntityManager em) {
+        daoAsignacion.setEntityManager(em);
+        daoEquipo.setEntityManager(em);
+        daoTrabajador.setEntityManager(em);
+    }
 
     @Override
     public void asignarEquipo(Long idEquipo, Long idTrabajador) {
@@ -35,44 +41,53 @@ public class ServicioPrestamos implements IServicioPrestamos{
             throw new IllegalArgumentException("IDs inválidos");
         }
 
-        EquipoDeComputo equipo = daoEquipo.buscarPorId(idEquipo);
+        ejecutarTransaccion(em -> {
 
-        if (equipo == null) {
-            throw new RecursoNoEncontradoException("Equipo no encontrado");
-        }
+            configurar(em);
 
-        Trabajador trabajador = daoTrabajador.buscarPorId(idTrabajador);
+            EquipoDeComputo equipo = daoEquipo.buscarPorId(idEquipo);
+            if (equipo == null) {
+                throw new RecursoNoEncontradoException("Equipo no encontrado");
+            }
 
-        if (trabajador == null) {
-            throw new RecursoNoEncontradoException("Trabajador no encontrado");
-        }
+            Trabajador trabajador = daoTrabajador.buscarPorId(idTrabajador);
+            if (trabajador == null) {
+                throw new RecursoNoEncontradoException("Trabajador no encontrado");
+            }
 
-        if (!Boolean.TRUE.equals(trabajador.getActivo())) {
-            throw new ReglaNegocioException("El trabajador está inactivo");
-        }
+            if (!Boolean.TRUE.equals(trabajador.getActivo())) {
+                throw new ReglaNegocioException("El trabajador está inactivo");
+            }
 
-        if (equipo.getEstado() != EstadoEquipo.EN_STOCK) {
-            throw new ReglaNegocioException("El equipo no está disponible");
-        }
+            if (equipo.getEstado() != EstadoEquipo.EN_STOCK) {
+                throw new ReglaNegocioException("El equipo no está disponible");
+            }
 
-        boolean yaAsignado = daoAsignacion
-                .buscarPorTrabajadorActivo(trabajador.getIdTrabajador())
-                .stream()
-                .anyMatch(a -> a.getEquipoDeComputo().getId().equals(idEquipo));
+            boolean yaAsignado = daoAsignacion
+                    .buscarPorTrabajadorActivo(trabajador.getIdTrabajador())
+                    .stream()
+                    .anyMatch(a
+                            -> a.getEquipoDeComputo()
+                            .getId()
+                            .equals(idEquipo));
 
-        if (yaAsignado) {
-            throw new ReglaNegocioException("El equipo ya tiene una asignación activa");
-        }
+            if (yaAsignado) {
+                throw new ReglaNegocioException(
+                        "El equipo ya tiene una asignación activa");
+            }
 
-        EquipoAsignado asignacion = new EquipoAsignado();
-        asignacion.setEquipoDeComputo(equipo);
-        asignacion.setTrabajador(trabajador);
-        asignacion.setFechaEntrega(LocalDate.now());
+            EquipoAsignado asignacion = new EquipoAsignado();
+            asignacion.setEquipoDeComputo(equipo);
+            asignacion.setTrabajador(trabajador);
+            asignacion.setFechaEntrega(LocalDate.now());
 
-        equipo.setEstado(EstadoEquipo.ASIGNADO);
+            equipo.setEstado(EstadoEquipo.ASIGNADO);
 
-        daoEquipo.actualizar(equipo);
-        daoAsignacion.guardar(asignacion);
+            daoEquipo.actualizar(equipo);
+            daoAsignacion.guardar(asignacion);
+
+            return null;
+        });
     }
 
     @Override
@@ -82,23 +97,34 @@ public class ServicioPrestamos implements IServicioPrestamos{
             throw new IllegalArgumentException("ID inválido");
         }
 
-        EquipoAsignado asignacion = daoAsignacion.buscarPorId(idAsignacion);
+        ejecutarTransaccion(em -> {
 
-        if (asignacion == null) {
-            throw new RecursoNoEncontradoException("Asignación no encontrada");
-        }
+            configurar(em);
 
-        if (asignacion.getFechaDevolucion() != null) {
-            throw new ReglaNegocioException("El equipo ya fue devuelto");
-        }
+            EquipoAsignado asignacion
+                    = daoAsignacion.buscarPorId(idAsignacion);
 
-        EquipoDeComputo equipo = asignacion.getEquipoDeComputo();
+            if (asignacion == null) {
+                throw new RecursoNoEncontradoException(
+                        "Asignación no encontrada");
+            }
 
-        asignacion.setFechaDevolucion(LocalDate.now());
-        equipo.setEstado(EstadoEquipo.EN_STOCK);
+            if (asignacion.getFechaDevolucion() != null) {
+                throw new ReglaNegocioException(
+                        "El equipo ya fue devuelto");
+            }
 
-        daoAsignacion.actualizar(asignacion);
-        daoEquipo.actualizar(equipo);
+            EquipoDeComputo equipo
+                    = asignacion.getEquipoDeComputo();
+
+            asignacion.setFechaDevolucion(LocalDate.now());
+            equipo.setEstado(EstadoEquipo.EN_STOCK);
+
+            daoAsignacion.actualizar(asignacion);
+            daoEquipo.actualizar(equipo);
+
+            return null;
+        });
     }
 
     @Override
@@ -108,13 +134,21 @@ public class ServicioPrestamos implements IServicioPrestamos{
             throw new IllegalArgumentException("ID inválido");
         }
 
-        if (daoTrabajador.buscarPorId(idTrabajador) == null) {
-            throw new RecursoNoEncontradoException("Trabajador no encontrado");
-        }
+        return ejecutarLectura(em -> {
 
-        List<EquipoAsignado> asignaciones =
-                daoAsignacion.buscarPorTrabajadorActivo(idTrabajador);
+            configurar(em);
 
-        return MapperAsignacion.converter.mapToDtoList(asignaciones);
+            if (daoTrabajador.buscarPorId(idTrabajador) == null) {
+                throw new RecursoNoEncontradoException(
+                        "Trabajador no encontrado");
+            }
+
+            List<EquipoAsignado> asignaciones
+                    = daoAsignacion.buscarPorTrabajadorActivo(idTrabajador);
+
+            return MapperAsignacion.converter
+                    .mapToDtoList(asignaciones);
+        });
     }
+
 }

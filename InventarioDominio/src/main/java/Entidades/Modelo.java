@@ -57,6 +57,17 @@ public class Modelo extends AuditoriaBase {
     @OneToMany(mappedBy = "modelo")
     private List<EquipoDeComputo> equipos = new ArrayList<>();
 
+    public Modelo() {
+    }
+
+    public Modelo(String nombre, String marca, Integer memoriaRam, Integer almacenamiento, String procesador) {
+        this.nombre = nombre;
+        this.marca = marca;
+        this.memoriaRam = memoriaRam;
+        this.almacenamiento = almacenamiento;
+        this.procesador = procesador;
+    }
+
     public Long getId() {
         return id;
     }

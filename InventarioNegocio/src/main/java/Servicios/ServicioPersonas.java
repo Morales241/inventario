@@ -13,6 +13,7 @@ import Mappers.MapperUsuario;
 import excepciones.RecursoNoEncontradoException;
 import excepciones.ReglaNegocioException;
 import interfacesServicios.IServicioPersonas;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ import java.util.List;
  * cambios de estado para el control de acceso.
  * </p>
  */
-public class ServicioPersonas implements IServicioPersonas{
+public class ServicioPersonas extends ServicioBase implements IServicioPersonas {
 
     private final DaoUsuario daoUsuario;
     private final DaoTrabajador daoTrabajador;
@@ -35,6 +36,12 @@ public class ServicioPersonas implements IServicioPersonas{
         this.daoPuesto = new DaoPuesto();
     }
 
+    private void configurar(EntityManager em) {
+        daoUsuario.setEntityManager(em);
+        daoTrabajador.setEntityManager(em);
+        daoPuesto.setEntityManager(em);
+    }
+
     @Override
     public UsuarioDTO login(String username, String password) {
 
@@ -43,23 +50,34 @@ public class ServicioPersonas implements IServicioPersonas{
             throw new IllegalArgumentException("Credenciales inválidas");
         }
 
-        UsuarioSistema usuario = daoUsuario.login(username.trim(), password);
+        return ejecutarLectura(em -> {
+            configurar(em);
 
-        if (usuario == null) {
-            throw new ReglaNegocioException("Usuario o contraseña incorrectos");
-        }
+            UsuarioSistema usuario
+                    = daoUsuario.login(username.trim(), password);
 
-        return MapperUsuario.converter.mapToDto(usuario);
+            if (usuario == null) {
+                throw new ReglaNegocioException(
+                        "Usuario o contraseña incorrectos");
+            }
+
+            return MapperUsuario.converter.mapToDto(usuario);
+        });
     }
-    
+
     @Override
     public List<TrabajadorDTO> buscarTrabajadores(String criterioGlobal) {
 
-        String criterio = (criterioGlobal != null) ? criterioGlobal.trim() : "";
+        String criterio
+                = (criterioGlobal != null) ? criterioGlobal.trim() : "";
 
-        return MapperTrabajador.converter.mapToDtoList(
-                daoTrabajador.busquedaConFiltros(criterio, criterio, criterio)
-        );
+        return ejecutarLectura(em -> {
+            configurar(em);
+
+            return MapperTrabajador.converter.mapToDtoList(
+                    daoTrabajador.busquedaConFiltros(
+                            criterio, criterio, criterio));
+        });
     }
 
     @Override
@@ -69,13 +87,18 @@ public class ServicioPersonas implements IServicioPersonas{
             throw new IllegalArgumentException("ID inválido");
         }
 
-        Trabajador trabajador = daoTrabajador.buscarPorId(id);
+        return ejecutarLectura(em -> {
+            configurar(em);
 
-        if (trabajador == null) {
-            throw new RecursoNoEncontradoException("Trabajador no encontrado");
-        }
+            Trabajador trabajador = daoTrabajador.buscarPorId(id);
 
-        return MapperTrabajador.converter.mapToDto(trabajador);
+            if (trabajador == null) {
+                throw new RecursoNoEncontradoException(
+                        "Trabajador no encontrado");
+            }
+
+            return MapperTrabajador.converter.mapToDto(trabajador);
+        });
     }
 
     @Override
@@ -90,39 +113,50 @@ public class ServicioPersonas implements IServicioPersonas{
         }
 
         if (dto.getNoNomina() == null || dto.getNoNomina().isBlank()) {
-            throw new ReglaNegocioException("El número de nómina es obligatorio");
+            throw new ReglaNegocioException(
+                    "El número de nómina es obligatorio");
         }
 
         if (dto.getIdPuesto() == null) {
-            throw new ReglaNegocioException("Debe asignar un puesto");
+            throw new ReglaNegocioException(
+                    "Debe asignar un puesto");
         }
 
-        Puesto puesto = daoPuesto.buscarPorId(dto.getIdPuesto());
+        return ejecutarTransaccion(em -> {
 
-        if (puesto == null) {
-            throw new RecursoNoEncontradoException("Puesto no encontrado");
-        }
+            configurar(em);
 
-        Trabajador entidad = MapperTrabajador.converter.mapToEntity(dto);
-        entidad.setPuesto(puesto);
+            Puesto puesto = daoPuesto.buscarPorId(dto.getIdPuesto());
 
-        if (dto.getId() != null && dto.getId() > 0) {
-
-            Trabajador existente = daoTrabajador.buscarPorId(dto.getId());
-
-            if (existente == null) {
-                throw new RecursoNoEncontradoException("Trabajador no encontrado");
+            if (puesto == null) {
+                throw new RecursoNoEncontradoException("Puesto no encontrado");
             }
 
-            entidad = daoTrabajador.actualizar(entidad);
+            Trabajador entidad
+                    = MapperTrabajador.converter.mapToEntity(dto);
 
-        } else {
+            entidad.setPuesto(puesto);
 
-            entidad.setActivo(true);
-            entidad = daoTrabajador.guardar(entidad);
-        }
+            if (dto.getId() != null && dto.getId() > 0) {
 
-        return MapperTrabajador.converter.mapToDto(entidad);
+                Trabajador existente
+                        = daoTrabajador.buscarPorId(dto.getId());
+
+                if (existente == null) {
+                    throw new RecursoNoEncontradoException(
+                            "Trabajador no encontrado");
+                }
+
+                entidad = daoTrabajador.actualizar(entidad);
+
+            } else {
+
+                entidad.setActivo(true);
+                entidad = daoTrabajador.guardar(entidad);
+            }
+
+            return MapperTrabajador.converter.mapToDto(entidad);
+        });
     }
 
     @Override
@@ -132,13 +166,23 @@ public class ServicioPersonas implements IServicioPersonas{
             throw new IllegalArgumentException("ID inválido");
         }
 
-        Trabajador trabajador = daoTrabajador.buscarPorId(id);
+        ejecutarTransaccion(em -> {
+            configurar(em);
 
-        if (trabajador == null) {
-            throw new RecursoNoEncontradoException("Trabajador no encontrado");
-        }
+            Trabajador trabajador
+                    = daoTrabajador.buscarPorId(id);
 
-        trabajador.setActivo(activo);
-        daoTrabajador.actualizar(trabajador);
+            if (trabajador == null) {
+                throw new RecursoNoEncontradoException(
+                        "Trabajador no encontrado");
+            }
+
+            trabajador.setActivo(activo);
+
+            daoTrabajador.actualizar(trabajador);
+
+            return null;
+        });
     }
+
 }

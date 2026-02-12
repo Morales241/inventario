@@ -9,6 +9,7 @@ import excepciones.NegocioException;
 import excepciones.RecursoNoEncontradoException;
 import excepciones.ReglaNegocioException;
 import interfacesServicios.IServicioEquipos;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.stream.Collectors;
 import mapper.MapperEquipos;
@@ -21,7 +22,7 @@ import mapper.MapperEquipos;
  * integridad de datos antes de la persistencia.
  * </p>
  */
-public class ServicioEquipos implements IServicioEquipos {
+public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
 
     private final DaoEquipoDeComputo daoGeneral;
     private final DaoEquipoDeEscritorio daoEscritorio;
@@ -39,15 +40,28 @@ public class ServicioEquipos implements IServicioEquipos {
         this.daoModelo = new DaoModelo();
     }
 
+    private void configurar(EntityManager em) {
+        daoGeneral.setEntityManager(em);
+        daoEscritorio.setEntityManager(em);
+        daoMovil.setEntityManager(em);
+        daoOtro.setEntityManager(em);
+        daoSucursal.setEntityManager(em);
+        daoModelo.setEntityManager(em);
+    }
+
     @Override
     public List<EquipoBaseDTO> buscarEquipos(Integer gry, EstadoEquipo estado, String criterio) {
 
-        List<EquipoDeComputo> lista
-                = daoGeneral.buscarConFiltros(gry, estado, criterio);
+        return ejecutarLectura(em -> {
+            configurar(em);
 
-        return lista.stream()
-                .map(this::mapearPolimorfico)
-                .toList();
+            List<EquipoDeComputo> lista
+                    = daoGeneral.buscarConFiltros(gry, estado, criterio);
+
+            return lista.stream()
+                    .map(this::mapearPolimorfico)
+                    .toList();
+        });
     }
 
     @Override
@@ -57,73 +71,98 @@ public class ServicioEquipos implements IServicioEquipos {
             throw new IllegalArgumentException("ID inválido");
         }
 
-        EquipoDeComputo equipo = daoGeneral.buscarPorId(id);
+        return ejecutarLectura(em -> {
+            configurar(em);
 
-        if (equipo == null) {
-            throw new RecursoNoEncontradoException("Equipo no encontrado");
-        }
+            EquipoDeComputo equipo = daoGeneral.buscarPorId(id);
 
-        return mapearPolimorfico(equipo);
+            if (equipo == null) {
+                throw new RecursoNoEncontradoException("Equipo no encontrado");
+            }
+
+            return mapearPolimorfico(equipo);
+        });
     }
 
     @Override
     public EquipoBaseDTO buscarPorGry(Integer gry) {
+
         if (gry == null) {
             throw new IllegalArgumentException("GRY inválido");
         }
 
-        EquipoDeComputo equipo = daoGeneral.buscarPorGry(gry);
+        return ejecutarLectura(em -> {
+            configurar(em);
 
-        if (equipo == null) {
-            throw new RecursoNoEncontradoException("Equipo no encontrado");
-        }
+            EquipoDeComputo equipo = daoGeneral.buscarPorGry(gry);
 
-        return mapearPolimorfico(equipo);
+            if (equipo == null) {
+                throw new RecursoNoEncontradoException("Equipo no encontrado");
+            }
+
+            return mapearPolimorfico(equipo);
+        });
     }
 
     @Override
     public EquipoEscritorioDTO guardarEscritorio(EquipoEscritorioDTO dto) {
+
         validarEquipo(dto);
 
-        EquipoDeEscritorio entidad = MapperEquipos.escritorio.mapToEntity(dto);
+        return ejecutarTransaccion(em -> {
+            configurar(em);
 
-        validarDuplicidadGry(dto.getGry(), dto.getIdEquipo());
+            validarDuplicidadGry(dto.getGry(), dto.getIdEquipo());
 
-        setRelaciones(entidad, dto);
+            EquipoDeEscritorio entidad
+                    = MapperEquipos.escritorio.mapToEntity(dto);
 
-        entidad = persistir(entidad, dto.getIdEquipo(), daoEscritorio);
+            setRelaciones(entidad, dto);
 
-        return MapperEquipos.escritorio.mapToDto(entidad);
+            entidad = persistir(entidad, dto.getIdEquipo(), daoEscritorio);
+
+            return MapperEquipos.escritorio.mapToDto(entidad);
+        });
     }
 
     @Override
     public MovilDTO guardarMovil(MovilDTO dto) {
+
         validarEquipo(dto);
 
-        Movil entidad = MapperEquipos.movil.mapToEntity(dto);
+        return ejecutarTransaccion(em -> {
+            configurar(em);
 
-        validarDuplicidadGry(dto.getGry(), dto.getIdEquipo());
+            validarDuplicidadGry(dto.getGry(), dto.getIdEquipo());
 
-        setRelaciones(entidad, dto);
+            Movil entidad = MapperEquipos.movil.mapToEntity(dto);
 
-        entidad = persistir(entidad, dto.getIdEquipo(), daoMovil);
+            setRelaciones(entidad, dto);
 
-        return MapperEquipos.movil.mapToDto(entidad);
+            entidad = persistir(entidad, dto.getIdEquipo(), daoMovil);
+
+            return MapperEquipos.movil.mapToDto(entidad);
+        });
     }
 
     @Override
     public OtroEquipoDTO guardarOtro(OtroEquipoDTO dto) {
+
         validarEquipo(dto);
 
-        OtroEquipo entidad = MapperEquipos.otro.mapToEntity(dto);
+        return ejecutarTransaccion(em -> {
+            configurar(em);
 
-        validarDuplicidadGry(dto.getGry(), dto.getIdEquipo());
+            validarDuplicidadGry(dto.getGry(), dto.getIdEquipo());
 
-        setRelaciones(entidad, dto);
+            OtroEquipo entidad = MapperEquipos.otro.mapToEntity(dto);
 
-        entidad = persistir(entidad, dto.getIdEquipo(), daoOtro);
+            setRelaciones(entidad, dto);
 
-        return MapperEquipos.otro.mapToDto(entidad);
+            entidad = persistir(entidad, dto.getIdEquipo(), daoOtro);
+
+            return MapperEquipos.otro.mapToDto(entidad);
+        });
     }
 
     @Override
@@ -133,18 +172,23 @@ public class ServicioEquipos implements IServicioEquipos {
             throw new IllegalArgumentException("ID inválido");
         }
 
-        EquipoDeComputo equipo = daoGeneral.buscarPorId(id);
+        ejecutarTransaccion(em -> {
+            configurar(em);
 
-        if (equipo == null) {
-            throw new RecursoNoEncontradoException("Equipo no encontrado");
-        }
+            EquipoDeComputo equipo = daoGeneral.buscarPorId(id);
 
-        if (equipo.getEstado() == EstadoEquipo.ASIGNADO) {
-            throw new ReglaNegocioException(
-                    "No se puede eliminar un equipo asignado");
-        }
+            if (equipo == null) {
+                throw new RecursoNoEncontradoException("Equipo no encontrado");
+            }
 
-        daoGeneral.eliminar(id);
+            if (equipo.getEstado() == EstadoEquipo.ASIGNADO) {
+                throw new ReglaNegocioException(
+                        "No se puede eliminar un equipo asignado");
+            }
+
+            daoGeneral.eliminar(id);
+            return null;
+        });
     }
 
     private void validarEquipo(EquipoBaseDTO dto) {
@@ -178,8 +222,7 @@ public class ServicioEquipos implements IServicioEquipos {
         }
     }
 
-    private void setRelaciones(EquipoDeComputo entidad,
-            EquipoBaseDTO dto) {
+    private void setRelaciones(EquipoDeComputo entidad, EquipoBaseDTO dto) {
 
         Sucursal sucursal
                 = daoSucursal.buscarPorId(dto.getIdSucursal());
@@ -239,6 +282,32 @@ public class ServicioEquipos implements IServicioEquipos {
     @Override
     public ModeloDTO guardarModelo(ModeloDTO dto) {
 
+        validarModelo(dto);
+
+        return ejecutarTransaccion(em -> {
+            configurar(em);
+
+            Modelo entidad = MapperModelo.converter.mapToEntity(dto);
+
+            if (dto.getIdModelo() != null && dto.getIdModelo() > 0) {
+
+                Modelo existente = daoModelo.buscarPorId(dto.getIdModelo());
+
+                if (existente == null) {
+                    throw new NegocioException("Modelo no encontrado para actualizar");
+                }
+
+                entidad = daoModelo.actualizar(entidad);
+
+            } else {
+                entidad = daoModelo.guardar(entidad);
+            }
+
+            return MapperModelo.converter.mapToDto(entidad);
+        });
+    }
+
+    private void validarModelo(ModeloDTO dto) {
         if (dto == null) {
             throw new IllegalArgumentException("Datos inválidos");
         }
@@ -262,30 +331,16 @@ public class ServicioEquipos implements IServicioEquipos {
         if (dto.getProcesador() == null || dto.getProcesador().isBlank()) {
             throw new NegocioException("El procesador es obligatorio");
         }
-
-        Modelo entidad = MapperModelo.converter.mapToEntity(dto);
-
-        if (dto.getIdModelo() != null && dto.getIdModelo() > 0) {
-
-            Modelo existente = daoModelo.buscarPorId(dto.getIdModelo());
-            if (existente == null) {
-                throw new NegocioException("Modelo no encontrado para actualizar");
-            }
-
-            entidad = daoModelo.actualizar(entidad);
-
-        } else {
-            entidad = daoModelo.guardar(entidad);
-        }
-
-        return MapperModelo.converter.mapToDto(entidad);
     }
 
     @Override
     public List<ModeloDTO> listarModelos() {
-        return MapperModelo.converter.mapToDtoList(
-                daoModelo.buscarTodos()
-        );
+
+        return ejecutarLectura(em -> {
+            configurar(em);
+            return MapperModelo.converter.mapToDtoList(
+                    daoModelo.buscarTodos());
+        });
     }
 
     @Override
@@ -295,13 +350,17 @@ public class ServicioEquipos implements IServicioEquipos {
             throw new IllegalArgumentException("ID inválido");
         }
 
-        Modelo modelo = daoModelo.buscarPorId(id);
+        return ejecutarLectura(em -> {
+            configurar(em);
 
-        if (modelo == null) {
-            throw new NegocioException("Modelo no encontrado");
-        }
+            Modelo modelo = daoModelo.buscarPorId(id);
 
-        return MapperModelo.converter.mapToDto(modelo);
+            if (modelo == null) {
+                throw new NegocioException("Modelo no encontrado");
+            }
+
+            return MapperModelo.converter.mapToDto(modelo);
+        });
     }
 
     @Override
@@ -312,25 +371,19 @@ public class ServicioEquipos implements IServicioEquipos {
             Integer almacenamiento,
             String procesador) {
 
-        String nombreFiltro = (nombre != null) ? nombre.trim() : null;
-        String marcaFiltro = (marca != null) ? marca.trim() : null;
-        String procesadorFiltro = (procesador != null) ? procesador.trim() : null;
+        return ejecutarLectura(em -> {
+            configurar(em);
 
-        if (memoriaRam != null && memoriaRam <= 0) {
-            throw new NegocioException("La memoria RAM debe ser mayor a 0");
-        }
+            List<Modelo> modelos = daoModelo.busquedaConFiltros(
+                    nombre != null ? nombre.trim() : null,
+                    marca != null ? marca.trim() : null,
+                    memoriaRam,
+                    almacenamiento,
+                    procesador != null ? procesador.trim() : null
+            );
 
-        if (almacenamiento != null && almacenamiento <= 0) {
-            throw new NegocioException("El almacenamiento debe ser mayor a 0");
-        }
-
-        List<Modelo> modelos = daoModelo.busquedaConFiltros(nombreFiltro,
-                marcaFiltro,
-                memoriaRam,
-                almacenamiento,
-                procesadorFiltro
-        );
-
-        return MapperModelo.converter.mapToDtoList(modelos);
+            return MapperModelo.converter.mapToDtoList(modelos);
+        });
     }
+
 }
