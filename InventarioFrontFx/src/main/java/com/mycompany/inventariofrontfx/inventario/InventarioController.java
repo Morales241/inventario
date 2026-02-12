@@ -6,6 +6,7 @@ package com.mycompany.inventariofrontfx.inventario;
 
 import com.mycompany.inventariofrontfx.BaseController;
 import com.mycompany.inventariofrontfx.DashBoardController;
+import java.io.IOException;
 import java.net.URL;
 import static java.util.Arrays.asList;
 import java.util.List;
@@ -75,7 +76,11 @@ public class InventarioController implements Initializable, BaseController {
 
     private void actionListenerBtnAgregar(Event evento) {
         if (this.dbc != null) {
-            this.dbc.cambiarDePantalla("inventario/FormInventario.fxml");
+            try {
+                this.dbc.cambiarDePantalla("inventario/FormInventario.fxml");
+            } catch (IOException ex) {
+                System.getLogger(InventarioController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
         } else {
             System.out.println("ERROR CRÍTICO: 'dbc' es null. Revisa el DashBoardController.");
         }

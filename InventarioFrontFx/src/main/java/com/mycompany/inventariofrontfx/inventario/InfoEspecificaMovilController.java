@@ -26,7 +26,7 @@ import javafx.stage.Stage;
  *
  * @author tacot
  */
-public class InfoEspecidicaMovilController implements Initializable, BaseController, IValidaciones<MovilDTO> {
+public class InfoEspecificaMovilController implements Initializable, BaseController, IValidaciones<MovilDTO> {
 
     private DashBoardController dbc;
     

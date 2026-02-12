@@ -2,6 +2,7 @@ package com.mycompany.inventariofrontfx;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -151,33 +152,31 @@ public class DashBoardController implements Initializable {
             }
 
         } catch (IOException e) {
-            System.err.println("Error cargando la vista: " + rutaFXML);
+//            System.err.println("Error cargando la vista: " + rutaFXML);
+            System.out.println(Arrays.toString(e.getStackTrace()));
         }
     }
 
-    public void cambiarDePantalla(String rutaFXML) {
-        try {
-            if (rutaFXML != null) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
-                Parent vista = loader.load();
+    public void cambiarDePantalla(String rutaFXML) throws IOException {
 
-                Object controller = loader.getController();
-                if (controller instanceof BaseController baseController) {
-                    baseController.setDashBoard(this);
-                    
-                }
+        if (rutaFXML != null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
+            Parent vista = loader.load();
 
-                // Mostrar la vista
-                centerContainer.setContent(vista);
-
-                // Resetear scrolleo
-                centerContainer.setVvalue(0);
+            Object controller = loader.getController();
+            if (controller instanceof BaseController baseController) {
+                baseController.setDashBoard(this);
 
             }
 
-        } catch (IOException e) {
-            System.err.println("Error cargando la vista: " + rutaFXML);
+            // Mostrar la vista
+            centerContainer.setContent(vista);
+
+            // Resetear scrolleo
+            centerContainer.setVvalue(0);
+
         }
+
     }
 
     private void toggleSubMenu() {
