@@ -45,7 +45,7 @@ public class EquipoDeEscritorio extends EquipoDeComputo {
 
     public String getCuenta() {
         return cuenta;
-    }
+    } 
 
     public void setCuenta(String cuenta) {
         this.cuenta = cuenta;

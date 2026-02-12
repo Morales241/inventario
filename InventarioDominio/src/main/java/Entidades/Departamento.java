@@ -21,7 +21,6 @@ public class Departamento extends AuditoriaBase implements Serializable {
     @JoinColumn(name = "Id_Sucursal", nullable = false)
     private Sucursal sucursal;
     
-    @Column(name = "Puestos")
     @OneToMany(mappedBy = "departamento", cascade = CascadeType.ALL)
     private List<Puesto> puestos;
 

@@ -1,9 +1,9 @@
-package Interfaces;
+package InterfacesFachada;
 
-import Dtos.AsignacionDto;
+import Dtos.AsignacionDTO;
 import Dtos.EquipoBaseDTO;
 import Dtos.EquipoEscritorioDTO;
-import Dtos.ModeloDto;
+import Dtos.ModeloDTO;
 import Dtos.MovilDTO;
 import Dtos.OtroEquipoDTO;
 import Enums.EstadoEquipo;
@@ -35,6 +35,14 @@ public interface IFachadaEquipos {
      * @throws Exception Si el equipo no existe.
      */
     public EquipoBaseDTO obtenerEquipoPorId(Long id) throws Exception;
+    
+    /**
+     * Obtiene los datos completos de un equipo para edición o visualización detallada.
+     * @param gry Identificador único del equipo.
+     * @return EquipoBaseDTO con la información del equipo.
+     * @throws Exception Si el equipo no existe.
+     */
+    public EquipoBaseDTO buscarPorGry(Integer gry) throws Exception;
     
     /**
      * Guarda o actualiza un equipo de escritorio.
@@ -69,18 +77,17 @@ public interface IFachadaEquipos {
     
     /**
      * Lista todos los modelos de equipos del catálogo.
-     * @param nombreModelo Criterio de búsqueda opcional por nombre.
-     * @return Lista de ModeloDto disponibles.
+     * @return Lista de ModeloDTO disponibles.
      */
-    public List<ModeloDto> listarModelos(String nombreModelo);
+    public List<ModeloDTO> listarModelos();
     
     /**
      * Guarda o actualiza un modelo de equipo en el catálogo.
      * @param dto Datos del modelo (marca, RAM, almacenamiento, procesador).
-     * @return ModeloDto persistido con ID asignado.
+     * @return ModeloDTO persistido con ID asignado.
      * @throws Exception Si el nombre está vacío o hay error en BD.
      */
-    public ModeloDto guardarModelo(ModeloDto dto) throws Exception;
+    public ModeloDTO guardarModelo(ModeloDTO dto) throws Exception;
     
     /**
      * Busca modelos aplicando filtros técnicos (marca, RAM, almacenamiento, procesador).
@@ -88,14 +95,19 @@ public interface IFachadaEquipos {
      * @param memoriaRam Capacidad de RAM.
      * @param almacenamiento Capacidad de disco.
      * @param procesador Tipo de procesador.
-     * @return Lista de ModeloDto que cumplen los criterios.
+     * @return Lista de ModeloDTO que cumplen los criterios.
      */
-    public List<ModeloDto> busquedaConFiltros(String marca, String memoriaRam, String almacenamiento, String procesador);
+    public List<ModeloDTO> buscarModelosConFiltros(
+            String nombre,
+            String marca,
+            Integer memoriaRam,
+            Integer almacenamiento,
+            String procesador);    
     
     /**
      * Obtiene un modelo específico por su ID.
      * @param id Identificador del modelo.
-     * @return ModeloDto con los detalles técnicos del modelo.
+     * @return ModeloDTO con los detalles técnicos del modelo.
      */
-    public ModeloDto busquedarModeloPorId(Long id);
+    public ModeloDTO buscarModeloPorId(Long id);
 }

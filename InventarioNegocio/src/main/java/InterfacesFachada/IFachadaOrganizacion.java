@@ -1,9 +1,9 @@
-package Interfaces;
+package InterfacesFachada;
 
-import Dtos.DepartamentoDto;
-import Dtos.EmpresaDto;
-import Dtos.PuestoDto;
-import Dtos.SucursalDto;
+import Dtos.DepartamentoDTO;
+import Dtos.EmpresaDTO;
+import Dtos.PuestoDTO;
+import Dtos.SucursalDTO;
 import java.util.List;
 
 /**
@@ -19,16 +19,16 @@ public interface IFachadaOrganizacion {
     /**
      * Lista empresas con filtro opcional por nombre.
      * @param filtroNombre Criterio de búsqueda (puede ser nulo/vacío).
-     * @return Lista de EmpresaDto.
+     * @return Lista de EmpresaDTO.
      */
-    public List<EmpresaDto> listarEmpresas(String filtroNombre);
+    public List<EmpresaDTO> listarEmpresas(String filtroNombre);
 
     /**
      * Guarda o actualiza una empresa.
      * @param dto Datos de la empresa.
      * @throws Exception Si el nombre está vacío o hay error en BD.
      */
-    public void guardarEmpresa(EmpresaDto dto) throws Exception;
+    public void guardarEmpresa(EmpresaDTO dto) throws Exception;
 
     /**
      * Elimina una empresa si no tiene sucursales vinculadas.
@@ -41,16 +41,16 @@ public interface IFachadaOrganizacion {
      * Lista sucursales de una empresa con filtros opcionales.
      * @param filtro Formato "nombre,ubicación" (puede ser nulo/vacío).
      * @param idEmpresa Identificador de la empresa.
-     * @return Lista de SucursalDto.
+     * @return Lista de SucursalDTO.
      */
-    public List<SucursalDto> listarSucursales(String filtro, Long idEmpresa);
+    public List<SucursalDTO> listarSucursales(String filtro, Long idEmpresa);
 
     /**
      * Guarda o actualiza una sucursal.
      * @param dto Datos de la sucursal.
      * @throws Exception Si faltan datos obligatorios o hay error en BD.
      */
-    public void guardarSucursal(SucursalDto dto) throws Exception;
+    public void guardarSucursal(SucursalDTO dto) throws Exception;
 
     /**
      * Elimina una sucursal si no tiene departamentos o equipos vinculados.
@@ -63,16 +63,16 @@ public interface IFachadaOrganizacion {
      * Lista departamentos de una sucursal con filtro opcional.
      * @param nombre Criterio de búsqueda por nombre (puede ser nulo/vacío).
      * @param idSucursal Identificador de la sucursal.
-     * @return Lista de DepartamentoDto.
+     * @return Lista de DepartamentoDTO.
      */
-    public List<DepartamentoDto> listarDepartamentos(String nombre, Long idSucursal);
+    public List<DepartamentoDTO> listarDepartamentos(String nombre, Long idSucursal);
 
     /**
      * Guarda o actualiza un departamento.
      * @param dto Datos del departamento.
      * @throws Exception Si faltan datos obligatorios o hay error en BD.
      */
-    public void guardarDepartamento(DepartamentoDto dto) throws Exception;
+    public void guardarDepartamento(DepartamentoDTO dto) throws Exception;
 
     /**
      * Elimina un departamento si no tiene puestos vinculados.
@@ -84,16 +84,16 @@ public interface IFachadaOrganizacion {
     /**
      * Lista todos los puestos de un departamento.
      * @param idDepto Identificador del departamento.
-     * @return Lista de PuestoDto.
+     * @return Lista de PuestoDTO.
      */
-    public List<PuestoDto> listarPuestos(Long idDepto);
+    public List<PuestoDTO> listarPuestos(Long idDepto);
     
     /**
      * Guarda o actualiza un puesto de trabajo.
      * @param dto Datos del puesto.
      * @throws Exception Si faltan datos obligatorios o hay error en BD.
      */
-    public void guardarPuesto(PuestoDto dto) throws Exception;
+    public void guardarPuesto(PuestoDTO dto) throws Exception;
     
     /**
      * Elimina un puesto si no tiene trabajadores asignados.

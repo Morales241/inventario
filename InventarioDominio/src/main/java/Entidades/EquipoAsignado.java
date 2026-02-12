@@ -7,6 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -15,49 +17,79 @@ import java.time.LocalDate;
  * @author JMorales
  */
 @Entity
-public class EquipoAsignado extends AuditoriaBase implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@Table(name = "EquipoAsignado")
+public class EquipoAsignado extends AuditoriaBase implements Serializable{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "Id_Equipo_Asignado")
-    private Long idEquipoAsignado;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name = "FechaEntrega")
-    private LocalDate fechaEntrega;
+    @Version
+    private Long version;
 
-    @Column(name = "FechaDevolucion")
-    private LocalDate fechaDevolucion;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "IdEquipo")
+    private EquipoDeComputo equipoDeComputo;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "IdTrabajador")
     private Trabajador trabajador;
 
-    @ManyToOne
-    @JoinColumn(name = "IdEquipoDeComputo")
-    private EquipoDeComputo equipoDeComputo;
+    @Column(nullable = false)
+    private LocalDate fechaEntrega;
 
-    @ManyToOne
-    @JoinColumn(name = "IdSucursal")
-    private Sucursal sucursal;
+    private LocalDate fechaDevolucion;
 
     public EquipoAsignado() {
     }
 
-    public EquipoAsignado(LocalDate fechaEntrega, LocalDate fechaDevolucion, Trabajador trabajador, EquipoDeComputo equipoDeComputo) {
-        this.fechaEntrega = fechaEntrega;
-        this.fechaDevolucion = fechaDevolucion;
+    public EquipoAsignado(EquipoDeComputo equipo, Trabajador trabajador) {
+        this.equipoDeComputo = equipo;
         this.trabajador = trabajador;
-        this.equipoDeComputo = equipoDeComputo;
+        this.fechaEntrega = LocalDate.now();
+    }
+
+    public boolean estaActiva() {
+        return fechaDevolucion == null;
+    }
+
+    public void devolver() {
+        if (fechaDevolucion != null) {
+            throw new IllegalStateException("La asignación ya fue cerrada.");
+        }
+        this.fechaDevolucion = LocalDate.now();
     }
 
     public Long getId() {
-        return idEquipoAsignado;
+        return id;
     }
 
     public void setId(Long id) {
-        this.idEquipoAsignado = id;
+        this.id = id;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public EquipoDeComputo getEquipoDeComputo() {
+        return equipoDeComputo;
+    }
+
+    public void setEquipoDeComputo(EquipoDeComputo equipoDeComputo) {
+        this.equipoDeComputo = equipoDeComputo;
+    }
+
+    public Trabajador getTrabajador() {
+        return trabajador;
+    }
+
+    public void setTrabajador(Trabajador trabajador) {
+        this.trabajador = trabajador;
     }
 
     public LocalDate getFechaEntrega() {
@@ -76,39 +108,5 @@ public class EquipoAsignado extends AuditoriaBase implements Serializable {
         this.fechaDevolucion = fechaDevolucion;
     }
 
-    public Trabajador getTrabajador() {
-        return trabajador;
-    }
-
-    public void setTrabajador(Trabajador trabajador) {
-        this.trabajador = trabajador;
-    }
-
-    public EquipoDeComputo getEquipoDeComputo() {
-        return equipoDeComputo;
-    }
-
-    public void setEquipoDeComputo(EquipoDeComputo equipoDeComputo) {
-        this.equipoDeComputo = equipoDeComputo;
-    }
-
-    public Sucursal getSucursal() {
-        return sucursal;
-    }
-
-    public void setSucursal(Sucursal sucursal) {
-        this.sucursal = sucursal;
-    }
-
-    public void devolver() {
-        if (this.fechaDevolucion != null) {
-            throw new IllegalStateException("Ya fue devuelto");
-        }
-        this.fechaDevolucion = LocalDate.now();
-    }
-
-    public boolean estaActiva() {
-        return this.fechaDevolucion == null;
-    }
-
+    
 }

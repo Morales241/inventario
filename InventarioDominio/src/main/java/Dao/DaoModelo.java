@@ -13,90 +13,107 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementación del DAO para la entidad {@link Modelo}.
- * Permite la búsqueda técnica de hardware por número de serie y características de componentes.
+ * Implementación del DAO para la entidad {@link Modelo}. Permite la búsqueda
+ * técnica de hardware por número de serie y características de componentes.
+ *
  * * @author JMorales
  */
 public class DaoModelo extends DaoGenerico<Modelo, Long> implements IDaoModelo {
 
-    private EntityManagerFactory emf;
-
     public DaoModelo() {
         super(Modelo.class);
-        this.emf = Conexion.getInstancia().getEntityManagerFactory();
-    }
-    
-    public DaoModelo(EntityManagerFactory emf) {
-        super(Modelo.class, emf);
-        this.emf = emf;
     }
 
-    /**
-     * Metodo Obsoleto, regresa null
-     */
     @Override
-    public Modelo busquedaEspecifica(String noSerie) {
-        return null;
-    }
-
-    /**
-     * Realiza una consulta avanzada de modelos de hardware utilizando múltiples criterios de filtrado.
-     * <p>
-     * El método construye una consulta dinámica basada en los parámetros proporcionados. 
-     * Cada parámetro se evalúa de forma independiente; si el valor no está vacío, se añade 
-     * como una restricción (AND) a la consulta final.
-     * </p>
-     * * <b>Comportamiento de los filtros:</b>
-     * <ul>
-     * <li>Si todos los parámetros (marca, memoriaRam, almacenamiento, procesador) son cadenas vacías, 
-     * el método <b>retorna la lista completa</b> de todos los modelos registrados en la base de datos.</li>
-     * <li>Si uno o más parámetros contienen texto, se realiza una búsqueda exacta (case-insensitive) 
-     * que debe cumplir con todos los criterios proporcionados simultáneamente.</li>
-     * </ul>
-     * * @param marca Marca del fabricante a filtrar (ej. "Dell", "HP"). Si está vacío, se ignora.
-     * @param memoriaRam Capacidad o tipo de RAM a filtrar (ej. "16GB"). Si está vacío, se ignora.
-     * @param almacenamiento Capacidad de almacenamiento a filtrar (ej. "512GB SSD"). Si está vacío, se ignora.
-     * @param procesador Modelo del procesador a filtrar (ej. "i7-12700"). Si está vacío, se ignora.
-     * @return Una {@code List<Modelo>} con los resultados que coinciden con los filtros. 
-     * Si no hay coincidencias, retorna una lista vacía. Si no se pasan filtros, retorna todos los modelos.
-     */
-    @Override
-    public List<Modelo> busquedaConFiltros(String marca, String memoriaRam, String almacenamiento, String procesador) {
-        
-        try (EntityManager em = getEntityManager()) {
-
-            List<Predicate> predicados = new ArrayList<>();
-
-            CriteriaBuilder cb = emf.getCriteriaBuilder();
-
-            CriteriaQuery<Modelo> cq = cb.createQuery(Modelo.class);
-
-            Root<Modelo> root = cq.from(Modelo.class);
-
-
-            if (!marca.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(root.get("marca")), marca.toLowerCase()));
-            }
-
-            if (!memoriaRam.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(root.get("memoriaRam")), memoriaRam.toLowerCase()));
-            }
-
-            if (!almacenamiento.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(root.get("almacenamiento")), almacenamiento.toLowerCase()));
-            }
-            
-            if (!procesador.isEmpty()) {
-                predicados.add(cb.equal(cb.lower(root.get("procesador")), procesador.toLowerCase()));
-            }
-
-            cq.select(root);
-            
-            // Se aplica la lista de predicados. Si la lista está vacía, no se aplican filtros (WHERE 1=1).
-            cq.where(predicados.toArray(new Predicate[0]));
-
-            return em.createQuery(cq).getResultList();
-
+    public Modelo busquedaEspecifica(String nombre) {
+        if (nombre == null || nombre.isBlank()) {
+            return null;
         }
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Modelo> cq = cb.createQuery(Modelo.class);
+        Root<Modelo> root = cq.from(Modelo.class);
+
+        cq.select(root)
+                .where(cb.equal(cb.lower(root.get("nombre")), nombre.toLowerCase()));
+
+        List<Modelo> resultados = em.createQuery(cq).getResultList();
+        return resultados.isEmpty() ? null : resultados.get(0);
+    }
+
+    @Override
+    public List<Modelo> busquedaConFiltros(String nombre,
+            String marca,
+            Integer memoriaRam,
+            Integer almacenamiento,
+            String procesador) {
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Modelo> cq = cb.createQuery(Modelo.class);
+        Root<Modelo> root = cq.from(Modelo.class);
+
+        List<Predicate> predicados = new ArrayList<>();
+
+        if (nombre != null && !nombre.isBlank()) {
+            predicados.add(cb.like(
+                    cb.lower(root.get("nombre")),
+                    "%" + nombre.toLowerCase() + "%"
+            ));
+        }
+
+        if (marca != null && !marca.isBlank()) {
+            predicados.add(
+                    cb.equal(cb.lower(root.get("marca")),
+                            marca.toLowerCase())
+            );
+        }
+
+        if (memoriaRam != null) {
+            predicados.add(
+                    cb.equal(root.get("memoriaRam"), memoriaRam)
+            );
+        }
+
+        if (almacenamiento != null) {
+            predicados.add(
+                    cb.equal(root.get("almacenamiento"), almacenamiento)
+            );
+        }
+
+        if (procesador != null && !procesador.isBlank()) {
+            predicados.add(
+                    cb.equal(cb.lower(root.get("procesador")),
+                            procesador.toLowerCase())
+            );
+        }
+
+        cq.select(root)
+                .where(predicados.toArray(new Predicate[0]));
+
+        return em.createQuery(cq).getResultList();
+    }
+
+    public boolean existeModeloDuplicado(String marca,
+            String nombre,
+            Integer ram,
+            Integer almacenamiento,
+            String procesador) {
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Modelo> root = cq.from(Modelo.class);
+
+        cq.select(cb.count(root))
+                .where(
+                        cb.and(
+                                cb.equal(cb.lower(root.get("marca")), marca.toLowerCase()),
+                                cb.equal(cb.lower(root.get("nombre")), nombre.toLowerCase()),
+                                cb.equal(root.get("memoriaRam"), ram),
+                                cb.equal(root.get("almacenamiento"), almacenamiento),
+                                cb.equal(cb.lower(root.get("procesador")), procesador.toLowerCase())
+                        )
+                );
+
+        return em.createQuery(cq).getSingleResult() > 0;
     }
 }

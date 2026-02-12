@@ -59,12 +59,12 @@ public class Main {
         puestos.add(new Puesto("Contador General", departamentos.get(2)));
         puestos.add(new Puesto("Ejecutivo de Ventas", departamentos.get(3)));
 
-        List<Modelo> modelos = new ArrayList<>();
-        modelos.add(new Modelo("Dell", "Optiplex 7090", 16, 512, "Intel i7 11th Gen"));
-        modelos.add(new Modelo("HP", "EliteBook 840 G8", 8, 256, "Intel i5 11th Gen"));
-        modelos.add(new Modelo("Apple", "MacBook Pro M2", 16, 512, "Apple M2 Chip"));
-        modelos.add(new Modelo("Lenovo", "ThinkPad X1 Carbon", 32, 1000, "Intel i7 12th Gen"));
-        modelos.add(new Modelo("Samsung", "Galaxy S23", 8, 256, "Snapdragon 8 Gen 2"));
+//        List<Modelo> modelos = new ArrayList<>();
+//        modelos.add(new Modelo("Dell", "Optiplex 7090", 16, 512, "Intel i7 11th Gen"));
+//        modelos.add(new Modelo("HP", "EliteBook 840 G8", 8, 256, "Intel i5 11th Gen"));
+//        modelos.add(new Modelo("Apple", "MacBook Pro M2", 16, 512, "Apple M2 Chip"));
+//        modelos.add(new Modelo("Lenovo", "ThinkPad X1 Carbon", 32, 1000, "Intel i7 12th Gen"));
+//        modelos.add(new Modelo("Samsung", "Galaxy S23", 8, 256, "Snapdragon 8 Gen 2"));
 
         DaoEmpresa daoEmpresa = new DaoEmpresa();
         DaoSucursal daoSucursal = new DaoSucursal();
@@ -76,7 +76,7 @@ public class Main {
         sucursales.forEach(s -> daoSucursal.guardar(s));
         departamentos.forEach(d -> daoDepartamento.guardar(d));
         puestos.forEach(p -> daoPuesto.guardar(p));
-        modelos.forEach(m -> daoModelo.guardar(m));
+//        modelos.forEach(m -> daoModelo.guardar(m));
 
         System.out.println("=== DATA CARGADO EXITOSAMENTE ===");
     }

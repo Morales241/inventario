@@ -7,13 +7,15 @@ package Dtos;
  * Un departamento contiene múltiples puestos de trabajo.
  * </p>
  */
-public class DepartamentoDto {
+public class DepartamentoDTO {
 
     private Long id;
     private String nombre;
-    private Long idSucursal;
 
-    public DepartamentoDto() {
+    private Long idSucursal;
+    private String nombreSucursal; 
+
+    public DepartamentoDTO() {
     }
 
     public Long getId() {
@@ -40,8 +42,17 @@ public class DepartamentoDto {
         this.idSucursal = idSucursal;
     }
 
+    public String getNombreSucursal() {
+        return nombreSucursal;
+    }
+
+    public void setNombreSucursal(String nombreSucursal) {
+        this.nombreSucursal = nombreSucursal;
+    }
+
     @Override
     public String toString() {
-        return nombre;
+        return id + ".- nombre=" + nombre + ",  nombreSucursal=" + nombreSucursal;
     }
+    
 }

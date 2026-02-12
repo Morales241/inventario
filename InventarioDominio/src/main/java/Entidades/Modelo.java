@@ -19,106 +19,58 @@ import java.util.List;
  */
 @Entity
 @Table(
-        uniqueConstraints = @UniqueConstraint(
-                columnNames = {
-                    "marca",
-                    "nombre",
-                    "memoriaRam",
-                    "almacenamiento",
-                    "procesador"
-                }
-        )
+    name = "Modelo",
+    uniqueConstraints = @UniqueConstraint(
+        columnNames = {
+            "Marca",
+            "Nombre",
+            "MemoriaRam",
+            "Almacenamiento",
+            "Procesador"
+        }
+    )
 )
-public class Modelo extends AuditoriaBase implements Serializable {
+public class Modelo extends AuditoriaBase {
 
-    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "Id_Modelo")
-    private Long idModelo;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Version
-    @Column(name = "version")
     private Long version;
 
-    @Column(name = "Nombre")
+    @Column(nullable = false)
     private String nombre;
 
-    @Column(name = "Marca")
+    @Column(nullable = false)
     private String marca;
 
-    @Column(name = "MemoriaRam")
-    private int memoriaRam;
+    @Column(nullable = false)
+    private Integer memoriaRam;
 
-    @Column(name = "Almacenamiento")
-    private int almacenamiento;
+    @Column(nullable = false)
+    private Integer almacenamiento;
 
-    @Column(name = "Procesador")
+    @Column(nullable = false)
     private String procesador;
 
-    @Column(name = "Equipos")
     @OneToMany(mappedBy = "modelo")
-    private List<EquipoDeComputo> equipos;
-
-    public Modelo(String marca, String nombre, int memoriaRam, int almacenamiento, String preocesador) {
-        this.marca = marca;
-        this.nombre = nombre;
-        this.memoriaRam = memoriaRam;
-        this.almacenamiento = almacenamiento;
-        this.procesador = preocesador;
-        this.equipos = new ArrayList<>();
-    }
-
-    public Modelo() {
-        this.equipos = new ArrayList<>();
-    }
+    private List<EquipoDeComputo> equipos = new ArrayList<>();
 
     public Long getId() {
-        return idModelo;
+        return id;
     }
 
     public void setId(Long id) {
-        this.idModelo = id;
+        this.id = id;
     }
 
-    public String getMarca() {
-        return marca;
+    public Long getVersion() {
+        return version;
     }
 
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public int getMemoriaRam() {
-        return memoriaRam;
-    }
-
-    public void setMemoriaRam(int memoriaRam) {
-        this.memoriaRam = memoriaRam;
-    }
-
-    public int getAlmacenamiento() {
-        return almacenamiento;
-    }
-
-    public void setAlmacenamiento(int almacenamiento) {
-        this.almacenamiento = almacenamiento;
-    }
-
-    public String getPreocesador() {
-        return procesador;
-    }
-
-    public void setPreocesador(String preocesador) {
-        this.procesador = preocesador;
-    }
-
-    public List<EquipoDeComputo> getEquipos() {
-        return equipos;
-    }
-
-    public void setEquipos(List<EquipoDeComputo> equipos) {
-        this.equipos = equipos;
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     public String getNombre() {
@@ -129,6 +81,30 @@ public class Modelo extends AuditoriaBase implements Serializable {
         this.nombre = nombre;
     }
 
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public Integer getMemoriaRam() {
+        return memoriaRam;
+    }
+
+    public void setMemoriaRam(Integer memoriaRam) {
+        this.memoriaRam = memoriaRam;
+    }
+
+    public Integer getAlmacenamiento() {
+        return almacenamiento;
+    }
+
+    public void setAlmacenamiento(Integer almacenamiento) {
+        this.almacenamiento = almacenamiento;
+    }
+
     public String getProcesador() {
         return procesador;
     }
@@ -137,19 +113,13 @@ public class Modelo extends AuditoriaBase implements Serializable {
         this.procesador = procesador;
     }
 
-    public Long getIdModelo() {
-        return idModelo;
+    public List<EquipoDeComputo> getEquipos() {
+        return equipos;
     }
 
-    public void setIdModelo(Long idModelo) {
-        this.idModelo = idModelo;
+    public void setEquipos(List<EquipoDeComputo> equipos) {
+        this.equipos = equipos;
     }
 
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
+    
 }

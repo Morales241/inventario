@@ -2,79 +2,97 @@ package Implementaciones;
 
 import Dtos.EquipoBaseDTO;
 import Dtos.EquipoEscritorioDTO;
-import Dtos.ModeloDto;
+import Dtos.ModeloDTO;
 import Dtos.MovilDTO;
 import Dtos.OtroEquipoDTO;
 import Enums.EstadoEquipo;
-import Interfaces.IFachadaEquipos;
-import Mappers.MapperEquipos;
+import InterfacesFachada.IFachadaEquipos;
 import Mappers.MapperModelo;
 import Servicios.ServicioEquipos;
+import interfacesServicios.IServicioEquipos;
 import java.util.List;
 
 /**
- * Implementación de la fachada para operaciones de gestión de equipos de cómputo.
+ * Implementación de la fachada para operaciones de gestión de equipos de
+ * cómputo.
  * <p>
- * Proporciona acceso simplificado a la lógica de negocio del servicio de equipos.
- * Utiliza el patrón Facade para abstraer la complejidad de las operaciones.
+ * Proporciona acceso simplificado a la lógica de negocio del servicio de
+ * equipos. Utiliza el patrón Facade para abstraer la complejidad de las
+ * operaciones.
  * </p>
+ *
  * @author JMorales
  */
-public class FachadaEquipos implements IFachadaEquipos{
+public class FachadaEquipos implements IFachadaEquipos {
 
-    private final ServicioEquipos servicioEquipos;
-    
+    private final IServicioEquipos servicioEquipos;
+
+    public FachadaEquipos(IServicioEquipos servicioEquipos) {
+        this.servicioEquipos = servicioEquipos;
+    }
+
     public FachadaEquipos() {
-        this.servicioEquipos = new ServicioEquipos();
-    }
-    
-    @Override
-    public List<EquipoBaseDTO> buscarEquipos(Integer gri, EstadoEquipo estado, String criterioBusqueda) {
-        return servicioEquipos.buscarEquipos(gri, estado, criterioBusqueda);
+        this(new ServicioEquipos());
     }
 
     @Override
-    public EquipoBaseDTO obtenerEquipoPorId(Long id) throws Exception {
-        return servicioEquipos.obtenerEquipoPorId(id);
+    public List<EquipoBaseDTO> buscarEquipos(Integer gry, EstadoEquipo estado, String criterioBusqueda) {
+        return servicioEquipos.buscarEquipos(gry, estado, criterioBusqueda);
     }
 
     @Override
-    public EquipoEscritorioDTO guardarEscritorio(EquipoEscritorioDTO dto) throws Exception {
+    public EquipoBaseDTO obtenerEquipoPorId(Long id) {
+        return servicioEquipos.obtenerPorId(id);
+    }
+
+    @Override
+    public EquipoBaseDTO buscarPorGry(Integer gry) {
+        return servicioEquipos.buscarPorGry(gry);
+    }
+
+    @Override
+    public EquipoEscritorioDTO guardarEscritorio(EquipoEscritorioDTO dto) {
         return servicioEquipos.guardarEscritorio(dto);
     }
 
     @Override
-    public MovilDTO guardarMovil(MovilDTO dto) throws Exception {
+    public MovilDTO guardarMovil(MovilDTO dto) {
         return servicioEquipos.guardarMovil(dto);
     }
 
     @Override
-    public OtroEquipoDTO guardarOtro(OtroEquipoDTO dto) throws Exception {
+    public OtroEquipoDTO guardarOtro(OtroEquipoDTO dto) {
         return servicioEquipos.guardarOtro(dto);
     }
 
     @Override
-    public void eliminarEquipo(Long id) throws Exception {
+    public void eliminarEquipo(Long id) {
         servicioEquipos.eliminarEquipo(id);
     }
 
     @Override
-    public List<ModeloDto> listarModelos(String noSerie) {
-        return servicioEquipos.listarModelos(noSerie);
-    }
-
-    @Override
-    public ModeloDto guardarModelo(ModeloDto dto) throws Exception {
+    public ModeloDTO guardarModelo(ModeloDTO dto) {
         return servicioEquipos.guardarModelo(dto);
-    }    
-    
-    @Override
-    public List<ModeloDto> busquedaConFiltros(String marca, String memoriaRam, String almacenamiento, String procesador){
-        return servicioEquipos.busquedaConFiltros(marca, memoriaRam, almacenamiento, procesador);
     }
 
     @Override
-    public ModeloDto busquedarModeloPorId(Long id) {
-        return servicioEquipos.busquedarModeloPorId(id);
+    public List<ModeloDTO> listarModelos() {
+        return servicioEquipos.listarModelos();
+    }
+
+    @Override
+    public ModeloDTO buscarModeloPorId(Long id) {
+        return servicioEquipos.buscarModeloPorId(id);
+    }
+
+    @Override
+    public List<ModeloDTO> buscarModelosConFiltros(
+            String nombre,
+            String marca,
+            Integer memoriaRam,
+            Integer almacenamiento,
+            String procesador) {
+        
+        return servicioEquipos.buscarModelosConFiltros(nombre, marca, memoriaRam, almacenamiento, procesador);
     }
 }

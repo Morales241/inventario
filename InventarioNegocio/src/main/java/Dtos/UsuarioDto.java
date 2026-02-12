@@ -10,16 +10,16 @@ import Enums.RolUsuario;
  * La contraseña se maneja por separado por razones de seguridad.
  * </p>
  */
-public class UsuarioDto {
+public class UsuarioDTO {
 
     private Long id;
     private String username;
-    private RolUsuario rol;
+    private String rol;
 
-    public UsuarioDto() {
+    public UsuarioDTO() {
     }
 
-    public UsuarioDto(Long id, String username, RolUsuario rol) {
+    public UsuarioDTO(Long id, String username, String rol) {
         this.id = id;
         this.username = username;
         this.rol = rol;
@@ -41,11 +41,11 @@ public class UsuarioDto {
         this.username = username;
     }
 
-    public RolUsuario getRol() {
+    public String getRol() {
         return rol;
     }
 
-    public void setRol(RolUsuario rol) {
+    public void setRol(String rol) {
         this.rol = rol;
     }
 }

@@ -1,18 +1,18 @@
 package com.mycompany.inventariofrontfx.inventario;
 
-import Dtos.EmpresaDto;
+import Dtos.EmpresaDTO;
 import Dtos.EquipoBaseDTO;
 import Dtos.EquipoEscritorioDTO;
-import Dtos.ModeloDto;
+import Dtos.ModeloDTO;
 import Dtos.MovilDTO;
 import Dtos.OtroEquipoDTO;
-import Dtos.SucursalDto;
+import Dtos.SucursalDTO;
 import Enums.CondicionFisica;
 import Enums.TipoEquipo;
 import Implementaciones.FachadaEquipos;
 import Implementaciones.FachadaOrganizacion;
-import Interfaces.IFachadaEquipos;
-import Interfaces.IFachadaOrganizacion;
+import InterfacesFachada.IFachadaEquipos;
+import InterfacesFachada.IFachadaOrganizacion;
 import com.mycompany.inventariofrontfx.BaseController;
 import com.mycompany.inventariofrontfx.DashBoardController;
 import java.io.IOException;
@@ -56,13 +56,13 @@ public class FormInventarioController implements Initializable, BaseController {
     @FXML
     private ComboBox<TipoEquipo> cbxTipoEquipo;
     @FXML
-    private ComboBox<EmpresaDto> cbxEmpresa;
+    private ComboBox<EmpresaDTO> cbxEmpresa;
     @FXML
-    private ComboBox<SucursalDto> cbxSucursal;
+    private ComboBox<SucursalDTO> cbxSucursal;
     @FXML
     private ComboBox<CondicionFisica> cbxCondicion;
     @FXML
-    private ComboBox<ModeloDto> cbxModelo;
+    private ComboBox<ModeloDTO> cbxModelo;
     @FXML
     private FlowPane containerEspecifico;
     @FXML
@@ -127,8 +127,8 @@ public class FormInventarioController implements Initializable, BaseController {
         };
 
         task.setOnSucceeded(e -> {
-            cbxEmpresa.setItems(FXCollections.observableArrayList((List<EmpresaDto>) task.getValue().get("empresas")));
-            cbxModelo.setItems(FXCollections.observableArrayList((List<ModeloDto>) task.getValue().get("modelos")));
+            cbxEmpresa.setItems(FXCollections.observableArrayList((List<EmpresaDTO>) task.getValue().get("empresas")));
+            cbxModelo.setItems(FXCollections.observableArrayList((List<ModeloDTO>) task.getValue().get("modelos")));
 
             // Valores por defecto
             cbxTipoEquipo.getSelectionModel().selectFirst();
@@ -140,10 +140,10 @@ public class FormInventarioController implements Initializable, BaseController {
 
     @FXML
     private void cbxEmpresaAction() {
-        EmpresaDto emp = cbxEmpresa.getSelectionModel().getSelectedItem();
+        EmpresaDTO emp = cbxEmpresa.getSelectionModel().getSelectedItem();
         if (emp != null) {
             // Filtrar sucursales por empresa
-            List<SucursalDto> sucursales = fachadaOrganizacion.listarSucursales(null, emp.getId());
+            List<SucursalDTO> sucursales = fachadaOrganizacion.listarSucursales(null, emp.getId());
             cbxSucursal.setItems(FXCollections.observableArrayList(sucursales));
         }
     }
@@ -160,11 +160,11 @@ public class FormInventarioController implements Initializable, BaseController {
             @Override
             protected Void call() throws Exception {
 
-                ModeloDto modeloFinal;
+                ModeloDTO modeloFinal;
 
                 if (ckbCrearNuevoModelo.isSelected()) {
 
-                    ModeloDto nuevoModelo = new ModeloDto();
+                    ModeloDTO nuevoModelo = new ModeloDTO();
                     nuevoModelo.setNombre(txtModelo.getText());
                     nuevoModelo.setMarca(txtMarca.getText());
                     nuevoModelo.setProcesador(txtProcesador.getText());
@@ -236,7 +236,7 @@ public class FormInventarioController implements Initializable, BaseController {
         boolean crearNuevo = ckbCrearNuevoModelo.isSelected();
 
         if (crearNuevo) {
-            ModeloDto seleccionado = cbxModelo.getSelectionModel().getSelectedItem();
+            ModeloDTO seleccionado = cbxModelo.getSelectionModel().getSelectedItem();
 
             if (seleccionado != null) {
                 txtModelo.setText(seleccionado.getNombre());

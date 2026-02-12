@@ -7,17 +7,13 @@ package Dtos;
  * Una empresa puede tener más sucursales, que a su vez contienen departamentos y puestos.
  * </p>
  */
-public class EmpresaDto {
+public class EmpresaDTO {
 
     private Long id;
     private String nombre;
+    private Integer totalSucursales;
 
-    public EmpresaDto() {
-    }
-
-    public EmpresaDto(Long id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
+    public EmpresaDTO() {
     }
 
     public Long getId() {
@@ -34,6 +30,14 @@ public class EmpresaDto {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Integer getTotalSucursales() {
+        return totalSucursales;
+    }
+
+    public void setTotalSucursales(Integer totalSucursales) {
+        this.totalSucursales = totalSucursales;
     }
 
     @Override

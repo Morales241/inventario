@@ -1,122 +1,152 @@
-package Mappers;
+package mapper;
 
-import Dtos.*;
-import Entidades.*;
+import Dtos.EquipoBaseDTO;
+import Dtos.EquipoEscritorioDTO;
+import Dtos.MovilDTO;
+import Dtos.OtroEquipoDTO;
+import Entidades.EquipoDeComputo;
+import Entidades.EquipoDeEscritorio;
+import Entidades.Movil;
+import Entidades.OtroEquipo;
+import Enums.CondicionFisica;
+import Enums.EstadoEquipo;
+import Enums.TipoEquipo;
+import Mappers.Mapper;
+import java.util.Objects;
 
-/**
- * Mapeador especializado para transformaciones entre entidades de equipos y sus DTOs.
- * <p>
- * Proporciona instancias de {@link Mapper} para cada tipo de equipo (Escritorio, Móvil, Otro),
- * manejando las conversiones bidireccionales de propiedades comunes y específicas de cada tipo.
- * Utiliza expresiones lambda para definir las transformaciones de forma declarativa.
- * </p>
- */
 public class MapperEquipos {
 
-    public static final Mapper<EquipoDeEscritorio, EquipoEscritorioDTO> escritorio = new Mapper<>(
-       
-        (e) -> {
-            EquipoEscritorioDTO dto = new EquipoEscritorioDTO();
-            mapCommonToDto(e, dto);
-            dto.setNombreEquipo(e.getNombreEquipo());
-            dto.setCuenta(e.getCuenta());
-            dto.setFinalGarantia(e.getFinalGarantia());
-            dto.setIdentificador(e.getIdentificador());
-            return dto;
-        },
-        (d) -> {
-            EquipoDeEscritorio e = new EquipoDeEscritorio();
-            mapCommonToEntity(d, e); 
-           
-            e.setNombreEquipo(d.getNombreEquipo());
-            e.setCuenta(d.getCuenta());
-            e.setFinalGarantia(d.getFinalGarantia());
-            e.setIdentificador(d.getIdentificador());
-            return e;
-        }
-    );
+    public static final Mapper<EquipoDeEscritorio, EquipoEscritorioDTO> escritorio
+            = new Mapper<>(
+                    (e) -> {
+                        EquipoEscritorioDTO dto = new EquipoEscritorioDTO();
+                        mapCommonToDto(e, dto);
 
-    public static final Mapper<Movil, MovilDTO> movil = new Mapper<>(
-        (e) -> {
-            MovilDTO dto = new MovilDTO();
-            mapCommonToDto(e, dto);
-            
-            dto.setNumCelular(e.getNumCelular());
-            dto.setCargador(e.getCargador());
-            dto.setFunda(e.getFunda());
-            dto.setManosLibres(e.getManosLibres());
-            return dto;
-        },
-        (d) -> {
-            Movil e = new Movil();
-            mapCommonToEntity(d, e);
-            
-            e.setNumCelular(d.getNumCelular());
-            e.setCargador(d.getCargador());
-            e.setFunda(d.getFunda());
-            e.setManosLibres(d.getManosLibres());
-            return e;
-        }
-    );
+                        dto.setNombreEquipo(e.getNombreEquipo());
+                        dto.setCuenta(e.getCuenta());
+                        dto.setFinalGarantia(e.getFinalGarantia());
 
-    public static final Mapper<OtroEquipo, OtroEquipoDTO> otro = new Mapper<>(
-        (e) -> {
-            OtroEquipoDTO dto = new OtroEquipoDTO();
-            mapCommonToDto(e, dto);
-            
-            // Específico de Otro
-            dto.setTipo(e.getTipo());
-            dto.setTituloCampoExtra(e.getTituloCampoExtra());
-            dto.setContenidoCampoExtra(e.getContenidoCampoExtra());
-            dto.setTituloCampoExtra2(e.getTituloCampoExtra2());
-            dto.setContenidoCampoExtra2(e.getContenidoCampoExtra2());
-            return dto;
-        },
-        (d) -> {
-            OtroEquipo e = new OtroEquipo();
-            mapCommonToEntity(d, e);
-            
-            e.setTipo(d.getTipo());
-            e.setTituloCampoExtra(d.getTituloCampoExtra());
-            e.setContenidoCampoExtra(d.getContenidoCampoExtra());
-            e.setTituloCampoExtra2(d.getTituloCampoExtra2());
-            e.setContenidoCampoExtra2(d.getContenidoCampoExtra2());
-            return e;
-        }
-    );
+                        return dto;
+                    },
+                    (d) -> {
+                        EquipoDeEscritorio e = new EquipoDeEscritorio();
+                        mapCommonToEntity(d, e);
+
+                        e.setNombreEquipo(d.getNombreEquipo());
+                        e.setCuenta(d.getCuenta());
+                        e.setFinalGarantia(d.getFinalGarantia());
+
+                        return e;
+                    }
+            );
+
+    public static final Mapper<Movil, MovilDTO> movil
+            = new Mapper<>(
+                    (e) -> {
+                        MovilDTO dto = new MovilDTO();
+                        mapCommonToDto(e, dto);
+
+                        dto.setNumCelular(e.getNumCelular());
+                        dto.setCargador(e.getCargador());
+                        dto.setFunda(e.getFunda());
+                        dto.setManosLibres(e.getManosLibres());
+
+                        return dto;
+                    },
+                    (d) -> {
+                        Movil e = new Movil();
+                        mapCommonToEntity(d, e);
+
+                        e.setNumCelular(d.getNumCelular());
+                        e.setCargador(d.getCargador());
+                        e.setFunda(d.getFunda());
+                        e.setManosLibres(d.getManosLibres());
+
+                        return e;
+                    }
+            );
+
+    public static final Mapper<OtroEquipo, OtroEquipoDTO> otro
+            = new Mapper<>(
+                    (e) -> {
+                        OtroEquipoDTO dto = new OtroEquipoDTO();
+                        mapCommonToDto(e, dto);
+
+                        dto.setTituloCampoExtra(e.getTituloCampoExtra());
+                        dto.setTituloCampoExtra2(e.getTituloCampoExtra2());
+                        dto.setContenidoCampoExtra(e.getContenidoCampoExtra());
+                        dto.setContenidoCampoExtra2(e.getContenidoCampoExtra2());
+
+                        return dto;
+                    },
+                    (d) -> {
+                        OtroEquipo e = new OtroEquipo();
+                        mapCommonToEntity(d, e);
+
+                        e.setTituloCampoExtra(d.getTituloCampoExtra());
+                        e.setTituloCampoExtra2(d.getTituloCampoExtra2());
+                        e.setContenidoCampoExtra(d.getContenidoCampoExtra());
+                        e.setContenidoCampoExtra2(d.getContenidoCampoExtra2());
+
+                        return e;
+                    }
+            );
 
     private static void mapCommonToDto(EquipoDeComputo e, EquipoBaseDTO dto) {
-        dto.setIdEquipo(e.getIdEquipo());
+
+        dto.setIdEquipo(e.getId());
+        dto.setVersion(e.getVersion());
         dto.setGry(e.getGry());
+        dto.setIdentificador(e.getIndetificador());
         dto.setFactura(e.getFactura());
-        dto.setEstado(e.getEstado());
-        dto.setCondicion(e.getCondicion());
         dto.setObservaciones(e.getObservaciones());
         dto.setFechaCompra(e.getFechaCompra());
-        dto.setTipo(e.getTipo());
-        dto.setIdentificador(e.getIdentificador());
-        
-        if (e.getModelo() != null) {
+
+        if (Objects.nonNull(e.getEstado())) {
+            dto.setEstado(e.getEstado().name());
+        }
+
+        if (Objects.nonNull(e.getCondicion())) {
+            dto.setCondicion(e.getCondicion().name());
+        }
+
+        if (Objects.nonNull(e.getTipo())) {
+            dto.setTipo(e.getTipo().name());
+        }
+
+        if (Objects.nonNull(e.getSucursal())) {
+            dto.setIdSucursal(e.getSucursal().getIdSucursal());
+            dto.setNombreSucursal(e.getSucursal().getNombre());
+        }
+
+        if (Objects.nonNull(e.getModelo())) {
             dto.setIdModelo(e.getModelo().getId());
-            dto.setNombreModelo(e.getModelo().getMarca() + " " + e.getModelo().getNombre());
+            dto.setNombreModelo(
+                    e.getModelo().getMarca() + " " + e.getModelo().getNombre()
+            );
         }
     }
 
     private static void mapCommonToEntity(EquipoBaseDTO dto, EquipoDeComputo e) {
-        e.setIdEquipo(dto.getIdEquipo());
+
+        e.setId(dto.getIdEquipo());
+        e.setVersion(dto.getVersion());
         e.setGry(dto.getGry());
+        e.setIndetificador(dto.getIdentificador());
         e.setFactura(dto.getFactura());
-        e.setEstado(dto.getEstado());
-        e.setCondicion(dto.getCondicion());
         e.setObservaciones(dto.getObservaciones());
         e.setFechaCompra(dto.getFechaCompra());
-        e.setTipo(dto.getTipo());
-        e.setIdentificador(dto.getIdentificador());
-        
-        if (dto.getIdModelo() != null) {
-            Modelo m = new Modelo();
-            m.setId(dto.getIdModelo());
-            e.setModelo(m);
+
+        if (dto.getEstado() != null) {
+            e.setEstado(EstadoEquipo.valueOf(dto.getEstado()));
+        }
+
+        if (dto.getCondicion() != null) {
+            e.setCondicion(CondicionFisica.valueOf(dto.getCondicion()));
+        }
+
+        if (dto.getTipo() != null) {
+            e.setTipo(TipoEquipo.valueOf(dto.getTipo()));
         }
     }
 }

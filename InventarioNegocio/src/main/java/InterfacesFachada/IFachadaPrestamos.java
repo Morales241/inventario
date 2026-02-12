@@ -1,6 +1,6 @@
-package Interfaces;
+package InterfacesFachada;
 
-import Dtos.AsignacionDto;
+import Dtos.AsignacionDTO;
 import java.util.List;
 
 /**
@@ -33,7 +33,7 @@ public interface IFachadaPrestamos {
      * Obtiene los equipos actualmente asignados a un trabajador.
      * <p>Solo devuelve asignaciones activas (sin fecha de devolución).</p>
      * @param idTrabajador Identificador del trabajador.
-     * @return Lista de AsignacionDto con equipos en poder del trabajador.
+     * @return Lista de AsignacionDTO con equipos en poder del trabajador.
      */
-    public List<AsignacionDto> obtenerEquiposDeTrabajador(Long idTrabajador);
+    public List<AsignacionDTO> obtenerEquiposDeTrabajador(Long idTrabajador);
 }

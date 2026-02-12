@@ -2,279 +2,276 @@ package Servicios;
 
 import Dao.*;
 import Dtos.*;
+import Entidades.Departamento;
+import Entidades.Empresa;
+import Entidades.Puesto;
+import Entidades.Sucursal;
 import Mappers.*;
+import excepciones.RecursoNoEncontradoException;
+import excepciones.ReglaNegocioException;
+import interfacesServicios.IServicioOrganizacion;
 import java.util.List;
 
 /**
- * Servicio de lógica de negocio para la gestión de la estructura organizacional.
+ * Servicio de lógica de negocio para la gestión de la estructura
+ * organizacional.
  * <p>
  * Coordina operaciones CRUD para empresas, sucursales, departamentos y puestos.
- * Implementa valiÚciones de integridad referencial para evitar eliminaciones en cascada.
+ * Implementa valiÚciones de integridad referencial para evitar eliminaciones en
+ * cascada.
  * </p>
  */
-public class ServicioOrganizacion {
+public class ServicioOrganizacion implements IServicioOrganizacion{
 
     private final DaoEmpresa daoEmpresa;
     private final DaoSucursal daoSucursal;
-    private final DaoDepartamento daoDepto;
+    private final DaoDepartamento daoDepartamento;
     private final DaoPuesto daoPuesto;
 
     public ServicioOrganizacion() {
-        daoEmpresa = new DaoEmpresa();
-        daoSucursal = new DaoSucursal();
-        daoDepto = new DaoDepartamento();
-        daoPuesto = new DaoPuesto();
+        this.daoEmpresa = new DaoEmpresa();
+        this.daoSucursal = new DaoSucursal();
+        this.daoDepartamento = new DaoDepartamento();
+        this.daoPuesto = new DaoPuesto();
     }
 
-    
-    
-    /**
-     * Lista empresas disponibles en el sistema, con filtro opcional por nombre.
-     * <p>
-     * <b>Lógica de búsqueda:</b>
-     * <ul>
-     * <li>Si {@code filtroNombre} está vacío o nulo, retorna <b>todas</b> las empresas.</li>
-     * <li>Si contiene texto, realiza búsqueda por coincidencias en el nombre.</li>
-     * </ul>
-     * </p>
-     * @param filtroNombre Criterio de búsqueda por nombre (puede ser nulo/vacío).
-     * @return Lista de EmpresaDto con la estructura de la empresa.
-     */
-    public List<EmpresaDto> listarEmpresas(String filtroNombre) {
-        if(filtroNombre != null && !filtroNombre.isEmpty()){
-            return MapperEstructura.empresa.mapToDtoList(daoEmpresa.buscarPorCoincidencias(filtroNombre));
+    @Override
+    public List<EmpresaDTO> listarEmpresas(String filtro) {
+
+        if (filtro != null && !filtro.isBlank()) {
+            return MapperEstructura.empresa
+                    .mapToDtoList(daoEmpresa.buscarPorCoincidencias(filtro));
         }
-        return MapperEstructura.empresa.mapToDtoList(daoEmpresa.buscarTodos());
+
+        return MapperEstructura.empresa
+                .mapToDtoList(daoEmpresa.buscarTodos());
     }
 
-    /**
-     * Guarda o actualiza los datos de una empresa.
-     * <p>
-     * <b>Validaciones:</b>
-     * <ul>
-     * <li>El nombre de la empresa es obligatorio.</li>
-     * </ul>
-     * <b>Flujo:</b>
-     * <ul>
-     * <li>Si el ID es mayor a 0, realiza <b>actualización</b>.</li>
-     * <li>Si el ID es nulo o 0, realiza <b>nuevo registro</b>.</li>
-     * </ul>
-     * </p>
-     * @param dto Datos de la empresa a guardar/actualizar.
-     * @throws Exception Si el nombre está vacío o hay error en persistencia.
-     */
-    public void guardarEmpresa(EmpresaDto dto) throws Exception {
-        if (dto.getNombre() == null || dto.getNombre().isEmpty()) throw new Exception("Nombre obligatorio");
-        
-        var entidad = MapperEstructura.empresa.mapToEntity(dto);
+    @Override
+    public EmpresaDTO guardarEmpresa(EmpresaDTO dto) {
+
+        if (dto == null || dto.getNombre() == null || dto.getNombre().isBlank()) {
+            throw new ReglaNegocioException("El nombre de la empresa es obligatorio");
+        }
+
+        Empresa entidad = MapperEstructura.empresa.mapToEntity(dto);
+
         if (dto.getId() != null && dto.getId() > 0) {
-            daoEmpresa.actualizar(entidad);
+
+            Empresa existente = daoEmpresa.buscarPorId(dto.getId());
+
+            if (existente == null)
+                throw new RecursoNoEncontradoException("Empresa no encontrada");
+
+            entidad = daoEmpresa.actualizar(entidad);
+
         } else {
-            daoEmpresa.guardar(entidad);
+            entidad = daoEmpresa.guardar(entidad);
         }
-    }
-    
-    /**
-     * Elimina una empresa del sistema.
-     * <p>
-     * <b>Restricción de negocio:</b>
-     * <ul>
-     * <li>No permite eliminar empresas que tengan sucursales vinculadas.</li>
-     * <li>Debe existir integridad referencial antes de proceder.</li>
-     * </ul>
-     * </p>
-     * @param id Identificador único de la empresa a eliminar.
-     * @throws Exception Si la empresa tiene sucursales vinculadas o no existe.
-     */
-    public void eliminarEmpresa(Long id) throws Exception {
-        try {
-            daoEmpresa.eliminar(id);
-        } catch (Exception e) {
-            throw new Exception("No se puede eliminar: La empresa tiene sucursales vinculadas.");
-        }
+
+        return MapperEstructura.empresa.mapToDto(entidad);
     }
 
-    /**
-     * Lista sucursales de una empresa con filtros opcionales por nombre y ubicación.
-     * <p>
-     * <b>Formato del filtro:</b>
-     * <ul>
-     * <li>Si {@code filtro} es nulo/vacío, retorna <b>todas</b> las sucursales de la empresa.</li>
-     * <li>Si contiene texto con coma, se divide en: {@code nombre,ubicación}.</li>
-     * <li>Cada componente puede estar vacío para ignorar ese criterio.</li>
-     * </ul>
-     * </p>
-     * @param filtro Cadena con formato "nombre,ubicación" (puede ser nulo/vacío).
-     * @param idEmpresa ID de la empresa a la que pertenecen las sucursales.
-     * @return Lista de SucursalDto que cumplen los criterios.
-     */
-    public List<SucursalDto> listarSucursales(String filtro, Long idEmpresa) {
-        // Si no hay filtro, mandamos vacíos para traer todo
-        
+    @Override
+    public void eliminarEmpresa(Long id) {
+
+        if (id == null)
+            throw new IllegalArgumentException("ID inválido");
+
+        Empresa empresa = daoEmpresa.buscarPorId(id);
+
+        if (empresa == null)
+            throw new RecursoNoEncontradoException("Empresa no encontrada");
+
+        if (empresa.getSucursales() != null && !empresa.getSucursales().isEmpty())
+            throw new ReglaNegocioException(
+                    "No se puede eliminar una empresa con sucursales asociadas");
+
+        daoEmpresa.eliminar(id);
+    }
+
+    @Override
+    public List<SucursalDTO> listarSucursales(String filtro, Long idEmpresa) {
+
         String nombre = "";
-        
         String ubicacion = "";
-        
-        if (filtro != null) {
-            String[] cadenas = filtro.split(",");
-            
-            nombre = cadenas[0];
-            ubicacion = cadenas[1];
+
+        if (filtro != null && !filtro.isBlank()) {
+            String[] partes = filtro.split(",");
+            nombre = partes.length > 0 ? partes[0].trim() : "";
+            ubicacion = partes.length > 1 ? partes[1].trim() : "";
         }
-        
-        return MapperEstructura.sucursal.mapToDtoList(daoSucursal.busquedaConFiltros(nombre, ubicacion, idEmpresa));
+
+        return MapperEstructura.sucursal
+                .mapToDtoList(daoSucursal.busquedaConFiltros(nombre, ubicacion, idEmpresa));
     }
 
-    /**
-     * Guarda o actualiza los datos de una sucursal.
-     * <p>
-     * <b>Validaciones:</b>
-     * <ul>
-     * <li>El nombre de la sucursal es obligatorio.</li>
-     * <li>Debe estar asociada a una empresa (idEmpresa no nulo).</li>
-     * </ul>
-     * <b>Flujo:</b>
-     * <ul>
-     * <li>Si el ID es mayor a 0, realiza <b>actualización</b>.</li>
-     * <li>Si el ID es nulo o 0, realiza <b>nuevo registro</b>.</li>
-     * </ul>
-     * </p>
-     * @param dto Datos de la sucursal a guardar/actualizar.
-     * @throws Exception Si faltan datos obligatorios o hay error en persistencia.
-     */
-    public void guardarSucursal(SucursalDto dto) throws Exception {
-        if (dto.getNombre() == null || dto.getIdEmpresa() == null) throw new Exception("Datos incompletos");
-        
-        var entidad = MapperEstructura.sucursal.mapToEntity(dto);
-        if (dto.getId() != null && dto.getId() > 0) daoSucursal.actualizar(entidad);
-        else daoSucursal.guardar(entidad);
-    }
-    
-    /**
-     * Elimina una sucursal del sistema.
-     * <p>
-     * <b>Restricción de negocio:</b>
-     * <ul>
-     * <li>No permite eliminar sucursales que tengan departamentos o equipos vinculados.</li>
-     * <li>Debe estar libre de referencias para proceder con la eliminación.</li>
-     * </ul>
-     * </p>
-     * @param id Identificador único de la sucursal a eliminar.
-     * @throws Exception Si tiene departamentos/equipos vinculados o no existe.
-     */
-    public void eliminarSucursal(Long id) throws Exception {
-         try { daoSucursal.eliminar(id); } 
-         catch (Exception e) { throw new Exception("No se puede eliminar: Tiene departamentos o equipos vinculados."); }
+    @Override
+    public SucursalDTO guardarSucursal(SucursalDTO dto) {
+
+        if (dto == null || dto.getNombre() == null || dto.getNombre().isBlank())
+            throw new ReglaNegocioException("El nombre de la sucursal es obligatorio");
+
+        if (dto.getIdEmpresa() == null)
+            throw new ReglaNegocioException("Debe asociar la sucursal a una empresa");
+
+        Empresa empresa = daoEmpresa.buscarPorId(dto.getIdEmpresa());
+
+        if (empresa == null)
+            throw new RecursoNoEncontradoException("Empresa no encontrada");
+
+        Sucursal entidad = MapperEstructura.sucursal.mapToEntity(dto);
+        entidad.setEmpresa(empresa);
+
+        if (dto.getId() != null && dto.getId() > 0) {
+
+            Sucursal existente = daoSucursal.buscarPorId(dto.getId());
+
+            if (existente == null)
+                throw new RecursoNoEncontradoException("Sucursal no encontrada");
+
+            entidad = daoSucursal.actualizar(entidad);
+
+        } else {
+            entidad = daoSucursal.guardar(entidad);
+        }
+
+        return MapperEstructura.sucursal.mapToDto(entidad);
     }
 
-    /**
-     * Lista departamentos de una sucursal con filtro opcional por nombre.
-     * <p>
-     * <b>Lógica de búsqueda:</b>
-     * <ul>
-     * <li>Si {@code nombre} está vacío o nulo, retorna <b>todos</b> los departamentos de la sucursal.</li>
-     * <li>Si contiene texto, busca departamentos que coincidan en el nombre.</li>
-     * </ul>
-     * </p>
-     * @param nombre Criterio de búsqueda por nombre del departamento (puede ser nulo/vacío).
-     * @param idSucursal ID de la sucursal a la que pertenecen los departamentos.
-     * @return Lista de DepartamentoDto que cumplen con los criterios.
-     */
-    public List<DepartamentoDto> listarDepartamentos(String nombre, Long idSucursal) {
-        String busqueda = nombre != null ? nombre : "";
-        return MapperEstructura.departamento.mapToDtoList(daoDepto.busquedaConFiltros(busqueda, idSucursal));
+    @Override
+    public void eliminarSucursal(Long id) {
+
+        if (id == null)
+            throw new IllegalArgumentException("ID inválido");
+
+        Sucursal sucursal = daoSucursal.buscarPorId(id);
+
+        if (sucursal == null)
+            throw new RecursoNoEncontradoException("Sucursal no encontrada");
+
+        if ((sucursal.getDepartamentos() != null && !sucursal.getDepartamentos().isEmpty()))
+            throw new ReglaNegocioException(
+                    "No se puede eliminar la sucursal: tiene departamentos asociados");
+
+        daoSucursal.eliminar(id);
     }
 
-    /**
-     * Guarda o actualiza los datos de un departamento.
-     * <p>
-     * <b>Validaciones:</b>
-     * <ul>
-     * <li>El nombre del departamento es obligatorio.</li>
-     * <li>Debe estar asociado a una sucursal (idSucursal no nulo).</li>
-     * </ul>
-     * <b>Flujo:</b>
-     * <ul>
-     * <li>Si el ID es mayor a 0, realiza <b>actualización</b>.</li>
-     * <li>Si el ID es nulo o 0, realiza <b>nuevo registro</b>.</li>
-     * </ul>
-     * </p>
-     * @param dto Datos del departamento a guardar/actualizar.
-     * @throws Exception Si faltan datos obligatorios o hay error en persistencia.
-     */
-    public void guardarDepartamento(DepartamentoDto dto) throws Exception {
-        if (dto.getNombre() == null || dto.getIdSucursal() == null) throw new Exception("Datos incompletos");
-        
-        var entidad = MapperEstructura.departamento.mapToEntity(dto);
-        if (dto.getId() != null && dto.getId() > 0) daoDepto.actualizar(entidad);
-        else daoDepto.guardar(entidad);
-    }
-    
-    /**
-     * Elimina un departamento del sistema.
-     * <p>
-     * <b>Restricción de negocio:</b>
-     * <ul>
-     * <li>No permite eliminar departamentos que tengan puestos vinculados.</li>
-     * <li>Debe estar libre de referencias para proceder con la eliminación.</li>
-     * </ul>
-     * </p>
-     * @param id Identificador único del departamento a eliminar.
-     * @throws Exception Si tiene puestos vinculados o no existe.
-     */
-    public void eliminarDepartamento(Long id) throws Exception {
-         try { daoDepto.eliminar(id); } 
-         catch (Exception e) { throw new Exception("No se puede eliminar: Tiene puestos vinculados."); }
+    @Override
+    public List<DepartamentoDTO> listarDepartamentos(String nombre, Long idSucursal) {
+
+        String filtro = nombre != null ? nombre : "";
+
+        return MapperEstructura.departamento
+                .mapToDtoList(daoDepartamento.busquedaConFiltros(filtro, idSucursal));
     }
 
-    /**
-     * Lista todos los puestos de un departamento específico.
-     * @param idDepto ID del departamento del cual obtener los puestos.
-     * @return Lista de PuestoDto pertenecientes al departamento.
-     */
-    public List<PuestoDto> listarPuestos(Long idDepto) {
-        return MapperEstructura.puesto.mapToDtoList(daoPuesto.busquedaPorDepartamento(idDepto));
+    @Override
+    public DepartamentoDTO guardarDepartamento(DepartamentoDTO dto) {
+
+        if (dto == null || dto.getNombre() == null || dto.getNombre().isBlank())
+            throw new ReglaNegocioException("El nombre del departamento es obligatorio");
+
+        if (dto.getIdSucursal() == null)
+            throw new ReglaNegocioException("Debe asociar el departamento a una sucursal");
+
+        Sucursal sucursal = daoSucursal.buscarPorId(dto.getIdSucursal());
+
+        if (sucursal == null)
+            throw new RecursoNoEncontradoException("Sucursal no encontrada");
+
+        Departamento entidad = MapperEstructura.departamento.mapToEntity(dto);
+        entidad.setSucursal(sucursal);
+
+        if (dto.getId() != null && dto.getId() > 0) {
+
+            Departamento existente = daoDepartamento.buscarPorId(dto.getId());
+
+            if (existente == null)
+                throw new RecursoNoEncontradoException("Departamento no encontrado");
+
+            entidad = daoDepartamento.actualizar(entidad);
+
+        } else {
+            entidad = daoDepartamento.guardar(entidad);
+        }
+
+        return MapperEstructura.departamento.mapToDto(entidad);
     }
 
-    /**
-     * Guarda o actualiza los datos de un puesto de trabajo.
-     * <p>
-     * <b>Validaciones:</b>
-     * <ul>
-     * <li>El nombre del puesto es obligatorio.</li>
-     * <li>Debe estar asociado a un departamento (idDepartamento no nulo).</li>
-     * </ul>
-     * <b>Flujo:</b>
-     * <ul>
-     * <li>Si el ID es mayor a 0, realiza <b>actualización</b>.</li>
-     * <li>Si el ID es nulo o 0, realiza <b>nuevo registro</b>.</li>
-     * </ul>
-     * </p>
-     * @param dto Datos del puesto a guardar/actualizar.
-     * @throws Exception Si faltan datos obligatorios o hay error en persistencia.
-     */
-    public void guardarPuesto(PuestoDto dto) throws Exception {
-        if (dto.getNombre() == null || dto.getIdDepartamento() == null) throw new Exception("Datos incompletos");
-        
-        var entidad = MapperEstructura.puesto.mapToEntity(dto);
-        if (dto.getId() != null && dto.getId() > 0) daoPuesto.actualizar(entidad);
-        else daoPuesto.guardar(entidad);
+    @Override
+    public void eliminarDepartamento(Long id) {
+
+        if (id == null)
+            throw new IllegalArgumentException("ID inválido");
+
+        Departamento departamento = daoDepartamento.buscarPorId(id);
+
+        if (departamento == null)
+            throw new RecursoNoEncontradoException("Departamento no encontrado");
+
+        if (departamento.getPuestos() != null && !departamento.getPuestos().isEmpty())
+            throw new ReglaNegocioException(
+                    "No se puede eliminar el departamento: tiene puestos asociados");
+
+        daoDepartamento.eliminar(id);
     }
-    
-    /**
-     * Elimina un puesto de trabajo del sistema.
-     * <p>
-     * <b>Restricción de negocio:</b>
-     * <ul>
-     * <li>No permite eliminar puestos que tengan trabajadores asignados.</li>
-     * <li>Debe estar libre de referencias para proceder con la eliminación.</li>
-     * </ul>
-     * </p>
-     * @param id Identificador único del puesto a eliminar.
-     * @throws Exception Si tiene trabajadores vinculados o no existe.
-     */
-    public void eliminarPuesto(Long id) throws Exception {
-         try { daoPuesto.eliminar(id); } 
-         catch (Exception e) { throw new Exception("No se puede eliminar: Tiene trabajadores vinculados."); }
+
+    @Override
+    public List<PuestoDTO> listarPuestos(Long idDepartamento) {
+
+        return MapperEstructura.puesto
+                .mapToDtoList(daoPuesto.busquedaPorDepartamento(idDepartamento));
+    }
+
+    @Override
+    public PuestoDTO guardarPuesto(PuestoDTO dto) {
+
+        if (dto == null || dto.getNombre() == null || dto.getNombre().isBlank())
+            throw new ReglaNegocioException("El nombre del puesto es obligatorio");
+
+        if (dto.getIdDepartamento() == null)
+            throw new ReglaNegocioException("Debe asociar el puesto a un departamento");
+
+        Departamento departamento = daoDepartamento.buscarPorId(dto.getIdDepartamento());
+
+        if (departamento == null)
+            throw new RecursoNoEncontradoException("Departamento no encontrado");
+
+        Puesto entidad = MapperEstructura.puesto.mapToEntity(dto);
+        entidad.setDepartamento(departamento);
+
+        if (dto.getId() != null && dto.getId() > 0) {
+
+            Puesto existente = daoPuesto.buscarPorId(dto.getId());
+
+            if (existente == null)
+                throw new RecursoNoEncontradoException("Puesto no encontrado");
+
+            entidad = daoPuesto.actualizar(entidad);
+
+        } else {
+            entidad = daoPuesto.guardar(entidad);
+        }
+
+        return MapperEstructura.puesto.mapToDto(entidad);
+    }
+
+    @Override
+    public void eliminarPuesto(Long id) {
+
+        if (id == null)
+            throw new IllegalArgumentException("ID inválido");
+
+        Puesto puesto = daoPuesto.buscarPorId(id);
+
+        if (puesto == null)
+            throw new RecursoNoEncontradoException("Puesto no encontrado");
+
+        if (puesto.getTrabajadores() != null && !puesto.getTrabajadores().isEmpty())
+            throw new ReglaNegocioException(
+                    "No se puede eliminar el puesto: tiene trabajadores asociados");
+
+        daoPuesto.eliminar(id);
     }
 }

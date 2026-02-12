@@ -13,4 +13,5 @@ import java.util.List;
  */
 public interface IDaoEquipoAsignado extends IDaoGenerico<EquipoAsignado, Long>{
     public List<EquipoAsignado> buscarPorTrabajadorActivo(Long idTrabajador);
+    public boolean existeAsignacionActiva(Long idEquipo);
 }

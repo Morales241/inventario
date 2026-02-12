@@ -1,9 +1,10 @@
 package Implementaciones;
 
-import Dtos.TrabajadorDto;
-import Dtos.UsuarioDto;
-import Interfaces.IFachadaPersonas;
+import Dtos.TrabajadorDTO;
+import Dtos.UsuarioDTO;
+import InterfacesFachada.IFachadaPersonas;
 import Servicios.ServicioPersonas;
+import interfacesServicios.IServicioPersonas;
 import java.util.List;
 
 /**
@@ -16,35 +17,39 @@ import java.util.List;
  */
 public class FachadaPersonas implements IFachadaPersonas {
 
-    private final ServicioPersonas servicioPersonas;
+    private final IServicioPersonas servicioPersonas;
+
+    public FachadaPersonas(IServicioPersonas servicioPersonas) {
+        this.servicioPersonas = servicioPersonas;
+    }
 
     public FachadaPersonas() {
-        this.servicioPersonas = new ServicioPersonas();
+        this(new ServicioPersonas());
     }
-    
+
     @Override
-    public UsuarioDto login(String user, String pass) throws Exception {
+    public UsuarioDTO login(String user, String pass) {
         return servicioPersonas.login(user, pass);
     }
 
     @Override
-    public List<TrabajadorDto> buscarTrabajadores(String busquedaGlobal) {
+    public List<TrabajadorDTO> buscarTrabajadores(String busquedaGlobal) {
         return servicioPersonas.buscarTrabajadores(busquedaGlobal);
     }
 
     @Override
-    public TrabajadorDto obtenerTrabajador(Long id) {
+    public TrabajadorDTO obtenerTrabajador(Long id) {
         return servicioPersonas.obtenerTrabajador(id);
     }
 
     @Override
-    public void guardarTrabajador(TrabajadorDto dto) throws Exception {
+    public void guardarTrabajador(TrabajadorDTO dto) {
         servicioPersonas.guardarTrabajador(dto);
     }
 
     @Override
-    public void cambiarEstadoTrabajador(Long id, boolean activo) throws Exception{
+    public void cambiarEstadoTrabajador(Long id, boolean activo) {
         servicioPersonas.cambiarEstadoTrabajador(id, activo);
     }
-    
 }
+

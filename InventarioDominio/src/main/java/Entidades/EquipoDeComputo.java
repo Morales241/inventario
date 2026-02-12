@@ -13,150 +13,89 @@ import java.util.List;
 @Table(name = "EquipoDeComputo")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TipoEquipo", discriminatorType = DiscriminatorType.STRING)
-public class EquipoDeComputo extends AuditoriaBase implements Serializable {
+public class EquipoDeComputo extends AuditoriaBase implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id_EquipoDeComputo")
-    private Long idEquipo;
+    private Long id;
 
     @Version
-    @Column(name = "version")
     private Long version;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "Condicion", nullable = false)
-    private CondicionFisica condicion;
-
-    @Column(name = "GRY", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private Integer gry;
+    
+    @Column(nullable = false, unique = true)
+    private String indetificador;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EstadoEquipo estado = EstadoEquipo.EN_STOCK;
 
     @Column(name = "Factura")
     private String factura;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "Estado", nullable = false)
-    private EstadoEquipo estado;
-
-    @Column(name = "Observaciones")
-    private String observaciones;
-
+    
+    @Column(name = "Condicion")
+    private CondicionFisica condicion;
+    
+    @Column(name = "Tipo")
+    private TipoEquipo tipo;
+    
     @Column(name = "FechaCompra")
     private LocalDate fechaCompra;
-
-    @Column(name = "Identificador")
-    private String identificador;
-
-    @ManyToOne
+    
+    @Column(name = "Observaciones")
+    private String observaciones;
+    
+    @ManyToOne(optional = false)
     @JoinColumn(name = "IdModelo")
     private Modelo modelo;
 
-    @Column(name = "EquiposAsignados")
-    @OneToMany(mappedBy = "equipoDeComputo")
-    private List<EquipoAsignado> equiposAsignados;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "IdSucursal")
+    private Sucursal sucursal;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "Tipo", nullable = false)
-    private TipoEquipo tipo;
+    @OneToMany(
+            mappedBy = "equipoDeComputo",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<EquipoAsignado> asignaciones = new ArrayList<>();
 
-    public EquipoDeComputo() {
-        this.equiposAsignados = new ArrayList<>();
+    public boolean tieneAsignacionActiva() {
+        return asignaciones.stream()
+                .anyMatch(EquipoAsignado::estaActiva);
     }
 
-    public Long getIdEquipo() {
-        return idEquipo;
-    }
-
-    public void setIdEquipo(Long idEquipo) {
-        this.idEquipo = idEquipo;
-    }
-
-    public CondicionFisica getCondicion() {
-        return condicion;
-    }
-
-    public void setCondicion(CondicionFisica condicion) {
-        this.condicion = condicion;
-    }
-
-    public Integer getGry() {
-        return gry;
-    }
-
-    public void setGry(Integer gry) {
-        this.gry = gry;
-    }
-
-    public String getFactura() {
-        return factura;
-    }
-
-    public void setFactura(String factura) {
-        this.factura = factura;
-    }
-
-    public EstadoEquipo getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoEquipo estado) {
-        this.estado = estado;
-    }
-
-    public String getObservaciones() {
-        return observaciones;
-    }
-
-    public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
-    }
-
-    public LocalDate getFechaCompra() {
-        return fechaCompra;
-    }
-
-    public void setFechaCompra(LocalDate fechaCompra) {
-        this.fechaCompra = fechaCompra;
-    }
-
-    public Modelo getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(Modelo modelo) {
-        this.modelo = modelo;
-    }
-
-    public List<EquipoAsignado> getEquiposAsignados() {
-        return equiposAsignados;
-    }
-
-    public void setEquiposAsignados(List<EquipoAsignado> equiposAsignados) {
-        this.equiposAsignados = equiposAsignados;
-    }
-
-    public String getIdentificador() {
-        return identificador;
-    }
-
-    public void setIdentificador(String identificador) {
-        this.identificador = identificador;
-    }
-
-    public TipoEquipo getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoEquipo tipo) {
-        this.tipo = tipo;
-    }
-
-    public void validarDisponible() {
-        if (this.estado == EstadoEquipo.ASIGNADO) {
+    public void asignarA(Trabajador trabajador) {
+        if (tieneAsignacionActiva()) {
             throw new IllegalStateException("El equipo ya está asignado.");
         }
+
+        EquipoAsignado asignacion = new EquipoAsignado(this, trabajador);
+        asignaciones.add(asignacion);
+        this.estado = EstadoEquipo.ASIGNADO;
+    }
+
+    public void devolverEquipo() {
+        EquipoAsignado activa = asignaciones.stream()
+                .filter(EquipoAsignado::estaActiva)
+                .findFirst()
+                .orElseThrow(()
+                        -> new IllegalStateException("No tiene asignación activa."));
+
+        activa.devolver();
+        this.estado = EstadoEquipo.EN_STOCK;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getVersion() {
@@ -167,17 +106,91 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable {
         this.version = version;
     }
 
-    public boolean tieneAsignacionActiva() {
-        return this.equiposAsignados.stream()
-                .anyMatch(a -> a.getFechaDevolucion() == null);
+    public Integer getGry() {
+        return gry;
     }
 
-    public void marcarComoAsignado() {
-        this.estado = EstadoEquipo.ASIGNADO;
+    public void setGry(Integer gry) {
+        this.gry = gry;
     }
 
-    public void marcarComoDisponible() {
-        this.estado = EstadoEquipo.EN_STOCK;
+    public EstadoEquipo getEstado() {
+        return estado;
     }
 
+    public void setEstado(EstadoEquipo estado) {
+        this.estado = estado;
+    }
+
+    public Modelo getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(Modelo modelo) {
+        this.modelo = modelo;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+
+    public List<EquipoAsignado> getAsignaciones() {
+        return asignaciones;
+    }
+
+    public void setAsignaciones(List<EquipoAsignado> asignaciones) {
+        this.asignaciones = asignaciones;
+    }
+
+    public String getIndetificador() {
+        return indetificador;
+    }
+
+    public void setIndetificador(String indetificador) {
+        this.indetificador = indetificador;
+    }
+
+    public String getFactura() {
+        return factura;
+    }
+
+    public void setFactura(String factura) {
+        this.factura = factura;
+    }
+
+    public LocalDate getFechaCompra() {
+        return fechaCompra;
+    }
+
+    public void setFechaCompra(LocalDate fechaCompra) {
+        this.fechaCompra = fechaCompra;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public CondicionFisica getCondicion() {
+        return condicion;
+    }
+
+    public void setCondicion(CondicionFisica condicion) {
+        this.condicion = condicion;
+    }
+
+    public TipoEquipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoEquipo tipo) {
+        this.tipo = tipo;
+    }
 }

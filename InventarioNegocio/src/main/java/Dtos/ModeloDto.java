@@ -4,20 +4,21 @@ package Dtos;
  * Transferencia de datos para modelos de equipos en el catálogo.
  * <p>
  * Contiene especificaciones técnicas estandarizadas para un modelo de equipo.
- * Permite categorizar y buscar equipos por características hardware (RAM, almacenamiento, procesador).
- * Actualmente se usa para todos los tipos de equipos (escritorio, móvil, otro).
+ * Permite categorizar y buscar equipos por características hardware (RAM,
+ * almacenamiento, procesador). Actualmente se usa para todos los tipos de
+ * equipos (escritorio, móvil, otro).
  * </p>
  */
-public class ModeloDto {
+public class ModeloDTO {
 
     private Long idModelo;
     private String nombre;
     private String marca;
-    private int memoriaRam;
-    private int almacenamiento;
+    private Integer memoriaRam;
+    private Integer almacenamiento;
     private String procesador;
 
-    public ModeloDto() {
+    public ModeloDTO() {
     }
 
     public Long getIdModelo() {
@@ -44,19 +45,19 @@ public class ModeloDto {
         this.marca = marca;
     }
 
-    public int getMemoriaRam() {
+    public Integer getMemoriaRam() {
         return memoriaRam;
     }
 
-    public void setMemoriaRam(int memoriaRam) {
+    public void setMemoriaRam(Integer memoriaRam) {
         this.memoriaRam = memoriaRam;
     }
 
-    public int getAlmacenamiento() {
+    public Integer getAlmacenamiento() {
         return almacenamiento;
     }
 
-    public void setAlmacenamiento(int almacenamiento) {
+    public void setAlmacenamiento(Integer almacenamiento) {
         this.almacenamiento = almacenamiento;
     }
 

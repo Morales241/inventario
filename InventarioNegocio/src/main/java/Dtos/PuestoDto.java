@@ -7,14 +7,14 @@ package Dtos;
  * Los trabajadores están asignados a puestos de trabajo específicos.
  * </p>
  */
-public class PuestoDto {
+public class PuestoDTO {
 
     private Long id;
     private String nombre;
     private Long idDepartamento;
     private String nombreDepartamento;
 
-    public PuestoDto() {
+    public PuestoDTO() {
     }
 
     public Long getId() {

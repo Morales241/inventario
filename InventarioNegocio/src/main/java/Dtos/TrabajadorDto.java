@@ -8,15 +8,17 @@ package Dtos;
  * El estado {@code activo} determina si el trabajador puede recibir asignaciones de equipos.
  * </p>
  */
-public class TrabajadorDto {
+public class TrabajadorDTO {
 
     private Long id;
     private String nombre;
     private String noNomina;
     private Boolean activo;
-    private Long idPuesto;
 
-    public TrabajadorDto() {
+    private Long idPuesto;
+    private String nombrePuesto;
+
+    public TrabajadorDTO() {
     }
 
     public Long getId() {
@@ -59,4 +61,17 @@ public class TrabajadorDto {
         this.idPuesto = idPuesto;
     }
 
+    public String getNombrePuesto() {
+        return nombrePuesto;
+    }
+
+    public void setNombrePuesto(String nombrePuesto) {
+        this.nombrePuesto = nombrePuesto;
+    }
+
+    @Override
+    public String toString() {
+        return id + ".- nombre=" + nombre + ", noNomina=" + noNomina + ", activo=" + activo + ", idPuesto=" + idPuesto + ", nombrePuesto=" + nombrePuesto;
+    }
+    
 }

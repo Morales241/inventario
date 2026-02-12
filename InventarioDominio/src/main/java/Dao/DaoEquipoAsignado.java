@@ -20,39 +20,42 @@ import java.util.List;
  */
 public class DaoEquipoAsignado extends DaoGenerico<EquipoAsignado, Long> implements IDaoEquipoAsignado {
 
-    private EntityManagerFactory emf;
-
     public DaoEquipoAsignado() {
         super(EquipoAsignado.class);
-        this.emf = Conexion.getInstancia().getEntityManagerFactory();
-    }
-    
-    public DaoEquipoAsignado(EntityManagerFactory emf) {
-        super(EquipoAsignado.class, emf);
-        this.emf = emf;
     }
 
-    /**
-     * Busca los equipos actualmente asignados a un trabajador específico que no han sido devueltos.
-     * Un equipo se considera activo si su fecha de devolución es nula.
-     * * @param idTrabajador Identificador único del trabajador.
-     * @return Lista de {@link EquipoAsignado} que el trabajador posee actualmente.
-     */
     @Override
     public List<EquipoAsignado> buscarPorTrabajadorActivo(Long idTrabajador) {
-        try (EntityManager em = getEntityManager()) {
-            CriteriaBuilder cb = emf.getCriteriaBuilder();
-            CriteriaQuery<EquipoAsignado> cq = cb.createQuery(EquipoAsignado.class);
-            Root<EquipoAsignado> root = cq.from(EquipoAsignado.class);
 
-            Join<EquipoAsignado, Trabajador> joinTrabajador = root.join("trabajador");
-            
-            Predicate esElTrabajador = cb.equal(joinTrabajador.get("idTrabajador"), idTrabajador);
-            Predicate aunActivo = cb.isNull(root.get("fechaDevolucion"));
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<EquipoAsignado> cq = cb.createQuery(EquipoAsignado.class);
+        Root<EquipoAsignado> root = cq.from(EquipoAsignado.class);
 
-            cq.where(cb.and(esElTrabajador, aunActivo));
+        Join<EquipoAsignado, Trabajador> joinTrabajador = root.join("trabajador");
 
-            return em.createQuery(cq).getResultList();
-        }
+        Predicate esTrabajador = cb.equal(joinTrabajador.get("id"), idTrabajador);
+        Predicate activo = cb.isNull(root.get("fechaDevolucion"));
+
+        cq.select(root).where(cb.and(esTrabajador, activo));
+
+        return em.createQuery(cq).getResultList();
+    }
+
+    @Override
+    public boolean existeAsignacionActiva(Long idEquipo) {
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<EquipoAsignado> root = cq.from(EquipoAsignado.class);
+
+        Predicate equipo = cb.equal(root.get("equipo").get("id"), idEquipo);
+        Predicate activo = cb.isNull(root.get("fechaDevolucion"));
+
+        cq.select(cb.count(root))
+          .where(cb.and(equipo, activo));
+
+        Long cantidad = em.createQuery(cq).getSingleResult();
+
+        return cantidad > 0;
     }
 }

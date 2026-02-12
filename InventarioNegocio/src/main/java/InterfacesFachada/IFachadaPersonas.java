@@ -1,7 +1,7 @@
-package Interfaces;
+package InterfacesFachada;
 
-import Dtos.TrabajadorDto;
-import Dtos.UsuarioDto;
+import Dtos.TrabajadorDTO;
+import Dtos.UsuarioDTO;
 import java.util.List;
 
 /**
@@ -18,31 +18,31 @@ public interface IFachadaPersonas {
      * Autentica un usuario validando credenciales de acceso.
      * @param user Nombre de usuario o email.
      * @param pass Contraseña del usuario.
-     * @return UsuarioDto con información del usuario autenticado.
+     * @return UsuarioDTO con información del usuario autenticado.
      * @throws Exception Si el usuario o contraseña son incorrectos.
      */
-    public UsuarioDto login(String user, String pass) throws Exception;
+    public UsuarioDTO login(String user, String pass) throws Exception;
     
     /**
      * Busca trabajadores por nombre, nómina o puesto.
      * @param busquedaGlobal Criterio de búsqueda (búsqueda parcial en múltiples campos).
-     * @return Lista de TrabajadorDto que coinciden.
+     * @return Lista de TrabajadorDTO que coinciden.
      */
-    public List<TrabajadorDto> buscarTrabajadores(String busquedaGlobal);
+    public List<TrabajadorDTO> buscarTrabajadores(String busquedaGlobal);
     
     /**
      * Obtiene los datos completos de un trabajador.
      * @param id Identificador del trabajador.
-     * @return TrabajadorDto con la información completa.
+     * @return TrabajadorDTO con la información completa.
      */
-    public TrabajadorDto obtenerTrabajador(Long id);
+    public TrabajadorDTO obtenerTrabajador(Long id);
     
     /**
      * Guarda o actualiza los datos de un trabajador.
      * @param dto Datos del trabajador (nombre, nómina, puesto).
      * @throws Exception Si faltan datos obligatorios o hay error en BD.
      */
-    public void guardarTrabajador(TrabajadorDto dto) throws Exception;
+    public void guardarTrabajador(TrabajadorDTO dto) throws Exception;
     
     /**
      * Cambia el estado de un trabajador (activo/dado de baja).

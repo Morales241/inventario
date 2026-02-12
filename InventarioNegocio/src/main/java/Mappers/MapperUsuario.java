@@ -1,7 +1,8 @@
 package Mappers;
 
-import Dtos.UsuarioDto;
+import Dtos.UsuarioDTO;
 import Entidades.UsuarioSistema;
+import Enums.RolUsuario;
 import Mappers.Mapper;
 
 /**
@@ -12,16 +13,35 @@ import Mappers.Mapper;
  * </p>
  */
 public class MapperUsuario {
-    
-    public static final Mapper<UsuarioSistema, UsuarioDto> converter = new Mapper<>(
-        (entity) -> new UsuarioDto(entity.getId(), entity.getUsername(), entity.getRol()),
-        (dto) -> {
-            UsuarioSistema u = new UsuarioSistema();
-            u.setId(dto.getId());
-            u.setUsername(dto.getUsername());
-            u.setRol(dto.getRol());
-            // La contraseña se debe manejar aparte por seguridad
-            return u;
-        }
-    );
+
+    public static final Mapper<UsuarioSistema, UsuarioDTO> converter =
+            new Mapper<>(
+
+                    (entity) -> {
+                        if (entity == null) return null;
+
+                        UsuarioDTO dto = new UsuarioDTO();
+                        dto.setId(entity.getId());
+                        dto.setUsername(entity.getUsername());
+
+                        if (entity.getRol() != null) {
+                            dto.setRol(entity.getRol().name());
+                        }
+
+                        return dto;
+                    },
+
+                    (dto) -> {
+                        if (dto == null) return null;
+
+                        UsuarioSistema u = new UsuarioSistema();
+                        u.setId(dto.getId());
+                        u.setUsername(dto.getUsername());
+
+                        if (dto.getRol() != null) {
+                            u.setRol(RolUsuario.valueOf(dto.getRol()));
+                        }
+                        return u;
+                    }
+            );
 }

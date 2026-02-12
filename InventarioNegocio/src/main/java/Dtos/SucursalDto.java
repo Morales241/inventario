@@ -8,14 +8,15 @@ package Dtos;
  departamentos, empleados y equipos.
  * </p>
  */
-public class SucursalDto {
+public class SucursalDTO {
 
     private Long id;
     private String nombre;
     private String ubicacion;
     private Long idEmpresa;
+    private String nombreEmpresa;
 
-    public SucursalDto() {
+    public SucursalDTO() {
     }
 
     public Long getId() {
@@ -48,6 +49,14 @@ public class SucursalDto {
 
     public void setIdEmpresa(Long idEmpresa) {
         this.idEmpresa = idEmpresa;
+    }
+
+    public String getNombreEmpresa() {
+        return nombreEmpresa;
+    }
+
+    public void setNombreEmpresa(String nombreEmpresa) {
+        this.nombreEmpresa = nombreEmpresa;
     }
 
     @Override

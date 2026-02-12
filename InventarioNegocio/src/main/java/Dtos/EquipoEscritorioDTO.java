@@ -33,5 +33,11 @@ public class EquipoEscritorioDTO extends EquipoBaseDTO {
 
     public void setCuenta(String cuenta) {
         this.cuenta = cuenta;
-    }    
+    }
+
+    @Override
+    public String toString() {
+        return nombreEquipo + ", finalGarantia=" + finalGarantia + ", cuenta=" + cuenta;
+    }
+     
 }

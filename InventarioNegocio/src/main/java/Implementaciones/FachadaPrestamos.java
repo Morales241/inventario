@@ -1,8 +1,9 @@
 package Implementaciones;
 
-import Dtos.AsignacionDto;
-import Interfaces.IFachadaPrestamos;
+import Dtos.AsignacionDTO;
+import InterfacesFachada.IFachadaPrestamos;
 import Servicios.ServicioPrestamos;
+import interfacesServicios.IServicioPrestamos;
 import java.util.List;
 
 /**
@@ -14,26 +15,30 @@ import java.util.List;
  * </p>
  * @author JMorales
  */
-public class FachadaPrestamos implements IFachadaPrestamos{
+public class FachadaPrestamos implements IFachadaPrestamos {
 
-    private final ServicioPrestamos servicioPrestamos;
-    
-    public FachadaPrestamos() {
-        this.servicioPrestamos = new ServicioPrestamos();
+    private final IServicioPrestamos servicioPrestamos;
+
+    public FachadaPrestamos(IServicioPrestamos servicioPrestamos) {
+        this.servicioPrestamos = servicioPrestamos;
     }
-    
+
+    public FachadaPrestamos() {
+        this(new ServicioPrestamos());
+    }
+
     @Override
-    public void asignarEquipo(Long idEquipo, Long idTrabajador) throws Exception {
+    public void asignarEquipo(Long idEquipo, Long idTrabajador) {
         servicioPrestamos.asignarEquipo(idEquipo, idTrabajador);
     }
 
     @Override
-    public void devolverEquipo(Long idAsignacion) throws Exception {
+    public void devolverEquipo(Long idAsignacion) {
         servicioPrestamos.devolverEquipo(idAsignacion);
     }
-    
+
     @Override
-    public List<AsignacionDto> obtenerEquiposDeTrabajador(Long idTrabajador) {
+    public List<AsignacionDTO> obtenerEquiposDeTrabajador(Long idTrabajador) {
         return servicioPrestamos.obtenerEquiposDeTrabajador(idTrabajador);
-    }    
+    }
 }

@@ -15,70 +15,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementación del DAO para la entidad {@link Puesto}.
- * Gestiona los cargos laborales y su relación con los departamentos.
+ * Implementación del DAO para la entidad {@link Puesto}. Gestiona los cargos
+ * laborales y su relación con los departamentos.
+ *
  * * @author JMorales
  */
 public class DaoPuesto extends DaoGenerico<Puesto, Long> implements IDaoPuesto {
 
-    private EntityManagerFactory emf;
-
     public DaoPuesto() {
         super(Puesto.class);
-        this.emf = Conexion.getInstancia().getEntityManagerFactory();
-    }
-    
-    public DaoPuesto(EntityManagerFactory emf) {
-        super(Puesto.class,emf);
-        this.emf = emf;
     }
 
-    /**
-     * Busca un puesto por su nombre exacto.
-     * @param nombre Nombre del puesto.
-     * @return Objeto {@link Puesto} encontrado.
-     */
     @Override
     public Puesto busquedaEspecifica(String nombre) {
 
-        try (EntityManager em = getEntityManager()) {
-            List<Predicate> predicados = new ArrayList<>();
-            CriteriaBuilder cb = emf.getCriteriaBuilder();
-            CriteriaQuery<Puesto> cq = cb.createQuery(Puesto.class);
-            Root<Puesto> root = cq.from(Puesto.class);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Puesto> cq = cb.createQuery(Puesto.class);
+        Root<Puesto> root = cq.from(Puesto.class);
 
-            predicados.add(cb.equal(cb.lower(root.get("nombre")), nombre.toLowerCase()));
-            cq.select(root);
-            cq.where(predicados.toArray(new Predicate[0]));
+        cq.select(root)
+                .where(cb.equal(cb.lower(root.get("nombre")),
+                        nombre.toLowerCase()));
 
-            return em.createQuery(cq).getSingleResult();
-        }
+        List<Puesto> resultados = em.createQuery(cq).getResultList();
+        return resultados.isEmpty() ? null : resultados.get(0);
     }
-    
-    /**
-     * Obtiene todos los puestos asociados a un departamento en particular.
-     * @param idDepartamento Identificador del departamento.
-     * @return Lista de puestos pertenecientes a dicho departamento.
-     */
+
     @Override
-    public List<Puesto> busquedaPorDepartamento(Long idDepartamento){
-    
-        try (EntityManager em = getEntityManager()) {
-            List<Predicate> predicados = new ArrayList<>();
-            CriteriaBuilder cb = emf.getCriteriaBuilder();
-            CriteriaQuery<Puesto> cq = cb.createQuery(Puesto.class);
-            Root<Puesto> root = cq.from(Puesto.class);
-            
-            Join<Puesto, Departamento> join = root.join("departamento");
+    public List<Puesto> busquedaPorDepartamento(Long idDepartamento) {
 
-            if (idDepartamento != null) {
-                predicados.add(cb.equal(join.get("idDepartamento"), idDepartamento));
-            }
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Puesto> cq = cb.createQuery(Puesto.class);
+        Root<Puesto> root = cq.from(Puesto.class);
 
-            cq.select(root);
-            cq.where(predicados.toArray(new Predicate[0]));
+        List<Predicate> predicados = new ArrayList<>();
 
-            return em.createQuery(cq).getResultList();
+        if (idDepartamento != null) {
+            Join<Puesto, Departamento> join
+                    = root.join("departamento");
+
+            predicados.add(
+                    cb.equal(join.get("id"), idDepartamento)
+            );
         }
+
+        cq.select(root)
+                .where(predicados.toArray(new Predicate[0]));
+
+        return em.createQuery(cq).getResultList();
     }
 }

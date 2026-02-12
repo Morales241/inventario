@@ -4,12 +4,13 @@
  */
 package Implementaciones;
 
-import Dtos.DepartamentoDto;
-import Dtos.EmpresaDto;
-import Dtos.PuestoDto;
-import Dtos.SucursalDto;
-import Interfaces.IFachadaOrganizacion;
+import Dtos.DepartamentoDTO;
+import Dtos.EmpresaDTO;
+import Dtos.PuestoDTO;
+import Dtos.SucursalDTO;
+import InterfacesFachada.IFachadaOrganizacion;
 import Servicios.ServicioOrganizacion;
+import interfacesServicios.IServicioOrganizacion;
 import java.util.List;
 
 /**
@@ -21,71 +22,77 @@ import java.util.List;
  * </p>
  * @author JMorales
  */
-public class FachadaOrganizacion implements IFachadaOrganizacion{
+public class FachadaOrganizacion implements IFachadaOrganizacion {
 
-    private final ServicioOrganizacion servicioOrganizacion;
+    private final IServicioOrganizacion servicioOrganizacion;
+
+    // Inyección empresarial
+    public FachadaOrganizacion(IServicioOrganizacion servicioOrganizacion) {
+        this.servicioOrganizacion = servicioOrganizacion;
+    }
 
     public FachadaOrganizacion() {
-        this.servicioOrganizacion = new ServicioOrganizacion();
+        this(new ServicioOrganizacion());
     }
-    
+
     @Override
-    public List<EmpresaDto> listarEmpresas(String filtroNombre) {
+    public List<EmpresaDTO> listarEmpresas(String filtroNombre) {
         return servicioOrganizacion.listarEmpresas(filtroNombre);
     }
 
     @Override
-    public void guardarEmpresa(EmpresaDto dto) throws Exception {
+    public void guardarEmpresa(EmpresaDTO dto) {
         servicioOrganizacion.guardarEmpresa(dto);
     }
 
     @Override
-    public void eliminarEmpresa(Long id) throws Exception {
+    public void eliminarEmpresa(Long id) {
         servicioOrganizacion.eliminarEmpresa(id);
     }
 
     @Override
-    public List<SucursalDto> listarSucursales(String filtro, Long idEmpresa) {
+    public List<SucursalDTO> listarSucursales(String filtro, Long idEmpresa) {
         return servicioOrganizacion.listarSucursales(filtro, idEmpresa);
     }
 
     @Override
-    public void guardarSucursal(SucursalDto dto) throws Exception {
+    public void guardarSucursal(SucursalDTO dto) {
         servicioOrganizacion.guardarSucursal(dto);
     }
 
     @Override
-    public void eliminarSucursal(Long id) throws Exception {
+    public void eliminarSucursal(Long id) {
         servicioOrganizacion.eliminarSucursal(id);
     }
 
+
     @Override
-    public List<DepartamentoDto> listarDepartamentos(String nombre, Long idSucursal) {
+    public List<DepartamentoDTO> listarDepartamentos(String nombre, Long idSucursal) {
         return servicioOrganizacion.listarDepartamentos(nombre, idSucursal);
     }
 
     @Override
-    public void guardarDepartamento(DepartamentoDto dto) throws Exception {
+    public void guardarDepartamento(DepartamentoDTO dto) {
         servicioOrganizacion.guardarDepartamento(dto);
     }
 
     @Override
-    public void eliminarDepartamento(Long id) throws Exception {
+    public void eliminarDepartamento(Long id) {
         servicioOrganizacion.eliminarDepartamento(id);
     }
 
     @Override
-    public List<PuestoDto> listarPuestos(Long idDepto) {
+    public List<PuestoDTO> listarPuestos(Long idDepto) {
         return servicioOrganizacion.listarPuestos(idDepto);
     }
 
     @Override
-    public void guardarPuesto(PuestoDto dto) throws Exception {
+    public void guardarPuesto(PuestoDTO dto) {
         servicioOrganizacion.guardarPuesto(dto);
     }
 
     @Override
-    public void eliminarPuesto(Long id) throws Exception {
+    public void eliminarPuesto(Long id) {
         servicioOrganizacion.eliminarPuesto(id);
     }
 }

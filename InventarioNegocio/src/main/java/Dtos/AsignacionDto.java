@@ -10,16 +10,20 @@ import java.time.LocalDate;
  * Permite rastrear qué equipos tiene cada empleado y cuándo fueron entregados/devueltos.
  * </p>
  */
-public class AsignacionDto {
+public class AsignacionDTO {
 
     private Long id;
+
     private LocalDate fechaEntrega;
     private LocalDate fechaDevolucion;
 
+    private Long idTrabajador;
     private String nombreTrabajador;
-    private String descripcionEquipo;
 
-    public AsignacionDto() {
+    private Long idEquipo;
+    private String identificadorEquipo;
+
+    public AsignacionDTO() {
     }
 
     public Long getId() {
@@ -46,6 +50,14 @@ public class AsignacionDto {
         this.fechaDevolucion = fechaDevolucion;
     }
 
+    public Long getIdTrabajador() {
+        return idTrabajador;
+    }
+
+    public void setIdTrabajador(Long idTrabajador) {
+        this.idTrabajador = idTrabajador;
+    }
+
     public String getNombreTrabajador() {
         return nombreTrabajador;
     }
@@ -54,11 +66,25 @@ public class AsignacionDto {
         this.nombreTrabajador = nombreTrabajador;
     }
 
-    public String getDescripcionEquipo() {
-        return descripcionEquipo;
+    public Long getIdEquipo() {
+        return idEquipo;
     }
 
-    public void setDescripcionEquipo(String descripcionEquipo) {
-        this.descripcionEquipo = descripcionEquipo;
+    public void setIdEquipo(Long idEquipo) {
+        this.idEquipo = idEquipo;
     }
+
+    public String getIdentificadorEquipo() {
+        return identificadorEquipo;
+    }
+
+    public void setIdentificadorEquipo(String identificadorEquipo) {
+        this.identificadorEquipo = identificadorEquipo;
+    }
+
+    @Override
+    public String toString() {
+        return id + ".- fechaEntrega=" + fechaEntrega + ", fechaDevolucion=" + fechaDevolucion +  ", nombreTrabajador=" + nombreTrabajador + ", identificadorEquipo=" + identificadorEquipo;
+    }
+    
 }

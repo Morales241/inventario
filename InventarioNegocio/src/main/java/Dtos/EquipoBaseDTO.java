@@ -1,30 +1,29 @@
 package Dtos;
 
-import Enums.CondicionFisica;
-import Enums.EstadoEquipo;
-import Enums.TipoEquipo;
 import java.time.LocalDate;
 
 /**
  * Transferencia de datos para equipos de cómputo.
  * <p>
- * Representa la información base común a todos los tipos de equipos.
- * Contiene propiedades administrativas (GRY, factura, estado) y técnicas (modelo, condición).
- * Es la clase base para DTOs específicos de cada tipo de equipo.
+ * Representa la información base común a todos los tipos de equipos. Contiene
+ * propiedades administrativas (GRY, factura, estado) y técnicas (modelo,
+ * condición). Es la clase base para DTOs específicos de cada tipo de equipo.
  * </p>
+ *
  * @author JMorales
  */
 public class EquipoBaseDTO {
+
     private Long idEquipo;
-    private CondicionFisica condicion;
+    private Long version;
     private Integer gry;
-    private String factura;
-    private EstadoEquipo estado;
-    private String observaciones;
-    private LocalDate fechaCompra;
     private String identificador;
-    
-    private TipoEquipo tipo;
+    private String estado;
+    private String factura;
+    private String condicion;
+    private String tipo;
+    private LocalDate fechaCompra;
+    private String observaciones;
     private Long idSucursal;
     private String nombreSucursal;
     private Long idModelo;
@@ -41,14 +40,6 @@ public class EquipoBaseDTO {
         this.idEquipo = idEquipo;
     }
 
-    public CondicionFisica getCondicion() {
-        return condicion;
-    }
-
-    public void setCondicion(CondicionFisica condicion) {
-        this.condicion = condicion;
-    }
-
     public Integer getGry() {
         return gry;
     }
@@ -57,20 +48,28 @@ public class EquipoBaseDTO {
         this.gry = gry;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getCondicion() {
+        return condicion;
+    }
+
+    public void setCondicion(String condicion) {
+        this.condicion = condicion;
+    }
+
     public String getFactura() {
         return factura;
     }
 
     public void setFactura(String factura) {
         this.factura = factura;
-    }
-
-    public EstadoEquipo getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoEquipo estado) {
-        this.estado = estado;
     }
 
     public String getObservaciones() {
@@ -87,6 +86,22 @@ public class EquipoBaseDTO {
 
     public void setFechaCompra(LocalDate fechaCompra) {
         this.fechaCompra = fechaCompra;
+    }
+
+    public String getIdentificador() {
+        return identificador;
+    }
+
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public Long getIdSucursal() {
@@ -121,20 +136,17 @@ public class EquipoBaseDTO {
         this.nombreModelo = nombreModelo;
     }
 
-    public String getIdentificador() {
-        return identificador;
+    public Long getVersion() {
+        return version;
     }
 
-    public void setIdentificador(String identificador) {
-        this.identificador = identificador;
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
-    public TipoEquipo getTipo() {
-        return tipo;
+    @Override
+    public String toString() {
+        return idEquipo + ".- gry=" + gry + ", estado=" + estado + ", condicion=" + condicion + ", factura=" + factura + ", observaciones=" + observaciones + ", fechaCompra=" + fechaCompra + ", identificador=" + identificador + ", tipo=" + tipo + ", idSucursal=" + idSucursal + ", nombreSucursal=" + nombreSucursal + ", idModelo=" + idModelo + ", nombreModelo=" + nombreModelo;
     }
 
-    public void setTipo(TipoEquipo tipo) {
-        this.tipo = tipo;
-    }
-    
 }
