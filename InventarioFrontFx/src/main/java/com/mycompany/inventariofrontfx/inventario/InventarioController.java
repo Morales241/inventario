@@ -6,6 +6,7 @@ package com.mycompany.inventariofrontfx.inventario;
 
 import Dtos.EquipoBaseDTO;
 import Enums.CondicionFisica;
+import Enums.EstadoEquipo;
 import Enums.TipoEquipo;
 import InterfacesFachada.IFachadaEquipos;
 import com.mycompany.inventariofrontfx.BaseController;
@@ -72,6 +73,8 @@ public class InventarioController implements Initializable, BaseController {
     private ComboBox<TipoEquipo> cbxTipo;
     @FXML
     private ComboBox<CondicionFisica> cbxCondicion;
+    @FXML
+    private ComboBox<EstadoEquipo> cbxEstado;
 
     /**
      * Initializes the controller class.
@@ -84,6 +87,8 @@ public class InventarioController implements Initializable, BaseController {
         cargarDatos();
 
     }
+    
+    private void llenarComboBox(){}
 
     private void configurarColumnas() {
 
