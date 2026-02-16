@@ -1,4 +1,4 @@
-package Mappers;
+package mapper;
 
 import Dtos.TrabajadorDTO;
 import Entidades.Puesto;

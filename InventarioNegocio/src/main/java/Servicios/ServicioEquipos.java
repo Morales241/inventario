@@ -3,7 +3,7 @@ package Servicios;
 import Dao.*;
 import Dtos.*;
 import Entidades.*;
-import Mappers.MapperModelo;
+import mapper.MapperModelo;
 import Enums.EstadoEquipo;
 import excepciones.NegocioException;
 import excepciones.RecursoNoEncontradoException;

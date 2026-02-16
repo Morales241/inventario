@@ -11,7 +11,7 @@ import Entidades.OtroEquipo;
 import Enums.CondicionFisica;
 import Enums.EstadoEquipo;
 import Enums.TipoEquipo;
-import Mappers.Mapper;
+import mapper.Mapper;
 import java.util.Objects;
 
 public class MapperEquipos {

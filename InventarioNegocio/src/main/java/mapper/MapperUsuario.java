@@ -1,9 +1,9 @@
-package Mappers;
+package mapper;
 
 import Dtos.UsuarioDTO;
 import Entidades.UsuarioSistema;
 import Enums.RolUsuario;
-import Mappers.Mapper;
+import mapper.Mapper;
 
 /**
  * Mapeador para transformaciones entre la entidad UsuarioSistema y su DTO.

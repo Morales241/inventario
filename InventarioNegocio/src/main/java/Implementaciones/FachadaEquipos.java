@@ -7,7 +7,7 @@ import Dtos.MovilDTO;
 import Dtos.OtroEquipoDTO;
 import Enums.EstadoEquipo;
 import InterfacesFachada.IFachadaEquipos;
-import Mappers.MapperModelo;
+import mapper.MapperModelo;
 import Servicios.ServicioEquipos;
 import interfacesServicios.IServicioEquipos;
 import java.util.List;

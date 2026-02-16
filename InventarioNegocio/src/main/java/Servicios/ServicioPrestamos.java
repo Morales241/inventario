@@ -8,7 +8,7 @@ import Entidades.EquipoAsignado;
 import Entidades.EquipoDeComputo;
 import Entidades.Trabajador;
 import Enums.EstadoEquipo;
-import Mappers.MapperAsignacion;
+import mapper.MapperAsignacion;
 import excepciones.RecursoNoEncontradoException;
 import excepciones.ReglaNegocioException;
 import interfacesServicios.IServicioPrestamos;

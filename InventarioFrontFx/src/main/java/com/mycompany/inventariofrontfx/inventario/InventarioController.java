@@ -9,11 +9,13 @@ import Enums.CondicionFisica;
 import Enums.EstadoEquipo;
 import Enums.TipoEquipo;
 import InterfacesFachada.IFachadaEquipos;
-import com.mycompany.inventariofrontfx.BaseController;
+import interfaces.BaseController;
 import com.mycompany.inventariofrontfx.DashBoardController;
 import fabricaFachadas.FabricaFachadas;
+import interfaces.ControllerInventario;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import static java.util.Arrays.asList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -25,7 +27,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -35,14 +36,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
  * @author tacot
  */
-public class InventarioController implements Initializable, BaseController {
+public class InventarioController implements Initializable, ControllerInventario {
 
     private DashBoardController dbc;
     private final IFachadaEquipos fachadaEquipos = FabricaFachadas.getFachadaEquipos();
@@ -66,7 +66,8 @@ public class InventarioController implements Initializable, BaseController {
     private TableColumn<EquipoBaseDTO, String> colEstado;
     @FXML
     private TableColumn<EquipoBaseDTO, Void> colAcciones;
-
+    @FXML
+    private Button btnAgregar;
     @FXML
     private TextField txtFiltro;
     @FXML
@@ -85,10 +86,14 @@ public class InventarioController implements Initializable, BaseController {
         configurarColumnas();
         configurarAcciones();
         cargarDatos();
-
+        llenarComboBox();
     }
-    
-    private void llenarComboBox(){}
+
+    private void llenarComboBox() {
+        cbxTipo.getItems().setAll(TipoEquipo.values());
+        cbxCondicion.getItems().setAll(CondicionFisica.values());
+        cbxEstado.getItems().setAll(EstadoEquipo.values());
+    }
 
     private void configurarColumnas() {
 
@@ -142,6 +147,14 @@ public class InventarioController implements Initializable, BaseController {
                 setGraphic(empty ? null : container);
             }
         });
+
+        btnAgregar.setOnAction(e -> {
+            try {
+                dbc.cambiarDePantalla("inventario/FormInventario.fxml");
+            } catch (IOException ex) {
+                System.getLogger(InventarioController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        });
     }
 
     private void cargarDatos() {
@@ -173,19 +186,9 @@ public class InventarioController implements Initializable, BaseController {
     private void editarEquipo(EquipoBaseDTO equipo) {
 
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("FormInventario.fxml"));
-
-            Parent view = loader.load();
-
-            FormInventarioController controller
-                    = loader.getController();
-
-            controller.cargarEquipoParaEditar(equipo);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(view));
-            stage.show();
+            
+            ControllerInventario controllerInventario = cambiarPantalla("FormInventario.fxml");
+            controllerInventario.cargarEquipoParaEditar(equipo);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -195,5 +198,40 @@ public class InventarioController implements Initializable, BaseController {
     @Override
     public void setDashBoard(DashBoardController dbc) {
         this.dbc = dbc;
+    }
+
+    @Override
+    public ControllerInventario cambiarPantalla(String rutaFXML) {
+        try {
+            if (rutaFXML != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
+                Parent vista = loader.load();
+
+                Object controller = loader.getController();
+                if (controller instanceof ControllerInventario controllerInventario) {
+                    controllerInventario.setDashBoard(dbc);
+                    return controllerInventario;
+                }
+
+                dbc.getCenterContainer().setContent(vista);
+                dbc.getCenterContainer().setVvalue(0);
+
+            }
+
+        } catch (IOException e) {
+//            System.err.println("Error cargando la vista: " + rutaFXML);
+            System.out.println(Arrays.toString(e.getStackTrace()));
+        }
+        return null;
+    }
+
+    @Override
+    public void limpiarFormulario() {
+       
+    }
+
+    @Override
+    public <T extends EquipoBaseDTO> void cargarEquipoParaEditar(T equipo) {
+        return;
     }
 }

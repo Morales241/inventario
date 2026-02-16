@@ -1,12 +1,12 @@
 package Servicios;
 
+import mapper.MapperEstructura;
 import Dao.*;
 import Dtos.*;
 import Entidades.Departamento;
 import Entidades.Empresa;
 import Entidades.Puesto;
 import Entidades.Sucursal;
-import Mappers.*;
 import excepciones.RecursoNoEncontradoException;
 import excepciones.ReglaNegocioException;
 import interfacesServicios.IServicioOrganizacion;

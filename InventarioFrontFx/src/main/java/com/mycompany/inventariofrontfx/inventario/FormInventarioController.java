@@ -18,9 +18,10 @@ import static Enums.TipoEquipo.PROYECTOR;
 import static Enums.TipoEquipo.SCANNER;
 import InterfacesFachada.IFachadaEquipos;
 import InterfacesFachada.IFachadaOrganizacion;
-import com.mycompany.inventariofrontfx.BaseController;
+import interfaces.BaseController;
 import com.mycompany.inventariofrontfx.DashBoardController;
 import fabricaFachadas.FabricaFachadas;
+import interfaces.ControllerInventario;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +40,7 @@ import javafx.scene.layout.FlowPane;
  *
  * @author tacot
  */
-public class FormInventarioController implements BaseController {
+public class FormInventarioController implements ControllerInventario {
 
     private final IFachadaEquipos fachadaEquipos = FabricaFachadas.getFachadaEquipos();
 
@@ -235,6 +236,7 @@ public class FormInventarioController implements BaseController {
             }
 
             limpiarFormulario();
+            dbc.cambiarDePantalla("inventario/Inventario.fxml");
 
         } catch (Exception ex) {
             mostrarError(ex.getMessage());
@@ -316,7 +318,8 @@ public class FormInventarioController implements BaseController {
         alert.showAndWait();
     }
 
-    private void limpiarFormulario() {
+    @Override
+    public void limpiarFormulario() {
 
         txtGry.clear();
         txtFactura.clear();
@@ -354,6 +357,7 @@ public class FormInventarioController implements BaseController {
         this.dbc = dbc;
     }
 
+    @Override
     public void cargarEquipoParaEditar(EquipoBaseDTO equipo) {
 
         txtGry.setText(String.valueOf(equipo.getGry()));
@@ -374,6 +378,12 @@ public class FormInventarioController implements BaseController {
                 .filter(m -> m.getIdModelo().equals(equipo.getIdModelo()))
                 .findFirst()
                 .ifPresent(m -> cbxModelo.setValue(m));
+        
+        cbxModelo.getSelectionModel().selectFirst();
     }
 
+    @Override
+    public ControllerInventario cambiarPantalla(String rutaFXML) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

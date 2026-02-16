@@ -1,7 +1,7 @@
 package com.mycompany.inventariofrontfx.inventario;
 
 import Dtos.EquipoEscritorioDTO;
-import com.mycompany.inventariofrontfx.BaseController;
+import interfaces.BaseController;
 import com.mycompany.inventariofrontfx.DashBoardController;
 import com.mycompany.inventariofrontfx.IValidaciones;
 import java.net.URL;
