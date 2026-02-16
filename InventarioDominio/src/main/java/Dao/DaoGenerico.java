@@ -17,6 +17,7 @@ public abstract class DaoGenerico<T, ID> implements IDaoGenerico<T, ID> {
         this.claseEntidad = claseEntidad;
     }
     
+    @Override
     public void setEntityManager(EntityManager em) {
         this.em = em;
     }

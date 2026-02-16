@@ -1,26 +1,20 @@
 package mapper;
 
-import Dtos.EquipoBaseDTO;
-import Dtos.EquipoEscritorioDTO;
-import Dtos.MovilDTO;
-import Dtos.OtroEquipoDTO;
-import Entidades.EquipoDeComputo;
-import Entidades.EquipoDeEscritorio;
-import Entidades.Movil;
-import Entidades.OtroEquipo;
-import Enums.CondicionFisica;
-import Enums.EstadoEquipo;
-import Enums.TipoEquipo;
-import mapper.Mapper;
+import Dtos.*;
+import Entidades.*;
+import Enums.*;
+
 import java.util.Objects;
 
 public class MapperEquipos {
+    
+    public static final Mapper<EquipoDeEscritorio, EquipoEscritorioDTO> escritorio =
+            new Mapper<>(
 
-    public static final Mapper<EquipoDeEscritorio, EquipoEscritorioDTO> escritorio
-            = new Mapper<>(
+                    // ENTITY → DTO
                     (e) -> {
-                        EquipoEscritorioDTO dto = new EquipoEscritorioDTO();
-                        mapCommonToDto(e, dto);
+                        EquipoEscritorioDTO dto =
+                                mapCommonToDto(e, new EquipoEscritorioDTO());
 
                         dto.setNombreEquipo(e.getNombreEquipo());
                         dto.setCuenta(e.getCuenta());
@@ -28,6 +22,8 @@ public class MapperEquipos {
 
                         return dto;
                     },
+
+                    // DTO → ENTITY
                     (d) -> {
                         EquipoDeEscritorio e = new EquipoDeEscritorio();
                         mapCommonToEntity(d, e);
@@ -40,11 +36,12 @@ public class MapperEquipos {
                     }
             );
 
-    public static final Mapper<Movil, MovilDTO> movil
-            = new Mapper<>(
+    public static final Mapper<Movil, MovilDTO> movil =
+            new Mapper<>(
+
                     (e) -> {
-                        MovilDTO dto = new MovilDTO();
-                        mapCommonToDto(e, dto);
+                        MovilDTO dto =
+                                mapCommonToDto(e, new MovilDTO());
 
                         dto.setNumCelular(e.getNumCelular());
                         dto.setCargador(e.getCargador());
@@ -53,6 +50,7 @@ public class MapperEquipos {
 
                         return dto;
                     },
+
                     (d) -> {
                         Movil e = new Movil();
                         mapCommonToEntity(d, e);
@@ -66,11 +64,12 @@ public class MapperEquipos {
                     }
             );
 
-    public static final Mapper<OtroEquipo, OtroEquipoDTO> otro
-            = new Mapper<>(
+    public static final Mapper<OtroEquipo, OtroEquipoDTO> otro =
+            new Mapper<>(
+
                     (e) -> {
-                        OtroEquipoDTO dto = new OtroEquipoDTO();
-                        mapCommonToDto(e, dto);
+                        OtroEquipoDTO dto =
+                                mapCommonToDto(e, new OtroEquipoDTO());
 
                         dto.setTituloCampoExtra(e.getTituloCampoExtra());
                         dto.setTituloCampoExtra2(e.getTituloCampoExtra2());
@@ -79,6 +78,7 @@ public class MapperEquipos {
 
                         return dto;
                     },
+
                     (d) -> {
                         OtroEquipo e = new OtroEquipo();
                         mapCommonToEntity(d, e);
@@ -92,7 +92,10 @@ public class MapperEquipos {
                     }
             );
 
-    private static void mapCommonToDto(EquipoDeComputo e, EquipoBaseDTO dto) {
+    public static <T extends EquipoBaseDTO> T mapCommonToDto(
+            EquipoDeComputo e,
+            T dto
+    ) {
 
         dto.setIdEquipo(e.getId());
         dto.setVersion(e.getVersion());
@@ -122,12 +125,18 @@ public class MapperEquipos {
         if (Objects.nonNull(e.getModelo())) {
             dto.setIdModelo(e.getModelo().getId());
             dto.setNombreModelo(
-                    e.getModelo().getMarca() + " " + e.getModelo().getNombre()
+                    e.getModelo().getMarca() + " " +
+                            e.getModelo().getNombre()
             );
         }
+
+        return dto; // 🔥 YA NO ES VOID
     }
 
-    private static void mapCommonToEntity(EquipoBaseDTO dto, EquipoDeComputo e) {
+    private static void mapCommonToEntity(
+            EquipoBaseDTO dto,
+            EquipoDeComputo e
+    ) {
 
         e.setId(dto.getIdEquipo());
         e.setVersion(dto.getVersion());

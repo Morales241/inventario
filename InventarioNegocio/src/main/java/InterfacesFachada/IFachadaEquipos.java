@@ -6,7 +6,9 @@ import Dtos.EquipoEscritorioDTO;
 import Dtos.ModeloDTO;
 import Dtos.MovilDTO;
 import Dtos.OtroEquipoDTO;
+import Enums.CondicionFisica;
 import Enums.EstadoEquipo;
+import Enums.TipoEquipo;
 import java.util.List;
 
 /**
@@ -110,4 +112,14 @@ public interface IFachadaEquipos {
      * @return ModeloDTO con los detalles técnicos del modelo.
      */
     public ModeloDTO buscarModeloPorId(Long id);
+    
+    /**
+     * 
+     * @param texto Filtro de gry
+     * @param tipo filtro de tipo de equipo
+     * @param condicion filtro de condicion del equipo
+     * @param estado filtro sobre el equipo
+     * @return Listado de quipos base filtrados
+     */
+    public List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, CondicionFisica condicion, EstadoEquipo estado);
 }

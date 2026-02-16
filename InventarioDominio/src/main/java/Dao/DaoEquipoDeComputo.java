@@ -3,12 +3,15 @@ package Dao;
 import Entidades.EquipoDeComputo;
 import Entidades.Modelo;
 import Entidades.Sucursal;
+import Enums.CondicionFisica;
 import Enums.EstadoEquipo;
+import Enums.TipoEquipo;
 import Interfaces.IDaoEquipoDeComputo;
 import conexion.Conexion;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
@@ -88,6 +91,77 @@ public class DaoEquipoDeComputo extends DaoGenerico<EquipoDeComputo, Long> imple
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    @Override
+    public List<EquipoDeComputo> buscarConFiltros(
+            String texto,
+            TipoEquipo tipo,
+            CondicionFisica condicion,
+            EstadoEquipo estado
+    ) {
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<EquipoDeComputo> cq
+                = cb.createQuery(EquipoDeComputo.class);
+
+        Root<EquipoDeComputo> root = cq.from(EquipoDeComputo.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        // 🔎 Texto (GRY o Modelo)
+        if (texto != null && !texto.isBlank()) {
+
+            if (texto.matches("\\d+")) {
+
+                predicates.add(
+                        cb.equal(
+                                root.get("gry"),
+                                Integer.valueOf(texto)
+                        )
+                );
+
+            } else {
+
+                Join<EquipoDeComputo, Modelo> modeloJoin
+                        = root.join("modelo");
+
+                predicates.add(
+                        cb.like(
+                                cb.lower(modeloJoin.get("nombre")),
+                                "%" + texto.toLowerCase() + "%"
+                        )
+                );
+            }
+        }
+
+        if (tipo != null) {
+            predicates.add(
+                    cb.equal(root.get("tipo"), tipo)
+            );
+        }
+
+        if (condicion != null) {
+            predicates.add(
+                    cb.equal(root.get("condicion"), condicion)
+            );
+        }
+
+        if (estado != null) {
+            predicates.add(
+                    cb.equal(root.get("estado"), estado)
+            );
+        }
+
+        cq.where(predicates.toArray(new Predicate[0]));
+
+        // Orden empresarial por ID descendente
+        cq.orderBy(cb.desc(root.get("id")));
+
+        TypedQuery<EquipoDeComputo> query
+                = em.createQuery(cq);
+
+        return query.getResultList();
     }
 
 }

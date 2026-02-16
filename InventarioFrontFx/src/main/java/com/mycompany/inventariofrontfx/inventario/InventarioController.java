@@ -103,6 +103,7 @@ public class InventarioController implements Initializable, ControllerInventario
             pause.playFromStart();
         });
 
+        configurarFiltros();
     }
 
     private void llenarComboBox() {
@@ -242,6 +243,9 @@ public class InventarioController implements Initializable, ControllerInventario
 
         cbxCondicion.valueProperty().addListener((obs, oldVal, newVal)
                 -> aplicarFiltro());
+        
+        cbxEstado.valueProperty().addListener((obs, oldVal, newVal)
+                -> aplicarFiltro());
     }
 
     private void cargarDatosAsync() {
@@ -250,15 +254,11 @@ public class InventarioController implements Initializable, ControllerInventario
             @Override
             protected List<EquipoBaseDTO> call() {
 
-                return fachadaEquipos.buscarEquipos(
-                        txtFiltro.getText(),
-                        cbxTipo.getValue(),
-                        cbxCondicion.getValue()
-                );
+                return fachadaEquipos.buscarConFiltros(txtFiltro.getText(), cbxTipo.getSelectionModel().getSelectedItem(), 
+                        cbxCondicion.getSelectionModel().getSelectedItem(), cbxEstado.getSelectionModel().getSelectedItem());
             }
         };
 
-        // Mostrar loading si quieres
         tablaEquipos.setDisable(true);
 
         task.setOnSucceeded(e -> {

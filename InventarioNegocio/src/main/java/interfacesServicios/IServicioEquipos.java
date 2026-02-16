@@ -5,7 +5,10 @@ import Dtos.EquipoEscritorioDTO;
 import Dtos.ModeloDTO;
 import Dtos.MovilDTO;
 import Dtos.OtroEquipoDTO;
+import Entidades.EquipoDeComputo;
+import Enums.CondicionFisica;
 import Enums.EstadoEquipo;
+import Enums.TipoEquipo;
 import java.util.List;
 
 /**
@@ -17,7 +20,7 @@ public interface IServicioEquipos {
     List<EquipoBaseDTO> buscarEquipos(Integer gry, EstadoEquipo estado, String criterio);
 
     EquipoBaseDTO obtenerPorId(Long id);
-    
+
     public EquipoBaseDTO buscarPorGry(Integer gry);
 
     EquipoEscritorioDTO guardarEscritorio(EquipoEscritorioDTO dto);
@@ -33,7 +36,6 @@ public interface IServicioEquipos {
     List<ModeloDTO> listarModelos();
 
     ModeloDTO buscarModeloPorId(Long id);
-    
 
     public List<ModeloDTO> buscarModelosConFiltros(
             String nombre,
@@ -41,4 +43,6 @@ public interface IServicioEquipos {
             Integer memoriaRam,
             Integer almacenamiento,
             String procesador);
+
+    public List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, CondicionFisica condicion, EstadoEquipo estado);
 }

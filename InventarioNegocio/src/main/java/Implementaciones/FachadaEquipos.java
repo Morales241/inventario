@@ -5,7 +5,9 @@ import Dtos.EquipoEscritorioDTO;
 import Dtos.ModeloDTO;
 import Dtos.MovilDTO;
 import Dtos.OtroEquipoDTO;
+import Enums.CondicionFisica;
 import Enums.EstadoEquipo;
+import Enums.TipoEquipo;
 import InterfacesFachada.IFachadaEquipos;
 import mapper.MapperModelo;
 import Servicios.ServicioEquipos;
@@ -94,5 +96,10 @@ public class FachadaEquipos implements IFachadaEquipos {
             String procesador) {
         
         return servicioEquipos.buscarModelosConFiltros(nombre, marca, memoriaRam, almacenamiento, procesador);
+    }
+
+    @Override
+    public List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, CondicionFisica condicion, EstadoEquipo estado) {
+        return servicioEquipos.buscarConFiltros(texto, tipo, condicion, estado);
     }
 }

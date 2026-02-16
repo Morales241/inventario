@@ -1,5 +1,6 @@
 package Interfaces;
 
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -14,4 +15,5 @@ public interface IDaoGenerico<T, ID> {
     void eliminar(ID id);
     T buscarPorId(ID id);
     List<T> buscarTodos();
+    void setEntityManager(EntityManager em);
 }

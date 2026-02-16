@@ -3,8 +3,17 @@ package Servicios;
 import Dao.*;
 import Dtos.*;
 import Entidades.*;
+import Enums.CondicionFisica;
 import mapper.MapperModelo;
 import Enums.EstadoEquipo;
+import Enums.TipoEquipo;
+import Interfaces.IDaoEquipoDeComputo;
+import Interfaces.IDaoEquipoDeEscritorio;
+import Interfaces.IDaoGenerico;
+import Interfaces.IDaoModelo;
+import Interfaces.IDaoMovil;
+import Interfaces.IDaoOtroEquipo;
+import Interfaces.IDaoSucursal;
 import excepciones.NegocioException;
 import excepciones.RecursoNoEncontradoException;
 import excepciones.ReglaNegocioException;
@@ -24,12 +33,12 @@ import mapper.MapperEquipos;
  */
 public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
 
-    private final DaoEquipoDeComputo daoGeneral;
-    private final DaoEquipoDeEscritorio daoEscritorio;
-    private final DaoMovil daoMovil;
-    private final DaoOtroEquipo daoOtro;
-    private final DaoSucursal daoSucursal;
-    private final DaoModelo daoModelo;
+    private final IDaoEquipoDeComputo daoGeneral;
+    private final IDaoEquipoDeEscritorio daoEscritorio;
+    private final IDaoMovil daoMovil;
+    private final IDaoOtroEquipo daoOtro;
+    private final IDaoSucursal daoSucursal;
+    private final IDaoModelo daoModelo;
 
     public ServicioEquipos() {
         this.daoGeneral = new DaoEquipoDeComputo();
@@ -244,7 +253,7 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         entidad.setModelo(modelo);
     }
 
-    private <T extends EquipoDeComputo> T persistir(T entidad, Long id, DaoGenerico<T, Long> dao) {
+    private <T extends EquipoDeComputo> T persistir(T entidad, Long id, IDaoGenerico<T, Long> dao) {
 
         if (id != null && id > 0) {
 
@@ -386,4 +395,15 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         });
     }
 
+    @Override
+    public List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, CondicionFisica condicion, EstadoEquipo estado) {
+        
+        return ejecutarLectura(em -> {
+            configurar(em);
+
+            List<EquipoDeComputo> equipos = daoGeneral.buscarConFiltros(texto, tipo, condicion, estado);
+            return equipos.stream()
+                    .map(equipo -> MapperEquipos.mapCommonToDto(equipo, new EquipoBaseDTO())).collect(Collectors.toList());
+        });
+    }
 }
