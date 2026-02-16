@@ -29,6 +29,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -50,6 +51,11 @@ public class FormInventarioController implements ControllerInventario {
     private Object controllerEspecifico;
     private DashBoardController dbc;
 
+    private boolean modoEdicion = false;
+    private Long idEquipoEditando;
+
+    @FXML
+    private Button btnAgregar;
     @FXML
     private TextField txtGry;
     @FXML
@@ -97,6 +103,10 @@ public class FormInventarioController implements ControllerInventario {
         cargarModelos();
 
         cbxTipoEquipo.setOnAction(e -> cambiarPanelEspecifico());
+        
+        if (modoEdicion) {
+           this.btnAgregar.setText("+ Actualizar equipo");
+        }
     }
 
     private void cambiarPanelEspecifico() {
@@ -223,24 +233,64 @@ public class FormInventarioController implements ControllerInventario {
 
             ModeloDTO modelo = obtenerModelo();
 
-            switch (cbxTipoEquipo.getValue()) {
-
-                case LAPTOP, DESKTOP ->
-                    fachadaEquipos.guardarEscritorio(construirEscritorio(modelo));
-
-                case MOVIL ->
-                    fachadaEquipos.guardarMovil(construirMovil(modelo));
-
-                case IMPRESORA, MONITOR, SCANNER, PROYECTOR ->
-                    fachadaEquipos.guardarOtro(construirOtro(modelo));
+            if (modoEdicion) {
+                actualizarEquipo(modelo);
+            } else {
+                guardarEquipo(modelo);
             }
 
-            limpiarFormulario();
-            dbc.cambiarDePantalla("inventario/Inventario.fxml");
+            volverAInventario();
 
         } catch (Exception ex) {
             mostrarError(ex.getMessage());
         }
+    }
+
+    private void volverAInventario() {
+        cambiarDePantalla("inventario.fxml");
+    }
+
+    private void actualizarEquipo(ModeloDTO modelo) throws Exception {
+
+        EquipoBaseDTO dto = new EquipoBaseDTO();
+        
+        llenarBase(dto, modelo);
+
+        dto.setIdEquipo(idEquipoEditando);
+
+        guardarEquipo(modelo);
+    }
+
+    private void guardarEquipo(ModeloDTO modelo) throws Exception {
+        switch (cbxTipoEquipo.getValue()) {
+            case DESKTOP ->
+                fachadaEquipos.guardarEscritorio(construirEscritorio(modelo));
+            case MOVIL ->
+                fachadaEquipos.guardarMovil(construirMovil(modelo));
+            default ->
+                fachadaEquipos.guardarOtro(construirOtro(modelo));
+        }
+    }
+
+    public void cargarParaEdicion(EquipoBaseDTO equipo) {
+
+        modoEdicion = true;
+        idEquipoEditando = equipo.getIdEquipo();
+
+        txtGry.setText(String.valueOf(equipo.getGry()));
+        txtFactura.setText(equipo.getFactura());
+        txtObservaciones.setText(equipo.getObservaciones());
+        txtIdentificador.setText(equipo.getIdentificador());
+
+        cbxCondicion.setValue(
+                CondicionFisica.valueOf(equipo.getCondicion()));
+
+        cbxTipoEquipo.setValue(
+                TipoEquipo.valueOf(equipo.getTipo()));
+
+        fechaCompra.setValue(equipo.getFechaCompra());
+
+        btnAgregar.setText("Actualizar Equipo");
     }
 
     private ModeloDTO obtenerModelo() throws Exception {
@@ -378,7 +428,7 @@ public class FormInventarioController implements ControllerInventario {
                 .filter(m -> m.getIdModelo().equals(equipo.getIdModelo()))
                 .findFirst()
                 .ifPresent(m -> cbxModelo.setValue(m));
-        
+
         cbxModelo.getSelectionModel().selectFirst();
     }
 

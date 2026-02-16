@@ -19,9 +19,11 @@ import java.util.Arrays;
 import static java.util.Arrays.asList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,7 +37,11 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
  * FXML Controller class
@@ -77,6 +83,9 @@ public class InventarioController implements Initializable, ControllerInventario
     @FXML
     private ComboBox<EstadoEquipo> cbxEstado;
 
+    private PauseTransition pause
+            = new PauseTransition(Duration.millis(400));
+
     /**
      * Initializes the controller class.
      */
@@ -87,6 +96,13 @@ public class InventarioController implements Initializable, ControllerInventario
         configurarAcciones();
         cargarDatos();
         llenarComboBox();
+
+        txtFiltro.textProperty().addListener((obs, oldVal, newVal) -> {
+
+            pause.setOnFinished(e -> aplicarFiltro());
+            pause.playFromStart();
+        });
+
     }
 
     private void llenarComboBox() {
@@ -119,44 +135,6 @@ public class InventarioController implements Initializable, ControllerInventario
                 -> new SimpleStringProperty(data.getValue().getEstado()));
     }
 
-    private void configurarAcciones() {
-
-        colAcciones.setCellFactory(col -> new TableCell<>() {
-
-            private final Button btnEditar = new Button("✏");
-            private final Button btnEliminar = new Button("🗑");
-            private final HBox container
-                    = new HBox(8, btnEditar, btnEliminar);
-
-            {
-                btnEditar.setOnAction(e -> {
-                    EquipoBaseDTO equipo = getTableView().getItems().get(getIndex());
-                    editarEquipo(equipo);
-                });
-
-                btnEliminar.setOnAction(e -> {
-                    EquipoBaseDTO equipo
-                            = getTableView().getItems().get(getIndex());
-                    eliminarEquipo(equipo);
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : container);
-            }
-        });
-
-        btnAgregar.setOnAction(e -> {
-            try {
-                dbc.cambiarDePantalla("inventario/FormInventario.fxml");
-            } catch (IOException ex) {
-                System.getLogger(InventarioController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            }
-        });
-    }
-
     private void cargarDatos() {
 
         List<EquipoBaseDTO> lista
@@ -183,15 +161,148 @@ public class InventarioController implements Initializable, ControllerInventario
         });
     }
 
+    private void configurarAcciones() {
+
+        colAcciones.setCellFactory(col -> new TableCell<>() {
+
+            private final FontIcon editIcon
+                    = new FontIcon("fas-edit");
+
+            private final FontIcon deleteIcon
+                    = new FontIcon("fas-trash");
+
+            private final Button btnEditar
+                    = new Button("", editIcon);
+
+            private final Button btnEliminar
+                    = new Button("", deleteIcon);
+
+            private final HBox container
+                    = new HBox(10, btnEditar, btnEliminar);
+
+            {
+                editIcon.setIconSize(16);
+                deleteIcon.setIconSize(16);
+
+                btnEditar.getStyleClass().add("btn-icon");
+                btnEliminar.getStyleClass().add("btn-icon");
+
+                Tooltip.install(btnEditar,
+                        new Tooltip("Editar equipo"));
+
+                Tooltip.install(btnEliminar,
+                        new Tooltip("Eliminar equipo"));
+
+                btnEditar.setOnAction(e -> {
+                    EquipoBaseDTO equipo
+                            = getTableView().getItems().get(getIndex());
+                    editarEquipo(equipo);
+                });
+
+                btnEliminar.setOnAction(e -> {
+                    EquipoBaseDTO equipo
+                            = getTableView().getItems().get(getIndex());
+                    confirmarEliminacion(equipo);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                } else {
+
+                    EquipoBaseDTO equipo
+                            = getTableView().getItems().get(getIndex());
+
+                    btnEliminar.setDisable(
+                            "ASIGNADO".equalsIgnoreCase(
+                                    equipo.getEstado())
+                    );
+
+                    setGraphic(container);
+                }
+            }
+        });
+    }
+
+    private void aplicarFiltro() {
+        cargarDatosAsync();
+    }
+
+    private void configurarFiltros() {
+
+        txtFiltro.textProperty().addListener((obs, oldVal, newVal)
+                -> aplicarFiltro());
+
+        cbxTipo.valueProperty().addListener((obs, oldVal, newVal)
+                -> aplicarFiltro());
+
+        cbxCondicion.valueProperty().addListener((obs, oldVal, newVal)
+                -> aplicarFiltro());
+    }
+
+    private void cargarDatosAsync() {
+
+        Task<List<EquipoBaseDTO>> task = new Task<>() {
+            @Override
+            protected List<EquipoBaseDTO> call() {
+
+                return fachadaEquipos.buscarEquipos(
+                        txtFiltro.getText(),
+                        cbxTipo.getValue(),
+                        cbxCondicion.getValue()
+                );
+            }
+        };
+
+        // Mostrar loading si quieres
+        tablaEquipos.setDisable(true);
+
+        task.setOnSucceeded(e -> {
+            tablaEquipos.getItems().setAll(task.getValue());
+            tablaEquipos.setDisable(false);
+        });
+
+        task.setOnFailed(e -> {
+            tablaEquipos.setDisable(false);
+            task.getException().printStackTrace();
+        });
+
+        new Thread(task).start();
+    }
+
+    private void confirmarEliminacion(EquipoBaseDTO equipo) {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmación");
+        alert.setHeaderText("Eliminar equipo");
+        alert.setContentText(
+                "¿Desea eliminar el equipo GRY "
+                + equipo.getGry() + "?");
+
+        alert.showAndWait()
+                .filter(btn -> btn == ButtonType.OK)
+                .ifPresent(b -> {
+
+                    try {
+                        fachadaEquipos.eliminarEquipo(equipo.getIdEquipo());
+                    } catch (Exception ex) {
+                        System.getLogger(InventarioController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    }
+                    cargarDatos();
+                });
+    }
+
     private void editarEquipo(EquipoBaseDTO equipo) {
 
-        try {
-            
-            ControllerInventario controllerInventario = cambiarPantalla("FormInventario.fxml");
-            controllerInventario.cargarEquipoParaEditar(equipo);
+        ControllerInventario controller
+                = cambiarPantalla("FormInventario.fxml");
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (controller instanceof FormInventarioController form) {
+            form.cargarEquipoParaEditar(equipo);
         }
     }
 
@@ -204,22 +315,24 @@ public class InventarioController implements Initializable, ControllerInventario
     public ControllerInventario cambiarPantalla(String rutaFXML) {
         try {
             if (rutaFXML != null) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
-                Parent vista = loader.load();
 
+                FXMLLoader loader
+                        = new FXMLLoader(getClass().getResource(rutaFXML));
+
+                Parent vista = loader.load();
                 Object controller = loader.getController();
-                if (controller instanceof ControllerInventario controllerInventario) {
-                    controllerInventario.setDashBoard(dbc);
-                    return controllerInventario;
+
+                if (controller instanceof ControllerInventario ci) {
+                    ci.setDashBoard(dbc);
                 }
 
                 dbc.getCenterContainer().setContent(vista);
                 dbc.getCenterContainer().setVvalue(0);
 
+                return (ControllerInventario) controller;
             }
 
         } catch (IOException e) {
-//            System.err.println("Error cargando la vista: " + rutaFXML);
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
         return null;
@@ -227,11 +340,16 @@ public class InventarioController implements Initializable, ControllerInventario
 
     @Override
     public void limpiarFormulario() {
-       
+
     }
 
     @Override
     public <T extends EquipoBaseDTO> void cargarEquipoParaEditar(T equipo) {
         return;
+    }
+
+    @FXML
+    private void agregarEquipo() {
+        cambiarPantalla("FormInventario.fxml");
     }
 }
