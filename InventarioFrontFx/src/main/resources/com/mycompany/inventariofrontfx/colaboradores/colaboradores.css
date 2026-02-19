@@ -30,22 +30,6 @@
     -fx-text-fill: #ebecec;
 }
 
-.panel-isla{
-    -fx-background-color: #FFFFFF;
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-}
-
-.panel-isla-padre{
-    -fx-border-color: lightgray;
-}
-
-.btn-icon {
-    -fx-background-color: transparent;
-    -fx-cursor: hand;
-    -fx-padding: 4;
-}
-
 .btn-icon:hover {
     -fx-background-color: #E5E7EB;
     -fx-background-radius: 6;

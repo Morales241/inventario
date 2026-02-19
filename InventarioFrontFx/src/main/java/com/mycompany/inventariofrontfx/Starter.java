@@ -8,6 +8,9 @@ public class Starter {
     
     public static void main(String[] args) {
         // Llamamos al main de tu clase original
-        App.main(args);
+        
+        App app = new App();
+        
+        app.main(args);
     }
 }
