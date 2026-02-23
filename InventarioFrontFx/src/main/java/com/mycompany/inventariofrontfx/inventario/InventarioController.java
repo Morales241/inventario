@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.mycompany.inventariofrontfx.inventario;
 
 import Dtos.EquipoBaseDTO;
@@ -9,22 +5,18 @@ import Enums.CondicionFisica;
 import Enums.EstadoEquipo;
 import Enums.TipoEquipo;
 import InterfacesFachada.IFachadaEquipos;
-import interfaces.BaseController;
-import com.mycompany.inventariofrontfx.DashBoardController;
+import com.mycompany.inventariofrontfx.menu.MenuController;
 import fabricaFachadas.FabricaFachadas;
 import interfaces.ControllerInventario;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
-import static java.util.Arrays.asList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -37,7 +29,6 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
@@ -50,7 +41,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
  */
 public class InventarioController implements Initializable, ControllerInventario {
 
-    private DashBoardController dbc;
+    private MenuController dbc;
     private final IFachadaEquipos fachadaEquipos = FabricaFachadas.getFachadaEquipos();
 
     @FXML
@@ -91,7 +82,7 @@ public class InventarioController implements Initializable, ControllerInventario
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        
         configurarColumnas();
         configurarAcciones();
         cargarDatos();
@@ -307,7 +298,7 @@ public class InventarioController implements Initializable, ControllerInventario
     }
 
     @Override
-    public void setDashBoard(DashBoardController dbc) {
+    public void setDashBoard(MenuController dbc) {
         this.dbc = dbc;
     }
 

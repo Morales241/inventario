@@ -7,7 +7,7 @@ package com.mycompany.inventariofrontfx.inventario;
 import Dtos.EquipoEscritorioDTO;
 import Dtos.MovilDTO;
 import interfaces.BaseController;
-import com.mycompany.inventariofrontfx.DashBoardController;
+import com.mycompany.inventariofrontfx.menu.MenuController;
 import com.mycompany.inventariofrontfx.IValidaciones;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,7 +28,7 @@ import javafx.stage.Stage;
  */
 public class InfoEspecificaMovilController implements Initializable, BaseController, IValidaciones<MovilDTO> {
 
-    private DashBoardController dbc;
+    private MenuController dbc;
     
     @FXML
     private RadioButton rbtCargador;
@@ -87,7 +87,7 @@ public class InfoEspecificaMovilController implements Initializable, BaseControl
     }
 
     @Override
-    public void setDashBoard(DashBoardController dbc) {
+    public void setDashBoard(MenuController dbc) {
         this.dbc = dbc;
     }
 

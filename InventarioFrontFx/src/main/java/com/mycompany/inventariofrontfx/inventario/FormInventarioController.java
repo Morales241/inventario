@@ -19,7 +19,7 @@ import static Enums.TipoEquipo.SCANNER;
 import InterfacesFachada.IFachadaEquipos;
 import InterfacesFachada.IFachadaOrganizacion;
 import interfaces.BaseController;
-import com.mycompany.inventariofrontfx.DashBoardController;
+import com.mycompany.inventariofrontfx.menu.MenuController;
 import fabricaFachadas.FabricaFachadas;
 import interfaces.ControllerInventario;
 import java.io.IOException;
@@ -44,16 +44,18 @@ import javafx.scene.layout.FlowPane;
 public class FormInventarioController implements ControllerInventario {
 
     private final IFachadaEquipos fachadaEquipos = FabricaFachadas.getFachadaEquipos();
-
+    
     private final IFachadaOrganizacion fachadaOrganizacion = FabricaFachadas.getFachadaOrganizacion();
 
     private Parent panelEspecificoActual;
     private Object controllerEspecifico;
-    private DashBoardController dbc;
+    private MenuController dbc;
 
     private boolean modoEdicion = false;
     private Long idEquipoEditando;
 
+    private static Long IdSucursal = 1L;
+    
     @FXML
     private Button btnAgregar;
     @FXML
@@ -66,10 +68,6 @@ public class FormInventarioController implements ControllerInventario {
     private ComboBox<TipoEquipo> cbxTipoEquipo;
     @FXML
     private TextField txtFactura;
-    @FXML
-    private ComboBox<EmpresaDTO> cbxEmpresa;
-    @FXML
-    private ComboBox<SucursalDTO> cbxSucursal;
     @FXML
     private TextField txtObservaciones;
     @FXML
@@ -99,7 +97,6 @@ public class FormInventarioController implements ControllerInventario {
         cbxCondicion.getItems().setAll(CondicionFisica.values());
         cbxTipoEquipo.getItems().setAll(TipoEquipo.values());
 
-        cargarEmpresas();
         cargarModelos();
 
         cbxTipoEquipo.setOnAction(e -> cambiarPanelEspecifico());
@@ -141,21 +138,6 @@ public class FormInventarioController implements ControllerInventario {
         } catch (IOException ex) {
             mostrarError(ex.getMessage());
         }
-    }
-
-    private void cargarEmpresas() {
-
-        List<EmpresaDTO> empresas = fachadaOrganizacion.listarEmpresas(null);
-
-        cbxEmpresa.getItems().setAll(empresas);
-
-        cbxEmpresa.setOnAction(e -> {
-            EmpresaDTO emp = cbxEmpresa.getValue();
-            if (emp != null) {
-                List<SucursalDTO> sucursales = fachadaOrganizacion.listarSucursales(null, emp.getId());
-                cbxSucursal.getItems().setAll(sucursales);
-            }
-        });
     }
 
     private void cargarModelos() {
@@ -358,7 +340,7 @@ public class FormInventarioController implements ControllerInventario {
         dto.setTipo(cbxTipoEquipo.getValue().toString());
 
         dto.setIdModelo(modelo.getIdModelo());
-        dto.setIdSucursal(cbxSucursal.getValue().getId());
+        dto.setIdSucursal(IdSucursal);
     }
 
     private void mostrarError(String msg) {
@@ -382,8 +364,6 @@ public class FormInventarioController implements ControllerInventario {
 
         cbxCondicion.getSelectionModel().clearSelection();
         cbxTipoEquipo.getSelectionModel().clearSelection();
-        cbxEmpresa.getSelectionModel().clearSelection();
-        cbxSucursal.getSelectionModel().clearSelection();
         cbxModelo.getSelectionModel().clearSelection();
 
         fechaCompra.setValue(null);
@@ -394,16 +374,16 @@ public class FormInventarioController implements ControllerInventario {
 //        containerEspecifico.getChildren().clear();
     }
 
-    public DashBoardController getDbc() {
+    public MenuController getDbc() {
         return dbc;
     }
 
-    public void setDbc(DashBoardController dbc) {
+    public void setDbc(MenuController dbc) {
         this.dbc = dbc;
     }
 
     @Override
-    public void setDashBoard(DashBoardController dbc) {
+    public void setDashBoard(MenuController dbc) {
         this.dbc = dbc;
     }
 

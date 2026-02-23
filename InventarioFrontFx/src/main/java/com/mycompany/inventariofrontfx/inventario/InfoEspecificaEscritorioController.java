@@ -2,7 +2,7 @@ package com.mycompany.inventariofrontfx.inventario;
 
 import Dtos.EquipoEscritorioDTO;
 import interfaces.BaseController;
-import com.mycompany.inventariofrontfx.DashBoardController;
+import com.mycompany.inventariofrontfx.menu.MenuController;
 import com.mycompany.inventariofrontfx.IValidaciones;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,7 +22,7 @@ import javafx.stage.Stage;
  */
 public class InfoEspecificaEscritorioController implements Initializable, BaseController, IValidaciones<EquipoEscritorioDTO>{
 
-    private DashBoardController dbc;
+    private MenuController dbc;
     
     @FXML
     private TextField txtNombreEquipo;
@@ -66,7 +66,7 @@ public class InfoEspecificaEscritorioController implements Initializable, BaseCo
     }
 
     @Override
-    public void setDashBoard(DashBoardController dbc) {
+    public void setDashBoard(MenuController dbc) {
         this.dbc = dbc;
     }
 

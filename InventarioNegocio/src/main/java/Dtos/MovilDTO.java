@@ -10,6 +10,8 @@ public class MovilDTO extends EquipoBaseDTO{
     private String numCelular;
     private Boolean funda;
     private Boolean manosLibres;
+    private String correoCuenta;
+    private String contrasenaCuenta;
 
     public MovilDTO() {
     }
@@ -40,6 +42,22 @@ public class MovilDTO extends EquipoBaseDTO{
 
     public Boolean getManosLibres() {
         return manosLibres;
+    }
+
+    public String getCorreoCuenta() {
+        return correoCuenta;
+    }
+
+    public void setCorreoCuenta(String correoCuenta) {
+        this.correoCuenta = correoCuenta;
+    }
+
+    public String getContrasenaCuenta() {
+        return contrasenaCuenta;
+    }
+
+    public void setContrasenaCuenta(String contrasenaCuenta) {
+        this.contrasenaCuenta = contrasenaCuenta;
     }
 
     public void setManosLibres(Boolean manosLibres) {

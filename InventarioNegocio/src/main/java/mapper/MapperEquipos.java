@@ -19,7 +19,10 @@ public class MapperEquipos {
                         dto.setNombreEquipo(e.getNombreEquipo());
                         dto.setCuenta(e.getCuenta());
                         dto.setFinalGarantia(e.getFinalGarantia());
-
+                        dto.setMochila(e.getMochila());
+                        dto.setMouse(e.getMouse());
+                        dto.setSisOpertativo(e.getSisOpertativo());
+                        dto.setUserRed(e.getUserRed());
                         return dto;
                     },
 
@@ -31,7 +34,10 @@ public class MapperEquipos {
                         e.setNombreEquipo(d.getNombreEquipo());
                         e.setCuenta(d.getCuenta());
                         e.setFinalGarantia(d.getFinalGarantia());
-
+                        e.setMochila(d.getMochila());
+                        e.setMouse(d.getMouse());
+                        e.setSisOpertativo(d.getSisOpertativo());
+                        e.setUserRed(d.getUserRed());
                         return e;
                     }
             );
@@ -47,7 +53,9 @@ public class MapperEquipos {
                         dto.setCargador(e.getCargador());
                         dto.setFunda(e.getFunda());
                         dto.setManosLibres(e.getManosLibres());
-
+                        dto.setCorreoCuenta(e.getCorreoCuenta());
+                        dto.setContrasenaCuenta(e.getContrasenaCuenta());
+                        
                         return dto;
                     },
 
@@ -59,7 +67,9 @@ public class MapperEquipos {
                         e.setCargador(d.getCargador());
                         e.setFunda(d.getFunda());
                         e.setManosLibres(d.getManosLibres());
-
+                        e.setCorreoCuenta(d.getCorreoCuenta());
+                        e.setContrasenaCuenta(d.getContrasenaCuenta());
+                        
                         return e;
                     }
             );

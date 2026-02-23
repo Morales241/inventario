@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" styleClass="panel-menu" stylesheets="@inventario.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.FormInventarioController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" styleClass="panel-menu" stylesheets="@inventario.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.FormInventarioController">
    
    <center>
       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
@@ -65,15 +65,9 @@
                                  <TextField fx:id="txtFactura" prefHeight="35.0" prefWidth="300.0" />
                               </VBox>
                               
-                              <VBox spacing="5.0">
-                                 <Label text="Empresa:" />
-                                 <ComboBox fx:id="cbxEmpresa" prefHeight="35.0" prefWidth="300.0" visibleRowCount="5" />
-                              </VBox>
+                              <VBox spacing="5.0" />
 
-                              <VBox spacing="5.0">
-                                 <Label text="Sucursal:" />
-                                 <ComboBox fx:id="cbxSucursal" prefHeight="35.0" prefWidth="300.0" visibleRowCount="5" />
-                              </VBox>
+                              <VBox spacing="5.0" />
 
                               <VBox spacing="5.0">
                                  <Label text="Observaciones:" />

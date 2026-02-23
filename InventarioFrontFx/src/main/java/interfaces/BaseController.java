@@ -4,12 +4,12 @@
  */
 package interfaces;
 
-import com.mycompany.inventariofrontfx.DashBoardController;
+import com.mycompany.inventariofrontfx.menu.MenuController;
 
 /**
  *
  * @author tacot
  */
 public interface BaseController {
-    public void setDashBoard(DashBoardController dbc);
+    public void setDashBoard(MenuController dbc);
 }
