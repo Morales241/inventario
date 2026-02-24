@@ -414,6 +414,6 @@ public class FormInventarioController implements ControllerInventario {
 
     @Override
     public ControllerInventario cambiarPantalla(String rutaFXML) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return null;
     }
 }

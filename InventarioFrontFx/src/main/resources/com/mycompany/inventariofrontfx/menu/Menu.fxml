@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="900.0" prefHeight="718.0" prefWidth="1213.0" stylesheets="@dashboard.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.DashBoardController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="900.0" prefHeight="718.0" prefWidth="1213.0" stylesheets="@Menu.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.menu.MenuController">
    
    <left>
       <VBox prefHeight="618.0" prefWidth="220.0" spacing="10.0" styleClass="panel-lateral" BorderPane.alignment="CENTER">
@@ -119,14 +119,14 @@
    </center>
 
    <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="1213.0" spacing="10.0" styleClass="panel-superior" BorderPane.alignment="CENTER_LEFT">
+      <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="1213.0" spacing="10.0" styleClass="panel-superior" stylesheets="@Menu.css" BorderPane.alignment="CENTER_LEFT">
          <children>
             
             <HBox alignment="CENTER_LEFT" prefWidth="220.0" spacing="10.0" styleClass="panel-lateral">
                <children>
                   <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../imagenes/logo.png" />
+                        <Image url="@logo.png" />
                      </image>
                   </ImageView>
                   <VBox alignment="CENTER_LEFT">
@@ -185,7 +185,7 @@
                   </VBox>
                   <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../imagenes/userMenu.png" />
+                        <Image url="@userMenu.png" />
                      </image>
                   </ImageView>
                </children>

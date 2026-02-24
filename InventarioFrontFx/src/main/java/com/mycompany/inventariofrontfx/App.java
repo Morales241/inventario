@@ -1,6 +1,6 @@
 package com.mycompany.inventariofrontfx;
 
-import fabricaFachadas.FabricaFachadas;
+import conexion.Conexion;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,8 +18,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FabricaFachadas.getFachadaEquipos();
-        scene = new Scene(loadFXML("DashBoard"), 640, 480);
+        Conexion.getEntityManager();
+        scene = new Scene(loadFXML("LogIn"), 640, 480);
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.show();

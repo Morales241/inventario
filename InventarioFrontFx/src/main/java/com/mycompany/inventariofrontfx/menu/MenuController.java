@@ -100,36 +100,15 @@ public class MenuController implements Initializable {
         System.out.println("Navegando a: " + opcion);
 
         switch (opcion) {
-            case "DashBoard":
-                cambiarDePantalla(null, "Dashboard", "Resumen general del inventario de TI");
-
-                break;
-            case "Inventario":
-                cambiarDePantalla("inventario/Inventario.fxml", "Inventario", "Gestión de equipos de TI");
-
-                break;
-            case "Colaboradores":
-                cambiarDePantalla(null, "Colaboradores", "Gestión de colaboradores y personal");
-
-                break;
-            case "Asignaciones":
-                cambiarDePantalla(null, "Asignación de Equipo", "Asignar equipos a trabajadores");
-
-                break;
-            case "Organización":
-                cambiarDePantalla(null, "Estructura Organizacional", "Gestión de empresas, sucursales, departamentos y puestos");
-
-                break;
-            case "Usuarios":
-                cambiarDePantalla(null, "Usuarios del Sistema", "Gestión de administradores, técnicos y operarios");
-
-                break;
-            case "Auditoria":
-                cambiarDePantalla(null, "Auditoría del Sistema", "Registro completo de movimientos y cambios");
-
-                break;
-            default:
-                break;
+            case "DashBoard" -> cambiarDePantalla(null, "Dashboard", "Resumen general del inventario de TI");
+            case "Inventario" -> cambiarDePantalla("/com/mycompany/inventariofrontfx/inventario/Inventario.fxml", "Inventario", "Gestión de equipos de TI");
+            case "Colaboradores" -> cambiarDePantalla(null, "Colaboradores", "Gestión de colaboradores y personal");
+            case "Asignaciones" -> cambiarDePantalla(null, "Asignación de Equipo", "Asignar equipos a trabajadores");
+            case "Organización" -> cambiarDePantalla(null, "Estructura Organizacional", "Gestión de empresas, sucursales, departamentos y puestos");
+            case "Usuarios" -> cambiarDePantalla(null, "Usuarios del Sistema", "Gestión de administradores, técnicos y operarios");
+            case "Auditoria" -> cambiarDePantalla(null, "Auditoría del Sistema", "Registro completo de movimientos y cambios");
+            default -> {
+            }
         }
     }
 
@@ -153,7 +132,6 @@ public class MenuController implements Initializable {
             }
 
         } catch (IOException e) {
-//            System.err.println("Error cargando la vista: " + rutaFXML);
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
     }
