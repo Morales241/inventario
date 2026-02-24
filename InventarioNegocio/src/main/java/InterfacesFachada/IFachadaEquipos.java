@@ -114,7 +114,7 @@ public interface IFachadaEquipos {
     public ModeloDTO buscarModeloPorId(Long id);
     
     /**
-     * 
+     * Busca todos los equipos añadiendo n cantidad de filtros seleccionados
      * @param texto Filtro de gry
      * @param tipo filtro de tipo de equipo
      * @param condicion filtro de condicion del equipo
@@ -122,4 +122,12 @@ public interface IFachadaEquipos {
      * @return Listado de quipos base filtrados
      */
     public List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, CondicionFisica condicion, EstadoEquipo estado);
+
+    /**
+     * Busca un equipo en especifico por el id
+     * @param <T>
+     * @param id
+     * @return Equipo especifica
+     */
+    <T extends EquipoBaseDTO> T buscarPorId(Long id);
 }

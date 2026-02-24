@@ -1,12 +1,10 @@
 package com.mycompany.inventariofrontfx.inventario;
 
-import Dtos.EmpresaDTO;
 import Dtos.EquipoBaseDTO;
 import Dtos.EquipoEscritorioDTO;
 import Dtos.ModeloDTO;
 import Dtos.MovilDTO;
 import Dtos.OtroEquipoDTO;
-import Dtos.SucursalDTO;
 import Enums.CondicionFisica;
 import Enums.TipoEquipo;
 import static Enums.TipoEquipo.DESKTOP;
@@ -22,6 +20,7 @@ import interfaces.BaseController;
 import com.mycompany.inventariofrontfx.menu.MenuController;
 import fabricaFachadas.FabricaFachadas;
 import interfaces.ControllerInventario;
+import interfaces.IValidaciones;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +43,7 @@ import javafx.scene.layout.FlowPane;
 public class FormInventarioController implements ControllerInventario {
 
     private final IFachadaEquipos fachadaEquipos = FabricaFachadas.getFachadaEquipos();
-    
+
     private final IFachadaOrganizacion fachadaOrganizacion = FabricaFachadas.getFachadaOrganizacion();
 
     private Parent panelEspecificoActual;
@@ -54,8 +53,8 @@ public class FormInventarioController implements ControllerInventario {
     private boolean modoEdicion = false;
     private Long idEquipoEditando;
 
-    private static Long IdSucursal = 1L;
-    
+    private static final Long IdSucursal = 1L;
+
     @FXML
     private Button btnAgregar;
     @FXML
@@ -100,9 +99,9 @@ public class FormInventarioController implements ControllerInventario {
         cargarModelos();
 
         cbxTipoEquipo.setOnAction(e -> cambiarPanelEspecifico());
-        
+
         if (modoEdicion) {
-           this.btnAgregar.setText("+ Actualizar equipo");
+            this.btnAgregar.setText("+ Actualizar equipo");
         }
     }
 
@@ -123,8 +122,9 @@ public class FormInventarioController implements ControllerInventario {
 
                 case LAPTOP, DESKTOP ->
                     loader = new FXMLLoader(getClass().getResource("InfoEspecificaEscritorio.fxml"));
+
                 case MOVIL ->
-                    loader = new FXMLLoader(getClass().getResource("InfoEspecificaDeMovil.fxml"));
+                    loader = new FXMLLoader(getClass().getResource("InfoEspecificaMovil.fxml"));
 
                 case IMPRESORA, MONITOR, SCANNER, PROYECTOR ->
                     loader = new FXMLLoader(getClass().getResource("InfoEspecificaOtros.fxml"));
@@ -134,7 +134,7 @@ public class FormInventarioController implements ControllerInventario {
             controllerEspecifico = loader.getController();
 
             containerEspecifico.getChildren().add(panelEspecificoActual);
-
+            
         } catch (IOException ex) {
             mostrarError(ex.getMessage());
         }
@@ -182,30 +182,7 @@ public class FormInventarioController implements ControllerInventario {
 
     @FXML
     private void btnCancelar() {
-        cambiarDePantalla("Inventario.fxml");
-    }
-
-    public void cambiarDePantalla(String rutaFXML) {
-        try {
-
-            if (rutaFXML != null) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
-                Parent vista = loader.load();
-
-                Object controller = loader.getController();
-                if (controller instanceof BaseController baseController) {
-                    baseController.setDashBoard(dbc);
-                }
-
-                this.dbc.cambiarDePantalla(rutaFXML);
-                this.dbc.getCenterContainer().setVvalue(0);
-
-            }
-
-        } catch (IOException e) {
-//            System.err.println("Error cargando la vista: " + rutaFXML);
-            System.out.println(Arrays.toString(e.getStackTrace()));
-        }
+        cambiarPantalla("/com/mycompany/inventariofrontfx/inventario/Inventario.fxml");
     }
 
     @FXML
@@ -229,13 +206,13 @@ public class FormInventarioController implements ControllerInventario {
     }
 
     private void volverAInventario() {
-        cambiarDePantalla("inventario.fxml");
+        cambiarPantalla("/com/mycompany/inventariofrontfx/inventario/Inventario.fxml");
     }
 
     private void actualizarEquipo(ModeloDTO modelo) throws Exception {
 
         EquipoBaseDTO dto = new EquipoBaseDTO();
-        
+
         llenarBase(dto, modelo);
 
         dto.setIdEquipo(idEquipoEditando);
@@ -252,27 +229,6 @@ public class FormInventarioController implements ControllerInventario {
             default ->
                 fachadaEquipos.guardarOtro(construirOtro(modelo));
         }
-    }
-
-    public void cargarParaEdicion(EquipoBaseDTO equipo) {
-
-        modoEdicion = true;
-        idEquipoEditando = equipo.getIdEquipo();
-
-        txtGry.setText(String.valueOf(equipo.getGry()));
-        txtFactura.setText(equipo.getFactura());
-        txtObservaciones.setText(equipo.getObservaciones());
-        txtIdentificador.setText(equipo.getIdentificador());
-
-        cbxCondicion.setValue(
-                CondicionFisica.valueOf(equipo.getCondicion()));
-
-        cbxTipoEquipo.setValue(
-                TipoEquipo.valueOf(equipo.getTipo()));
-
-        fechaCompra.setValue(equipo.getFechaCompra());
-
-        btnAgregar.setText("Actualizar Equipo");
     }
 
     private ModeloDTO obtenerModelo() throws Exception {
@@ -296,13 +252,9 @@ public class FormInventarioController implements ControllerInventario {
 
         InfoEspecificaEscritorioController c = (InfoEspecificaEscritorioController) controllerEspecifico;
 
-        EquipoEscritorioDTO dto = new EquipoEscritorioDTO();
+        EquipoEscritorioDTO dto = c.getDatosEntidad();
 
         llenarBase(dto, modelo);
-
-        dto.setNombreEquipo(c.getTxtNombreEquipo().getText());
-        dto.setCuenta(c.getTxtCuentaEquipo().getText());
-        dto.setFinalGarantia(c.getFechaGarantia().getValue());
 
         return dto;
     }
@@ -410,10 +362,33 @@ public class FormInventarioController implements ControllerInventario {
                 .ifPresent(m -> cbxModelo.setValue(m));
 
         cbxModelo.getSelectionModel().selectFirst();
+        
+//         controllerEspecifico.cargarEquipoParaEditar(equipo.getIdEquipo());
     }
 
     @Override
     public ControllerInventario cambiarPantalla(String rutaFXML) {
+        try {
+
+            if (rutaFXML != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
+                Parent vista = loader.load();
+
+                Object controller = loader.getController();
+                if (controller instanceof BaseController baseController) {
+                    baseController.setDashBoard(dbc);
+                }
+
+                this.dbc.cambiarDePantalla(rutaFXML);
+                this.dbc.getCenterContainer().setVvalue(0);
+
+            }
+
+        } catch (IOException e) {
+//            System.err.println("Error cargando la vista: " + rutaFXML);
+            System.out.println(Arrays.toString(e.getStackTrace()));
+        }
+        
         return null;
     }
 }

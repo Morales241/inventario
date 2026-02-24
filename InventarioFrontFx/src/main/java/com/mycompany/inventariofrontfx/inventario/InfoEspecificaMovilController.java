@@ -4,11 +4,12 @@
  */
 package com.mycompany.inventariofrontfx.inventario;
 
+import Dtos.EquipoBaseDTO;
 import Dtos.EquipoEscritorioDTO;
 import Dtos.MovilDTO;
 import interfaces.BaseController;
 import com.mycompany.inventariofrontfx.menu.MenuController;
-import com.mycompany.inventariofrontfx.IValidaciones;
+import interfaces.IValidaciones;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -38,6 +39,10 @@ public class InfoEspecificaMovilController implements Initializable, BaseControl
     private RadioButton rbtManosLibres;
     @FXML
     private TextField phoneField;
+    @FXML
+    private TextField txtCorreo;
+    @FXML
+    private TextField txtContra;
 
     /**
      * Initializes the controller class.
@@ -98,6 +103,16 @@ public class InfoEspecificaMovilController implements Initializable, BaseControl
             phoneField.requestFocus();
             return false;
         }
+        if (txtContra.getText().trim().isEmpty()) {
+            mostrarAdvertencia("La contraseña para el correo del movil es obligatoria.");
+            txtContra.requestFocus();
+            return false;
+        }
+        if (txtCorreo.getText().trim().isEmpty()) {
+            mostrarAdvertencia("El correo para movil es obligatorio.");
+            txtCorreo.requestFocus();
+            return false;
+        }
         
         return true;
     }
@@ -105,22 +120,14 @@ public class InfoEspecificaMovilController implements Initializable, BaseControl
     @Override
     public MovilDTO getDatosEntidad() {
         MovilDTO movil = new MovilDTO();
-
-        Boolean cargador = false;
-        Boolean manosLibres = false;
-        Boolean funda = false;
-
-        cargador = rbtCargador.isSelected();
-
-        funda = rbtFunda.isSelected();
         
-        manosLibres = rbtManosLibres.isSelected();
-
-        movil.setCargador(cargador);
-        movil.setFunda(funda);
-        movil.setManosLibres(manosLibres);
+        movil.setCargador(rbtCargador.isSelected());
+        movil.setFunda(rbtFunda.isSelected());
+        movil.setManosLibres(rbtManosLibres.isSelected());
         movil.setNumCelular(phoneField.getText());
-
+        movil.setContrasenaCuenta(txtContra.getText());
+        movil.setCorreoCuenta(txtCorreo.getText());
+        
         return movil;
     }
     
@@ -133,5 +140,16 @@ public class InfoEspecificaMovilController implements Initializable, BaseControl
         stage.getIcons().add(new Image("imagenes/logo.png"));
         alert.showAndWait();
     }
-    
+
+    @Override
+    public <T extends EquipoBaseDTO>void cargarEquipoParaEditar(T dto) {
+        MovilDTO Mdto = (MovilDTO) dto;
+        
+        rbtCargador.setSelected(Mdto.getCargador());
+        rbtFunda.setSelected(Mdto.getFunda());
+        rbtManosLibres.setSelected(Mdto.getManosLibres());
+        txtContra.setText(Mdto.getContrasenaCuenta());
+        phoneField.setText(Mdto.getNumCelular());
+        txtCorreo.setText(Mdto.getCorreoCuenta());
+    }
 }

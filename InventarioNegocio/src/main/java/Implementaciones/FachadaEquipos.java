@@ -9,7 +9,6 @@ import Enums.CondicionFisica;
 import Enums.EstadoEquipo;
 import Enums.TipoEquipo;
 import InterfacesFachada.IFachadaEquipos;
-import mapper.MapperModelo;
 import Servicios.ServicioEquipos;
 import interfacesServicios.IServicioEquipos;
 import java.util.List;
@@ -101,5 +100,10 @@ public class FachadaEquipos implements IFachadaEquipos {
     @Override
     public List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, CondicionFisica condicion, EstadoEquipo estado) {
         return servicioEquipos.buscarConFiltros(texto, tipo, condicion, estado);
+    }
+
+    @Override
+    public <T extends EquipoBaseDTO> T buscarPorId(Long id) {
+        return servicioEquipos.buscarPorId(id);
     }
 }

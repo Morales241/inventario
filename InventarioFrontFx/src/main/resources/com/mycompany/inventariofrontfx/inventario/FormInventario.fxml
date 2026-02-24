@@ -64,10 +64,6 @@
                                  <Label text="Factura:" />
                                  <TextField fx:id="txtFactura" prefHeight="35.0" prefWidth="300.0" />
                               </VBox>
-                              
-                              <VBox spacing="5.0" />
-
-                              <VBox spacing="5.0" />
 
                               <VBox spacing="5.0">
                                  <Label text="Observaciones:" />
@@ -165,30 +161,27 @@
                         </FlowPane>
                      </children>
                   </VBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="70.0" spacing="15.0" styleClass="panel-menu">
+                     <children>
+                        <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#btnCancelar" prefHeight="45.0" prefWidth="150.0" styleClass="btn-cancelar" text="Cancelar" textFill="#ababab">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#guardarDatos" prefHeight="45.0" prefWidth="200.0" styleClass="btn-agregar" text="+ Agregar Nuevo Equipo" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets right="20.0" />
+                     </padding>
+                  </HBox>
                   
                </children>
             </VBox>
          </content>
       </ScrollPane>
    </center>
-   
-   <bottom>
-      <HBox alignment="CENTER_RIGHT" prefHeight="70.0" spacing="15.0" styleClass="panel-menu" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#btnCancelar" prefHeight="45.0" prefWidth="150.0" styleClass="btn-cancelar" text="Cancelar" textFill="#ababab">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-            <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#guardarDatos" prefHeight="45.0" prefWidth="200.0" styleClass="btn-agregar" text="+ Agregar Nuevo Equipo" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-         </children>
-         <padding>
-            <Insets right="20.0" />
-         </padding>
-      </HBox>
-   </bottom>
 </BorderPane>

@@ -397,7 +397,7 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
 
     @Override
     public List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, CondicionFisica condicion, EstadoEquipo estado) {
-        
+
         return ejecutarLectura(em -> {
             configurar(em);
 
@@ -406,4 +406,27 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
                     .map(equipo -> MapperEquipos.mapCommonToDto(equipo, new EquipoBaseDTO())).collect(Collectors.toList());
         });
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends EquipoBaseDTO> T buscarPorId(Long id) {
+
+        EquipoDeEscritorio escritorio = daoEscritorio.buscarPorId(id);
+        if (escritorio != null) {
+            return (T) MapperEquipos.escritorio.mapToDto(escritorio);
+        }
+
+        Movil movil = daoMovil.buscarPorId(id);
+        if (movil != null) {
+            return (T) MapperEquipos.movil.mapToDto(movil);
+        }
+
+        OtroEquipo otroEquipo = daoOtro.buscarPorId(id);
+        if (otroEquipo != null) {
+            return (T) MapperEquipos.otro.mapToDto(otroEquipo);
+        }
+
+        return null;
+    }
+
 }

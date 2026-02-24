@@ -21,7 +21,9 @@ public interface IServicioEquipos {
 
     EquipoBaseDTO obtenerPorId(Long id);
 
-    public EquipoBaseDTO buscarPorGry(Integer gry);
+    EquipoBaseDTO buscarPorGry(Integer gry);
+    
+    <T extends EquipoBaseDTO> T buscarPorId(Long id);
 
     EquipoEscritorioDTO guardarEscritorio(EquipoEscritorioDTO dto);
 
@@ -37,12 +39,12 @@ public interface IServicioEquipos {
 
     ModeloDTO buscarModeloPorId(Long id);
 
-    public List<ModeloDTO> buscarModelosConFiltros(
+    List<ModeloDTO> buscarModelosConFiltros(
             String nombre,
             String marca,
             Integer memoriaRam,
             Integer almacenamiento,
             String procesador);
 
-    public List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, CondicionFisica condicion, EstadoEquipo estado);
+    List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, CondicionFisica condicion, EstadoEquipo estado);
 }

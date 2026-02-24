@@ -24,7 +24,7 @@
       <VBox spacing="5.0">
          <children>
             <Label text="Usuario de red:" />
-            <TextField fx:id="txtCuentaEquipo" prefHeight="35.0" prefWidth="300.0" />
+            <TextField fx:id="txtUserRed" prefHeight="35.0" prefWidth="300.0" />
          </children>
       </VBox>
 
@@ -39,7 +39,7 @@
             <Label text="Mouse:" />
             <HBox alignment="CENTER" prefHeight="35.0" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;">
                <children>
-                  <RadioButton fx:id="rbtManosLibres" mnemonicParsing="false" text="SI">
+                  <RadioButton fx:id="rbtMouse" mnemonicParsing="false" text="SI">
                      <toggleGroup>
                         <ToggleGroup fx:id="grupo2" />
                      </toggleGroup>
@@ -57,7 +57,7 @@
             <Label text="Mochila:" />
             <HBox alignment="CENTER" prefHeight="35.0" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;">
                <children>
-                  <RadioButton fx:id="rbtManosLibres1" mnemonicParsing="false" text="SI">
+                  <RadioButton fx:id="rbtMochila" mnemonicParsing="false" text="SI">
                      <toggleGroup>
                         <ToggleGroup fx:id="grupo21" />
                      </toggleGroup>
@@ -73,7 +73,7 @@
       <VBox prefHeight="55.0" prefWidth="300.0">
          <children>
             <Label text="Sistema operativo" />
-            <ComboBox prefHeight="35.0" prefWidth="300.0" />
+            <ComboBox fx:id="cbxSistema" prefHeight="35.0" prefWidth="300.0" />
          </children>
       </VBox>
 

@@ -4,10 +4,11 @@
  */
 package com.mycompany.inventariofrontfx.inventario;
 
+import Dtos.EquipoBaseDTO;
 import Dtos.OtroEquipoDTO;
 import interfaces.BaseController;
 import com.mycompany.inventariofrontfx.menu.MenuController;
-import com.mycompany.inventariofrontfx.IValidaciones;
+import interfaces.IValidaciones;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -123,6 +124,16 @@ public class InfoEspecificaOtrosController implements Initializable, BaseControl
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("imagenes/logo.png"));
         alert.showAndWait();
+    }
+
+    @Override
+    public <T extends EquipoBaseDTO>void cargarEquipoParaEditar(T dto) {
+        OtroEquipoDTO Odto = (OtroEquipoDTO) dto;
+        
+        txtCCE.setText(Odto.getContenidoCampoExtra());
+        txtCCE2.setText(Odto.getContenidoCampoExtra2());
+        txtTCE.setText(Odto.getTituloCampoExtra());
+        txtTCE2.setText(Odto.getTituloCampoExtra2());
     }
     
 }

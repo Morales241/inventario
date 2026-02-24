@@ -1,4 +1,6 @@
-package com.mycompany.inventariofrontfx;
+package interfaces;
+
+import Dtos.EquipoBaseDTO;
 
 /**
  *
@@ -9,4 +11,6 @@ public interface IValidaciones<T>  {
     public boolean validarFormulario();
     
     public T getDatosEntidad();
+    
+    public <T extends EquipoBaseDTO>void cargarEquipoParaEditar(T dto);
 }

@@ -10,13 +10,44 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<FlowPane hgap="20.0" styleClass="panel-isla" stylesheets="@inventario.css" vgap="15.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.InfoEspecidicaMovilController">
+<FlowPane hgap="20.0" styleClass="panel-isla" stylesheets="@inventario.css" vgap="15.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.InfoEspecificaMovilController">
    <children>
       
       <VBox spacing="5.0">
          <children>
             <Label text="Numero de celular:" />
             <TextField fx:id="phoneField" prefHeight="35.0" prefWidth="300.0" />
+         </children>
+      </VBox>
+      <VBox spacing="5.0">
+         <children>
+            <Label text="Correo electronico:" />
+            <TextField fx:id="txtCorreo" prefHeight="35.0" prefWidth="300.0" />
+         </children>
+      </VBox>
+      <VBox spacing="5.0">
+         <children>
+            <Label text="Contraseña del correo:" />
+            <PasswordField fx:id="txtContra" prefHeight="35.0" prefWidth="300.0" />
+         </children>
+      </VBox>
+
+      <VBox spacing="5.0">
+         <children>
+            <Label text="Manos libres:" />
+            <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;">
+               <children>
+                  <RadioButton fx:id="rbtManosLibres" mnemonicParsing="false" text="SI">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="grupo2" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton mnemonicParsing="false" selected="true" text="NO" toggleGroup="$grupo2" />
+               </children>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </HBox>
          </children>
       </VBox>
 
@@ -55,43 +86,6 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </HBox>
-         </children>
-      </VBox>
-
-      <VBox spacing="5.0">
-         <children>
-            <Label text="Manos libres:" />
-            <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;">
-               <children>
-                  <RadioButton fx:id="rbtManosLibres" mnemonicParsing="false" text="SI">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="grupo2" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton mnemonicParsing="false" selected="true" text="NO" toggleGroup="$grupo2" />
-               </children>
-               <padding>
-                  <Insets left="10.0" right="10.0" />
-               </padding>
-            </HBox>
-         </children>
-      </VBox>
-      <VBox spacing="5.0">
-         <children>
-            <Label text="Correo electronico:" />
-            <TextField fx:id="phoneField1" prefHeight="35.0" prefWidth="300.0" />
-         </children>
-      </VBox>
-      <VBox spacing="5.0">
-         <children>
-            <Label text="Contraseña del correo:" />
-            <PasswordField prefHeight="35.0" prefWidth="300.0" />
-         </children>
-      </VBox>
-      <VBox spacing="5.0">
-         <children>
-            <Label text="Confirmar contraseña:" />
-            <PasswordField prefHeight="35.0" prefWidth="300.0" />
          </children>
       </VBox>
 
