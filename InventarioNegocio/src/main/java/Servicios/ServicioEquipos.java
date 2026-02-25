@@ -411,17 +411,29 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
     @SuppressWarnings("unchecked")
     public <T extends EquipoBaseDTO> T buscarPorId(Long id) {
 
-        EquipoDeEscritorio escritorio = daoEscritorio.buscarPorId(id);
+        EquipoDeEscritorio escritorio = ejecutarLectura(em -> {
+            configurar(em);
+            
+            return daoEscritorio.buscarPorId(id);
+        });
         if (escritorio != null) {
             return (T) MapperEquipos.escritorio.mapToDto(escritorio);
         }
 
-        Movil movil = daoMovil.buscarPorId(id);
+        Movil movil = ejecutarLectura(em -> {
+            configurar(em);
+            
+            return daoMovil.buscarPorId(id);
+        });
         if (movil != null) {
             return (T) MapperEquipos.movil.mapToDto(movil);
         }
 
-        OtroEquipo otroEquipo = daoOtro.buscarPorId(id);
+        OtroEquipo otroEquipo = ejecutarLectura(em -> {
+            configurar(em);
+            
+            return daoOtro.buscarPorId(id);
+        });
         if (otroEquipo != null) {
             return (T) MapperEquipos.otro.mapToDto(otroEquipo);
         }

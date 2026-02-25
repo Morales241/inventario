@@ -204,7 +204,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
                 
             }
         } catch (Exception ex) {
-            mostrarError(ex.getMessage());
+            System.out.println(ex.getMessage()+ex.getStackTrace());
         }
     }
     
@@ -274,7 +274,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     }
     
     private MovilDTO construirMovil(ModeloDTO modelo) {
-        
+        //ponle un generico a la interfaz y que regresen la entidad especifica sin tener que castear el controlador
         InfoEspecificaMovilController c = (InfoEspecificaMovilController) controllerEspecifico;
         
         MovilDTO dto = c.getDatosEntidad();
