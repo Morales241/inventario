@@ -188,7 +188,7 @@ public class InventarioController implements Initializable, ControllerInventario
                 btnEditar.setOnAction(e -> {
                     EquipoBaseDTO equipo
                             = getTableView().getItems().get(getIndex());
-                    editarEquipo(equipo);
+                    cargarEquipoParaEditar(equipo);
                 });
 
                 btnEliminar.setOnAction(e -> {
@@ -287,16 +287,6 @@ public class InventarioController implements Initializable, ControllerInventario
                 });
     }
 
-    private void editarEquipo(EquipoBaseDTO equipo) {
-
-        ControllerInventario controller
-                = cambiarPantalla("FormInventario.fxml");
-
-        if (controller instanceof FormInventarioController form) {
-            form.cargarEquipoParaEditar(equipo);
-        }
-    }
-
     @Override
     public void setDashBoard(MenuController dbc) {
         this.dbc = dbc;
@@ -336,7 +326,15 @@ public class InventarioController implements Initializable, ControllerInventario
 
     @Override
     public <T extends EquipoBaseDTO> void cargarEquipoParaEditar(T equipo) {
-        return;
+        T equipoAux = fachadaEquipos.buscarPorId(equipo.getIdEquipo());
+        
+        ControllerInventario controller
+                = cambiarPantalla("FormInventario.fxml");
+
+        if (controller instanceof FormInventarioController form) {
+            form.cargarEquipoParaEditar(equipoAux);
+        }
+        
     }
 
     @FXML
