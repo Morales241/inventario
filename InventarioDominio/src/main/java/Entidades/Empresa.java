@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,9 @@ public class Empresa extends AuditoriaBase implements Serializable {
     @Column(name = "Id_Empresa")
     private Long idEmpresa;
 
+    @Version
+    private Long version;
+    
     @Column(name = "Nombre", nullable = false)
     private String nombre;
 
@@ -69,6 +73,14 @@ public class Empresa extends AuditoriaBase implements Serializable {
 
     public void setSucursales(List<Sucursal> sucursales) {
         this.sucursales = sucursales;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
    
 }

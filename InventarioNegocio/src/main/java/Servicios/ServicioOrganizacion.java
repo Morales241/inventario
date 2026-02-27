@@ -326,8 +326,8 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
             if (puesto == null)
                 throw new RecursoNoEncontradoException("Puesto no encontrado");
 
-            if (puesto.getTrabajadores() != null &&
-                !puesto.getTrabajadores().isEmpty())
+            if (puesto.getUsuarios()!= null &&
+                !puesto.getUsuarios().isEmpty())
                 throw new ReglaNegocioException(
                         "No se puede eliminar el puesto: tiene trabajadores asociados");
 

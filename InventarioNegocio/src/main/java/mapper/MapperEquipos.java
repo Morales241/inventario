@@ -7,14 +7,13 @@ import Enums.*;
 import java.util.Objects;
 
 public class MapperEquipos {
-    
-    public static final Mapper<EquipoDeEscritorio, EquipoEscritorioDTO> escritorio =
-            new Mapper<>(
 
+    public static final Mapper<EquipoDeEscritorio, EquipoEscritorioDTO> escritorio
+            = new Mapper<>(
                     // ENTITY → DTO
                     (e) -> {
-                        EquipoEscritorioDTO dto =
-                                mapCommonToDto(e, new EquipoEscritorioDTO());
+                        EquipoEscritorioDTO dto
+                        = mapCommonToDto(e, new EquipoEscritorioDTO());
 
                         dto.setNombreEquipo(e.getNombreEquipo());
                         dto.setCuenta(e.getCuenta());
@@ -25,7 +24,6 @@ public class MapperEquipos {
                         dto.setUserRed(e.getUserRed());
                         return dto;
                     },
-
                     // DTO → ENTITY
                     (d) -> {
                         EquipoDeEscritorio e = new EquipoDeEscritorio();
@@ -42,12 +40,11 @@ public class MapperEquipos {
                     }
             );
 
-    public static final Mapper<Movil, MovilDTO> movil =
-            new Mapper<>(
-
+    public static final Mapper<Movil, MovilDTO> movil
+            = new Mapper<>(
                     (e) -> {
-                        MovilDTO dto =
-                                mapCommonToDto(e, new MovilDTO());
+                        MovilDTO dto
+                        = mapCommonToDto(e, new MovilDTO());
 
                         dto.setNumCelular(e.getNumCelular());
                         dto.setCargador(e.getCargador());
@@ -55,10 +52,9 @@ public class MapperEquipos {
                         dto.setManosLibres(e.getManosLibres());
                         dto.setCorreoCuenta(e.getCorreoCuenta());
                         dto.setContrasenaCuenta(e.getContrasenaCuenta());
-                        
+
                         return dto;
                     },
-
                     (d) -> {
                         Movil e = new Movil();
                         mapCommonToEntity(d, e);
@@ -69,17 +65,16 @@ public class MapperEquipos {
                         e.setManosLibres(d.getManosLibres());
                         e.setCorreoCuenta(d.getCorreoCuenta());
                         e.setContrasenaCuenta(d.getContrasenaCuenta());
-                        
+
                         return e;
                     }
             );
 
-    public static final Mapper<OtroEquipo, OtroEquipoDTO> otro =
-            new Mapper<>(
-
+    public static final Mapper<OtroEquipo, OtroEquipoDTO> otro
+            = new Mapper<>(
                     (e) -> {
-                        OtroEquipoDTO dto =
-                                mapCommonToDto(e, new OtroEquipoDTO());
+                        OtroEquipoDTO dto
+                        = mapCommonToDto(e, new OtroEquipoDTO());
 
                         dto.setTituloCampoExtra(e.getTituloCampoExtra());
                         dto.setTituloCampoExtra2(e.getTituloCampoExtra2());
@@ -88,7 +83,6 @@ public class MapperEquipos {
 
                         return dto;
                     },
-
                     (d) -> {
                         OtroEquipo e = new OtroEquipo();
                         mapCommonToEntity(d, e);
@@ -135,12 +129,17 @@ public class MapperEquipos {
         if (Objects.nonNull(e.getModelo())) {
             dto.setIdModelo(e.getModelo().getId());
             dto.setNombreModelo(
-                    e.getModelo().getMarca() + " " +
-                            e.getModelo().getNombre()
+                    e.getModelo().getMarca() + " "
+                    + e.getModelo().getNombre()
             );
         }
 
-        return dto; // 🔥 YA NO ES VOID
+        if (e.getVersion() != null) {
+            dto.setVersion(e.getVersion());
+
+        }
+
+        return dto;
     }
 
     private static void mapCommonToEntity(
@@ -166,6 +165,11 @@ public class MapperEquipos {
 
         if (dto.getTipo() != null) {
             e.setTipo(TipoEquipo.valueOf(dto.getTipo()));
+        }
+
+        if (dto.getVersion() != null) {
+            e.setVersion(dto.getVersion());
+
         }
     }
 }

@@ -26,6 +26,11 @@ public class MapperEstructura {
                         } else {
                             dto.setTotalSucursales(0);
                         }
+                        
+                        if (e.getVersion() != null) {
+                            dto.setVersion(e.getVersion());
+                            
+                        }
 
                         return dto;
                     },
@@ -34,6 +39,12 @@ public class MapperEstructura {
                         Empresa e = new Empresa();
                         e.setIdEmpresa(d.getId());
                         e.setNombre(d.getNombre());
+                        
+                        if (d.getVersion() != null) {
+                            e.setVersion(d.getVersion());
+                            
+                        }
+                        
                         return e;
                     }
             );
@@ -51,6 +62,11 @@ public class MapperEstructura {
                             dto.setIdEmpresa(e.getEmpresa().getIdEmpresa());
                             dto.setNombreEmpresa(e.getEmpresa().getNombre());
                         }
+                        
+                        if (e.getVersion() != null) {
+                            dto.setVersion(e.getVersion());
+                            
+                        }
 
                         return dto;
                     },
@@ -61,6 +77,11 @@ public class MapperEstructura {
                         s.setNombre(d.getNombre());
                         s.setUbicacion(d.getUbicacion());
 
+                        if (d.getVersion() != null) {
+                            s.setVersion(d.getVersion());
+                            
+                        }
+                        
                         return s;
                     }
             );
@@ -77,6 +98,11 @@ public class MapperEstructura {
                             dto.setIdSucursal(e.getSucursal().getIdSucursal());
                             dto.setNombreSucursal(e.getSucursal().getNombre());
                         }
+                        
+                        if (e.getVersion() != null) {
+                            dto.setVersion(e.getVersion());
+                            
+                        }
 
                         return dto;
                     },
@@ -86,11 +112,10 @@ public class MapperEstructura {
                         dep.setIdDepartamento(d.getId());
                         dep.setNombre(d.getNombre());
 
-                        /*
-                         * NO se setea Sucursal aquí.
-                         * El servicio debe buscarla y asignarla.
-                         */
-
+                        if (d.getVersion() != null) {
+                            d.setVersion(d.getVersion());
+                            
+                        }
                         return dep;
                     }
             );
@@ -107,6 +132,11 @@ public class MapperEstructura {
                             dto.setIdDepartamento(e.getDepartamento().getIdDepartamento());
                             dto.setNombreDepartamento(e.getDepartamento().getNombre());
                         }
+                        
+                        if (e.getVersion() != null) {
+                            dto.setVersion(e.getVersion());
+                            
+                        }
 
                         return dto;
                     },
@@ -116,6 +146,10 @@ public class MapperEstructura {
                         p.setIdPuesto(d.getId());
                         p.setNombre(d.getNombre());
 
+                        if (d.getVersion() != null) {
+                            d.setVersion(d.getVersion());
+                            
+                        }
 
                         return p;
                     }

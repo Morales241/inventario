@@ -18,23 +18,26 @@ public class Puesto extends AuditoriaBase implements Serializable {
 
     @Column(name = "Nombre", nullable = false)
     private String nombre;
+    
+    @Version
+    private Long version;
 
     @ManyToOne
     @JoinColumn(name = "IdDepartamento")
     private Departamento departamento;
 
-    @Column(name = "Trabajadores")
+    @Column(name = "Usuarios")
     @OneToMany(mappedBy = "puesto", cascade = CascadeType.ALL)
-    private List<Usuario> trabajadores;
+    private List<Usuario> Usuarios;
 
     public Puesto(String nombre, Departamento departamento) {
         this.nombre = nombre;
         this.departamento = departamento;
-        this.trabajadores = new ArrayList<>();
+        this.Usuarios = new ArrayList<>();
     }
 
     public Puesto() {
-        this.trabajadores = new ArrayList<>();
+        this.Usuarios = new ArrayList<>();
     }
 
     public Long getIdPuesto() {
@@ -61,13 +64,19 @@ public class Puesto extends AuditoriaBase implements Serializable {
         this.departamento = departamento;
     }
 
-    public List<Usuario> getTrabajadores() {
-        return trabajadores;
+    public List<Usuario> getUsuarios() {
+        return Usuarios;
     }
 
-    public void setTrabajadores(List<Usuario> trabajadores) {
-        this.trabajadores = trabajadores;
+    public void setUsuarios(List<Usuario> Usuarios) {
+        this.Usuarios = Usuarios;
     }
 
-    
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 }

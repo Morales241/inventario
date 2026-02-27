@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" styleClass="panel-menu" stylesheets="@inventario.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.InventarioController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" styleClass="panel-menu" stylesheets="@inventario.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.InventarioController">
    <top>
       <VBox nodeOrientation="LEFT_TO_RIGHT" spacing="15.0" styleClass="panel-menu" BorderPane.alignment="CENTER">
          <children>
@@ -64,16 +64,16 @@
                </font>
             </Label>
             
-            <TableView fx:id="tablaEquipos" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tablaEquipos" styleClass="mi-tabla" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="colId" prefWidth="60.0" text="ID" />
-                  <TableColumn fx:id="colGry" prefWidth="120.0" text="GRY" />
-                  <TableColumn fx:id="colTipo" prefWidth="120.0" text="Tipo Equipo" />
-                  <TableColumn fx:id="colMarca" prefWidth="120.0" text="Marca" />
-                  <TableColumn fx:id="colModelo" prefWidth="120.0" text="Modelo" />
-                  <TableColumn fx:id="colCondicion" prefWidth="100.0" text="Condición" />
-                  <TableColumn fx:id="colEstado" prefWidth="100.0" text="Estado" />
-                  <TableColumn fx:id="colAcciones" prefWidth="100.0" text="Acciones" />
+                  <TableColumn fx:id="colId" editable="false" prefWidth="60.0" sortable="false" text="ID" />
+                  <TableColumn fx:id="colGry" editable="false" prefWidth="120.0" sortable="false" text="GRY" />
+                  <TableColumn fx:id="colTipo" editable="false" prefWidth="120.0" sortable="false" text="Tipo Equipo" />
+                  <TableColumn fx:id="colFecha" editable="false" prefWidth="120.0" sortable="false" text="Fecha Compra" />
+                  <TableColumn fx:id="colModelo" editable="false" prefWidth="120.0" sortable="false" text="Modelo" />
+                  <TableColumn fx:id="colCondicion" editable="false" prefWidth="100.0" sortable="false" text="Condición" />
+                  <TableColumn fx:id="colEstado" editable="false" prefWidth="100.0" sortable="false" text="Estado" />
+                  <TableColumn fx:id="colAcciones" editable="false" prefWidth="100.0" sortable="false" text="Acciones" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

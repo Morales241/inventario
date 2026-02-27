@@ -52,6 +52,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
 
     private boolean modoEdicion = false;
     private Long idEquipoEditando;
+    private Long versionEquipo;
 
     private static final Long IdSucursal = 1L;
 
@@ -96,6 +97,10 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         cbxCondicion.getItems().setAll(CondicionFisica.values());
         cbxTipoEquipo.getItems().setAll(TipoEquipo.values());
 
+        cbxTipoEquipo.getItems().remove(TipoEquipo.TODOS);
+        cbxCondicion.getItems().remove(CondicionFisica.TODAS);
+        
+        
         cargarModelos();
 
         cbxTipoEquipo.setOnAction(e -> cambiarPanelEspecifico());
@@ -296,7 +301,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         dto.setObservaciones(txtObservaciones.getText());
         dto.setIdentificador(txtIdentificador.getText());
         dto.setTipo(cbxTipoEquipo.getValue().toString());
-
+        dto.setVersion(versionEquipo);
         dto.setIdModelo(modelo.getIdModelo());
         dto.setIdSucursal(IdSucursal);
     }
@@ -374,6 +379,8 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         llenarModeloSeleccionado();
 
         this.btnAgregar.setText("+ Actualizar equipo");
+        
+        versionEquipo = equipo.getVersion();
 
         modoEdicion = true;
 

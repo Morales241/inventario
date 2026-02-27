@@ -2,14 +2,10 @@ package Dao;
 
 import Entidades.EquipoDeComputo;
 import Entidades.Modelo;
-import Entidades.Sucursal;
 import Enums.CondicionFisica;
 import Enums.EstadoEquipo;
 import Enums.TipoEquipo;
 import Interfaces.IDaoEquipoDeComputo;
-import conexion.Conexion;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -67,7 +63,7 @@ public class DaoEquipoDeComputo extends DaoGenerico<EquipoDeComputo, Long> imple
         }
 
         cq.select(root)
-                .where(predicados.toArray(new Predicate[0]));
+                .where(predicados.toArray(Predicate[]::new));
 
         return em.createQuery(cq).getResultList();
     }
@@ -109,7 +105,6 @@ public class DaoEquipoDeComputo extends DaoGenerico<EquipoDeComputo, Long> imple
 
         List<Predicate> predicates = new ArrayList<>();
 
-        // 🔎 Texto (GRY o Modelo)
         if (texto != null && !texto.isBlank()) {
 
             if (texto.matches("\\d+")) {
@@ -135,25 +130,25 @@ public class DaoEquipoDeComputo extends DaoGenerico<EquipoDeComputo, Long> imple
             }
         }
 
-        if (tipo != null) {
+        if (tipo != null && tipo != (TipoEquipo.TODOS)) {
             predicates.add(
                     cb.equal(root.get("tipo"), tipo)
             );
         }
 
-        if (condicion != null) {
+        if (condicion != null  && condicion != (CondicionFisica.TODAS)) {
             predicates.add(
                     cb.equal(root.get("condicion"), condicion)
             );
         }
 
-        if (estado != null) {
+        if (estado != null && estado != EstadoEquipo.TODOS) {
             predicates.add(
                     cb.equal(root.get("estado"), estado)
             );
         }
 
-        cq.where(predicates.toArray(new Predicate[0]));
+        cq.where(predicates.toArray(Predicate[]::new));
 
         // Orden empresarial por ID descendente
         cq.orderBy(cb.desc(root.get("id")));

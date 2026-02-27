@@ -7,5 +7,7 @@ package Enums;
 public enum EstadoEquipo {
     EN_STOCK,
     ASIGNADO,
-    EN_ESPERA_BAJA
+    EN_ESPERA_BAJA,
+    TODOS
+
 }

@@ -2,7 +2,7 @@ package mapper;
 
 import Dtos.CuentaSistemaDTO;
 import Entidades.CuentaSistema;
-import Enums.RolUsuario;
+import Enums.RolCuenta;
 import mapper.Mapper;
 
 /**
@@ -27,6 +27,11 @@ public class MapperCuentaSistema {
                         if (entity.getRol() != null) {
                             dto.setRol(entity.getRol().name());
                         }
+                        
+                        if (entity.getVersion() != null) {
+                            dto.setVersion(entity.getVersion());
+                            
+                        }
                       
                         return dto;
                     },
@@ -39,8 +44,14 @@ public class MapperCuentaSistema {
                         u.setUsername(dto.getUsername());
 
                         if (dto.getRol() != null) {
-                            u.setRol(RolUsuario.valueOf(dto.getRol()));
+                            u.setRol(RolCuenta.valueOf(dto.getRol()));
                         }
+                        
+                        if (dto.getVersion() != null) {
+                            u.setVersion(dto.getVersion());
+                            
+                        }
+                        
                         return u;
                     }
             );

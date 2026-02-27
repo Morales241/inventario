@@ -20,6 +20,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -54,7 +55,7 @@ public class InventarioController implements Initializable, ControllerInventario
     @FXML
     private TableColumn<EquipoBaseDTO, String> colTipo;
     @FXML
-    private TableColumn<EquipoBaseDTO, String> colMarca;
+    private TableColumn<EquipoBaseDTO, String> colFecha;
     @FXML
     private TableColumn<EquipoBaseDTO, String> colModelo;
     @FXML
@@ -82,7 +83,7 @@ public class InventarioController implements Initializable, ControllerInventario
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         configurarColumnas();
         configurarAcciones();
         cargarDatos();
@@ -114,10 +115,10 @@ public class InventarioController implements Initializable, ControllerInventario
         colTipo.setCellValueFactory(data
                 -> new SimpleStringProperty(data.getValue().getTipo()));
 
-        colMarca.setCellValueFactory(data
+        colModelo.setCellValueFactory(data
                 -> new SimpleStringProperty(data.getValue().getNombreModelo()));
 
-        colModelo.setCellValueFactory(data
+        colFecha.setCellValueFactory(data
                 -> new SimpleStringProperty(data.getValue().getFechaCompra().toString()));
 
         colCondicion.setCellValueFactory(data
@@ -157,44 +158,50 @@ public class InventarioController implements Initializable, ControllerInventario
 
         colAcciones.setCellFactory(col -> new TableCell<>() {
 
-            private final FontIcon editIcon
-                    = new FontIcon("fas-edit");
+            private final FontIcon viewIcon = new FontIcon("fas-eye");
+            private final FontIcon editIcon = new FontIcon("fas-edit");
+            private final FontIcon deleteIcon = new FontIcon("fas-trash");
 
-            private final FontIcon deleteIcon
-                    = new FontIcon("fas-trash");
+            private final Button btnVer = new Button("", viewIcon);
+            private final Button btnEditar = new Button("", editIcon);
+            private final Button btnEliminar = new Button("", deleteIcon);
 
-            private final Button btnEditar
-                    = new Button("", editIcon);
-
-            private final Button btnEliminar
-                    = new Button("", deleteIcon);
-
-            private final HBox container
-                    = new HBox(10, btnEditar, btnEliminar);
-
+            private HBox container = new HBox(8, btnVer, btnEditar, btnEliminar);
+            
             {
+                viewIcon.setIconSize(16);
                 editIcon.setIconSize(16);
                 deleteIcon.setIconSize(16);
 
-                btnEditar.getStyleClass().add("btn-icon");
-                btnEliminar.getStyleClass().add("btn-icon");
+                btnVer.getStyleClass().add("btn-ver");
+                btnEditar.getStyleClass().add("btn-editar");
+                btnEliminar.getStyleClass().add("btn-eliminar");
 
-                Tooltip.install(btnEditar,
-                        new Tooltip("Editar equipo"));
+                Tooltip.install(btnVer, new Tooltip("Ver detalles"));
+                Tooltip.install(btnEditar, new Tooltip("Editar equipo"));
+                Tooltip.install(btnEliminar, new Tooltip("Eliminar equipo"));
 
-                Tooltip.install(btnEliminar,
-                        new Tooltip("Eliminar equipo"));
+                container.setAlignment(Pos.CENTER);
+
+                btnVer.setOnAction(e -> {
+                    EquipoBaseDTO equipo = getTableRow().getItem();
+                    if (equipo != null) {
+//                        visualizarEquipo(equipo);
+                    }
+                });
 
                 btnEditar.setOnAction(e -> {
-                    EquipoBaseDTO equipo
-                            = getTableView().getItems().get(getIndex());
-                    cargarEquipoParaEditar(equipo);
+                    EquipoBaseDTO equipo = getTableRow().getItem();
+                    if (equipo != null) {
+                        cargarEquipoParaEditar(equipo);
+                    }
                 });
 
                 btnEliminar.setOnAction(e -> {
-                    EquipoBaseDTO equipo
-                            = getTableView().getItems().get(getIndex());
-                    confirmarEliminacion(equipo);
+                    EquipoBaseDTO equipo = getTableRow().getItem();
+                    if (equipo != null) {
+                        confirmarEliminacion(equipo);
+                    }
                 });
             }
 
@@ -202,18 +209,13 @@ public class InventarioController implements Initializable, ControllerInventario
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
 
-                if (empty) {
+                if (empty || getTableRow().getItem() == null) {
                     setGraphic(null);
                 } else {
-
-                    EquipoBaseDTO equipo
-                            = getTableView().getItems().get(getIndex());
-
+                    EquipoBaseDTO equipo = getTableRow().getItem();
                     btnEliminar.setDisable(
-                            "ASIGNADO".equalsIgnoreCase(
-                                    equipo.getEstado())
+                            "ASIGNADO".equalsIgnoreCase(equipo.getEstado())
                     );
-
                     setGraphic(container);
                 }
             }
@@ -234,7 +236,7 @@ public class InventarioController implements Initializable, ControllerInventario
 
         cbxCondicion.valueProperty().addListener((obs, oldVal, newVal)
                 -> aplicarFiltro());
-        
+
         cbxEstado.valueProperty().addListener((obs, oldVal, newVal)
                 -> aplicarFiltro());
     }
@@ -245,7 +247,7 @@ public class InventarioController implements Initializable, ControllerInventario
             @Override
             protected List<EquipoBaseDTO> call() {
 
-                return fachadaEquipos.buscarConFiltros(txtFiltro.getText(), cbxTipo.getSelectionModel().getSelectedItem(), 
+                return fachadaEquipos.buscarConFiltros(txtFiltro.getText(), cbxTipo.getSelectionModel().getSelectedItem(),
                         cbxCondicion.getSelectionModel().getSelectedItem(), cbxEstado.getSelectionModel().getSelectedItem());
             }
         };
@@ -327,14 +329,14 @@ public class InventarioController implements Initializable, ControllerInventario
     @Override
     public <T extends EquipoBaseDTO> void cargarEquipoParaEditar(T equipo) {
         T equipoAux = fachadaEquipos.buscarPorId(equipo.getIdEquipo());
-        
+
         ControllerInventario controller
                 = cambiarPantalla("FormInventario.fxml");
 
         if (controller instanceof FormInventarioController form) {
             form.cargarEquipoParaEditar(equipoAux);
         }
-        
+
     }
 
     @FXML

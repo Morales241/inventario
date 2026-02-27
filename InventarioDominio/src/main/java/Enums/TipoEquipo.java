@@ -11,5 +11,6 @@ public enum TipoEquipo {
     IMPRESORA,
     PROYECTOR,
     SCANNER,
-    MONITOR
+    MONITOR, 
+    TODOS
 }

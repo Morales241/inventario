@@ -17,6 +17,9 @@ public class Departamento extends AuditoriaBase implements Serializable {
     @Column(name = "Nombre", nullable = false)
     private String nombre;
 
+    @Version
+    private Long version;
+    
     @ManyToOne
     @JoinColumn(name = "Id_Sucursal", nullable = false)
     private Sucursal sucursal;
@@ -64,5 +67,13 @@ public class Departamento extends AuditoriaBase implements Serializable {
 
     public void setPuestos(List<Puesto> puestos) {
         this.puestos = puestos;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

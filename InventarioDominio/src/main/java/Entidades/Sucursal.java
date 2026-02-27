@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,9 @@ public class Sucursal extends AuditoriaBase implements Serializable {
     @Column(name = "Id_Sucursal")
     private Long idSucursal;
 
+    @Version
+    private Long version;
+    
     @ManyToOne
     @JoinColumn(name = "IdEmpresa")
     private Empresa empresa;
@@ -114,5 +118,13 @@ public class Sucursal extends AuditoriaBase implements Serializable {
 
     public void setEquipos(List<EquipoDeComputo> equipos) {
         this.equipos = equipos;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

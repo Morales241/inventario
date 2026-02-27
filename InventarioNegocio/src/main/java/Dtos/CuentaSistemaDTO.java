@@ -1,6 +1,6 @@
 package Dtos;
 
-import Enums.RolUsuario;
+import Enums.RolCuenta;
 
 /**
  * Transferencia de datos para usuarios del sistema.

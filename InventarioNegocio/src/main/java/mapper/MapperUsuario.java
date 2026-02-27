@@ -16,18 +16,23 @@ public class MapperUsuario {
     public static final Mapper<Usuario, UsuarioDTO> converter =
             new Mapper<>(
 
-                    (t) -> {
-                        if (t == null) return null;
+                    (u) -> {
+                        if (u == null) return null;
 
                         UsuarioDTO dto = new UsuarioDTO();
-                        dto.setId(t.getIdUsuario());
-                        dto.setNombre(t.getNombre());
-                        dto.setNoNomina(t.getNoNomina());
-                        dto.setActivo(t.getActivo());
+                        dto.setId(u.getIdUsuario());
+                        dto.setNombre(u.getNombre());
+                        dto.setNoNomina(u.getNoNomina());
+                        dto.setActivo(u.getActivo());
 
-                        if (t.getPuesto() != null) {
-                            dto.setIdPuesto(t.getPuesto().getIdPuesto());
-                            dto.setNombrePuesto(t.getPuesto().getNombre());
+                        if (u.getPuesto() != null) {
+                            dto.setIdPuesto(u.getPuesto().getIdPuesto());
+                            dto.setNombrePuesto(u.getPuesto().getNombre());
+                        }
+                        
+                        if (u.getVersion() != null) {
+                            dto.setVersion(u.getVersion());
+                            
                         }
 
                         return dto;
@@ -36,11 +41,11 @@ public class MapperUsuario {
                     (dto) -> {
                         if (dto == null) return null;
 
-                        Usuario t = new Usuario();
-                        t.setIdUsuario(dto.getId());
-                        t.setNombre(dto.getNombre());
-                        t.setNoNomina(dto.getNoNomina());
-                        t.setActivo(dto.getActivo() != null ? dto.getActivo() : true);
+                        Usuario u = new Usuario();
+                        u.setIdUsuario(dto.getId());
+                        u.setNombre(dto.getNombre());
+                        u.setNoNomina(dto.getNoNomina());
+                        u.setActivo(dto.getActivo() != null ? dto.getActivo() : true);
 
                         /*
                          * NO resolver relaciones aquí.
@@ -49,10 +54,15 @@ public class MapperUsuario {
                         if (dto.getIdPuesto() != null) {
                             Puesto p = new Puesto();
                             p.setIdPuesto(dto.getIdPuesto());
-                            t.setPuesto(p);
+                            u.setPuesto(p);
+                        }
+                        
+                        if (dto.getVersion() != null) {
+                            u.setVersion(dto.getVersion());
+                            
                         }
 
-                        return t;
+                        return u;
                     }
             );
 }

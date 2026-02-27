@@ -8,5 +8,6 @@ public enum CondicionFisica {
     NUEVO,
     BUENO,
     REGULAR,
-    MALO
+    MALO,
+    TODAS
 }

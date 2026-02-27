@@ -1,20 +1,23 @@
 package Entidades;
 
-import Enums.RolUsuario;
+import Enums.RolCuenta;
 import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "UsuariosDelSistema")
+@Table(name = "CuentasDelSistema")
 public class CuentaSistema extends AuditoriaBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id_Usuario")
-    private Long idUsuario;
-
+    @Column(name = "Id_Cuenta")
+    private Long idCuenta;
+    
+    @Version
+    private Long version;
+    
     @Column(unique = true, nullable = false)
     private String username;
 
@@ -23,23 +26,23 @@ public class CuentaSistema extends AuditoriaBase implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private RolUsuario rol; 
+    private RolCuenta rol; 
 
     public CuentaSistema() {
     }
 
-    public CuentaSistema(String username, String password, RolUsuario rol) {
+    public CuentaSistema(String username, String password, RolCuenta rol) {
         this.username = username;
         this.password = password;
         this.rol = rol;
     }
 
     public Long getId() {
-        return idUsuario;
+        return idCuenta;
     }
 
     public void setId(Long id) {
-        this.idUsuario = id;
+        this.idCuenta = id;
     }
 
     public String getUsername() {
@@ -58,12 +61,27 @@ public class CuentaSistema extends AuditoriaBase implements Serializable {
         this.password = password;
     }
 
-    public RolUsuario getRol() {
+    public RolCuenta getRol() {
         return rol;
     }
 
-    public void setRol(RolUsuario rol) {
+    public void setRol(RolCuenta rol) {
         this.rol = rol;
     }
- 
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public Long getIdCuenta() {
+        return idCuenta;
+    }
+
+    public void setIdCuenta(Long idCuenta) {
+        this.idCuenta = idCuenta;
+    }
 }

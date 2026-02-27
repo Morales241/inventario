@@ -8,8 +8,9 @@ package Enums;
  *
  * @author tacot
  */
-public enum RolUsuario {
+public enum RolCuenta {
     ADMIN,
     ALMACENISTA,
-    INVITADO
+    INVITADO, 
+    TODOS
 }
