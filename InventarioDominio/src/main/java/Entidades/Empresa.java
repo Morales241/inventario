@@ -16,7 +16,7 @@ import java.util.List;
  * @author tacot
  */
 @Entity
-@Table(name = "Empresa")
+@Table(name = "Empresas")
 public class Empresa extends AuditoriaBase implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -4,7 +4,7 @@
  */
 package com.mycompany.inventariofrontfx.colaboradores;
 
-import Dtos.TrabajadorDTO;
+import Dtos.UsuarioDTO;
 import InterfacesFachada.IFachadaPersonas;
 import fabricaFachadas.FabricaFachadas;
 import java.net.URL;
@@ -62,12 +62,12 @@ public class FormColaboradoresController implements Initializable {
 
         if (!validarCampos()) return;
 
-        TrabajadorDTO dto = new TrabajadorDTO();
+        UsuarioDTO dto = new UsuarioDTO();
         dto.setNombre(txtNombre.getText());
         dto.setNoNomina(txtNomina.getText());
         dto.setNombrePuesto(cbxPuesto.getValue());
 
-        fachadaColaborador.guardarTrabajador(dto);
+        fachadaColaborador.guardarUsuario(dto);
 
         cerrarVentana();
     }

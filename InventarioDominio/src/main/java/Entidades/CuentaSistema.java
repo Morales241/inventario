@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "UsuarioSistema")
-public class UsuarioSistema extends AuditoriaBase implements Serializable {
+@Table(name = "UsuariosDelSistema")
+public class CuentaSistema extends AuditoriaBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,10 +25,10 @@ public class UsuarioSistema extends AuditoriaBase implements Serializable {
     @Column(nullable = false)
     private RolUsuario rol; 
 
-    public UsuarioSistema() {
+    public CuentaSistema() {
     }
 
-    public UsuarioSistema(String username, String password, RolUsuario rol) {
+    public CuentaSistema(String username, String password, RolUsuario rol) {
         this.username = username;
         this.password = password;
         this.rol = rol;

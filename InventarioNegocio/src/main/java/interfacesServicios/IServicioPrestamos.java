@@ -13,9 +13,9 @@ import java.util.List;
  */
 public interface IServicioPrestamos {
 
-    public void asignarEquipo(Long idEquipo, Long idTrabajador);
+    public void asignarEquipo(Long idEquipo, Long idUsuarios);
 
     public void devolverEquipo(Long idAsignacion);
 
-    public List<AsignacionDTO> obtenerEquiposDeTrabajador(Long idTrabajador);
+    public List<AsignacionDTO> obtenerEquiposDeUsuarios(Long idUsuarios);
 }

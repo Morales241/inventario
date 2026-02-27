@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @Entity
-@Table(name = "Puesto")
+@Table(name = "Puestos")
 public class Puesto extends AuditoriaBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,7 +25,7 @@ public class Puesto extends AuditoriaBase implements Serializable {
 
     @Column(name = "Trabajadores")
     @OneToMany(mappedBy = "puesto", cascade = CascadeType.ALL)
-    private List<Trabajador> trabajadores;
+    private List<Usuario> trabajadores;
 
     public Puesto(String nombre, Departamento departamento) {
         this.nombre = nombre;
@@ -61,11 +61,11 @@ public class Puesto extends AuditoriaBase implements Serializable {
         this.departamento = departamento;
     }
 
-    public List<Trabajador> getTrabajadores() {
+    public List<Usuario> getTrabajadores() {
         return trabajadores;
     }
 
-    public void setTrabajadores(List<Trabajador> trabajadores) {
+    public void setTrabajadores(List<Usuario> trabajadores) {
         this.trabajadores = trabajadores;
     }
 

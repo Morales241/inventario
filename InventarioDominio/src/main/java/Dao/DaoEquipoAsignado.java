@@ -1,7 +1,7 @@
 package Dao;
 
 import Entidades.EquipoAsignado;
-import Entidades.Trabajador;
+import Entidades.Usuario;
 import Interfaces.IDaoEquipoAsignado;
 import conexion.Conexion;
 import jakarta.persistence.EntityManager;
@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * Implementación del DAO para la entidad {@link EquipoAsignado}.
- * Gestiona la relación de asignación entre equipos y trabajadores.
+ * Gestiona la relación de asignación entre equipos y Usuarioes.
  * * @author JMorales
  */
 public class DaoEquipoAsignado extends DaoGenerico<EquipoAsignado, Long> implements IDaoEquipoAsignado {
@@ -25,18 +25,18 @@ public class DaoEquipoAsignado extends DaoGenerico<EquipoAsignado, Long> impleme
     }
 
     @Override
-    public List<EquipoAsignado> buscarPorTrabajadorActivo(Long idTrabajador) {
+    public List<EquipoAsignado> buscarPorUsuarioActivo(Long idUsuario) {
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<EquipoAsignado> cq = cb.createQuery(EquipoAsignado.class);
         Root<EquipoAsignado> root = cq.from(EquipoAsignado.class);
 
-        Join<EquipoAsignado, Trabajador> joinTrabajador = root.join("trabajador");
+        Join<EquipoAsignado, Usuario> joinUsuario = root.join("Usuario");
 
-        Predicate esTrabajador = cb.equal(joinTrabajador.get("id"), idTrabajador);
+        Predicate esUsuario = cb.equal(joinUsuario.get("id"), idUsuario);
         Predicate activo = cb.isNull(root.get("fechaDevolucion"));
 
-        cq.select(root).where(cb.and(esTrabajador, activo));
+        cq.select(root).where(cb.and(esUsuario, activo));
 
         return em.createQuery(cq).getResultList();
     }

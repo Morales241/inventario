@@ -12,8 +12,8 @@
     <class>Entidades.OtroEquipo</class>
     <class>Entidades.Puesto</class>
     <class>Entidades.Sucursal</class>
-    <class>Entidades.Trabajador</class>
-    <class>Entidades.UsuarioSistema</class>
+    <class>Entidades.Usuario</class>
+    <class>Entidades.CuentaSistema</class>
     <properties>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlserver://192.168.25.25:1433;databaseName=inventario;encrypt=true;trustServerCertificate=true;"/>
       <property name="jakarta.persistence.jdbc.user" value="sa"/>

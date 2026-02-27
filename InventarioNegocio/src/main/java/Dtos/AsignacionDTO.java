@@ -5,20 +5,21 @@ import java.time.LocalDate;
 /**
  * Transferencia de datos para asignaciones/préstamos de equipos.
  * <p>
- * Representa el registro de entrega de un equipo a un trabajador.
- * Contiene fechas del ciclo de vida del préstamo y referencias al trabajador y equipo.
+ * Representa el registro de entrega de un equipo a un Usuario.
+ * Contiene fechas del ciclo de vida del préstamo y referencias al Usuario y equipo.
  * Permite rastrear qué equipos tiene cada empleado y cuándo fueron entregados/devueltos.
  * </p>
  */
 public class AsignacionDTO {
 
     private Long id;
+    private Long version;
 
     private LocalDate fechaEntrega;
     private LocalDate fechaDevolucion;
 
-    private Long idTrabajador;
-    private String nombreTrabajador;
+    private Long idUsuario;
+    private String nombreUsuario;
 
     private Long idEquipo;
     private String identificadorEquipo;
@@ -50,20 +51,20 @@ public class AsignacionDTO {
         this.fechaDevolucion = fechaDevolucion;
     }
 
-    public Long getIdTrabajador() {
-        return idTrabajador;
+    public Long getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setIdTrabajador(Long idTrabajador) {
-        this.idTrabajador = idTrabajador;
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public String getNombreTrabajador() {
-        return nombreTrabajador;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
-    public void setNombreTrabajador(String nombreTrabajador) {
-        this.nombreTrabajador = nombreTrabajador;
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
     public Long getIdEquipo() {
@@ -82,9 +83,17 @@ public class AsignacionDTO {
         this.identificadorEquipo = identificadorEquipo;
     }
 
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
     @Override
     public String toString() {
-        return id + ".- fechaEntrega=" + fechaEntrega + ", fechaDevolucion=" + fechaDevolucion +  ", nombreTrabajador=" + nombreTrabajador + ", identificadorEquipo=" + identificadorEquipo;
+        return id + ".- fechaEntrega=" + fechaEntrega + ", fechaDevolucion=" + fechaDevolucion +  ", nombreUsuario=" + nombreUsuario + ", identificadorEquipo=" + identificadorEquipo;
     }
     
 }

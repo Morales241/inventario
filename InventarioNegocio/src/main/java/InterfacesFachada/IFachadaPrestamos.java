@@ -4,7 +4,7 @@ import Dtos.AsignacionDTO;
 import java.util.List;
 
 /**
- * Contrato de fachada para operaciones de asignación y devolución de equipos a trabajadores.
+ * Contrato de fachada para operaciones de asignación y devolución de equipos a Usuarios.
  * <p>
  * Define métodos para gestionar el ciclo de vida de los préstamos de equipos.
  * Implementa el patrón Facade para simplificar la interacción con la capa de servicios de asignaciones.
@@ -14,13 +14,13 @@ import java.util.List;
 public interface IFachadaPrestamos {
     
     /**
-     * Asigna un equipo a un trabajador para su uso.
-     * <p>Valida integridad: equipo disponible y trabajador activo.</p>
+     * Asigna un equipo a un Usuario para su uso.
+     * <p>Valida integridad: equipo disponible y Usuario activo.</p>
      * @param idEquipo Identificador del equipo.
-     * @param idTrabajador Identificador del trabajador.
-     * @throws Exception Si el equipo está asignado, trabajador está inactivo, o no existen.
+     * @param idUsuario Identificador del Usuario.
+     * @throws Exception Si el equipo está asignado, Usuario está inactivo, o no existen.
      */
-    public void asignarEquipo(Long idEquipo, Long idTrabajador) throws Exception;
+    public void asignarEquipo(Long idEquipo, Long idUsuario) throws Exception;
     
     /**
      * Procesa la devolución de un equipo, finalizando el préstamo.
@@ -30,10 +30,10 @@ public interface IFachadaPrestamos {
     public void devolverEquipo(Long idAsignacion) throws Exception;
     
     /**
-     * Obtiene los equipos actualmente asignados a un trabajador.
+     * Obtiene los equipos actualmente asignados a un Usuario.
      * <p>Solo devuelve asignaciones activas (sin fecha de devolución).</p>
-     * @param idTrabajador Identificador del trabajador.
-     * @return Lista de AsignacionDTO con equipos en poder del trabajador.
+     * @param idUsuario Identificador del Usuario.
+     * @return Lista de AsignacionDTO con equipos en poder del Usuario.
      */
-    public List<AsignacionDTO> obtenerEquiposDeTrabajador(Long idTrabajador);
+    public List<AsignacionDTO> obtenerEquiposDeUsuarios(Long idUsuario);
 }

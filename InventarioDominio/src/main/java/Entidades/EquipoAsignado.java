@@ -17,7 +17,7 @@ import java.time.LocalDate;
  * @author JMorales
  */
 @Entity
-@Table(name = "EquipoAsignado")
+@Table(name = "EquiposAsignados")
 public class EquipoAsignado extends AuditoriaBase implements Serializable{
 
     @Id
@@ -32,8 +32,8 @@ public class EquipoAsignado extends AuditoriaBase implements Serializable{
     private EquipoDeComputo equipoDeComputo;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "IdTrabajador")
-    private Trabajador trabajador;
+    @JoinColumn(name = "IdUsuario")
+    private Usuario Usuario;
 
     @Column(nullable = false)
     private LocalDate fechaEntrega;
@@ -43,9 +43,9 @@ public class EquipoAsignado extends AuditoriaBase implements Serializable{
     public EquipoAsignado() {
     }
 
-    public EquipoAsignado(EquipoDeComputo equipo, Trabajador trabajador) {
+    public EquipoAsignado(EquipoDeComputo equipo, Usuario Usuario) {
         this.equipoDeComputo = equipo;
-        this.trabajador = trabajador;
+        this.Usuario = Usuario;
         this.fechaEntrega = LocalDate.now();
     }
 
@@ -84,12 +84,12 @@ public class EquipoAsignado extends AuditoriaBase implements Serializable{
         this.equipoDeComputo = equipoDeComputo;
     }
 
-    public Trabajador getTrabajador() {
-        return trabajador;
+    public Usuario getUsuario() {
+        return Usuario;
     }
 
-    public void setTrabajador(Trabajador trabajador) {
-        this.trabajador = trabajador;
+    public void setUsuario(Usuario Usuario) {
+        this.Usuario = Usuario;
     }
 
     public LocalDate getFechaEntrega() {

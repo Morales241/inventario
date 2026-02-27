@@ -1,7 +1,7 @@
 package Implementaciones;
 
-import Dtos.TrabajadorDTO;
 import Dtos.UsuarioDTO;
+import Dtos.CuentaSistemaDTO;
 import InterfacesFachada.IFachadaPersonas;
 import Servicios.ServicioPersonas;
 import interfacesServicios.IServicioPersonas;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Implementación de la fachada para operaciones de gestión de personas.
  * <p>
- * Proporciona acceso simplificado a la lógica de negocio del servicio de personas (usuarios y trabajadores).
+ * Proporciona acceso simplificado a la lógica de negocio del servicio de personas (usuarios y Usuarios).
  * Utiliza el patrón Facade para abstraer la complejidad de las operaciones.
  * </p>
  * @author JMorales
@@ -28,28 +28,28 @@ public class FachadaPersonas implements IFachadaPersonas {
     }
 
     @Override
-    public UsuarioDTO login(String user, String pass) {
+    public CuentaSistemaDTO login(String user, String pass) {
         return servicioPersonas.login(user, pass);
     }
 
     @Override
-    public List<TrabajadorDTO> buscarTrabajadores(String busquedaGlobal) {
-        return servicioPersonas.buscarTrabajadores(busquedaGlobal);
+    public List<UsuarioDTO> buscarUsuarios(String busquedaGlobal) {
+        return servicioPersonas.buscarUsuarios(busquedaGlobal);
     }
 
     @Override
-    public TrabajadorDTO obtenerTrabajador(Long id) {
-        return servicioPersonas.obtenerTrabajador(id);
+    public UsuarioDTO obtenerUsuario(Long id) {
+        return servicioPersonas.obtenerUsuario(id);
     }
 
     @Override
-    public void guardarTrabajador(TrabajadorDTO dto) {
-        servicioPersonas.guardarTrabajador(dto);
+    public void guardarUsuario(UsuarioDTO dto) {
+        servicioPersonas.guardarUsuario(dto);
     }
 
     @Override
-    public void cambiarEstadoTrabajador(Long id, boolean activo) {
-        servicioPersonas.cambiarEstadoTrabajador(id, activo);
+    public void cambiarEstadoUsuario(Long id, boolean activo) {
+        servicioPersonas.cambiarEstadoUsuario(id, activo);
     }
 }
 

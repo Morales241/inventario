@@ -1,6 +1,6 @@
 package com.mycompany.inventariofrontfx.colaboradores;
 
-import Dtos.TrabajadorDTO;
+import Dtos.UsuarioDTO;
 import InterfacesFachada.IFachadaPersonas;
 import fabricaFachadas.FabricaFachadas;
 import java.io.IOException;
@@ -28,13 +28,13 @@ import javafx.stage.Stage;
 public class ColaboradoresController implements Initializable {
 
     @FXML private TextField txtFiltro;
-    @FXML private TableView<TrabajadorDTO> tablaColaboradores;
-    @FXML private TableColumn<TrabajadorDTO, Long> colId;
-    @FXML private TableColumn<TrabajadorDTO, String> colNombre;
-    @FXML private TableColumn<TrabajadorDTO, String> colPuesto;
-    @FXML private TableColumn<TrabajadorDTO, Integer> colEquiposAsignados;
+    @FXML private TableView<UsuarioDTO> tablaColaboradores;
+    @FXML private TableColumn<UsuarioDTO, Long> colId;
+    @FXML private TableColumn<UsuarioDTO, String> colNombre;
+    @FXML private TableColumn<UsuarioDTO, String> colPuesto;
+    @FXML private TableColumn<UsuarioDTO, Integer> colEquiposAsignados;
 
-    private ObservableList<TrabajadorDTO> listaColaboradores;
+    private ObservableList<UsuarioDTO> listaColaboradores;
 
     private final IFachadaPersonas fachadaColaborador =
             FabricaFachadas.getFachadaPersonas();
@@ -58,7 +58,7 @@ public class ColaboradoresController implements Initializable {
 
     private void cargarDatos() {
         listaColaboradores = FXCollections.observableArrayList(
-                fachadaColaborador.buscarTrabajadores(null)
+                fachadaColaborador.buscarUsuarios(null)
         );
         tablaColaboradores.setItems(listaColaboradores);
     }
@@ -71,8 +71,8 @@ public class ColaboradoresController implements Initializable {
 
     private void aplicarFiltro(String texto) {
 
-        List<TrabajadorDTO> resultado =
-                fachadaColaborador.buscarTrabajadores(texto);
+        List<UsuarioDTO> resultado =
+                fachadaColaborador.buscarUsuarios(texto);
 
         tablaColaboradores.setItems(
                 FXCollections.observableArrayList(resultado)

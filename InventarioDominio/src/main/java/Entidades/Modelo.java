@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Entity
 @Table(
-    name = "Modelo",
+    name = "Modelos",
     uniqueConstraints = @UniqueConstraint(
         columnNames = {
             "Marca",

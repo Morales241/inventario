@@ -10,7 +10,7 @@ import java.util.List;
  * Implementación de la fachada para operaciones de asignación y devolución de equipos.
  * <p>
  * Proporciona acceso simplificado a la lógica de negocio del servicio de asignaciones.
- * Gestiona el ciclo de vida de los préstamos de equipos a trabajadores.
+ * Gestiona el ciclo de vida de los préstamos de equipos a Usuarios.
  * Utiliza el patrón Facade para abstraer la complejidad de las operaciones.
  * </p>
  * @author JMorales
@@ -28,8 +28,8 @@ public class FachadaPrestamos implements IFachadaPrestamos {
     }
 
     @Override
-    public void asignarEquipo(Long idEquipo, Long idTrabajador) {
-        servicioPrestamos.asignarEquipo(idEquipo, idTrabajador);
+    public void asignarEquipo(Long idEquipo, Long idUsuario) {
+        servicioPrestamos.asignarEquipo(idEquipo, idUsuario);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class FachadaPrestamos implements IFachadaPrestamos {
     }
 
     @Override
-    public List<AsignacionDTO> obtenerEquiposDeTrabajador(Long idTrabajador) {
-        return servicioPrestamos.obtenerEquiposDeTrabajador(idTrabajador);
+    public List<AsignacionDTO> obtenerEquiposDeUsuarios(Long idUsuario) {
+        return servicioPrestamos.obtenerEquiposDeUsuarios(idUsuario);
     }
 }

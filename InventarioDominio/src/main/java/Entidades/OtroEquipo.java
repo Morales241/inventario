@@ -4,7 +4,7 @@ import Enums.TipoEquipo;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "OtroEquipo")
+@Table(name = "OtrosEquipos")
 @PrimaryKeyJoinColumn(name = "id_OtroEquipo")
 @DiscriminatorValue("OTROEQUIPO")
 public class OtroEquipo extends EquipoDeComputo {

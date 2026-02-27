@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @Entity
-@Table(name = "Departamento")
+@Table(name = "Departamentos")
 public class Departamento extends AuditoriaBase implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -15,6 +15,7 @@ public class SucursalDTO {
     private String ubicacion;
     private Long idEmpresa;
     private String nombreEmpresa;
+    private Long version;
 
     public SucursalDTO() {
     }
@@ -57,6 +58,14 @@ public class SucursalDTO {
 
     public void setNombreEmpresa(String nombreEmpresa) {
         this.nombreEmpresa = nombreEmpresa;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     @Override

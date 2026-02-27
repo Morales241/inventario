@@ -1,28 +1,25 @@
 package Dtos;
 
-import Enums.RolUsuario;
-
 /**
- * Transferencia de datos para usuarios del sistema.
+ * Transferencia de datos para trabajadores/empleados.
  * <p>
- * Contiene información de autenticación y autorización del usuario.
- * El rol determina los permisos y acceso a diferentes funcionalidades del sistema.
- * La contraseña se maneja por separado por razones de seguridad.
+ * Representa la información básica de una persona empleada en la organización.
+ * Contiene datos personales, número de nómina y referencia al puesto de
+ * trabajo. El estado {@code activo} determina si el trabajador puede recibir
+ * asignaciones de equipos.
  * </p>
  */
 public class UsuarioDTO {
 
     private Long id;
-    private String username;
-    private String rol;
+    private String nombre;
+    private String noNomina;
+    private Boolean activo;
+    private Long version;
+    private Long idPuesto;
+    private String nombrePuesto;
 
     public UsuarioDTO() {
-    }
-
-    public UsuarioDTO(Long id, String username, String rol) {
-        this.id = id;
-        this.username = username;
-        this.rol = rol;
     }
 
     public Long getId() {
@@ -33,19 +30,57 @@ public class UsuarioDTO {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getRol() {
-        return rol;
+    public String getNoNomina() {
+        return noNomina;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setNoNomina(String noNomina) {
+        this.noNomina = noNomina;
     }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
+    public Long getIdPuesto() {
+        return idPuesto;
+    }
+
+    public void setIdPuesto(Long idPuesto) {
+        this.idPuesto = idPuesto;
+    }
+
+    public String getNombrePuesto() {
+        return nombrePuesto;
+    }
+
+    public void setNombrePuesto(String nombrePuesto) {
+        this.nombrePuesto = nombrePuesto;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    @Override
+    public String toString() {
+        return id + ".- nombre=" + nombre + ", noNomina=" + noNomina + ", activo=" + activo + ", idPuesto=" + idPuesto + ", nombrePuesto=" + nombrePuesto;
+    }
+
 }

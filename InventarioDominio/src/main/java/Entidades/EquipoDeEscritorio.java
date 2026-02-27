@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "EquipoDeEscritorio")
+@Table(name = "EquiposDeEscritorio")
 @PrimaryKeyJoinColumn(name = "id_EquipoDeEscritorio") 
 @DiscriminatorValue("EQUIPODEESCRITORIO")
 public class EquipoDeEscritorio extends EquipoDeComputo {

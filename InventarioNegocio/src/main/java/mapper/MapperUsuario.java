@@ -1,31 +1,33 @@
 package mapper;
 
 import Dtos.UsuarioDTO;
-import Entidades.UsuarioSistema;
-import Enums.RolUsuario;
-import mapper.Mapper;
+import Entidades.Puesto;
+import Entidades.Usuario;
 
 /**
- * Mapeador para transformaciones entre la entidad UsuarioSistema y su DTO.
+ * Mapeador para transformaciones entre la entidad Usuario y su DTO.
  * <p>
- * Convierte datos de autenticación y autorización entre la entidad y el DTO.
- * <b>Nota de seguridad:</b> La contraseña no se incluye en la conversión desde DTO a entidad.
- * </p>
+Maneja la conversión bidireccional de Usuario ↔ UsuarioDTO,
+incluyendo la relación con la entidad Puesto.
+</p>
  */
 public class MapperUsuario {
 
-    public static final Mapper<UsuarioSistema, UsuarioDTO> converter =
+    public static final Mapper<Usuario, UsuarioDTO> converter =
             new Mapper<>(
 
-                    (entity) -> {
-                        if (entity == null) return null;
+                    (t) -> {
+                        if (t == null) return null;
 
                         UsuarioDTO dto = new UsuarioDTO();
-                        dto.setId(entity.getId());
-                        dto.setUsername(entity.getUsername());
+                        dto.setId(t.getIdUsuario());
+                        dto.setNombre(t.getNombre());
+                        dto.setNoNomina(t.getNoNomina());
+                        dto.setActivo(t.getActivo());
 
-                        if (entity.getRol() != null) {
-                            dto.setRol(entity.getRol().name());
+                        if (t.getPuesto() != null) {
+                            dto.setIdPuesto(t.getPuesto().getIdPuesto());
+                            dto.setNombrePuesto(t.getPuesto().getNombre());
                         }
 
                         return dto;
@@ -34,14 +36,23 @@ public class MapperUsuario {
                     (dto) -> {
                         if (dto == null) return null;
 
-                        UsuarioSistema u = new UsuarioSistema();
-                        u.setId(dto.getId());
-                        u.setUsername(dto.getUsername());
+                        Usuario t = new Usuario();
+                        t.setIdUsuario(dto.getId());
+                        t.setNombre(dto.getNombre());
+                        t.setNoNomina(dto.getNoNomina());
+                        t.setActivo(dto.getActivo() != null ? dto.getActivo() : true);
 
-                        if (dto.getRol() != null) {
-                            u.setRol(RolUsuario.valueOf(dto.getRol()));
+                        /*
+                         * NO resolver relaciones aquí.
+                         * Solo setear ID proxy si viene.
+                         */
+                        if (dto.getIdPuesto() != null) {
+                            Puesto p = new Puesto();
+                            p.setIdPuesto(dto.getIdPuesto());
+                            t.setPuesto(p);
                         }
-                        return u;
+
+                        return t;
                     }
             );
 }

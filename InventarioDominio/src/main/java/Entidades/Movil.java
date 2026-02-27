@@ -3,7 +3,7 @@ package Entidades;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Movil")
+@Table(name = "Moviles")
 @PrimaryKeyJoinColumn(name = "id_Movil")
 @DiscriminatorValue("MOVIL")
 public class Movil extends EquipoDeComputo {

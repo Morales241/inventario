@@ -1,7 +1,7 @@
 package interfacesServicios;
 
-import Dtos.TrabajadorDTO;
 import Dtos.UsuarioDTO;
+import Dtos.CuentaSistemaDTO;
 import java.util.List;
 
 /**
@@ -9,13 +9,13 @@ import java.util.List;
  * @author tacot
  */
 public interface IServicioPersonas {
-    public UsuarioDTO login(String username, String password);
+    public CuentaSistemaDTO login(String username, String password);
     
-    public List<TrabajadorDTO> buscarTrabajadores(String criterioGlobal);
+    public List<UsuarioDTO> buscarUsuarios(String criterioGlobal);
 
-    public TrabajadorDTO obtenerTrabajador(Long id);
+    public UsuarioDTO obtenerUsuario(Long id);
 
-    public TrabajadorDTO guardarTrabajador(TrabajadorDTO dto);
+    public UsuarioDTO guardarUsuario(UsuarioDTO dto);
 
-    public void cambiarEstadoTrabajador(Long id, boolean activo);
+    public void cambiarEstadoUsuario(Long id, boolean activo);
 }

@@ -1,15 +1,15 @@
 package Servicios;
 
 import Dao.DaoPuesto;
-import Dao.DaoTrabajador;
 import Dao.DaoUsuario;
-import Dtos.TrabajadorDTO;
+import Dao.DaoCuentaSistema;
 import Dtos.UsuarioDTO;
+import Dtos.CuentaSistemaDTO;
 import Entidades.Puesto;
-import Entidades.Trabajador;
-import Entidades.UsuarioSistema;
-import mapper.MapperTrabajador;
+import Entidades.Usuario;
+import Entidades.CuentaSistema;
 import mapper.MapperUsuario;
+import mapper.MapperCuentaSistema;
 import excepciones.RecursoNoEncontradoException;
 import excepciones.ReglaNegocioException;
 import interfacesServicios.IServicioPersonas;
@@ -20,30 +20,30 @@ import java.util.List;
  * Servicio de lógica de negocio para la gestión de personas en el sistema.
  * <p>
  * Coordina las operaciones relacionadas con autenticación de usuarios y
- * administración de trabajadores. Incluye validaciones de integridad de datos y
+ * administración de Usuarioes. Incluye validaciones de integridad de datos y
  * cambios de estado para el control de acceso.
  * </p>
  */
 public class ServicioPersonas extends ServicioBase implements IServicioPersonas {
 
+    private final DaoCuentaSistema daoCuentaSistema;
     private final DaoUsuario daoUsuario;
-    private final DaoTrabajador daoTrabajador;
     private final DaoPuesto daoPuesto;
 
     public ServicioPersonas() {
+        this.daoCuentaSistema = new DaoCuentaSistema();
         this.daoUsuario = new DaoUsuario();
-        this.daoTrabajador = new DaoTrabajador();
         this.daoPuesto = new DaoPuesto();
     }
 
     private void configurar(EntityManager em) {
+        daoCuentaSistema.setEntityManager(em);
         daoUsuario.setEntityManager(em);
-        daoTrabajador.setEntityManager(em);
         daoPuesto.setEntityManager(em);
     }
 
     @Override
-    public UsuarioDTO login(String username, String password) {
+    public CuentaSistemaDTO login(String username, String password) {
 
         if (username == null || username.isBlank()
                 || password == null || password.isBlank()) {
@@ -53,20 +53,20 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         return ejecutarLectura(em -> {
             configurar(em);
 
-            UsuarioSistema usuario
-                    = daoUsuario.login(username.trim(), password);
+            CuentaSistema usuario
+                    = daoCuentaSistema.login(username.trim(), password);
 
             if (usuario == null) {
                 throw new ReglaNegocioException(
                         "Usuario o contraseña incorrectos");
             }
 
-            return MapperUsuario.converter.mapToDto(usuario);
+            return MapperCuentaSistema.converter.mapToDto(usuario);
         });
     }
 
     @Override
-    public List<TrabajadorDTO> buscarTrabajadores(String criterioGlobal) {
+    public List<UsuarioDTO> buscarUsuarios(String criterioGlobal) {
 
         String criterio
                 = (criterioGlobal != null) ? criterioGlobal.trim() : "";
@@ -74,14 +74,14 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         return ejecutarLectura(em -> {
             configurar(em);
 
-            return MapperTrabajador.converter.mapToDtoList(
-                    daoTrabajador.busquedaConFiltros(
+            return MapperUsuario.converter.mapToDtoList(
+                    daoUsuario.busquedaConFiltros(
                             criterio, criterio, criterio));
         });
     }
 
     @Override
-    public TrabajadorDTO obtenerTrabajador(Long id) {
+    public UsuarioDTO obtenerUsuario(Long id) {
 
         if (id == null) {
             throw new IllegalArgumentException("ID inválido");
@@ -90,19 +90,19 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         return ejecutarLectura(em -> {
             configurar(em);
 
-            Trabajador trabajador = daoTrabajador.buscarPorId(id);
+            Usuario Usuario = daoUsuario.buscarPorId(id);
 
-            if (trabajador == null) {
+            if (Usuario == null) {
                 throw new RecursoNoEncontradoException(
-                        "Trabajador no encontrado");
+                        "Usuario no encontrado");
             }
 
-            return MapperTrabajador.converter.mapToDto(trabajador);
+            return MapperUsuario.converter.mapToDto(Usuario);
         });
     }
 
     @Override
-    public TrabajadorDTO guardarTrabajador(TrabajadorDTO dto) {
+    public UsuarioDTO guardarUsuario(UsuarioDTO dto) {
 
         if (dto == null) {
             throw new IllegalArgumentException("Datos inválidos");
@@ -132,35 +132,35 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
                 throw new RecursoNoEncontradoException("Puesto no encontrado");
             }
 
-            Trabajador entidad
-                    = MapperTrabajador.converter.mapToEntity(dto);
+            Usuario entidad
+                    = MapperUsuario.converter.mapToEntity(dto);
 
             entidad.setPuesto(puesto);
 
             if (dto.getId() != null && dto.getId() > 0) {
 
-                Trabajador existente
-                        = daoTrabajador.buscarPorId(dto.getId());
+                Usuario existente
+                        = daoUsuario.buscarPorId(dto.getId());
 
                 if (existente == null) {
                     throw new RecursoNoEncontradoException(
-                            "Trabajador no encontrado");
+                            "Usuario no encontrado");
                 }
 
-                entidad = daoTrabajador.actualizar(entidad);
+                entidad = daoUsuario.actualizar(entidad);
 
             } else {
 
                 entidad.setActivo(true);
-                entidad = daoTrabajador.guardar(entidad);
+                entidad = daoUsuario.guardar(entidad);
             }
 
-            return MapperTrabajador.converter.mapToDto(entidad);
+            return MapperUsuario.converter.mapToDto(entidad);
         });
     }
 
     @Override
-    public void cambiarEstadoTrabajador(Long id, boolean activo) {
+    public void cambiarEstadoUsuario(Long id, boolean activo) {
 
         if (id == null) {
             throw new IllegalArgumentException("ID inválido");
@@ -169,17 +169,17 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         ejecutarTransaccion(em -> {
             configurar(em);
 
-            Trabajador trabajador
-                    = daoTrabajador.buscarPorId(id);
+            Usuario Usuario
+                    = daoUsuario.buscarPorId(id);
 
-            if (trabajador == null) {
+            if (Usuario == null) {
                 throw new RecursoNoEncontradoException(
-                        "Trabajador no encontrado");
+                        "Usuario no encontrado");
             }
 
-            trabajador.setActivo(activo);
+            Usuario.setActivo(activo);
 
-            daoTrabajador.actualizar(trabajador);
+            daoUsuario.actualizar(Usuario);
 
             return null;
         });

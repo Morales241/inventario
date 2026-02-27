@@ -2,11 +2,11 @@ package Servicios;
 
 import Dao.DaoEquipoAsignado;
 import Dao.DaoEquipoDeComputo;
-import Dao.DaoTrabajador;
+import Dao.DaoUsuario;
 import Dtos.AsignacionDTO;
 import Entidades.EquipoAsignado;
 import Entidades.EquipoDeComputo;
-import Entidades.Trabajador;
+import Entidades.Usuario;
 import Enums.EstadoEquipo;
 import mapper.MapperAsignacion;
 import excepciones.RecursoNoEncontradoException;
@@ -20,24 +20,24 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
 
     private final DaoEquipoAsignado daoAsignacion;
     private final DaoEquipoDeComputo daoEquipo;
-    private final DaoTrabajador daoTrabajador;
+    private final DaoUsuario daoUsuario;
 
     public ServicioPrestamos() {
         this.daoAsignacion = new DaoEquipoAsignado();
         this.daoEquipo = new DaoEquipoDeComputo();
-        this.daoTrabajador = new DaoTrabajador();
+        this.daoUsuario = new DaoUsuario();
     }
 
     private void configurar(EntityManager em) {
         daoAsignacion.setEntityManager(em);
         daoEquipo.setEntityManager(em);
-        daoTrabajador.setEntityManager(em);
+        daoUsuario.setEntityManager(em);
     }
 
     @Override
-    public void asignarEquipo(Long idEquipo, Long idTrabajador) {
+    public void asignarEquipo(Long idEquipo, Long idUsuario) {
 
-        if (idEquipo == null || idTrabajador == null) {
+        if (idEquipo == null || idUsuario == null) {
             throw new IllegalArgumentException("IDs inválidos");
         }
 
@@ -50,13 +50,13 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
                 throw new RecursoNoEncontradoException("Equipo no encontrado");
             }
 
-            Trabajador trabajador = daoTrabajador.buscarPorId(idTrabajador);
-            if (trabajador == null) {
-                throw new RecursoNoEncontradoException("Trabajador no encontrado");
+            Usuario Usuario = daoUsuario.buscarPorId(idUsuario);
+            if (Usuario == null) {
+                throw new RecursoNoEncontradoException("Usuario no encontrado");
             }
 
-            if (!Boolean.TRUE.equals(trabajador.getActivo())) {
-                throw new ReglaNegocioException("El trabajador está inactivo");
+            if (!Boolean.TRUE.equals(Usuario.getActivo())) {
+                throw new ReglaNegocioException("El Usuario está inactivo");
             }
 
             if (equipo.getEstado() != EstadoEquipo.EN_STOCK) {
@@ -64,7 +64,7 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
             }
 
             boolean yaAsignado = daoAsignacion
-                    .buscarPorTrabajadorActivo(trabajador.getIdTrabajador())
+                    .buscarPorUsuarioActivo(Usuario.getIdUsuario())
                     .stream()
                     .anyMatch(a
                             -> a.getEquipoDeComputo()
@@ -78,7 +78,7 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
 
             EquipoAsignado asignacion = new EquipoAsignado();
             asignacion.setEquipoDeComputo(equipo);
-            asignacion.setTrabajador(trabajador);
+            asignacion.setUsuario(Usuario);
             asignacion.setFechaEntrega(LocalDate.now());
 
             equipo.setEstado(EstadoEquipo.ASIGNADO);
@@ -128,9 +128,9 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
     }
 
     @Override
-    public List<AsignacionDTO> obtenerEquiposDeTrabajador(Long idTrabajador) {
+    public List<AsignacionDTO> obtenerEquiposDeUsuarios(Long idUsuario) {
 
-        if (idTrabajador == null) {
+        if (idUsuario == null) {
             throw new IllegalArgumentException("ID inválido");
         }
 
@@ -138,17 +138,16 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
 
             configurar(em);
 
-            if (daoTrabajador.buscarPorId(idTrabajador) == null) {
+            if (daoUsuario.buscarPorId(idUsuario) == null) {
                 throw new RecursoNoEncontradoException(
-                        "Trabajador no encontrado");
+                        "Usuario no encontrado");
             }
 
             List<EquipoAsignado> asignaciones
-                    = daoAsignacion.buscarPorTrabajadorActivo(idTrabajador);
+                    = daoAsignacion.buscarPorUsuarioActivo(idUsuario);
 
             return MapperAsignacion.converter
                     .mapToDtoList(asignaciones);
         });
     }
-
 }

@@ -13,6 +13,7 @@ public class PuestoDTO {
     private String nombre;
     private Long idDepartamento;
     private String nombreDepartamento;
+    private Long version;
 
     public PuestoDTO() {
     }
@@ -47,6 +48,14 @@ public class PuestoDTO {
 
     public void setNombreDepartamento(String nombreDepartamento) {
         this.nombreDepartamento = nombreDepartamento;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     @Override

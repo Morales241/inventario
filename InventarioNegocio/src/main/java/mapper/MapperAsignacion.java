@@ -7,7 +7,7 @@ import Entidades.EquipoAsignado;
  * Mapeador para transformaciones entre la entidad EquipoAsignado y su DTO.
  * <p>
  * Convierte los registros de asignaciones/préstamos de equipos entre entidadesy
- * DTO, incluyendo información transformada del trabajador y el equipo para
+ * DTO, incluyendo información transformada del Usuario y el equipo para
  * presentación.
  * </p>
  */
@@ -22,14 +22,19 @@ public class MapperAsignacion {
                         dto.setFechaEntrega(entity.getFechaEntrega());
                         dto.setFechaDevolucion(entity.getFechaDevolucion());
 
-                        if (entity.getTrabajador() != null) {
-                            dto.setIdTrabajador(entity.getTrabajador().getIdTrabajador());
-                            dto.setNombreTrabajador(entity.getTrabajador().getNombre());
+                        if (entity.getUsuario()!= null) {
+                            dto.setIdUsuario(entity.getUsuario().getIdUsuario());
+                            dto.setNombreUsuario(entity.getUsuario().getNombre());
                         }
 
                         if (entity.getEquipoDeComputo() != null) {
                             dto.setIdEquipo(entity.getEquipoDeComputo().getId());
                             dto.setIdentificadorEquipo(entity.getEquipoDeComputo().getIndetificador());
+                        }
+                        
+                        if (entity.getVersion() != null) {
+                            dto.setVersion(entity.getVersion());
+                            
                         }
 
                         return dto;
@@ -40,7 +45,12 @@ public class MapperAsignacion {
                         entity.setId(dto.getId());
                         entity.setFechaEntrega(dto.getFechaEntrega());
                         entity.setFechaDevolucion(dto.getFechaDevolucion());
-
+                        
+                        if (dto.getVersion() != null) {
+                            entity.setVersion(dto.getVersion());
+                            
+                        }
+                        
                         return entity;
                     }
             );

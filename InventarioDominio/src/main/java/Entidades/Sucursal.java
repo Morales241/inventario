@@ -19,7 +19,7 @@ import java.util.List;
  * @author JMorales
  */
 @Entity
-@Table(name = "Sucursal")
+@Table(name = "Sucursales")
 public class Sucursal extends AuditoriaBase implements Serializable {
 
     private static final long serialVersionUID = 1L;

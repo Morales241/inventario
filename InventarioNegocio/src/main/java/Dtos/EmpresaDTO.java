@@ -12,6 +12,7 @@ public class EmpresaDTO {
     private Long id;
     private String nombre;
     private Integer totalSucursales;
+    private Long version;
 
     public EmpresaDTO() {
     }
@@ -38,6 +39,14 @@ public class EmpresaDTO {
 
     public void setTotalSucursales(Integer totalSucursales) {
         this.totalSucursales = totalSucursales;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "EquipoDeComputo")
+@Table(name = "EquiposDeComputo")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TipoEquipo", discriminatorType = DiscriminatorType.STRING)
 public class EquipoDeComputo extends AuditoriaBase implements Serializable{
@@ -69,7 +69,7 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable{
                 .anyMatch(EquipoAsignado::estaActiva);
     }
 
-    public void asignarA(Trabajador trabajador) {
+    public void asignarA(Usuario trabajador) {
         if (tieneAsignacionActiva()) {
             throw new IllegalStateException("El equipo ya está asignado.");
         }

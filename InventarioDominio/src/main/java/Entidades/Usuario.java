@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.ArrayList;
 
 @Entity
-@Table(name = "Trabajador")
-public class Trabajador extends AuditoriaBase implements Serializable {
+@Table(name = "Usuarios")
+public class Usuario extends AuditoriaBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id_Trabajador")
-    private Long idTrabajador;
+    @Column(name = "Id_Usuario")
+    private Long idUsuario;
 
     @Column(name = "Nombre", nullable = false)
     private String nombre;
@@ -31,13 +31,13 @@ public class Trabajador extends AuditoriaBase implements Serializable {
     private Long version;
 
     @Column(name = "EquiposAsignados")
-    @OneToMany(mappedBy = "trabajador")
+    @OneToMany(mappedBy = "Usuario")
     private List<EquipoAsignado> equiposAsignados;
 
     @Column(name = "Activo", nullable = false)
     private Boolean activo = true;
 
-    public Trabajador(String nombre, String noNomina, Puesto puesto, Boolean activo) {
+    public Usuario(String nombre, String noNomina, Puesto puesto, Boolean activo) {
         this.nombre = nombre;
         this.puesto = puesto;
         this.activo = activo;
@@ -45,7 +45,7 @@ public class Trabajador extends AuditoriaBase implements Serializable {
         this.equiposAsignados = new ArrayList<>();
     }
 
-    public Trabajador() {
+    public Usuario() {
         this.equiposAsignados = new ArrayList<>();
     }
 
@@ -57,12 +57,12 @@ public class Trabajador extends AuditoriaBase implements Serializable {
         this.activo = activo;
     }
 
-    public Long getIdTrabajador() {
-        return idTrabajador;
+    public Long getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setIdTrabajador(Long idTrabajador) {
-        this.idTrabajador = idTrabajador;
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNombre() {

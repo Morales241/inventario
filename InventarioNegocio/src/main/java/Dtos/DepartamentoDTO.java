@@ -11,6 +11,7 @@ public class DepartamentoDTO {
 
     private Long id;
     private String nombre;
+    private Long version;
 
     private Long idSucursal;
     private String nombreSucursal; 
@@ -48,6 +49,14 @@ public class DepartamentoDTO {
 
     public void setNombreSucursal(String nombreSucursal) {
         this.nombreSucursal = nombreSucursal;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     @Override
