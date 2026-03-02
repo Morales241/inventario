@@ -18,6 +18,7 @@ public class UsuarioDTO {
     private Long version;
     private Long idPuesto;
     private String nombrePuesto;
+    private int numeroDeEquipos;
 
     public UsuarioDTO() {
     }
@@ -76,6 +77,14 @@ public class UsuarioDTO {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public int getNumeroDeEquipos() {
+        return numeroDeEquipos;
+    }
+
+    public void setNumeroDeEquipos(int numeroDeEquipos) {
+        this.numeroDeEquipos = numeroDeEquipos;
     }
 
     @Override

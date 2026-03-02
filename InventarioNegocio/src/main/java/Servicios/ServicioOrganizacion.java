@@ -335,4 +335,9 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
             return null;
         });
     }
+
+    @Override
+    public PuestoDTO buscarPuestoEspecifico(Long id) {
+        return MapperEstructura.puesto.mapToDto(daoPuesto.buscarPorId(id));
+    }
 }

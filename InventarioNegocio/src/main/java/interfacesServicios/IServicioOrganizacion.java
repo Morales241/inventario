@@ -39,4 +39,7 @@ public interface IServicioOrganizacion {
     public PuestoDTO guardarPuesto(PuestoDTO dto);
 
     public void eliminarPuesto(Long id);
+    
+    public PuestoDTO buscarPuestoEspecifico(Long id);
+    
 }

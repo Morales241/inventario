@@ -101,4 +101,10 @@ public interface IFachadaOrganizacion {
      * @throws Exception Si tiene referencias o no existe.
      */
     public void eliminarPuesto(Long id) throws Exception;
+    
+    /**
+     * Busca un puesto en especifico por su identificador
+     * @param id Identificador del puesto.
+     */
+    public PuestoDTO buscarPuestoEspecifico(Long id);
 }

@@ -102,7 +102,7 @@ public class MenuController implements Initializable {
         switch (opcion) {
             case "DashBoard" -> cambiarDePantalla(null, "Dashboard", "Resumen general del inventario de TI");
             case "Inventario" -> cambiarDePantalla("/com/mycompany/inventariofrontfx/inventario/Inventario.fxml", "Inventario", "Gestión de equipos de TI");
-            case "Colaboradores" -> cambiarDePantalla(null, "Colaboradores", "Gestión de colaboradores y personal");
+            case "Colaboradores" -> cambiarDePantalla("/com/mycompany/inventariofrontfx/colaboradores/Colaboradores.fxml", "Colaboradores", "Gestión de colaboradores y personal");
             case "Asignaciones" -> cambiarDePantalla(null, "Asignación de Equipo", "Asignar equipos a trabajadores");
             case "Organización" -> cambiarDePantalla(null, "Estructura Organizacional", "Gestión de empresas, sucursales, departamentos y puestos");
             case "Usuarios" -> cambiarDePantalla(null, "Usuarios del Sistema", "Gestión de administradores, técnicos y operarios");

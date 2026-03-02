@@ -68,15 +68,28 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
     @Override
     public List<UsuarioDTO> buscarUsuarios(String criterioGlobal) {
 
-        String criterio
-                = (criterioGlobal != null) ? criterioGlobal.trim() : "";
+        String criterio = (criterioGlobal != null) ? criterioGlobal.trim() : "";
+
+        String primerParametro = null;
+        String segundoParametro = null;
+
+        if (!criterio.isEmpty()) {
+            boolean tieneNumeros = criterio.matches(".*\\d.*");
+            if (tieneNumeros) {
+                segundoParametro = criterio;
+            } else {
+                primerParametro = criterio;
+            }
+        }
+
+        final String nombreFiltro = primerParametro;
+        final String numeroFiltro = segundoParametro;
 
         return ejecutarLectura(em -> {
             configurar(em);
 
             return MapperUsuario.converter.mapToDtoList(
-                    daoUsuario.busquedaConFiltros(
-                            criterio, criterio, criterio));
+                    daoUsuario.busquedaConFiltros(nombreFiltro, numeroFiltro, null));
         });
     }
 

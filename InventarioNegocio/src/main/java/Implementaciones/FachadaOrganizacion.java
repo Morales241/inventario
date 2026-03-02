@@ -95,4 +95,9 @@ public class FachadaOrganizacion implements IFachadaOrganizacion {
     public void eliminarPuesto(Long id) {
         servicioOrganizacion.eliminarPuesto(id);
     }
+
+    @Override
+    public PuestoDTO buscarPuestoEspecifico(Long id) {
+        return servicioOrganizacion.buscarPuestoEspecifico(id);
+    }
 }
