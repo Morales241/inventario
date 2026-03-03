@@ -60,7 +60,7 @@ public class DaoPuesto extends DaoGenerico<Puesto, Long> implements IDaoPuesto {
         }
 
         cq.select(root)
-                .where(predicados.toArray(new Predicate[0]));
+                .where(predicados.toArray(Predicate[]::new));
 
         return em.createQuery(cq).getResultList();
     }

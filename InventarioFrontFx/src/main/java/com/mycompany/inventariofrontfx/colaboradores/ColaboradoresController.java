@@ -1,8 +1,10 @@
 package com.mycompany.inventariofrontfx.colaboradores;
 
+import Dtos.EmpresaDTO;
 import Dtos.EquipoBaseDTO;
 import Dtos.PuestoDTO;
 import Dtos.UsuarioDTO;
+import Enums.CondicionFisica;
 import InterfacesFachada.IFachadaOrganizacion;
 import InterfacesFachada.IFachadaPersonas;
 import InterfacesFachada.IFachadaPrestamos;
@@ -25,6 +27,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -54,7 +57,14 @@ public class ColaboradoresController implements Initializable {
     private TableColumn<UsuarioDTO, String> colPuesto;
     @FXML
     private TableColumn<UsuarioDTO, Integer> colEquiposAsignados;
-    ;
+    @FXML
+    private TextField txtNomina;
+    @FXML
+    private TextField txtNombre;
+    @FXML
+    private ComboBox<EmpresaDTO> cbxEmpresa;
+    @FXML
+    private ComboBox<PuestoDTO> cbxPuesto;
     @FXML
     private TableColumn<UsuarioDTO, Void> colAcciones;
 
@@ -68,6 +78,10 @@ public class ColaboradoresController implements Initializable {
 
     private final IFachadaOrganizacion fachadaOrganizacion
             = FabricaFachadas.getFachadaOrganizacion();
+    
+    private ObservableList<EmpresaDTO> empresas;
+    
+    private ObservableList<PuestoDTO> puestos;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -173,6 +187,14 @@ public class ColaboradoresController implements Initializable {
         });
 
         tablaColaboradores.setItems(listaColaboradores);
+        
+        empresas = FXCollections.observableArrayList(fachadaOrganizacion.listarEmpresas(null));
+        
+        puestos = FXCollections.observableArrayList(fachadaOrganizacion.listarPuestos(null));
+        
+        cbxEmpresa.setItems(empresas);
+        
+        cbxPuesto.setItems(puestos);
     }
 
     private void configurarFiltroReactivo() {
@@ -233,12 +255,35 @@ public class ColaboradoresController implements Initializable {
                 });
     }
 
-    private void cargarEquipoParaEditar(UsuarioDTO usuario) {
+    private void cargarColaboradorParaEditar(UsuarioDTO usuario) {
 
     }
 
     @FXML
-    private void agregarEquipo() throws IOException {
+    private void agregarColaborador() throws IOException, Exception {
+        
+        UsuarioDTO usuario = guardarColaborador();
+        
+        fachadaColaborador.guardarUsuario(usuario);
+        
+        limpiarFormulario();
+    }
+    
+    private UsuarioDTO guardarColaborador(){
+        UsuarioDTO usuario = new UsuarioDTO();
+        usuario.setActivo(Boolean.TRUE);
+        usuario.setNombre(txtNombre.getText());
+        usuario.setNoNomina(txtNomina.getText());
+        usuario.setIdPuesto(cbxPuesto.getSelectionModel().getSelectedItem().getId());
+        
+        return usuario;
+    }
+    
+    private void limpiarFormulario(){
+    
+        txtNombre.setText("");
+        txtNomina.setText("");
+        
         cargarDatos();
     }
 }
