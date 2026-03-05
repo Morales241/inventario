@@ -1,7 +1,9 @@
 package Dao;
 
 import Entidades.Departamento;
+import Entidades.Empresa;
 import Entidades.Puesto;
+import Entidades.Sucursal;
 import Interfaces.IDaoPuesto;
 import conexion.Conexion;
 import jakarta.persistence.EntityManager;
@@ -56,6 +58,37 @@ public class DaoPuesto extends DaoGenerico<Puesto, Long> implements IDaoPuesto {
 
             predicados.add(
                     cb.equal(join.get("id"), idDepartamento)
+            );
+        }
+
+        cq.select(root)
+                .where(predicados.toArray(Predicate[]::new));
+
+        return em.createQuery(cq).getResultList();
+    }
+
+    @Override
+    public List<Puesto> busquedaPorEmpresa(Long idEmpresa) {
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Puesto> cq = cb.createQuery(Puesto.class);
+        Root<Puesto> root = cq.from(Puesto.class);
+
+        List<Predicate> predicados = new ArrayList<>();
+
+        if (idEmpresa != null) {
+
+            Join<Puesto, Departamento> joinDepartamento
+                    = root.join("departamento");
+
+            Join<Departamento, Sucursal> joinSucursal
+                    = joinDepartamento.join("sucursal");
+
+            Join<Sucursal, Empresa> joinEmpresa
+                    = joinSucursal.join("empresa");
+
+            predicados.add(
+                    cb.equal(joinEmpresa.get("id"), idEmpresa)
             );
         }
 

@@ -377,4 +377,39 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
         });
     }
 
+    @Override
+    public List<PuestoDTO> busquedaPorEmpresa(Long id) {
+        return ejecutarTransaccion(em -> {
+            configurarEntityManager(em);
+
+            if (id == null || id <= 0) {
+                throw new IllegalArgumentException("Id inválido");
+            }
+
+            Empresa existente = daoEmpresa.buscarPorId(id);
+            if (existente == null) {
+                throw new RecursoNoEncontradoException("Empresa no encontrada");
+            }
+
+            return MapperEstructura.puesto.mapToDtoList(daoPuesto.busquedaPorEmpresa(id));
+        });
+    }
+
+    @Override
+    public EmpresaDTO buscarEmpresaPorPuesto(Long id) {
+        return ejecutarTransaccion(em -> {
+            configurarEntityManager(em);
+
+            if (id == null || id <= 0) {
+                throw new IllegalArgumentException("Id inválido");
+            }
+
+            Empresa existente = daoEmpresa.buscarEmpresaPorPuesto(id);
+            if (existente == null) {
+                throw new RecursoNoEncontradoException("Empresa no encontrada");
+            }
+
+            return MapperEstructura.empresa.mapToDto(existente);
+        });
+    }
 }

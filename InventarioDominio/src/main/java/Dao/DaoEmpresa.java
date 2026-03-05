@@ -1,19 +1,24 @@
 package Dao;
 
+import Entidades.Departamento;
 import Entidades.Empresa;
+import Entidades.Puesto;
+import Entidades.Sucursal;
 import Interfaces.IDaoEmpresa;
 import conexion.Conexion;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.List;
 
 /**
- * Implementación del DAO para la entidad {@link Empresa}.
- * Proporciona métodos para la búsqueda de empresas por nombre exacto o coincidencias parciales.
+ * Implementación del DAO para la entidad {@link Empresa}. Proporciona métodos
+ * para la búsqueda de empresas por nombre exacto o coincidencias parciales.
+ *
  * * @author JMorales
  */
 public class DaoEmpresa extends DaoGenerico<Empresa, Long> implements IDaoEmpresa {
@@ -30,7 +35,7 @@ public class DaoEmpresa extends DaoGenerico<Empresa, Long> implements IDaoEmpres
         Root<Empresa> root = cq.from(Empresa.class);
 
         cq.select(root)
-          .where(cb.equal(cb.lower(root.get("nombre")), nombre.toLowerCase()));
+                .where(cb.equal(cb.lower(root.get("nombre")), nombre.toLowerCase()));
 
         List<Empresa> resultados = em.createQuery(cq).getResultList();
         return resultados.isEmpty() ? null : resultados.get(0);
@@ -44,9 +49,30 @@ public class DaoEmpresa extends DaoGenerico<Empresa, Long> implements IDaoEmpres
         Root<Empresa> root = cq.from(Empresa.class);
 
         cq.select(root)
-          .where(cb.like(cb.lower(root.get("nombre")),
-                "%" + cadena.toLowerCase() + "%"));
+                .where(cb.like(cb.lower(root.get("nombre")),
+                        "%" + cadena.toLowerCase() + "%"));
 
         return em.createQuery(cq).getResultList();
+    }
+
+    @Override
+    public Empresa buscarEmpresaPorPuesto(Long idPuesto) {
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Empresa> cq = cb.createQuery(Empresa.class);
+
+        Root<Puesto> root = cq.from(Puesto.class);
+
+        Join<Puesto, Departamento> d = root.join("departamento");
+        Join<Departamento, Sucursal> s = d.join("sucursal");
+        Join<Sucursal, Empresa> e = s.join("empresa");
+
+        cq.select(e)
+                .where(cb.equal(root.get("id"), idPuesto))
+                .distinct(true);
+
+        Empresa resultado = em.createQuery(cq).getSingleResult();
+
+        return resultado;
     }
 }

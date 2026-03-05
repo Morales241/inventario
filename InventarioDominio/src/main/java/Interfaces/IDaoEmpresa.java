@@ -11,4 +11,6 @@ public interface IDaoEmpresa extends IDaoGenerico<Empresa, Long>{
     public Empresa buscarPorNombre(String nombre);
     
     public List<Empresa> buscarPorCoincidencias(String cadena);
+    
+    public Empresa buscarEmpresaPorPuesto(Long idPuesto);
 }

@@ -100,4 +100,14 @@ public class FachadaOrganizacion implements IFachadaOrganizacion {
     public PuestoDTO buscarPuestoEspecifico(Long id) {
         return servicioOrganizacion.buscarPuestoEspecifico(id);
     }
+
+    @Override
+    public List<PuestoDTO> busquedaPorEmpresa(Long idEmpresa) {
+        return servicioOrganizacion.busquedaPorEmpresa(idEmpresa);
+    }
+
+    @Override
+    public EmpresaDTO buscarEmpresaPorPuesto(Long id) {
+        return servicioOrganizacion.buscarEmpresaPorPuesto(id);
+    }
 }

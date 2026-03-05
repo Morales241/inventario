@@ -33,7 +33,7 @@ public class MenuController implements Initializable {
     @FXML
     private ToggleButton btnInventario;
     @FXML
-    private ToggleButton btnColaboradores;
+    private ToggleButton btnUsuarios;
     @FXML
     private ToggleButton btnAsignaciones;
     @FXML
@@ -41,7 +41,7 @@ public class MenuController implements Initializable {
     @FXML
     private ToggleButton btnConfiguracion;
     @FXML
-    private ToggleButton btnUsuarios;
+    private ToggleButton btnCuentas;
     @FXML
     private ToggleButton btnAuditoria;
     @FXML
@@ -76,11 +76,11 @@ public class MenuController implements Initializable {
     private void colocarIconos() {
         btnDashBoard.setGraphic(crearIcono("fas-chart-line"));
         btnInventario.setGraphic(crearIcono("fas-boxes"));
-        btnColaboradores.setGraphic(crearIcono("fas-users"));
+        btnUsuarios.setGraphic(crearIcono("fas-users"));
         btnAsignaciones.setGraphic(crearIcono("fas-clipboard-list"));
         btnOrganizacion.setGraphic(crearIcono("fas-sitemap"));
         btnConfiguracion.setGraphic(crearIcono("fas-cog"));
-        btnUsuarios.setGraphic(crearIcono("fas-user-circle"));
+        btnCuentas.setGraphic(crearIcono("fas-user-circle"));
         btnAuditoria.setGraphic(crearIcono("fas-eye"));
 
         menu.getToggles().forEach(toggle -> {
@@ -100,13 +100,20 @@ public class MenuController implements Initializable {
         System.out.println("Navegando a: " + opcion);
 
         switch (opcion) {
-            case "DashBoard" -> cambiarDePantalla(null, "Dashboard", "Resumen general del inventario de TI");
-            case "Inventario" -> cambiarDePantalla("/com/mycompany/inventariofrontfx/inventario/Inventario.fxml", "Inventario", "Gestión de equipos de TI");
-            case "Colaboradores" -> cambiarDePantalla("/com/mycompany/inventariofrontfx/colaboradores/Colaboradores.fxml", "Colaboradores", "Gestión de colaboradores y personal");
-            case "Asignaciones" -> cambiarDePantalla(null, "Asignación de Equipo", "Asignar equipos a trabajadores");
-            case "Organización" -> cambiarDePantalla(null, "Estructura Organizacional", "Gestión de empresas, sucursales, departamentos y puestos");
-            case "Usuarios" -> cambiarDePantalla(null, "Usuarios del Sistema", "Gestión de administradores, técnicos y operarios");
-            case "Auditoria" -> cambiarDePantalla(null, "Auditoría del Sistema", "Registro completo de movimientos y cambios");
+            case "DashBoard" ->
+                cambiarDePantalla(null, "Dashboard", "Resumen general del inventario de TI");
+            case "Inventario" ->
+                cambiarDePantalla("/com/mycompany/inventariofrontfx/inventario/Inventario.fxml", "Inventario", "Gestión de equipos de TI");
+            case "Usuarios" ->
+                cambiarDePantalla("/com/mycompany/inventariofrontfx/usuarios/Usuarios.fxml", "Usuarios", "Gestión de usuarios y personal");
+            case "Asignaciones" ->
+                cambiarDePantalla(null, "Asignación de Equipo", "Asignar equipos a trabajadores");
+            case "Organización" ->
+                cambiarDePantalla(null, "Estructura Organizacional", "Gestión de empresas, sucursales, departamentos y puestos");
+            case "Cuentas" ->
+                cambiarDePantalla(null, "Cuentas del Sistema", "Gestión de administradores, técnicos y operarios");
+            case "Auditoria" ->
+                cambiarDePantalla(null, "Auditoría del Sistema", "Registro completo de movimientos y cambios");
             default -> {
             }
         }
@@ -132,8 +139,9 @@ public class MenuController implements Initializable {
             }
 
         } catch (IOException e) {
-            System.out.println(Arrays.toString(e.getStackTrace()));
+            e.printStackTrace(); 
         }
+
     }
 
     public void cambiarDePantalla(String rutaFXML) throws IOException {
@@ -197,12 +205,12 @@ public class MenuController implements Initializable {
         this.btnInventario = btnInventario;
     }
 
-    public ToggleButton getBtnColaboradores() {
-        return btnColaboradores;
+    public ToggleButton getBtnUsuarios() {
+        return btnUsuarios;
     }
 
-    public void setBtnColaboradores(ToggleButton btnColaboradores) {
-        this.btnColaboradores = btnColaboradores;
+    public void setBtnUsuarios(ToggleButton btnUsuarios) {
+        this.btnUsuarios = btnUsuarios;
     }
 
     public ToggleButton getBtnAsignaciones() {
@@ -229,12 +237,12 @@ public class MenuController implements Initializable {
         this.btnConfiguracion = btnConfiguracion;
     }
 
-    public ToggleButton getBtnUsuarios() {
-        return btnUsuarios;
+    public ToggleButton getBtnCuentas() {
+        return btnCuentas;
     }
 
-    public void setBtnUsuarios(ToggleButton btnUsuarios) {
-        this.btnUsuarios = btnUsuarios;
+    public void setBtnCuentas(ToggleButton btnCuentas) {
+        this.btnCuentas = btnCuentas;
     }
 
     public ToggleButton getBtnAuditoria() {

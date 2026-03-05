@@ -1,10 +1,8 @@
-package com.mycompany.inventariofrontfx.colaboradores;
+package com.mycompany.inventariofrontfx.usuarios;
 
 import Dtos.EmpresaDTO;
-import Dtos.EquipoBaseDTO;
 import Dtos.PuestoDTO;
 import Dtos.UsuarioDTO;
-import Enums.CondicionFisica;
 import InterfacesFachada.IFachadaOrganizacion;
 import InterfacesFachada.IFachadaPersonas;
 import InterfacesFachada.IFachadaPrestamos;
@@ -14,16 +12,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -33,9 +29,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
@@ -43,16 +37,18 @@ import org.kordamp.ikonli.javafx.FontIcon;
  *
  * @author tacot
  */
-public class ColaboradoresController implements Initializable {
+public class UsuariosController implements Initializable {
 
     @FXML
     private TextField txtFiltro;
     @FXML
-    private TableView<UsuarioDTO> tablaColaboradores;
+    private TableView<UsuarioDTO> tablaUsuarios;
     @FXML
     private TableColumn<UsuarioDTO, Long> colId;
     @FXML
     private TableColumn<UsuarioDTO, String> colNombre;
+    @FXML
+    private TableColumn<UsuarioDTO, String> colNoNomina;
     @FXML
     private TableColumn<UsuarioDTO, String> colPuesto;
     @FXML
@@ -65,12 +61,19 @@ public class ColaboradoresController implements Initializable {
     private ComboBox<EmpresaDTO> cbxEmpresa;
     @FXML
     private ComboBox<PuestoDTO> cbxPuesto;
+
     @FXML
     private TableColumn<UsuarioDTO, Void> colAcciones;
 
-    private ObservableList<UsuarioDTO> listaColaboradores;
+    private Long idUsuarioEditando;
 
-    private final IFachadaPersonas fachadaColaborador
+    private Boolean modoEdicion;
+
+    private long version;
+
+    private ObservableList<UsuarioDTO> listaUsuarios;
+
+    private final IFachadaPersonas fachadaUsuario
             = FabricaFachadas.getFachadaPersonas();
 
     private final IFachadaPrestamos fachadaPrestamos
@@ -78,9 +81,9 @@ public class ColaboradoresController implements Initializable {
 
     private final IFachadaOrganizacion fachadaOrganizacion
             = FabricaFachadas.getFachadaOrganizacion();
-    
+
     private ObservableList<EmpresaDTO> empresas;
-    
+
     private ObservableList<PuestoDTO> puestos;
 
     @Override
@@ -100,6 +103,9 @@ public class ColaboradoresController implements Initializable {
         colNombre.setCellValueFactory(data
                 -> new SimpleObjectProperty<>(data.getValue().getNombre()));
 
+        colNoNomina.setCellValueFactory(data
+                -> new SimpleObjectProperty<>(data.getValue().getNoNomina()));
+
         colPuesto.setCellValueFactory(data
                 -> new SimpleObjectProperty<>(data.getValue().getNombrePuesto()));
 
@@ -111,49 +117,37 @@ public class ColaboradoresController implements Initializable {
 
         colAcciones.setCellFactory(col -> new TableCell<>() {
 
-            private final FontIcon viewIcon = new FontIcon("fas-eye");
             private final FontIcon editIcon = new FontIcon("fas-edit");
             private final FontIcon deleteIcon = new FontIcon("fas-trash");
 
-            private final Button btnVer = new Button("", viewIcon);
             private final Button btnEditar = new Button("", editIcon);
             private final Button btnEliminar = new Button("", deleteIcon);
 
-            private final HBox container = new HBox(8, btnVer, btnEditar, btnEliminar);
+            private final HBox container = new HBox(8, btnEditar, btnEliminar);
 
             {
-                viewIcon.setIconSize(16);
                 editIcon.setIconSize(16);
                 deleteIcon.setIconSize(16);
 
-                btnVer.getStyleClass().add("btn-ver");
                 btnEditar.getStyleClass().add("btn-editar");
                 btnEliminar.getStyleClass().add("btn-eliminar");
 
-                Tooltip.install(btnVer, new Tooltip("Ver detalles"));
                 Tooltip.install(btnEditar, new Tooltip("Editar equipo"));
                 Tooltip.install(btnEliminar, new Tooltip("Eliminar equipo"));
 
                 container.setAlignment(Pos.CENTER);
 
-                btnVer.setOnAction(e -> {
-                    UsuarioDTO usuario = getTableRow().getItem();
-                    if (usuario != null) {
-//                        visualizarEquipo(equipo);
-                    }
-                });
-
                 btnEditar.setOnAction(e -> {
                     UsuarioDTO usuario = getTableRow().getItem();
                     if (usuario != null) {
-//                        cargarEquipoParaEditar(usuario);
+                        cargarUsuarioParaEditar(usuario);
                     }
                 });
 
                 btnEliminar.setOnAction(e -> {
                     UsuarioDTO usuario = getTableRow().getItem();
                     if (usuario != null) {
-//                        confirmarEliminacion(usuario);
+                        confirmarEliminacion(usuario);
                     }
                 });
             }
@@ -172,11 +166,14 @@ public class ColaboradoresController implements Initializable {
     }
 
     private void cargarDatos() {
-        listaColaboradores = FXCollections.observableArrayList(
-                fachadaColaborador.buscarUsuarios(null)
+        listaUsuarios = FXCollections.observableArrayList(
+                fachadaUsuario.buscarUsuarios(null)
+                        .stream()
+                        .filter(UsuarioDTO::getActivo)
+                        .collect(Collectors.toList())
         );
 
-        listaColaboradores.forEach(c -> {
+        listaUsuarios.forEach(c -> {
 
             int numeroEquipos = fachadaPrestamos.obtenerEquiposDeUsuarios(c.getId()).size();
 
@@ -186,24 +183,45 @@ public class ColaboradoresController implements Initializable {
             c.setNombrePuesto(nombrePuesto);
         });
 
-        tablaColaboradores.setItems(listaColaboradores);
-        
+        tablaUsuarios.setItems(listaUsuarios);
+
         empresas = FXCollections.observableArrayList(fachadaOrganizacion.listarEmpresas(null));
-        
-        puestos = FXCollections.observableArrayList(fachadaOrganizacion.listarPuestos(null));
-        
+
         cbxEmpresa.setItems(empresas);
-        
-        cbxPuesto.setItems(puestos);
+
+        cbxEmpresa.getSelectionModel().selectFirst();
+
+        onAccionCbxEmpresa();
+
+        cbxEmpresa.setOnAction(e -> onAccionCbxEmpresa());
+    }
+
+    private void onAccionCbxEmpresa() {
+        Long id = cbxEmpresa.getSelectionModel().getSelectedItem().getId();
+
+        if (id != null) {
+
+            puestos = FXCollections.observableArrayList(fachadaOrganizacion.busquedaPorEmpresa(id));
+
+            if (puestos != null && puestos.size() > 0) {
+
+                cbxPuesto.setItems(puestos);
+
+                cbxPuesto.setDisable(false);
+            } else {
+
+                cbxPuesto.setDisable(true);
+            }
+        }
     }
 
     private void configurarFiltroReactivo() {
         txtFiltro.textProperty().addListener((obs, oldValue, newValue) -> {
-            aplicarFiltro(newValue);
+            aplicarFiltro();
         });
     }
 
-    private void aplicarFiltro(String texto) {
+    private void aplicarFiltro() {
         cargarDatosAsync();
     }
 
@@ -213,20 +231,23 @@ public class ColaboradoresController implements Initializable {
             @Override
             protected List<UsuarioDTO> call() {
 
-                return fachadaColaborador.buscarUsuarios(txtFiltro.getText());
+                return fachadaUsuario.buscarUsuarios(txtFiltro.getText())
+                        .stream()
+                        .filter(UsuarioDTO::getActivo)
+                        .collect(Collectors.toList());
 
             }
         };
 
-        tablaColaboradores.setDisable(true);
+        tablaUsuarios.setDisable(true);
 
         task.setOnSucceeded(e -> {
-            tablaColaboradores.getItems().setAll(task.getValue());
-            tablaColaboradores.setDisable(false);
+            tablaUsuarios.getItems().setAll(task.getValue());
+            tablaUsuarios.setDisable(false);
         });
 
         task.setOnFailed(e -> {
-            tablaColaboradores.setDisable(false);
+            tablaUsuarios.setDisable(false);
             task.getException().printStackTrace();
         });
 
@@ -237,7 +258,7 @@ public class ColaboradoresController implements Initializable {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmación");
-        alert.setHeaderText("Eliminar equipo");
+        alert.setHeaderText("Eliminar Usuario");
         alert.setContentText(
                 "¿Desea eliminar el Usuario: "
                 + usuario.getNombre() + "?");
@@ -247,7 +268,7 @@ public class ColaboradoresController implements Initializable {
                 .ifPresent(b -> {
 
                     try {
-                        fachadaColaborador.cambiarEstadoUsuario(Long.MIN_VALUE, false);
+                        fachadaUsuario.cambiarEstadoUsuario(usuario.getId(), false);
                     } catch (Exception ex) {
                         System.getLogger(InventarioController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                     }
@@ -255,35 +276,79 @@ public class ColaboradoresController implements Initializable {
                 });
     }
 
-    private void cargarColaboradorParaEditar(UsuarioDTO usuario) {
+    private void cargarUsuarioParaEditar(UsuarioDTO usuario) {
 
+        modoEdicion = true;
+
+        idUsuarioEditando = usuario.getId();
+        version = usuario.getVersion();
+
+        txtNombre.setText(usuario.getNombre());
+        txtNomina.setText(usuario.getNoNomina());
+
+        EmpresaDTO empresa = fachadaOrganizacion.buscarEmpresaPorPuesto(usuario.getIdPuesto());
+
+        cbxEmpresa.getItems().stream()
+                .filter(e -> e.getId().equals(empresa.getId()))
+                .findFirst()
+                .ifPresent(e -> cbxEmpresa.getSelectionModel().select(e));
+
+        cbxEmpresa.getSelectionModel().selectFirst();
+
+        onAccionCbxEmpresa();
+
+        cbxPuesto.getItems().stream()
+                .filter(p -> p.getId().equals(usuario.getIdPuesto()))
+                .findFirst()
+                .ifPresent(p -> cbxPuesto.getSelectionModel().select(p));
     }
 
     @FXML
-    private void agregarColaborador() throws IOException, Exception {
-        
-        UsuarioDTO usuario = guardarColaborador();
-        
-        fachadaColaborador.guardarUsuario(usuario);
-        
+    private void guardarUsuario() throws Exception {
+
+        UsuarioDTO usuario = construirUsuario();
+
+        fachadaUsuario.guardarUsuario(usuario);
+
+        modoEdicion = false;
+        idUsuarioEditando = null;
+        version = 0L;
+
         limpiarFormulario();
     }
-    
-    private UsuarioDTO guardarColaborador(){
+
+    private UsuarioDTO construirUsuario() {
+
         UsuarioDTO usuario = new UsuarioDTO();
-        usuario.setActivo(Boolean.TRUE);
+
+        if (modoEdicion != null && modoEdicion) {
+            usuario.setId(idUsuarioEditando);
+            usuario.setVersion(version);
+        } else {
+            usuario.setActivo(Boolean.TRUE);
+        }
+
         usuario.setNombre(txtNombre.getText());
         usuario.setNoNomina(txtNomina.getText());
-        usuario.setIdPuesto(cbxPuesto.getSelectionModel().getSelectedItem().getId());
-        
+        usuario.setIdPuesto(
+                cbxPuesto.getSelectionModel().getSelectedItem().getId()
+        );
+
         return usuario;
     }
-    
-    private void limpiarFormulario(){
-    
-        txtNombre.setText("");
-        txtNomina.setText("");
-        
+
+    private void limpiarFormulario() {
+
+        txtNombre.clear();
+        txtNomina.clear();
+
+        cbxEmpresa.getSelectionModel().selectFirst();
+        onAccionCbxEmpresa();
+
+        modoEdicion = false;
+        idUsuarioEditando = null;
+        version = 0L;
+
         cargarDatos();
     }
 }

@@ -42,4 +42,7 @@ public interface IServicioOrganizacion {
     
     public PuestoDTO buscarPuestoEspecifico(Long id);
     
+    public List<PuestoDTO> busquedaPorEmpresa(Long idEmpresa);
+    
+    public EmpresaDTO buscarEmpresaPorPuesto(Long idPuesto);
 }

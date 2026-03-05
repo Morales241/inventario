@@ -107,4 +107,18 @@ public interface IFachadaOrganizacion {
      * @param id Identificador del puesto.
      */
     public PuestoDTO buscarPuestoEspecifico(Long id);
+    
+    /**
+     * Busca todos los puestos que tengan relación con el identificador de una empresa
+     * @param idEmpresa identificador de empresa
+     * @return lista de puestos
+     */
+    public List<PuestoDTO> busquedaPorEmpresa(Long idEmpresa);
+    
+    /**
+     * Busca una empresa especifica a travez del identificador de un puesto
+     * @param id identificador del puesto
+     * @return empresa especifica
+     */
+     public EmpresaDTO buscarEmpresaPorPuesto(Long id);
 }

@@ -75,7 +75,7 @@ public class DaoUsuario extends DaoGenerico<Usuario, Long> implements IDaoUsuari
 
         if (numero != null && !numero.isBlank()) {
             predicados.add(
-                cb.like(cb.lower(root.get("nomina")),
+                cb.like(cb.lower(root.get("noNomina")),
                         "%" + numero.toLowerCase() + "%")
             );
         }
