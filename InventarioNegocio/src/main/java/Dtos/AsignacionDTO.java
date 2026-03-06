@@ -22,7 +22,7 @@ public class AsignacionDTO {
     private String nombreUsuario;
 
     private Long idEquipo;
-    private String identificadorEquipo;
+    private String GRY;
 
     public AsignacionDTO() {
     }
@@ -76,11 +76,11 @@ public class AsignacionDTO {
     }
 
     public String getIdentificadorEquipo() {
-        return identificadorEquipo;
+        return GRY;
     }
 
-    public void setIdentificadorEquipo(String identificadorEquipo) {
-        this.identificadorEquipo = identificadorEquipo;
+    public void setIdentificadorEquipo(String GRY) {
+        this.GRY = GRY;
     }
 
     public Long getVersion() {
@@ -93,7 +93,7 @@ public class AsignacionDTO {
 
     @Override
     public String toString() {
-        return id + ".- fechaEntrega=" + fechaEntrega + ", fechaDevolucion=" + fechaDevolucion +  ", nombreUsuario=" + nombreUsuario + ", identificadorEquipo=" + identificadorEquipo;
+        return id + ".- fechaEntrega=" + fechaEntrega + ", fechaDevolucion=" + fechaDevolucion +  ", nombreUsuario=" + nombreUsuario + ", GRY=" + GRY;
     }
     
 }

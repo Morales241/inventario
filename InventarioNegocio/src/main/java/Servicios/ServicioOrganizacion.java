@@ -1,415 +1,494 @@
 package Servicios;
 
-import mapper.MapperEstructura;
 import Dao.*;
 import Dtos.*;
-import Entidades.Departamento;
-import Entidades.Empresa;
-import Entidades.Puesto;
-import Entidades.Sucursal;
+import Entidades.*;
 import excepciones.RecursoNoEncontradoException;
 import excepciones.ReglaNegocioException;
 import interfacesServicios.IServicioOrganizacion;
+import jakarta.persistence.EntityManager;
 import java.util.List;
+import mapper.Mapper;
+import mapper.MapperEstructura;
 
 /**
- * Servicio de lógica de negocio para la gestión de la estructura
- * organizacional.
+ * Servicio de lógica de negocio para la gestión de la estructura organizacional.
  * <p>
  * Coordina operaciones CRUD para empresas, sucursales, departamentos y puestos.
- * Implementa valiÚciones de integridad referencial para evitar eliminaciones en
+ * Implementa validaciones de integridad referencial para evitar eliminaciones en
  * cascada.
  * </p>
  */
 public class ServicioOrganizacion extends ServicioBase implements IServicioOrganizacion {
 
-    private final DaoEmpresa daoEmpresa;
-    private final DaoSucursal daoSucursal;
-    private final DaoDepartamento daoDepartamento;
-    private final DaoPuesto daoPuesto;
+    private final EmpresaServicio empresaServicio;
+    private final SucursalServicio sucursalServicio;
+    private final DepartamentoServicio departamentoServicio;
+    private final PuestoServicio puestoServicio;
 
     public ServicioOrganizacion() {
-        this.daoEmpresa = new DaoEmpresa();
-        this.daoSucursal = new DaoSucursal();
-        this.daoDepartamento = new DaoDepartamento();
-        this.daoPuesto = new DaoPuesto();
+        this.empresaServicio = new EmpresaServicio();
+        this.sucursalServicio = new SucursalServicio();
+        this.departamentoServicio = new DepartamentoServicio();
+        this.puestoServicio = new PuestoServicio();
     }
 
-    private void configurarEntityManager(jakarta.persistence.EntityManager em) {
-        daoEmpresa.setEntityManager(em);
-        daoSucursal.setEntityManager(em);
-        daoDepartamento.setEntityManager(em);
-        daoPuesto.setEntityManager(em);
-    }
-
-    // ========================= EMPRESAS =========================
+    // EMPRESAS 
     @Override
     public List<EmpresaDTO> listarEmpresas(String filtro) {
-
-        return ejecutarLectura(em -> {
-            configurarEntityManager(em);
-
-            if (filtro != null && !filtro.isBlank()) {
-                return MapperEstructura.empresa
-                        .mapToDtoList(daoEmpresa.buscarPorCoincidencias(filtro));
-            }
-
-            return MapperEstructura.empresa
-                    .mapToDtoList(daoEmpresa.buscarTodos());
-        });
+        if (filtro != null && !filtro.isBlank()) {
+            return empresaServicio.buscarConFiltro(filtro);
+        }
+        return empresaServicio.buscarTodos();
     }
 
     @Override
     public EmpresaDTO guardarEmpresa(EmpresaDTO dto) {
-
-        if (dto == null || dto.getNombre() == null || dto.getNombre().isBlank()) {
-            throw new ReglaNegocioException("El nombre de la empresa es obligatorio");
-        }
-
-        return ejecutarTransaccion(em -> {
-            configurarEntityManager(em);
-
-            Empresa entidad = MapperEstructura.empresa.mapToEntity(dto);
-
-            if (dto.getId() != null && dto.getId() > 0) {
-
-                Empresa existente = daoEmpresa.buscarPorId(dto.getId());
-                if (existente == null) {
-                    throw new RecursoNoEncontradoException("Empresa no encontrada");
-                }
-
-                entidad = daoEmpresa.actualizar(entidad);
-
-            } else {
-                entidad = daoEmpresa.guardar(entidad);
-            }
-
-            return MapperEstructura.empresa.mapToDto(entidad);
-        });
+        return empresaServicio.guardar(dto);
     }
 
     @Override
     public void eliminarEmpresa(Long id) {
-
-        if (id == null) {
-            throw new IllegalArgumentException("ID inválido");
-        }
-
-        ejecutarTransaccion(em -> {
-            configurarEntityManager(em);
-
-            Empresa empresa = daoEmpresa.buscarPorId(id);
-
-            if (empresa == null) {
-                throw new RecursoNoEncontradoException("Empresa no encontrada");
-            }
-
-            if (empresa.getSucursales() != null && !empresa.getSucursales().isEmpty()) {
-                throw new ReglaNegocioException(
-                        "No se puede eliminar una empresa con sucursales asociadas");
-            }
-
-            daoEmpresa.eliminar(id);
-            return null;
-        });
+        empresaServicio.eliminar(id);
     }
 
-    // ========================= SUCURSALES =========================
+    // SUCURSALES 
     @Override
     public List<SucursalDTO> listarSucursales(String filtro, Long idEmpresa) {
-
-        return ejecutarLectura(em -> {
-            configurarEntityManager(em);
-
-            String nombre = "";
-            String ubicacion = "";
-
-            if (filtro != null && !filtro.isBlank()) {
-                String[] partes = filtro.split(",");
-                nombre = partes.length > 0 ? partes[0].trim() : "";
-                ubicacion = partes.length > 1 ? partes[1].trim() : "";
-            }
-
-            return MapperEstructura.sucursal
-                    .mapToDtoList(daoSucursal.busquedaConFiltros(nombre, ubicacion, idEmpresa));
-        });
+        return sucursalServicio.listarConFiltros(filtro, idEmpresa);
     }
 
     @Override
     public SucursalDTO guardarSucursal(SucursalDTO dto) {
-
-        if (dto == null || dto.getNombre() == null || dto.getNombre().isBlank()) {
-            throw new ReglaNegocioException("El nombre de la sucursal es obligatorio");
-        }
-
-        if (dto.getIdEmpresa() == null) {
-            throw new ReglaNegocioException("Debe asociar la sucursal a una empresa");
-        }
-
-        return ejecutarTransaccion(em -> {
-            configurarEntityManager(em);
-
-            Empresa empresa = daoEmpresa.buscarPorId(dto.getIdEmpresa());
-            if (empresa == null) {
-                throw new RecursoNoEncontradoException("Empresa no encontrada");
-            }
-
-            Sucursal entidad = MapperEstructura.sucursal.mapToEntity(dto);
-            entidad.setEmpresa(empresa);
-
-            if (dto.getId() != null && dto.getId() > 0) {
-
-                Sucursal existente = daoSucursal.buscarPorId(dto.getId());
-                if (existente == null) {
-                    throw new RecursoNoEncontradoException("Sucursal no encontrada");
-                }
-
-                entidad = daoSucursal.actualizar(entidad);
-
-            } else {
-                entidad = daoSucursal.guardar(entidad);
-            }
-
-            return MapperEstructura.sucursal.mapToDto(entidad);
-        });
+        return sucursalServicio.guardar(dto);
     }
 
     @Override
     public void eliminarSucursal(Long id) {
-
-        if (id == null) {
-            throw new IllegalArgumentException("ID inválido");
-        }
-
-        ejecutarTransaccion(em -> {
-            configurarEntityManager(em);
-
-            Sucursal sucursal = daoSucursal.buscarPorId(id);
-
-            if (sucursal == null) {
-                throw new RecursoNoEncontradoException("Sucursal no encontrada");
-            }
-
-            if (sucursal.getDepartamentos() != null
-                    && !sucursal.getDepartamentos().isEmpty()) {
-                throw new ReglaNegocioException(
-                        "No se puede eliminar la sucursal: tiene departamentos asociados");
-            }
-
-            daoSucursal.eliminar(id);
-            return null;
-        });
+        sucursalServicio.eliminar(id);
     }
 
-    // ========================= DEPARTAMENTOS =========================
+    // DEPARTAMENTOS 
     @Override
     public List<DepartamentoDTO> listarDepartamentos(String nombre, Long idSucursal) {
-
-        return ejecutarLectura(em -> {
-            configurarEntityManager(em);
-
-            String filtro = nombre != null ? nombre : "";
-
-            return MapperEstructura.departamento
-                    .mapToDtoList(daoDepartamento.busquedaConFiltros(filtro, idSucursal));
-        });
+        return departamentoServicio.listarConFiltros(nombre, idSucursal);
     }
 
     @Override
     public DepartamentoDTO guardarDepartamento(DepartamentoDTO dto) {
-
-        if (dto == null || dto.getNombre() == null || dto.getNombre().isBlank()) {
-            throw new ReglaNegocioException("El nombre del departamento es obligatorio");
-        }
-
-        if (dto.getIdSucursal() == null) {
-            throw new ReglaNegocioException("Debe asociar el departamento a una sucursal");
-        }
-
-        return ejecutarTransaccion(em -> {
-            configurarEntityManager(em);
-
-            Sucursal sucursal = daoSucursal.buscarPorId(dto.getIdSucursal());
-            if (sucursal == null) {
-                throw new RecursoNoEncontradoException("Sucursal no encontrada");
-            }
-
-            Departamento entidad = MapperEstructura.departamento.mapToEntity(dto);
-            entidad.setSucursal(sucursal);
-
-            if (dto.getId() != null && dto.getId() > 0) {
-
-                Departamento existente = daoDepartamento.buscarPorId(dto.getId());
-                if (existente == null) {
-                    throw new RecursoNoEncontradoException("Departamento no encontrado");
-                }
-
-                entidad = daoDepartamento.actualizar(entidad);
-
-            } else {
-                entidad = daoDepartamento.guardar(entidad);
-            }
-
-            return MapperEstructura.departamento.mapToDto(entidad);
-        });
+        return departamentoServicio.guardar(dto);
     }
 
     @Override
     public void eliminarDepartamento(Long id) {
-
-        if (id == null) {
-            throw new IllegalArgumentException("ID inválido");
-        }
-
-        ejecutarTransaccion(em -> {
-            configurarEntityManager(em);
-
-            Departamento departamento = daoDepartamento.buscarPorId(id);
-
-            if (departamento == null) {
-                throw new RecursoNoEncontradoException("Departamento no encontrado");
-            }
-
-            if (departamento.getPuestos() != null
-                    && !departamento.getPuestos().isEmpty()) {
-                throw new ReglaNegocioException(
-                        "No se puede eliminar el departamento: tiene puestos asociados");
-            }
-
-            daoDepartamento.eliminar(id);
-            return null;
-        });
+        departamentoServicio.eliminar(id);
     }
 
-    // ========================= PUESTOS =========================
+    // PUESTOS
     @Override
     public List<PuestoDTO> listarPuestos(Long idDepartamento) {
-
-        return ejecutarLectura(em -> {
-            configurarEntityManager(em);
-            return MapperEstructura.puesto
-                    .mapToDtoList(daoPuesto.busquedaPorDepartamento(idDepartamento));
-        });
+        return puestoServicio.listarPorDepartamento(idDepartamento);
     }
 
     @Override
     public PuestoDTO guardarPuesto(PuestoDTO dto) {
-
-        if (dto == null || dto.getNombre() == null || dto.getNombre().isBlank()) {
-            throw new ReglaNegocioException("El nombre del puesto es obligatorio");
-        }
-
-        if (dto.getIdDepartamento() == null) {
-            throw new ReglaNegocioException("Debe asociar el puesto a un departamento");
-        }
-
-        return ejecutarTransaccion(em -> {
-            configurarEntityManager(em);
-
-            Departamento departamento = daoDepartamento.buscarPorId(dto.getIdDepartamento());
-            if (departamento == null) {
-                throw new RecursoNoEncontradoException("Departamento no encontrado");
-            }
-
-            Puesto entidad = MapperEstructura.puesto.mapToEntity(dto);
-            entidad.setDepartamento(departamento);
-
-            if (dto.getId() != null && dto.getId() > 0) {
-
-                Puesto existente = daoPuesto.buscarPorId(dto.getId());
-                if (existente == null) {
-                    throw new RecursoNoEncontradoException("Puesto no encontrado");
-                }
-
-                entidad = daoPuesto.actualizar(entidad);
-
-            } else {
-                entidad = daoPuesto.guardar(entidad);
-            }
-
-            return MapperEstructura.puesto.mapToDto(entidad);
-        });
+        return puestoServicio.guardar(dto);
     }
 
     @Override
     public void eliminarPuesto(Long id) {
-
-        if (id == null) {
-            throw new IllegalArgumentException("ID inválido");
-        }
-
-        ejecutarTransaccion(em -> {
-            configurarEntityManager(em);
-
-            Puesto puesto = daoPuesto.buscarPorId(id);
-
-            if (puesto == null) {
-                throw new RecursoNoEncontradoException("Puesto no encontrado");
-            }
-
-            if (puesto.getUsuarios() != null
-                    && !puesto.getUsuarios().isEmpty()) {
-                throw new ReglaNegocioException(
-                        "No se puede eliminar el puesto: tiene trabajadores asociados");
-            }
-
-            daoPuesto.eliminar(id);
-            return null;
-        });
+        puestoServicio.eliminar(id);
     }
 
     @Override
     public PuestoDTO buscarPuestoEspecifico(Long id) {
-
-        return ejecutarTransaccion(em -> {
-            configurarEntityManager(em);
-
-            if (id == null || id <= 0) {
-                throw new IllegalArgumentException("Id inválido");
-            }
-
-            Puesto existente = daoPuesto.buscarPorId(id);
-            if (existente == null) {
-                throw new RecursoNoEncontradoException("Puesto no encontrado");
-            }
-
-            return MapperEstructura.puesto.mapToDto(existente);
-        });
+        return puestoServicio.buscarPorId(id);
     }
 
     @Override
-    public List<PuestoDTO> busquedaPorEmpresa(Long id) {
-        return ejecutarTransaccion(em -> {
-            configurarEntityManager(em);
-
-            if (id == null || id <= 0) {
-                throw new IllegalArgumentException("Id inválido");
-            }
-
-            Empresa existente = daoEmpresa.buscarPorId(id);
-            if (existente == null) {
-                throw new RecursoNoEncontradoException("Empresa no encontrada");
-            }
-
-            return MapperEstructura.puesto.mapToDtoList(daoPuesto.busquedaPorEmpresa(id));
-        });
+    public List<PuestoDTO> busquedaPorEmpresa(Long idEmpresa) {
+        return puestoServicio.buscarPorEmpresa(idEmpresa);
     }
 
     @Override
-    public EmpresaDTO buscarEmpresaPorPuesto(Long id) {
-        return ejecutarTransaccion(em -> {
-            configurarEntityManager(em);
+    public EmpresaDTO buscarEmpresaPorPuesto(Long idPuesto) {
+        return empresaServicio.buscarPorPuesto(idPuesto);
+    }
 
-            if (id == null || id <= 0) {
-                throw new IllegalArgumentException("Id inválido");
+    // SERVICIOS INTERNOS ESPECÍFICOS 
+
+    /**
+     * Servicio genérico para Empresa
+     */
+    private class EmpresaServicio extends ServicioGenerico<Empresa, EmpresaDTO, Long> {
+        
+        private final DaoEmpresa dao;
+        
+        public EmpresaServicio() {
+            super(null, MapperEstructura.empresa, Empresa.class);
+            this.dao = new DaoEmpresa();
+        }
+        
+        @Override
+        protected void configurarEntityManager(EntityManager em) {
+            dao.setEntityManager(em);
+        }
+        
+        @Override
+        protected void validarNegocio(EmpresaDTO dto, boolean esNuevo) {
+            if (dto.getNombre() == null || dto.getNombre().isBlank()) {
+                throw new ReglaNegocioException("El nombre de la empresa es obligatorio");
             }
-
-            Empresa existente = daoEmpresa.buscarEmpresaPorPuesto(id);
-            if (existente == null) {
-                throw new RecursoNoEncontradoException("Empresa no encontrada");
+        }
+        
+        @Override
+        protected Long extraerId(EmpresaDTO dto) {
+            return dto.getId();
+        }
+        
+        @Override
+        protected void validarEliminacion(Empresa entidad) {
+            if (entidad.getSucursales() != null && !entidad.getSucursales().isEmpty()) {
+                throw new ReglaNegocioException(
+                    "No se puede eliminar una empresa con sucursales asociadas");
             }
+        }
+        
+        public List<EmpresaDTO> buscarConFiltro(String filtro) {
+            return ejecutarLectura(em -> {
+                configurarEntityManager(em);
+                return mapper.mapToDtoList(dao.buscarPorCoincidencias(filtro));
+            });
+        }
+        
+        /**
+         * Método específico: Buscar empresa por ID de puesto
+         */
+        public EmpresaDTO buscarPorPuesto(Long idPuesto) {
+            if (idPuesto == null) {
+                throw new IllegalArgumentException("ID de puesto inválido");
+            }
+            
+            return ejecutarLectura(em -> {
+                configurarEntityManager(em);
+                
+                Empresa empresa = dao.buscarEmpresaPorPuesto(idPuesto);
+                if (empresa == null) {
+                    throw new RecursoNoEncontradoException(
+                        "Empresa no encontrada para el puesto especificado");
+                }
+                
+                return mapper.mapToDto(empresa);
+            });
+        }
+    }
 
-            return MapperEstructura.empresa.mapToDto(existente);
-        });
+    /**
+     * Servicio genérico para Sucursal
+     */
+    private class SucursalServicio extends ServicioGenerico<Sucursal, SucursalDTO, Long> {
+        
+        private final DaoSucursal dao;
+        private final DaoEmpresa daoEmpresa;
+        
+        public SucursalServicio() {
+            super(null, MapperEstructura.sucursal, Sucursal.class);
+            this.dao = new DaoSucursal();
+            this.daoEmpresa = new DaoEmpresa();
+        }
+        
+        @Override
+        protected void configurarEntityManager(EntityManager em) {
+            dao.setEntityManager(em);
+            daoEmpresa.setEntityManager(em);
+        }
+        
+        @Override
+        protected void validarNegocio(SucursalDTO dto, boolean esNuevo) {
+            if (dto.getNombre() == null || dto.getNombre().isBlank()) {
+                throw new ReglaNegocioException("El nombre de la sucursal es obligatorio");
+            }
+            
+            if (dto.getIdEmpresa() == null) {
+                throw new ReglaNegocioException("Debe asociar la sucursal a una empresa");
+            }
+        }
+        
+        @Override
+        protected Long extraerId(SucursalDTO dto) {
+            return dto.getId();
+        }
+        
+        @Override
+        protected void validarEliminacion(Sucursal entidad) {
+            if (entidad.getDepartamentos() != null && !entidad.getDepartamentos().isEmpty()) {
+                throw new ReglaNegocioException(
+                    "No se puede eliminar la sucursal: tiene departamentos asociados");
+            }
+        }
+        
+        @Override
+        public SucursalDTO guardar(SucursalDTO dto) {
+            return ejecutarTransaccion(em -> {
+                configurarEntityManager(em);
+                
+                // Validar y obtener la empresa asociada
+                Empresa empresa = daoEmpresa.buscarPorId(dto.getIdEmpresa());
+                if (empresa == null) {
+                    throw new RecursoNoEncontradoException(
+                        "Empresa con ID " + dto.getIdEmpresa() + " no encontrada");
+                }
+                
+                // Mapear y establecer relaciones
+                Sucursal entidad = mapper.mapToEntity(dto);
+                entidad.setEmpresa(empresa);
+                
+                // Guardar o actualizar
+                if (dto.getId() != null && dto.getId() > 0) {
+                    // Verificar que existe
+                    Sucursal existente = dao.buscarPorId(dto.getId());
+                    if (existente == null) {
+                        throw new RecursoNoEncontradoException(
+                            "Sucursal con ID " + dto.getId() + " no encontrada");
+                    }
+                    entidad = dao.actualizar(entidad);
+                } else {
+                    entidad = dao.guardar(entidad);
+                }
+                
+                return mapper.mapToDto(entidad);
+            });
+        }
+       
+        public List<SucursalDTO> listarConFiltros(String filtro, Long idEmpresa) {
+            return ejecutarLectura(em -> {
+                configurarEntityManager(em);
+                
+                String nombre = "";
+                String ubicacion = "";
+                
+                if (filtro != null && !filtro.isBlank()) {
+                    String[] partes = filtro.split(",");
+                    nombre = partes.length > 0 ? partes[0].trim() : "";
+                    ubicacion = partes.length > 1 ? partes[1].trim() : "";
+                }
+                
+                return mapper.mapToDtoList(
+                    dao.busquedaConFiltros(nombre, ubicacion, idEmpresa));
+            });
+        }
+
+        @Override
+        public List<SucursalDTO> buscarConFiltro(String filtro) {
+            return null;
+        }
+    }
+
+    /**
+     * Servicio genérico para Departamento
+     */
+    private class DepartamentoServicio extends ServicioGenerico<Departamento, DepartamentoDTO, Long> {
+        
+        private final DaoDepartamento dao;
+        private final DaoSucursal daoSucursal;
+        
+        public DepartamentoServicio() {
+            super(null, MapperEstructura.departamento, Departamento.class);
+            this.dao = new DaoDepartamento();
+            this.daoSucursal = new DaoSucursal();
+        }
+        
+        @Override
+        protected void configurarEntityManager(EntityManager em) {
+            dao.setEntityManager(em);
+            daoSucursal.setEntityManager(em);
+        }
+        
+        @Override
+        protected void validarNegocio(DepartamentoDTO dto, boolean esNuevo) {
+            if (dto.getNombre() == null || dto.getNombre().isBlank()) {
+                throw new ReglaNegocioException("El nombre del departamento es obligatorio");
+            }
+            
+            if (dto.getIdSucursal() == null) {
+                throw new ReglaNegocioException("Debe asociar el departamento a una sucursal");
+            }
+        }
+        
+        @Override
+        protected Long extraerId(DepartamentoDTO dto) {
+            return dto.getId();
+        }
+        
+        @Override
+        protected void validarEliminacion(Departamento entidad) {
+            if (entidad.getPuestos() != null && !entidad.getPuestos().isEmpty()) {
+                throw new ReglaNegocioException(
+                    "No se puede eliminar el departamento: tiene puestos asociados");
+            }
+        }
+        
+        @Override
+        public DepartamentoDTO guardar(DepartamentoDTO dto) {
+            return ejecutarTransaccion(em -> {
+                configurarEntityManager(em);
+                
+                // Validar y obtener la sucursal asociada
+                Sucursal sucursal = daoSucursal.buscarPorId(dto.getIdSucursal());
+                if (sucursal == null) {
+                    throw new RecursoNoEncontradoException(
+                        "Sucursal con ID " + dto.getIdSucursal() + " no encontrada");
+                }
+                
+                // Mapear y establecer relaciones
+                Departamento entidad = mapper.mapToEntity(dto);
+                entidad.setSucursal(sucursal);
+                
+                // Guardar o actualizar
+                if (dto.getId() != null && dto.getId() > 0) {
+                    Departamento existente = dao.buscarPorId(dto.getId());
+                    if (existente == null) {
+                        throw new RecursoNoEncontradoException(
+                            "Departamento con ID " + dto.getId() + " no encontrado");
+                    }
+                    entidad = dao.actualizar(entidad);
+                } else {
+                    entidad = dao.guardar(entidad);
+                }
+                
+                return mapper.mapToDto(entidad);
+            });
+        }
+        
+        /**
+         * Método específico: Listar departamentos con filtros
+         */
+        public List<DepartamentoDTO> listarConFiltros(String nombre, Long idSucursal) {
+            return ejecutarLectura(em -> {
+                configurarEntityManager(em);
+                
+                String filtro = nombre != null ? nombre : "";
+                
+                return mapper.mapToDtoList(
+                    dao.busquedaConFiltros(filtro, idSucursal));
+            });
+        }
+
+        @Override
+        public List<DepartamentoDTO> buscarConFiltro(String filtro) {
+            return null;
+        }
+    }
+
+    /**
+     * Servicio genérico para Puesto
+     */
+    private class PuestoServicio extends ServicioGenerico<Puesto, PuestoDTO, Long> {
+        
+        private final DaoPuesto dao;
+        private final DaoDepartamento daoDepartamento;
+        
+        public PuestoServicio() {
+            super(null, MapperEstructura.puesto, Puesto.class);
+            this.dao = new DaoPuesto();
+            this.daoDepartamento = new DaoDepartamento();
+        }
+        
+        @Override
+        protected void configurarEntityManager(EntityManager em) {
+            dao.setEntityManager(em);
+            daoDepartamento.setEntityManager(em);
+        }
+        
+        @Override
+        protected void validarNegocio(PuestoDTO dto, boolean esNuevo) {
+            if (dto.getNombre() == null || dto.getNombre().isBlank()) {
+                throw new ReglaNegocioException("El nombre del puesto es obligatorio");
+            }
+            
+            if (dto.getIdDepartamento() == null) {
+                throw new ReglaNegocioException("Debe asociar el puesto a un departamento");
+            }
+        }
+        
+        @Override
+        protected Long extraerId(PuestoDTO dto) {
+            return dto.getId();
+        }
+        
+        @Override
+        protected void validarEliminacion(Puesto entidad) {
+            if (entidad.getUsuarios() != null && !entidad.getUsuarios().isEmpty()) {
+                throw new ReglaNegocioException(
+                    "No se puede eliminar el puesto: tiene trabajadores asociados");
+            }
+        }
+        
+        @Override
+        public PuestoDTO guardar(PuestoDTO dto) {
+            return ejecutarTransaccion(em -> {
+                configurarEntityManager(em);
+                
+                // Validar y obtener el departamento asociado
+                Departamento departamento = daoDepartamento.buscarPorId(dto.getIdDepartamento());
+                if (departamento == null) {
+                    throw new RecursoNoEncontradoException(
+                        "Departamento con ID " + dto.getIdDepartamento() + " no encontrado");
+                }
+                
+                // Mapear y establecer relaciones
+                Puesto entidad = mapper.mapToEntity(dto);
+                entidad.setDepartamento(departamento);
+                
+                // Guardar o actualizar
+                if (dto.getId() != null && dto.getId() > 0) {
+                    Puesto existente = dao.buscarPorId(dto.getId());
+                    if (existente == null) {
+                        throw new RecursoNoEncontradoException(
+                            "Puesto con ID " + dto.getId() + " no encontrado");
+                    }
+                    entidad = dao.actualizar(entidad);
+                } else {
+                    entidad = dao.guardar(entidad);
+                }
+                
+                return mapper.mapToDto(entidad);
+            });
+        }
+        
+        /**
+         * Método específico: Listar puestos por departamento
+         */
+        public List<PuestoDTO> listarPorDepartamento(Long idDepartamento) {
+            return ejecutarLectura(em -> {
+                configurarEntityManager(em);
+                return mapper.mapToDtoList(
+                    dao.busquedaPorDepartamento(idDepartamento));
+            });
+        }
+        
+        /**
+         * Método específico: Buscar puestos por empresa
+         */
+        public List<PuestoDTO> buscarPorEmpresa(Long idEmpresa) {
+            return ejecutarLectura(em -> {
+                configurarEntityManager(em);
+                return mapper.mapToDtoList(
+                    dao.busquedaPorEmpresa(idEmpresa));
+            });
+        }
+        
+        public List<PuestoDTO> buscarConFiltro(String filtro) {
+            // Implementación específica para búsqueda por nombre
+            return ejecutarLectura(em -> {
+                configurarEntityManager(em);
+                
+                Puesto puesto = dao.busquedaEspecifica(filtro);
+                if (puesto != null) {
+                    return List.of(mapper.mapToDto(puesto));
+                }
+                return List.of();
+            });
+        }
     }
 }

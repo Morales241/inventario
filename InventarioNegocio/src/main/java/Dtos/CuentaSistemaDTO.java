@@ -14,6 +14,7 @@ public class CuentaSistemaDTO {
 
     private Long id;
     private String username;
+    private String password;
     private Long version;
     private String rol;
 
@@ -56,5 +57,13 @@ public class CuentaSistemaDTO {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

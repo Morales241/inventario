@@ -1,6 +1,5 @@
 package InterfacesFachada;
 
-import Dtos.AsignacionDTO;
 import Dtos.EquipoBaseDTO;
 import Dtos.EquipoEscritorioDTO;
 import Dtos.ModeloDTO;
@@ -14,120 +13,113 @@ import java.util.List;
 /**
  * Contrato de fachada para operaciones de gestión de equipos de cómputo.
  * <p>
- * Define los métodos públicos para buscar, guardar, eliminar equipos y gestionar el catálogo de modelos.
- * Implementa el patrón Facade para simplificar la interacción con la capa de servicios de equipos.
+ * Define los métodos públicos para buscar, guardar, eliminar equipos y gestionar 
+ * el catálogo de modelos. Implementa el patrón Facade para simplificar la 
+ * interacción con la capa de servicios de equipos.
  * </p>
  * @author JMorales
  */
 public interface IFachadaEquipos {
     
     /**
-     * Busca equipos aplicando filtros dinámicos (GRI, estado, criterio).
-     * @param gri Identificador único (GRI) del equipo, puede ser nulo.
-     * @param estado {@link EstadoEquipo} (DISPONIBLE, ASIGNADO), puede ser nulo.
-     * @param criterioBusqueda Texto para búsqueda parcial en marca/modelo.
-     * @return Lista de EquipoBaseDTO con los equipos que coinciden.
+     * Busca equipos aplicando filtros dinámicos (GRY, estado, criterio).
+     * @param gry Identificador único (GRY) del equipo, puede ser nulo
+     * @param estado Estado del equipo (EN_STOCK, ASIGNADO, etc.), puede ser nulo
+     * @param criterioBusqueda Texto para búsqueda parcial en marca/modelo
+     * @return Lista de EquipoBaseDTO con los equipos que coinciden
      */
-    public List<EquipoBaseDTO> buscarEquipos(Integer gri, EstadoEquipo estado, String criterioBusqueda);
+    List<EquipoBaseDTO> buscarEquipos(Integer gry, EstadoEquipo estado, String criterioBusqueda);
     
     /**
      * Obtiene los datos completos de un equipo para edición o visualización detallada.
-     * @param id Identificador único del equipo.
-     * @return EquipoBaseDTO con la información del equipo.
-     * @throws Exception Si el equipo no existe.
+     * @param id Identificador único del equipo
+     * @return EquipoBaseDTO con la información del equipo
      */
-    public EquipoBaseDTO obtenerEquipoPorId(Long id) throws Exception;
+    EquipoBaseDTO obtenerEquipoPorId(Long id);
     
     /**
-     * Obtiene los datos completos de un equipo para edición o visualización detallada.
-     * @param gry Identificador único del equipo.
-     * @return EquipoBaseDTO con la información del equipo.
-     * @throws Exception Si el equipo no existe.
+     * Busca un equipo por su número GRY.
+     * @param gry Identificador GRY del equipo
+     * @return EquipoBaseDTO con la información del equipo
      */
-    public EquipoBaseDTO buscarPorGry(Integer gry) throws Exception;
+    EquipoBaseDTO buscarPorGry(Integer gry);
     
     /**
-     * Guarda o actualiza un equipo de escritorio.
-     * @param dto Datos del equipo de escritorio.
-     * @return EquipoEscritorioDTO persistido con ID asignado.
-     * @throws Exception Si hay validación fallida o error en BD.
+     * Busca un equipo por su ID y lo retorna con su tipo específico.
+     * @param <T> Tipo específico del equipo (Escritorio, Móvil, Otro)
+     * @param id Identificador del equipo
+     * @return Equipo del tipo específico
      */
-    public EquipoEscritorioDTO guardarEscritorio(EquipoEscritorioDTO dto) throws Exception;
+    <T extends EquipoBaseDTO> T buscarPorId(Long id);
     
     /**
-     * Guarda o actualiza un equipo móvil.
-     * @param dto Datos del equipo móvil (teléfono, tablet).
-     * @return MovilDTO persistido con ID asignado.
-     * @throws Exception Si hay validación fallida o error en BD.
+     * Busca equipos aplicando múltiples filtros avanzados.
+     * @param texto Filtro por GRY o modelo
+     * @param tipo Filtro por tipo de equipo
+     * @param condicion Filtro por condición física
+     * @param estado Filtro por estado del equipo
+     * @return Lista de equipos filtrados
      */
-    public MovilDTO guardarMovil(MovilDTO dto) throws Exception;
-    
-    /**
-     * Guarda o actualiza otro tipo de equipo.
-     * @param dto Datos del otro equipo (accesorios, periféricos).
-     * @return OtroEquipoDTO persistido con ID asignado.
-     * @throws Exception Si hay validación fallida o error en BD.
-     */
-    public OtroEquipoDTO guardarOtro(OtroEquipoDTO dto) throws Exception;
+    List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, 
+                                         CondicionFisica condicion, EstadoEquipo estado);
     
     /**
      * Elimina un equipo si está disponible (no asignado).
-     * @param id Identificador del equipo a eliminar.
-     * @throws Exception Si el equipo está asignado o no existe.
+     * @param id Identificador del equipo a eliminar
      */
-    public void eliminarEquipo(Long id) throws Exception;
+    void eliminarEquipo(Long id);
+
+    /**
+     * Guarda o actualiza un equipo de escritorio.
+     * @param dto Datos del equipo de escritorio
+     * @return EquipoEscritorioDTO persistido con ID asignado
+     */
+    EquipoEscritorioDTO guardarEscritorio(EquipoEscritorioDTO dto);
+
+    /**
+     * Guarda o actualiza un equipo móvil.
+     * @param dto Datos del equipo móvil (teléfono, tablet)
+     * @return MovilDTO persistido con ID asignado
+     */
+    MovilDTO guardarMovil(MovilDTO dto);
+
+    /**
+     * Guarda o actualiza otro tipo de equipo.
+     * @param dto Datos del otro equipo (accesorios, periféricos)
+     * @return OtroEquipoDTO persistido con ID asignado
+     */
+    OtroEquipoDTO guardarOtro(OtroEquipoDTO dto);
+
+    /**
+     * Guarda o actualiza un modelo de equipo en el catálogo.
+     * @param dto Datos del modelo (marca, RAM, almacenamiento, procesador)
+     * @return ModeloDTO persistido con ID asignado
+     */
+    ModeloDTO guardarModelo(ModeloDTO dto);
     
     /**
      * Lista todos los modelos de equipos del catálogo.
-     * @return Lista de ModeloDTO disponibles.
+     * @return Lista de ModeloDTO disponibles
      */
-    public List<ModeloDTO> listarModelos();
+    List<ModeloDTO> listarModelos();
     
     /**
-     * Guarda o actualiza un modelo de equipo en el catálogo.
-     * @param dto Datos del modelo (marca, RAM, almacenamiento, procesador).
-     * @return ModeloDTO persistido con ID asignado.
-     * @throws Exception Si el nombre está vacío o hay error en BD.
+     * Busca un modelo específico por su ID.
+     * @param id Identificador del modelo
+     * @return ModeloDTO con los detalles técnicos del modelo
      */
-    public ModeloDTO guardarModelo(ModeloDTO dto) throws Exception;
+    ModeloDTO buscarModeloPorId(Long id);
     
     /**
-     * Busca modelos aplicando filtros técnicos (marca, RAM, almacenamiento, procesador).
-     * @param marca Marca del fabricante (búsqueda parcial).
-     * @param memoriaRam Capacidad de RAM.
-     * @param almacenamiento Capacidad de disco.
-     * @param procesador Tipo de procesador.
-     * @return Lista de ModeloDTO que cumplen los criterios.
+     * Busca modelos aplicando filtros técnicos.
+     * @param nombre Nombre del modelo (búsqueda parcial)
+     * @param marca Marca del fabricante (búsqueda parcial)
+     * @param memoriaRam Capacidad de RAM en GB
+     * @param almacenamiento Capacidad de almacenamiento en GB
+     * @param procesador Tipo de procesador
+     * @return Lista de ModeloDTO que cumplen los criterios
      */
-    public List<ModeloDTO> buscarModelosConFiltros(
-            String nombre,
-            String marca,
-            Integer memoriaRam,
-            Integer almacenamiento,
-            String procesador);    
-    
-    /**
-     * Obtiene un modelo específico por su ID.
-     * @param id Identificador del modelo.
-     * @return ModeloDTO con los detalles técnicos del modelo.
-     */
-    public ModeloDTO buscarModeloPorId(Long id);
-    
-    /**
-     * Busca todos los equipos añadiendo n cantidad de filtros seleccionados
-     * @param texto Filtro de gry
-     * @param tipo filtro de tipo de equipo
-     * @param condicion filtro de condicion del equipo
-     * @param estado filtro sobre el equipo
-     * @return Listado de quipos base filtrados
-     */
-    public List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, CondicionFisica condicion, EstadoEquipo estado);
-
-    /**
-     * Busca un equipo en especifico por el id
-     * @param <T>
-     * @param id
-     * @return Equipo especifica
-     */
-    <T extends EquipoBaseDTO> T buscarPorId(Long id);
+    List<ModeloDTO> buscarModelosConFiltros(String nombre, String marca,
+                                            Integer memoriaRam, Integer almacenamiento,
+                                            String procesador);
 }
