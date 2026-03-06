@@ -36,6 +36,8 @@ public class FachadaEquipos implements IFachadaEquipos {
         this(new ServicioEquipos());
     }
 
+    // MÉTODOS GENERALES
+    
     @Override
     public List<EquipoBaseDTO> buscarEquipos(Integer gry, EstadoEquipo estado, String criterioBusqueda) {
         return servicioEquipos.buscarEquipos(gry, estado, criterioBusqueda);
@@ -52,18 +54,14 @@ public class FachadaEquipos implements IFachadaEquipos {
     }
 
     @Override
-    public EquipoEscritorioDTO guardarEscritorio(EquipoEscritorioDTO dto) {
-        return servicioEquipos.guardarEscritorio(dto);
+    public <T extends EquipoBaseDTO> T buscarPorId(Long id) {
+        return servicioEquipos.buscarPorId(id);
     }
 
     @Override
-    public MovilDTO guardarMovil(MovilDTO dto) {
-        return servicioEquipos.guardarMovil(dto);
-    }
-
-    @Override
-    public OtroEquipoDTO guardarOtro(OtroEquipoDTO dto) {
-        return servicioEquipos.guardarOtro(dto);
+    public List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, 
+                                                CondicionFisica condicion, EstadoEquipo estado) {
+        return servicioEquipos.buscarConFiltros(texto, tipo, condicion, estado);
     }
 
     @Override
@@ -71,6 +69,29 @@ public class FachadaEquipos implements IFachadaEquipos {
         servicioEquipos.eliminarEquipo(id);
     }
 
+    // EQUIPOS DE ESCRITORIO
+    
+    @Override
+    public EquipoEscritorioDTO guardarEscritorio(EquipoEscritorioDTO dto) {
+        return servicioEquipos.guardarEscritorio(dto);
+    }
+
+    // EQUIPOS MÓVILES
+    
+    @Override
+    public MovilDTO guardarMovil(MovilDTO dto) {
+        return servicioEquipos.guardarMovil(dto);
+    }
+
+    // OTROS EQUIPOS
+    
+    @Override
+    public OtroEquipoDTO guardarOtro(OtroEquipoDTO dto) {
+        return servicioEquipos.guardarOtro(dto);
+    }
+
+    // MODELOS
+    
     @Override
     public ModeloDTO guardarModelo(ModeloDTO dto) {
         return servicioEquipos.guardarModelo(dto);
@@ -87,23 +108,10 @@ public class FachadaEquipos implements IFachadaEquipos {
     }
 
     @Override
-    public List<ModeloDTO> buscarModelosConFiltros(
-            String nombre,
-            String marca,
-            Integer memoriaRam,
-            Integer almacenamiento,
-            String procesador) {
-        
-        return servicioEquipos.buscarModelosConFiltros(nombre, marca, memoriaRam, almacenamiento, procesador);
-    }
-
-    @Override
-    public List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, CondicionFisica condicion, EstadoEquipo estado) {
-        return servicioEquipos.buscarConFiltros(texto, tipo, condicion, estado);
-    }
-
-    @Override
-    public <T extends EquipoBaseDTO> T buscarPorId(Long id) {
-        return servicioEquipos.buscarPorId(id);
+    public List<ModeloDTO> buscarModelosConFiltros(String nombre, String marca,
+                                                   Integer memoriaRam, Integer almacenamiento,
+                                                   String procesador) {
+        return servicioEquipos.buscarModelosConFiltros(nombre, marca, memoriaRam, 
+                                                       almacenamiento, procesador);
     }
 }

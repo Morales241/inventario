@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package fabricaFachadas;
 
 import Implementaciones.FachadaEquipos;
@@ -14,8 +10,12 @@ import InterfacesFachada.IFachadaPersonas;
 import InterfacesFachada.IFachadaPrestamos;
 
 /**
- *
- * @author tacot
+ * Fábrica para obtener instancias de las fachadas del sistema.
+ * <p>
+ * Implementa el patrón Singleton para asegurar una única instancia de cada fachada.
+ * Proporciona punto de acceso centralizado a todas las operaciones de negocio.
+ * </p>
+ * @author JMorales
  */
 public final class FabricaFachadas {
 
@@ -27,6 +27,10 @@ public final class FabricaFachadas {
     private FabricaFachadas() {
     }
 
+    /**
+     * Obtiene la instancia única de la fachada de equipos.
+     * @return Implementación de IFachadaEquipos
+     */
     public static IFachadaEquipos getFachadaEquipos() {
         if (fachadaEquipos == null) {
             fachadaEquipos = new FachadaEquipos();
@@ -34,6 +38,10 @@ public final class FabricaFachadas {
         return fachadaEquipos;
     }
 
+    /**
+     * Obtiene la instancia única de la fachada de organización.
+     * @return Implementación de IFachadaOrganizacion
+     */
     public static IFachadaOrganizacion getFachadaOrganizacion() {
         if (fachadaOrganizacion == null) {
             fachadaOrganizacion = new FachadaOrganizacion();
@@ -41,6 +49,10 @@ public final class FabricaFachadas {
         return fachadaOrganizacion;
     }
 
+    /**
+     * Obtiene la instancia única de la fachada de personas.
+     * @return Implementación de IFachadaPersonas
+     */
     public static IFachadaPersonas getFachadaPersonas() {
         if (fachadaPersonas == null) {
             fachadaPersonas = new FachadaPersonas();
@@ -48,10 +60,24 @@ public final class FabricaFachadas {
         return fachadaPersonas;
     }
 
+    /**
+     * Obtiene la instancia única de la fachada de préstamos.
+     * @return Implementación de IFachadaPrestamos
+     */
     public static IFachadaPrestamos getFachadaPrestamos() {
         if (fachadaPrestamos == null) {
             fachadaPrestamos = new FachadaPrestamos();
         }
         return fachadaPrestamos;
+    }
+    
+    /**
+     * Reinicia todas las instancias (útil para pruebas).
+     */
+    public static void reset() {
+        fachadaEquipos = null;
+        fachadaOrganizacion = null;
+        fachadaPersonas = null;
+        fachadaPrestamos = null;
     }
 }

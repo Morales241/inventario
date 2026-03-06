@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Implementaciones;
 
 import Dtos.DepartamentoDTO;
@@ -26,7 +22,6 @@ public class FachadaOrganizacion implements IFachadaOrganizacion {
 
     private final IServicioOrganizacion servicioOrganizacion;
 
-    // Inyección empresarial
     public FachadaOrganizacion(IServicioOrganizacion servicioOrganizacion) {
         this.servicioOrganizacion = servicioOrganizacion;
     }
@@ -35,6 +30,8 @@ public class FachadaOrganizacion implements IFachadaOrganizacion {
         this(new ServicioOrganizacion());
     }
 
+    // EMPRESAS
+    
     @Override
     public List<EmpresaDTO> listarEmpresas(String filtroNombre) {
         return servicioOrganizacion.listarEmpresas(filtroNombre);
@@ -50,6 +47,8 @@ public class FachadaOrganizacion implements IFachadaOrganizacion {
         servicioOrganizacion.eliminarEmpresa(id);
     }
 
+    // SUCURSALES
+    
     @Override
     public List<SucursalDTO> listarSucursales(String filtro, Long idEmpresa) {
         return servicioOrganizacion.listarSucursales(filtro, idEmpresa);
@@ -65,7 +64,8 @@ public class FachadaOrganizacion implements IFachadaOrganizacion {
         servicioOrganizacion.eliminarSucursal(id);
     }
 
-
+    // DEPARTAMENTOS
+    
     @Override
     public List<DepartamentoDTO> listarDepartamentos(String nombre, Long idSucursal) {
         return servicioOrganizacion.listarDepartamentos(nombre, idSucursal);
@@ -81,6 +81,8 @@ public class FachadaOrganizacion implements IFachadaOrganizacion {
         servicioOrganizacion.eliminarDepartamento(id);
     }
 
+    // PUESTOS 
+    
     @Override
     public List<PuestoDTO> listarPuestos(Long idDepto) {
         return servicioOrganizacion.listarPuestos(idDepto);
@@ -107,7 +109,7 @@ public class FachadaOrganizacion implements IFachadaOrganizacion {
     }
 
     @Override
-    public EmpresaDTO buscarEmpresaPorPuesto(Long id) {
-        return servicioOrganizacion.buscarEmpresaPorPuesto(id);
+    public EmpresaDTO buscarEmpresaPorPuesto(Long idPuesto) {
+        return servicioOrganizacion.buscarEmpresaPorPuesto(idPuesto);
     }
 }

@@ -103,7 +103,7 @@ public interface IFachadaPrestamos {
      * @param limite Número máximo de resultados
      * @return Lista de arreglos [id, nombre, total] con los top usuarios
      */
-    List<Object[]> obtenerTopUsuariosConEquipos(int limite);
+//    List<Object[]> obtenerTopUsuariosConEquipos(int limite);
     
     /**
      * Obtiene la última asignación de un equipo.
