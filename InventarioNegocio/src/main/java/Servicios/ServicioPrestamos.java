@@ -39,10 +39,19 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
     private final DaoEquipoAsignado daoAsignacion;
 
     public ServicioPrestamos() {
-        this.asignacionServicio = new AsignacionServicio();
         this.daoEquipo = new DaoEquipoDeComputo();
         this.daoUsuario = new DaoUsuario();
         this.daoAsignacion = new DaoEquipoAsignado();
+        this.asignacionServicio = new AsignacionServicio(daoAsignacion, daoEquipo, daoUsuario);
+    }
+    
+    public ServicioPrestamos(DaoEquipoDeComputo daoEquipo,
+                            DaoUsuario daoUsuario,
+                            DaoEquipoAsignado daoAsignacion) {
+        this.daoEquipo = daoEquipo;
+        this.daoUsuario = daoUsuario;
+        this.daoAsignacion = daoAsignacion;
+        this.asignacionServicio = new AsignacionServicio(daoAsignacion, daoEquipo, daoUsuario);
     }
 
     private void configurarDAOs(EntityManager em) {
@@ -390,10 +399,6 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
         return equiposActuales < limiteMaximo;
     }
 
-    // =================================================================
-    // ==================== SERVICIOS INTERNOS ESPECÍFICOS ============
-    // =================================================================
-
     /**
      * Servicio para Asignaciones de Equipos
      */
@@ -408,6 +413,15 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
             this.dao = (DaoEquipoAsignado) super.dao;
             this.daoEquipo = new DaoEquipoDeComputo();
             this.daoUsuario = new DaoUsuario();
+        }
+        
+        public AsignacionServicio(DaoEquipoAsignado dao, 
+                                  DaoEquipoDeComputo daoEquipo,
+                                  DaoUsuario daoUsuario) {
+            super(dao, MapperAsignacion.converter, EquipoAsignado.class);
+            this.dao = dao;
+            this.daoEquipo = daoEquipo;
+            this.daoUsuario = daoUsuario;
         }
         
         @Override

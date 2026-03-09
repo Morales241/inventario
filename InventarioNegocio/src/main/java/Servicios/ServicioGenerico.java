@@ -15,7 +15,7 @@ import mapper.Mapper;
  */
 public abstract class ServicioGenerico<E, D, ID> extends ServicioBase implements IServicioGenerico<D, ID> {
 
-    final IDaoGenerico<E, ID> dao;
+    protected IDaoGenerico<E, ID> dao;
     final Mapper<E, D> mapper;
     final Class<E> claseEntidad;
 

@@ -46,7 +46,20 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         this.modeloServicio = new ModeloServicio();
         this.daoGeneral = new DaoEquipoDeComputo();
     }
-
+    
+     public ServicioEquipos(IDaoEquipoDeComputo daoGeneral,
+                          IDaoEquipoDeEscritorio daoEscritorio,
+                          IDaoMovil daoMovil,
+                          IDaoOtroEquipo daoOtro,
+                          IDaoModelo daoModelo,
+                          IDaoSucursal daoSucursal) {
+        this.daoGeneral = daoGeneral;
+        this.escritorioServicio = new EquipoEscritorioServicio(daoEscritorio, daoModelo, daoSucursal);
+        this.movilServicio = new EquipoMovilServicio(daoMovil, daoModelo, daoSucursal);
+        this.otroServicio = new EquipoOtroServicio(daoOtro, daoModelo, daoSucursal);
+        this.modeloServicio = new ModeloServicio(daoModelo);
+    }
+     
     private void configurarGeneral(EntityManager em) {
         daoGeneral.setEntityManager(em);
     }
@@ -211,11 +224,17 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         
         protected final IDaoSucursal daoSucursal;
         protected final IDaoModelo daoModelo;
+        protected final IDaoGenerico<T, Long> daoEquipo;
         
-        public EquipoBaseServicio(IDaoGenerico<T, Long> dao, Mapper<T, D> mapper, Class<T> claseEntidad) {
+        public EquipoBaseServicio(IDaoGenerico<T, Long> dao, 
+                                  Mapper<T, D> mapper, 
+                                  Class<T> claseEntidad,
+                                  IDaoModelo daoModelo,
+                                  IDaoSucursal daoSucursal) {
             super(dao, mapper, claseEntidad);
-            this.daoSucursal = new DaoSucursal();
-            this.daoModelo = new DaoModelo();
+            this.daoEquipo = dao;
+            this.daoModelo = daoModelo;
+            this.daoSucursal = daoSucursal;
         }
         
         @Override
@@ -329,11 +348,15 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
      */
     private class EquipoEscritorioServicio extends EquipoBaseServicio<EquipoDeEscritorio, EquipoEscritorioDTO> {
         
-        private final IDaoEquipoDeEscritorio dao;
-        
+       
         public EquipoEscritorioServicio() {
-            super(new DaoEquipoDeEscritorio(), MapperEquipos.escritorio, EquipoDeEscritorio.class);
-            this.dao = (IDaoEquipoDeEscritorio) super.dao;
+            super(new DaoEquipoDeEscritorio(), MapperEquipos.escritorio, EquipoDeEscritorio.class, new DaoModelo(), new DaoSucursal());
+        }
+        
+        public EquipoEscritorioServicio(IDaoEquipoDeEscritorio dao, 
+                                        IDaoModelo daoModelo,
+                                        IDaoSucursal daoSucursal) {
+            super(dao, MapperEquipos.escritorio, EquipoDeEscritorio.class, daoModelo, daoSucursal);
         }
         
         @Override
@@ -360,11 +383,14 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
      */
     private class EquipoMovilServicio extends EquipoBaseServicio<Movil, MovilDTO> {
         
-        private final IDaoMovil dao;
-        
         public EquipoMovilServicio() {
-            super(new DaoMovil(), MapperEquipos.movil, Movil.class);
-            this.dao = (IDaoMovil) super.dao;
+            super(new DaoMovil(), MapperEquipos.movil, Movil.class, new DaoModelo(), new DaoSucursal());
+        }
+        
+        public EquipoMovilServicio(IDaoMovil dao, 
+                                   IDaoModelo daoModelo,
+                                   IDaoSucursal daoSucursal) {
+            super(dao, MapperEquipos.movil, Movil.class, daoModelo, daoSucursal);
         }
         
         @Override
@@ -395,11 +421,14 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
      */
     private class EquipoOtroServicio extends EquipoBaseServicio<OtroEquipo, OtroEquipoDTO> {
         
-        private final IDaoOtroEquipo dao;
-        
         public EquipoOtroServicio() {
-            super(new DaoOtroEquipo(), MapperEquipos.otro, OtroEquipo.class);
-            this.dao = (IDaoOtroEquipo) super.dao;
+            super(new DaoOtroEquipo(), MapperEquipos.otro, OtroEquipo.class, new DaoModelo(), new DaoSucursal());
+        }
+        
+        public EquipoOtroServicio(IDaoOtroEquipo dao, 
+                                  IDaoModelo daoModelo,
+                                  IDaoSucursal daoSucursal) {
+            super(dao, MapperEquipos.otro, OtroEquipo.class, daoModelo, daoSucursal);
         }
         
         @Override
@@ -431,6 +460,11 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         public ModeloServicio() {
             super(new DaoModelo(), MapperModelo.converter, Modelo.class);
             this.dao = (IDaoModelo) super.dao;
+        }
+        
+        public ModeloServicio(IDaoModelo dao) {
+            super(dao, MapperModelo.converter, Modelo.class);
+            this.dao = dao;  
         }
         
         @Override

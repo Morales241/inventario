@@ -33,10 +33,19 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
     private final DaoPuesto daoPuesto;
 
     public ServicioPersonas() {
-        this.usuarioServicio = new UsuarioServicio();
-        this.cuentaSistemaServicio = new CuentaSistemaServicio();
         this.daoUsuario = new DaoUsuario();
         this.daoPuesto = new DaoPuesto();
+        this.usuarioServicio = new UsuarioServicio(daoUsuario, daoPuesto);
+        this.cuentaSistemaServicio = new CuentaSistemaServicio(new DaoCuentaSistema());
+    }
+    
+    public ServicioPersonas(DaoUsuario daoUsuario, 
+                           DaoCuentaSistema daoCuenta, 
+                           DaoPuesto daoPuesto) {
+        this.daoUsuario = daoUsuario;
+        this.daoPuesto = daoPuesto;
+        this.usuarioServicio = new UsuarioServicio(daoUsuario, daoPuesto);
+        this.cuentaSistemaServicio = new CuentaSistemaServicio(daoCuenta);
     }
 
     private void configurarDAOs(EntityManager em) {
@@ -182,6 +191,12 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
             super(new DaoUsuario(), MapperUsuario.converter, Usuario.class);
             this.dao = (DaoUsuario) super.dao;
             this.daoPuesto = new DaoPuesto();
+        }
+        
+        public UsuarioServicio(DaoUsuario dao, DaoPuesto daoPuesto) {
+            super(dao, MapperUsuario.converter, Usuario.class);
+            this.dao = dao;
+            this.daoPuesto = daoPuesto;
         }
         
         @Override
@@ -383,6 +398,11 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         public CuentaSistemaServicio() {
             super(new DaoCuentaSistema(), MapperCuentaSistema.converter, CuentaSistema.class);
             this.dao = (DaoCuentaSistema) super.dao;
+        }
+        
+        public CuentaSistemaServicio(DaoCuentaSistema dao) {
+            super(dao, MapperCuentaSistema.converter, CuentaSistema.class);
+            this.dao = dao;
         }
         
         @Override
