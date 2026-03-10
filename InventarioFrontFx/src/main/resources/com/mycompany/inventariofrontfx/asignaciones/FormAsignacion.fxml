@@ -6,82 +6,209 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="650" prefWidth="1100" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.asignaciones.AsignacionesController">
+<BorderPane prefHeight="750" prefWidth="1200" style="-fx-background-color: #ebecec;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.asignaciones.FormAsignacionesController">
 
     <center>
-        <VBox alignment="TOP_CENTER" spacing="25">
-
+        <VBox alignment="TOP_CENTER" spacing="25" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="35" left="30" right="30" top="25" />
+                <Insets bottom="25" left="30" right="30" top="25" />
             </padding>
-
-            <VBox maxWidth="1025" spacing="25">
-
-                <HBox alignment="CENTER" spacing="25">
-
-                    <VBox maxWidth="500" prefWidth="500" spacing="15" styleClass="panel-card">
-                        <padding>
-                            <Insets bottom="20" left="20" right="20" top="20" />
-                        </padding>
-
-                        <Label styleClass="titulo-seccion" text="Seleccionar Trabajador" />
-
-                        <TextField fx:id="txtBuscarUsuario" promptText="Buscar por nombre o numero de nomina" styleClass="input-busqueda" />
-
-                        <ListView fx:id="listUsuarios" styleClass="lista-card" VBox.vgrow="ALWAYS" />
-                    </VBox>
-
-                    <VBox maxWidth="500" prefWidth="500" spacing="15" styleClass="panel-card">
-                        <padding>
-                            <Insets bottom="20" left="20" right="20" top="20" />
-                        </padding>
-
-                        <Label styleClass="titulo-seccion" text="Seleccionar Equipo" />
-
-                        <TextField fx:id="txtBuscarEquipo" promptText="Buscar por serie o modelo" styleClass="input-busqueda" />
-
-                        <ListView fx:id="listEquipos" styleClass="lista-card" VBox.vgrow="ALWAYS" />
-                    </VBox>
-
-                </HBox>
-
-                <VBox maxWidth="Infinity" spacing="15" styleClass="panel-card">
-
+            
+            <children>
+                <!-- Grid de 2 columnas para trabajador y equipo -->
+                <GridPane hgap="25" vgap="15" VBox.vgrow="ALWAYS">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+                    </columnConstraints>
+                    
+                    <!-- TRABAJADOR (Columna 0) -->
+                    <children>
+                        <VBox spacing="15" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                    <children>
+                                        <Label fx:id="iconoTrabajador" style="-fx-font-size: 24px;" text="👤" />
+                                        <VBox>
+                                            <children>
+                                                <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #13507d;" text="TRABAJADOR" />
+                                                <Label style="-fx-font-size: 12px; -fx-text-fill: #6B7280;" text="Selecciona el empleado que recibirá el equipo" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                                
+                                <VBox spacing="8" styleClass="panel-card" VBox.vgrow="ALWAYS">
+                                    <padding>
+                                        <Insets bottom="15" left="15" right="15" top="15" />
+                                    </padding>
+                                    <children>
+                                        <Label style="-fx-font-weight: bold;" text="Buscar trabajador:" />
+                                        <TextField fx:id="txtBuscarUsuario" promptText="Nombre o número de nómina..." styleClass="input-busqueda" />
+                                        
+                                        <Label style="-fx-font-weight: bold;" text="Resultados:" VBox.vgrow="NEVER">
+                                            <VBox.margin>
+                                                <Insets top="10" />
+                                            </VBox.margin>
+                                        </Label>
+                                        
+                                        <ListView fx:id="listUsuarios" prefHeight="300" styleClass="lista-card" VBox.vgrow="ALWAYS" />
+                                        
+                                        <HBox alignment="CENTER_RIGHT" spacing="10">
+                                            <children>
+                                                <Label fx:id="lblUsuarioSeleccionado" style="-fx-text-fill: #9CA3AF; -fx-font-style: italic;" text="Ninguno seleccionado" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+                        
+                        <!-- EQUIPO (Columna 1) -->
+                        <VBox spacing="15" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                    <children>
+                                        <Label fx:id="iconoEquipo" style="-fx-font-size: 24px;" text="💻" />
+                                        <VBox>
+                                            <children>
+                                                <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #13507d;" text="EQUIPO" />
+                                                <Label style="-fx-font-size: 12px; -fx-text-fill: #6B7280;" text="Selecciona el equipo a asignar (solo disponibles)" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                                
+                                <VBox spacing="8" styleClass="panel-card" VBox.vgrow="ALWAYS">
+                                    <padding>
+                                        <Insets bottom="15" left="15" right="15" top="15" />
+                                    </padding>
+                                    <children>
+                                        <Label style="-fx-font-weight: bold;" text="Buscar equipo:" />
+                                        <TextField fx:id="txtBuscarEquipo" promptText="GRY, modelo o identificador..." styleClass="input-busqueda" />
+                                        
+                                        <Label style="-fx-font-weight: bold;" text="Resultados:" VBox.vgrow="NEVER">
+                                            <VBox.margin>
+                                                <Insets top="10" />
+                                            </VBox.margin>
+                                        </Label>
+                                        
+                                        <ListView fx:id="listEquipos" prefHeight="300" styleClass="lista-card" VBox.vgrow="ALWAYS" />
+                                        
+                                        <HBox alignment="CENTER_RIGHT" spacing="10">
+                                            <children>
+                                                <Label fx:id="lblEquipoSeleccionado" style="-fx-text-fill: #9CA3AF; -fx-font-style: italic;" text="Ninguno seleccionado" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+                    </children>
+                    
+                    <rowConstraints>
+                        <RowConstraints vgrow="ALWAYS" />
+                    </rowConstraints>
+                </GridPane>
+                
+                <!-- Panel de detalles de asignación -->
+                <VBox maxWidth="1000" spacing="15" styleClass="panel-card">
                     <padding>
                         <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
-
-                    <Label styleClass="titulo-seccion" text="Detalles de la Asignación" />
-
-                    <HBox spacing="25">
-
-                        <VBox minWidth="500.0" spacing="6">
-                            <Label text="Fecha de Entrega *" />
-                            <DatePicker fx:id="dateEntrega" minHeight="35.0" />
+                    
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <children>
+                                <Label fx:id="iconoDetalles" style="-fx-font-size: 20px;" text="📋" />
+                                <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #13507d;" text="DETALLES DE LA ASIGNACIÓN" />
+                            </children>
+                        </HBox>
+                        
+                        <Separator />
+                        
+                        <HBox alignment="CENTER" spacing="25">
+                            <children>
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label style="-fx-font-weight: bold;" text="Fecha de Entrega *" />
+                                        <DatePicker fx:id="dateEntrega" maxWidth="Infinity" minHeight="35" promptText="Seleccionar fecha" />
+                                    </children>
+                                </VBox>
+                                
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label style="-fx-font-weight: bold;" text="Fecha de Devolución (opcional)" />
+                                        <DatePicker fx:id="dateRegreso" maxWidth="Infinity" minHeight="35" promptText="Seleccionar fecha" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        
+                        <Separator />
+                        
+                        <!-- Resumen de la asignación -->
+                        <VBox spacing="10" style="-fx-background-color: #F3F4F6; -fx-background-radius: 8; -fx-padding: 15;">
+                            <children>
+                                <Label style="-fx-font-weight: bold; -fx-text-fill: #13507d;" text="RESUMEN" />
+                                <GridPane hgap="10" vgap="5">
+                                    <columnConstraints>
+                                        <ColumnConstraints percentWidth="30" />
+                                        <ColumnConstraints percentWidth="70" />
+                                    </columnConstraints>
+                                    <children>
+                                        <Label style="-fx-font-weight: bold;" text="Trabajador:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                        <Label fx:id="resumenTrabajador" text="No seleccionado" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                        
+                                        <Label style="-fx-font-weight: bold;" text="Equipo:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                        <Label fx:id="resumenEquipo" text="No seleccionado" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        
+                                        <Label style="-fx-font-weight: bold;" text="Fecha entrega:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                        <Label fx:id="resumenFechaEntrega" text="No definida" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    </children>
+                           <rowConstraints>
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                           </rowConstraints>
+                                </GridPane>
+                            </children>
                         </VBox>
-
-                        <VBox spacing="6">
-                            <Label text="Fecha de Devolución (Opcional)" />
-                            <DatePicker fx:id="dateRegreso" minHeight="35.0" />
-                        </VBox>
-
-                    </HBox>
-
-                    <Button fx:id="btnConfirmar" maxWidth="1.7976931348623157E308" styleClass="btn-principal-grande" text="Confirmar Asignación" />
+                        
+                        <!-- Botones de acción -->
+                        <HBox alignment="CENTER_RIGHT" spacing="15">
+                            <children>
+                                <Button fx:id="btnCancelar" onAction="#cancelar" prefHeight="45" prefWidth="150" styleClass="btn-cancelar" text="Cancelar">
+                                    <font>
+                                        <Font size="14" />
+                                    </font>
+                                </Button>
+                                
+                                <Button fx:id="btnConfirmar" onAction="#confirmarAsignacion" prefHeight="45" prefWidth="200" styleClass="btn-agregar" text="Confirmar Asignación" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="14" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                    </children>
                 </VBox>
-
-            </VBox>
-
+            </children>
         </VBox>
     </center>
 
     <stylesheets>
         <URL value="@asignaciones.css" />
     </stylesheets>
-
+    
 </BorderPane>

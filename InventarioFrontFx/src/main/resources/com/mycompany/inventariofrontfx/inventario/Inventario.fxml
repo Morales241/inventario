@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" styleClass="panel-menu" stylesheets="@inventario.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.InventarioController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" stylesheets="@inventario.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.InventarioController">
    <top>
       <VBox nodeOrientation="LEFT_TO_RIGHT" spacing="15.0" styleClass="panel-menu" BorderPane.alignment="CENTER">
          <children>
@@ -25,7 +25,7 @@
                         <Font name="SansSerif Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#agregarEquipo" prefHeight="40.0" prefWidth="180.0" styleClass="btn-agregar" text="+ Agregar Nuevo Equipo" textFill="WHITE">
+                  <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#agregarEquipo" prefHeight="40.0" prefWidth="230.0" styleClass="btn-agregar" text="+ Agregar Nuevo Equipo" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>

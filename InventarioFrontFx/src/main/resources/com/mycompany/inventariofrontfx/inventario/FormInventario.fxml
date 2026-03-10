@@ -168,7 +168,7 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#guardarDatos" prefHeight="45.0" prefWidth="200.0" styleClass="btn-agregar" text="+ Agregar Nuevo Equipo" textFill="WHITE">
+                        <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#guardarDatos" prefHeight="45.0" prefWidth="230.0" styleClass="btn-agregar" text="+ Agregar Nuevo Equipo" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
