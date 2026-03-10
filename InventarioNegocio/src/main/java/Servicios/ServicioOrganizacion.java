@@ -125,8 +125,8 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
         private final DaoEmpresa dao;
         
         public EmpresaServicio() {
-            super(null, MapperEstructura.empresa, Empresa.class);
-            this.dao = new DaoEmpresa();
+            super(new DaoEmpresa(), MapperEstructura.empresa, Empresa.class);
+            this.dao = (DaoEmpresa) super.dao;
         }
         
         @Override
@@ -192,7 +192,7 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
         private final DaoEmpresa daoEmpresa;
         
         public SucursalServicio() {
-            super(null, MapperEstructura.sucursal, Sucursal.class);
+            super(new DaoSucursal(), MapperEstructura.sucursal, Sucursal.class);
             this.dao = new DaoSucursal();
             this.daoEmpresa = new DaoEmpresa();
         }
@@ -293,7 +293,7 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
         private final DaoSucursal daoSucursal;
         
         public DepartamentoServicio() {
-            super(null, MapperEstructura.departamento, Departamento.class);
+            super(new DaoDepartamento(), MapperEstructura.departamento, Departamento.class);
             this.dao = new DaoDepartamento();
             this.daoSucursal = new DaoSucursal();
         }
@@ -389,7 +389,7 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
         private final DaoDepartamento daoDepartamento;
         
         public PuestoServicio() {
-            super(null, MapperEstructura.puesto, Puesto.class);
+            super(new DaoPuesto(), MapperEstructura.puesto, Puesto.class);
             this.dao = new DaoPuesto();
             this.daoDepartamento = new DaoDepartamento();
         }

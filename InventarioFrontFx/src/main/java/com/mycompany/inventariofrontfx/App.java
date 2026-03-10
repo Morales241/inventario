@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import javafx.stage.StageStyle;
 
 /**
  * JavaFX App
@@ -20,6 +21,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         Conexion.getEntityManager();
         scene = new Scene(loadFXML("LogIn"), 640, 480);
+        stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.show();

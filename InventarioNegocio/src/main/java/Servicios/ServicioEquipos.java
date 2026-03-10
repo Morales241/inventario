@@ -47,12 +47,8 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         this.daoGeneral = new DaoEquipoDeComputo();
     }
     
-     public ServicioEquipos(IDaoEquipoDeComputo daoGeneral,
-                          IDaoEquipoDeEscritorio daoEscritorio,
-                          IDaoMovil daoMovil,
-                          IDaoOtroEquipo daoOtro,
-                          IDaoModelo daoModelo,
-                          IDaoSucursal daoSucursal) {
+     public ServicioEquipos(IDaoEquipoDeComputo daoGeneral,IDaoEquipoDeEscritorio daoEscritorio, IDaoMovil daoMovil,
+                          IDaoOtroEquipo daoOtro, IDaoModelo daoModelo,IDaoSucursal daoSucursal) {
         this.daoGeneral = daoGeneral;
         this.escritorioServicio = new EquipoEscritorioServicio(daoEscritorio, daoModelo, daoSucursal);
         this.movilServicio = new EquipoMovilServicio(daoMovil, daoModelo, daoSucursal);
@@ -124,8 +120,7 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
     }
 
     @Override
-    public List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, 
-                                                CondicionFisica condicion, EstadoEquipo estado) {
+    public List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, CondicionFisica condicion, EstadoEquipo estado) {
         return ejecutarLectura(em -> {
             configurarGeneral(em);
 
@@ -198,8 +193,7 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
 
     @Override
     public List<ModeloDTO> buscarModelosConFiltros(String nombre, String marca, 
-                                                   Integer memoriaRam, Integer almacenamiento, 
-                                                   String procesador) {
+                                                   Integer memoriaRam, Integer almacenamiento,String procesador) {
         return modeloServicio.buscarConFiltros(nombre, marca, memoriaRam, almacenamiento, procesador);
     }
 
@@ -219,17 +213,13 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
     /**
      * Servicio base para todos los tipos de equipos
      */
-    private abstract class EquipoBaseServicio<T extends EquipoDeComputo, D extends EquipoBaseDTO> 
-            extends ServicioGenerico<T, D, Long> {
+    private abstract class EquipoBaseServicio<T extends EquipoDeComputo, D extends EquipoBaseDTO> extends ServicioGenerico<T, D, Long> {
         
         protected final IDaoSucursal daoSucursal;
         protected final IDaoModelo daoModelo;
         protected final IDaoGenerico<T, Long> daoEquipo;
         
-        public EquipoBaseServicio(IDaoGenerico<T, Long> dao, 
-                                  Mapper<T, D> mapper, 
-                                  Class<T> claseEntidad,
-                                  IDaoModelo daoModelo,
+        public EquipoBaseServicio(IDaoGenerico<T, Long> dao, Mapper<T, D> mapper, Class<T> claseEntidad, IDaoModelo daoModelo,
                                   IDaoSucursal daoSucursal) {
             super(dao, mapper, claseEntidad);
             this.daoEquipo = dao;
@@ -348,14 +338,11 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
      */
     private class EquipoEscritorioServicio extends EquipoBaseServicio<EquipoDeEscritorio, EquipoEscritorioDTO> {
         
-       
         public EquipoEscritorioServicio() {
             super(new DaoEquipoDeEscritorio(), MapperEquipos.escritorio, EquipoDeEscritorio.class, new DaoModelo(), new DaoSucursal());
         }
         
-        public EquipoEscritorioServicio(IDaoEquipoDeEscritorio dao, 
-                                        IDaoModelo daoModelo,
-                                        IDaoSucursal daoSucursal) {
+        public EquipoEscritorioServicio(IDaoEquipoDeEscritorio dao, IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
             super(dao, MapperEquipos.escritorio, EquipoDeEscritorio.class, daoModelo, daoSucursal);
         }
         
@@ -376,6 +363,7 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         public List<EquipoEscritorioDTO> buscarConFiltro(String filtro) {
             return null;
         }
+        
     }
 
     /**
@@ -387,9 +375,7 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
             super(new DaoMovil(), MapperEquipos.movil, Movil.class, new DaoModelo(), new DaoSucursal());
         }
         
-        public EquipoMovilServicio(IDaoMovil dao, 
-                                   IDaoModelo daoModelo,
-                                   IDaoSucursal daoSucursal) {
+        public EquipoMovilServicio(IDaoMovil dao, IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
             super(dao, MapperEquipos.movil, Movil.class, daoModelo, daoSucursal);
         }
         
@@ -425,9 +411,7 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
             super(new DaoOtroEquipo(), MapperEquipos.otro, OtroEquipo.class, new DaoModelo(), new DaoSucursal());
         }
         
-        public EquipoOtroServicio(IDaoOtroEquipo dao, 
-                                  IDaoModelo daoModelo,
-                                  IDaoSucursal daoSucursal) {
+        public EquipoOtroServicio(IDaoOtroEquipo dao, IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
             super(dao, MapperEquipos.otro, OtroEquipo.class, daoModelo, daoSucursal);
         }
         
@@ -535,9 +519,7 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         /**
          * Método específico: Buscar modelos con filtros técnicos
          */
-        public List<ModeloDTO> buscarConFiltros(String nombre, String marca, 
-                                                Integer memoriaRam, Integer almacenamiento, 
-                                                String procesador) {
+        public List<ModeloDTO> buscarConFiltros(String nombre, String marca, Integer memoriaRam, Integer almacenamiento, String procesador) {
             return ejecutarLectura(em -> {
                 configurarEntityManager(em);
                 

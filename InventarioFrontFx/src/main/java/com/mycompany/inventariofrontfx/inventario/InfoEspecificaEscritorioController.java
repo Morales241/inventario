@@ -118,11 +118,11 @@ public class InfoEspecificaEscritorioController implements Initializable, BaseCo
             return false;
         }
         
-        if (txtUserRed.getText().trim().isEmpty()) {
-            mostrarAdvertencia("La cuenta de equipo es obligatoria.");
-            txtUserRed.requestFocus();
-            return false;
-        }
+//        if (txtUserRed.getText().trim().isEmpty()) {
+//            mostrarAdvertencia("La cuenta de equipo es obligatoria.");
+//            txtUserRed.requestFocus();
+//            return false;
+//        }
         
         return true;
     }

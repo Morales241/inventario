@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -26,8 +27,7 @@ public class LogInController implements Initializable, BaseController {
     private MenuController dbc;
 
     private Stage stage;
-    
-    
+
     @FXML
     private TextField txtPassword;
     @FXML
@@ -35,6 +35,7 @@ public class LogInController implements Initializable, BaseController {
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -51,7 +52,7 @@ public class LogInController implements Initializable, BaseController {
     @FXML
     public void iniciarSesion(ActionEvent event) {
         this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        
+
         cambiarDePantalla("menu/Menu.fxml");
     }
 
@@ -67,13 +68,13 @@ public class LogInController implements Initializable, BaseController {
                 }
 
                 Scene nuevaEscena = new Scene(vista);
+
                 stage.setScene(nuevaEscena);
-                
                 stage.setResizable(true);
-                
+
                 stage.setMaximized(false);
                 stage.setMaximized(true);
-                
+
                 stage.show();
             }
         } catch (IOException e) {
