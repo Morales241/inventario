@@ -8,7 +8,6 @@ import excepciones.ReglaNegocioException;
 import interfacesServicios.IServicioOrganizacion;
 import jakarta.persistence.EntityManager;
 import java.util.List;
-import mapper.Mapper;
 import mapper.MapperEstructura;
 
 /**
@@ -193,7 +192,7 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
         
         public SucursalServicio() {
             super(new DaoSucursal(), MapperEstructura.sucursal, Sucursal.class);
-            this.dao = new DaoSucursal();
+            this.dao = (DaoSucursal) super.dao;
             this.daoEmpresa = new DaoEmpresa();
         }
         
@@ -294,7 +293,7 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
         
         public DepartamentoServicio() {
             super(new DaoDepartamento(), MapperEstructura.departamento, Departamento.class);
-            this.dao = new DaoDepartamento();
+            this.dao = (DaoDepartamento) super.dao;
             this.daoSucursal = new DaoSucursal();
         }
         
@@ -390,7 +389,7 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
         
         public PuestoServicio() {
             super(new DaoPuesto(), MapperEstructura.puesto, Puesto.class);
-            this.dao = new DaoPuesto();
+            this.dao = (DaoPuesto) super.dao;
             this.daoDepartamento = new DaoDepartamento();
         }
         

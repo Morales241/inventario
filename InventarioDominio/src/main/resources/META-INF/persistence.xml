@@ -15,10 +15,10 @@
     <class>Entidades.Usuario</class>
     <class>Entidades.CuentaSistema</class>
     <properties>
-      <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlserver://; databaseName=inventario; encrypt=true; trustServerCertificate=true; "/>
-      <property name="jakarta.persistence.jdbc.user" value=""/>
-      <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-      <property name="jakarta.persistence.jdbc.password" value=""/>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3309/inventario?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="jakarta.persistence.jdbc.user" value="root"/>
+      <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="jakarta.persistence.jdbc.password" value="18931Mor"/>
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
     </properties>
   </persistence-unit>

@@ -209,7 +209,8 @@ public class FormInventarioController implements ControllerInventario, IValidaci
 
             }
         } catch (Exception ex) {
-            System.out.println(ex.getCause());
+            System.out.println(Arrays.toString(ex.getStackTrace()));
+            
         }
     }
 
