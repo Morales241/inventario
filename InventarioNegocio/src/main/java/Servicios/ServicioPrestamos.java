@@ -1,4 +1,3 @@
-// InventarioNegocio/src/main/java/Servicios/ServicioPrestamos.java
 package Servicios;
 
 import Dao.DaoEquipoAsignado;
@@ -55,9 +54,15 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
     }
 
     private void configurarDAOs(EntityManager em) {
-        daoEquipo.setEntityManager(em);
-        daoUsuario.setEntityManager(em);
-        daoAsignacion.setEntityManager(em);
+        if (daoEquipo != null) {
+            daoEquipo.setEntityManager(em);
+        }
+        if (daoUsuario != null) {
+            daoUsuario.setEntityManager(em);
+        }
+        if (daoAsignacion != null) {
+            daoAsignacion.setEntityManager(em);
+        }
     }
 
     @Override
@@ -83,7 +88,7 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
             }
 
             // Usar el servicio de asignaciones para crear la asignación
-            asignacionServicio.crearAsignacion(equipo, usuario);
+            asignacionServicio.crearAsignacion(equipo, usuario, em);
 
             return null;
         });
@@ -99,7 +104,7 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
             configurarDAOs(em);
             asignacionServicio.configurarEntityManager(em);
 
-            asignacionServicio.procesarDevolucion(idAsignacion);
+            asignacionServicio.procesarDevolucion(idAsignacion, em);
 
             return null;
         });
@@ -325,32 +330,6 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
         });
     }
 
-//    @Override
-//    public List<Object[]> obtenerTopUsuariosConEquipos(int limite) {
-//        if (limite <= 0) {
-//            limite = 10; // Valor por defecto
-//        }
-//
-//        return ejecutarLectura(em -> {
-//            configurarDAOs(em);
-//            
-//            // Esta consulta es más compleja y podría requerir una consulta nativa
-//            // o una consulta JPQL más elaborada
-//            String jpql = "SELECT u.idUsuario, u.nombre, COUNT(a) as total " +
-//                         "FROM Usuario u " +
-//                         "LEFT JOIN u.equiposAsignados a " +
-//                         "WHERE a.fechaDevolucion IS NULL " +
-//                         "GROUP BY u.idUsuario, u.nombre " +
-//                         "ORDER BY total DESC";
-//            
-//            List<Object[]> resultados = em.createQuery(jpql, Object[].class)
-//                                         .setMaxResults(limite)
-//                                         .getResultList();
-//            
-//            return resultados;
-//        });
-//    }
-
     @Override
     public AsignacionDTO obtenerUltimaAsignacionDeEquipo(Long idEquipo) {
         if (idEquipo == null) {
@@ -426,13 +405,19 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
         
         @Override
         protected void configurarEntityManager(EntityManager em) {
-            dao.setEntityManager(em);
-            daoEquipo.setEntityManager(em);
-            daoUsuario.setEntityManager(em);
+            if (dao != null) {
+                dao.setEntityManager(em);
+            }
+            if (daoEquipo != null) {
+                daoEquipo.setEntityManager(em);
+            }
+            if (daoUsuario != null) {
+                daoUsuario.setEntityManager(em);
+            }
         }
         
         @Override
-        protected void validarNegocio(AsignacionDTO dto, boolean esNuevo) {
+        protected void validarNegocio(AsignacionDTO dto, boolean esNuevo, EntityManager em) {
             // Las asignaciones no se crean directamente desde DTO
             // Se crean a través de los métodos específicos
             throw new ReglaNegocioException(
@@ -454,7 +439,10 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
         /**
          * Crea una nueva asignación de equipo
          */
-        public void crearAsignacion(EquipoDeComputo equipo, Usuario usuario) {
+        public void crearAsignacion(EquipoDeComputo equipo, Usuario usuario, EntityManager em) {
+            // Asegurar que los DAOs usan el EM correcto
+            configurarEntityManager(em);
+            
             // Validaciones de negocio
             if (!Boolean.TRUE.equals(usuario.getActivo())) {
                 throw new ReglaNegocioException(
@@ -493,7 +481,9 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
         /**
          * Procesa la devolución de un equipo
          */
-        public void procesarDevolucion(Long idAsignacion) {
+        public void procesarDevolucion(Long idAsignacion, EntityManager em) {
+            configurarEntityManager(em);
+            
             EquipoAsignado asignacion = dao.buscarPorId(idAsignacion);
             
             if (asignacion == null) {

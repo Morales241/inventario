@@ -1,4 +1,3 @@
-// InventarioNegocio/src/main/java/Servicios/ServicioPersonas.java
 package Servicios;
 
 import Dao.DaoCuentaSistema;
@@ -49,8 +48,12 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
     }
 
     private void configurarDAOs(EntityManager em) {
-        daoUsuario.setEntityManager(em);
-        daoPuesto.setEntityManager(em);
+        if (daoUsuario != null) {
+            daoUsuario.setEntityManager(em);
+        }
+        if (daoPuesto != null) {
+            daoPuesto.setEntityManager(em);
+        }
     }
 
     // CUENTAS DE SISTEMA 
@@ -201,12 +204,16 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         
         @Override
         protected void configurarEntityManager(EntityManager em) {
-            dao.setEntityManager(em);
-            daoPuesto.setEntityManager(em);
+            if (dao != null) {
+                dao.setEntityManager(em);
+            }
+            if (daoPuesto != null) {
+                daoPuesto.setEntityManager(em);
+            }
         }
         
         @Override
-        protected void validarNegocio(UsuarioDTO dto, boolean esNuevo) {
+        protected void validarNegocio(UsuarioDTO dto, boolean esNuevo, EntityManager em) {
             if (dto.getNombre() == null || dto.getNombre().isBlank()) {
                 throw new ReglaNegocioException("El nombre del usuario es obligatorio");
             }
@@ -220,9 +227,9 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
             }
             
             if (esNuevo) {
-                validarNominaUnica(dto.getNoNomina());
+                validarNominaUnica(dto.getNoNomina(), em);
             } else {
-                validarNominaUnicaEnActualizacion(dto.getNoNomina(), dto.getId());
+                validarNominaUnicaEnActualizacion(dto.getNoNomina(), dto.getId(), em);
             }
         }
         
@@ -242,33 +249,27 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         /**
          * Valida que el número de nómina sea único al crear
          */
-        private void validarNominaUnica(String noNomina) {
-            ejecutarLectura(em -> {
-                configurarEntityManager(em);
-                
-                Usuario existente = dao.busquedaEspecifica(null, noNomina);
-                if (existente != null) {
-                    throw new ReglaNegocioException(
-                        "Ya existe un usuario con el número de nómina: " + noNomina);
-                }
-                return null;
-            });
+        private void validarNominaUnica(String noNomina, EntityManager em) {
+            configurarEntityManager(em);
+            
+            Usuario existente = dao.busquedaEspecifica(null, noNomina);
+            if (existente != null) {
+                throw new ReglaNegocioException(
+                    "Ya existe un usuario con el número de nómina: " + noNomina);
+            }
         }
         
         /**
          * Valida que el número de nómina sea único al actualizar
          */
-        private void validarNominaUnicaEnActualizacion(String noNomina, Long idActual) {
-            ejecutarLectura(em -> {
-                configurarEntityManager(em);
-                
-                Usuario existente = dao.busquedaEspecifica(null, noNomina);
-                if (existente != null && !existente.getIdUsuario().equals(idActual)) {
-                    throw new ReglaNegocioException(
-                        "Ya existe un usuario con el número de nómina: " + noNomina);
-                }
-                return null;
-            });
+        private void validarNominaUnicaEnActualizacion(String noNomina, Long idActual, EntityManager em) {
+            configurarEntityManager(em);
+            
+            Usuario existente = dao.busquedaEspecifica(null, noNomina);
+            if (existente != null && !existente.getIdUsuario().equals(idActual)) {
+                throw new ReglaNegocioException(
+                    "Ya existe un usuario con el número de nómina: " + noNomina);
+            }
         }
         
         @Override
@@ -277,7 +278,7 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
                 configurarEntityManager(em);
                 
                 // Validaciones de negocio
-                validarNegocio(dto, dto.getId() == null);
+                validarNegocio(dto, dto.getId() == null, em);
                 
                 // Obtener y validar el puesto
                 Puesto puesto = daoPuesto.buscarPorId(dto.getIdPuesto());
@@ -407,11 +408,13 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         
         @Override
         protected void configurarEntityManager(EntityManager em) {
-            dao.setEntityManager(em);
+            if (dao != null) {
+                dao.setEntityManager(em);
+            }
         }
         
         @Override
-        protected void validarNegocio(CuentaSistemaDTO dto, boolean esNuevo) {
+        protected void validarNegocio(CuentaSistemaDTO dto, boolean esNuevo, EntityManager em) {
             if (dto.getUsername() == null || dto.getUsername().isBlank()) {
                 throw new ReglaNegocioException("El nombre de usuario es obligatorio");
             }
@@ -421,9 +424,9 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
             }
             
             if (esNuevo) {
-                validarUsernameUnico(dto.getUsername());
+                validarUsernameUnico(dto.getUsername(), em);
             } else {
-                validarUsernameUnicoEnActualizacion(dto.getUsername(), dto.getId());
+                validarUsernameUnicoEnActualizacion(dto.getUsername(), dto.getId(), em);
             }
         }
         
@@ -444,33 +447,27 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         /**
          * Valida que el username sea único al crear
          */
-        private void validarUsernameUnico(String username) {
-            ejecutarLectura(em -> {
-                configurarEntityManager(em);
-                
-                CuentaSistema existente = dao.busquedaEspecifica(username);
-                if (existente != null) {
-                    throw new ReglaNegocioException(
-                        "Ya existe un usuario con el nombre: " + username);
-                }
-                return null;
-            });
+        private void validarUsernameUnico(String username, EntityManager em) {
+            configurarEntityManager(em);
+            
+            CuentaSistema existente = dao.busquedaEspecifica(username);
+            if (existente != null) {
+                throw new ReglaNegocioException(
+                    "Ya existe un usuario con el nombre: " + username);
+            }
         }
         
         /**
          * Valida que el username sea único al actualizar
          */
-        private void validarUsernameUnicoEnActualizacion(String username, Long idActual) {
-            ejecutarLectura(em -> {
-                configurarEntityManager(em);
-                
-                CuentaSistema existente = dao.busquedaEspecifica(username);
-                if (existente != null && !existente.getId().equals(idActual)) {
-                    throw new ReglaNegocioException(
-                        "Ya existe un usuario con el nombre: " + username);
-                }
-                return null;
-            });
+        private void validarUsernameUnicoEnActualizacion(String username, Long idActual, EntityManager em) {
+            configurarEntityManager(em);
+            
+            CuentaSistema existente = dao.busquedaEspecifica(username);
+            if (existente != null && !existente.getId().equals(idActual)) {
+                throw new ReglaNegocioException(
+                    "Ya existe un usuario con el nombre: " + username);
+            }
         }
         
         /**
@@ -535,12 +532,9 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
             return ejecutarTransaccion(em -> {
                 configurarEntityManager(em);
                 
-                validarNegocio(dto, dto.getId() == null);
+                validarNegocio(dto, dto.getId() == null, em);
                 
                 CuentaSistema entidad = mapper.mapToEntity(dto);
-                
-                // Nota: La contraseña debe ser hasheada antes de guardar
-                // Por ahora asumimos que viene hasheada desde el frontend
                 
                 if (dto.getId() != null && dto.getId() > 0) {
                     CuentaSistema existente = dao.buscarPorId(dto.getId());
@@ -549,7 +543,6 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
                             "Cuenta de sistema con ID " + dto.getId() + " no encontrada");
                     }
                     
-                    // Preservar la contraseña si no se envía una nueva
                     if (dto.getPassword() == null) {
                         entidad.setPassword(existente.getPassword());
                     }

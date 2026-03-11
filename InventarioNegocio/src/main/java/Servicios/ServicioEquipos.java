@@ -40,24 +40,26 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
     private final IDaoEquipoDeComputo daoGeneral;
 
     public ServicioEquipos() {
-        this.escritorioServicio = new EquipoEscritorioServicio();
-        this.movilServicio = new EquipoMovilServicio();
-        this.otroServicio = new EquipoOtroServicio();
-        this.modeloServicio = new ModeloServicio();
         this.daoGeneral = new DaoEquipoDeComputo();
+        this.escritorioServicio = new EquipoEscritorioServicio(daoGeneral);
+        this.movilServicio = new EquipoMovilServicio(daoGeneral);
+        this.otroServicio = new EquipoOtroServicio(daoGeneral);
+        this.modeloServicio = new ModeloServicio();
     }
 
     public ServicioEquipos(IDaoEquipoDeComputo daoGeneral, IDaoEquipoDeEscritorio daoEscritorio, IDaoMovil daoMovil,
             IDaoOtroEquipo daoOtro, IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
         this.daoGeneral = daoGeneral;
-        this.escritorioServicio = new EquipoEscritorioServicio(daoEscritorio, daoModelo, daoSucursal);
-        this.movilServicio = new EquipoMovilServicio(daoMovil, daoModelo, daoSucursal);
-        this.otroServicio = new EquipoOtroServicio(daoOtro, daoModelo, daoSucursal);
+        this.escritorioServicio = new EquipoEscritorioServicio(daoGeneral, daoEscritorio, daoModelo, daoSucursal);
+        this.movilServicio = new EquipoMovilServicio(daoGeneral, daoMovil, daoModelo, daoSucursal);
+        this.otroServicio = new EquipoOtroServicio(daoGeneral, daoOtro, daoModelo, daoSucursal);
         this.modeloServicio = new ModeloServicio(daoModelo);
     }
 
     private void configurarGeneral(EntityManager em) {
-        daoGeneral.setEntityManager(em);
+        if (daoGeneral != null) {
+            daoGeneral.setEntityManager(em);
+        }
     }
 
     // MÉTODOS GENERALES
@@ -217,18 +219,21 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         protected final IDaoSucursal daoSucursal;
         protected final IDaoModelo daoModelo;
         protected final IDaoGenerico<T, Long> daoEquipo;
+        protected final IDaoEquipoDeComputo daoGeneral; // Referencia al daoGeneral de la clase externa
 
-        public EquipoBaseServicio(IDaoGenerico<T, Long> dao, Mapper<T, D> mapper, Class<T> claseEntidad) {
+        public EquipoBaseServicio(IDaoGenerico<T, Long> dao, Mapper<T, D> mapper, Class<T> claseEntidad, IDaoEquipoDeComputo daoGeneral) {
             super(dao, mapper, claseEntidad);
             this.daoEquipo = dao;
             this.daoSucursal = new DaoSucursal();
             this.daoModelo = new DaoModelo();
+            this.daoGeneral = daoGeneral;
         }
 
-        public EquipoBaseServicio(IDaoGenerico<T, Long> dao, Mapper<T, D> mapper, Class<T> claseEntidad, IDaoModelo daoModelo,
-                IDaoSucursal daoSucursal) {
+        public EquipoBaseServicio(IDaoGenerico<T, Long> dao, Mapper<T, D> mapper, Class<T> claseEntidad, 
+                                  IDaoEquipoDeComputo daoGeneral, IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
             super(dao, mapper, claseEntidad);
             this.daoEquipo = dao;
+            this.daoGeneral = daoGeneral;
             this.daoModelo = daoModelo;
             this.daoSucursal = daoSucursal;
         }
@@ -238,14 +243,22 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
             if (dao != null) {
                 dao.setEntityManager(em);
             }
-            daoSucursal.setEntityManager(em);
-            daoModelo.setEntityManager(em);
-            daoEquipo.setEntityManager(em);
-            daoGeneral.setEntityManager(em);
+            if (daoSucursal != null) {
+                daoSucursal.setEntityManager(em);
+            }
+            if (daoModelo != null) {
+                daoModelo.setEntityManager(em);
+            }
+            if (daoEquipo != null && daoEquipo != dao) {
+                daoEquipo.setEntityManager(em);
+            }
+            if (daoGeneral != null) {
+                daoGeneral.setEntityManager(em);
+            }
         }
 
         @Override
-        protected void validarNegocio(D dto, boolean esNuevo) {
+        protected void validarNegocio(D dto, boolean esNuevo, EntityManager em) {
             if (dto.getGry() == null || dto.getGry() <= 0) {
                 throw new ReglaNegocioException("El GRY es obligatorio y debe ser mayor a 0");
             }
@@ -258,7 +271,7 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
                 throw new ReglaNegocioException("Debe seleccionar un modelo");
             }
 
-            validarDuplicidadGry(dto.getGry(), dto.getIdEquipo());
+            validarDuplicidadGry(dto.getGry(), dto.getIdEquipo(), em);
         }
 
         @Override
@@ -274,23 +287,33 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
             }
         }
 
-        protected void validarDuplicidadGry(Integer gry, Long idActual) {
-            ejecutarLectura(em -> {
-                configurarEntityManager(em);
+        protected void validarDuplicidadGry(Integer gry, Long idActual, EntityManager em) {
+            // Verificar que daoGeneral no sea null
+            if (daoGeneral == null) {
+                throw new IllegalStateException("daoGeneral no está inicializado");
+            }
+            
+            // Configurar el EntityManager en daoGeneral
+            daoGeneral.setEntityManager(em);
 
-                EquipoDeComputo existente = daoGeneral.buscarPorGry(gry);
+            EquipoDeComputo existente = daoGeneral.buscarPorGry(gry);
 
-                if (existente != null) {
-                    if (idActual == null || !existente.getId().equals(idActual)) {
-                        throw new ReglaNegocioException(
-                                "Ya existe un equipo con el GRY: " + gry);
-                    }
+            if (existente != null) {
+                if (idActual == null || !existente.getId().equals(idActual)) {
+                    throw new ReglaNegocioException(
+                            "Ya existe un equipo con el GRY: " + gry);
                 }
-                return null;
-            });
+            }
         }
 
-        protected void establecerRelaciones(T entidad, D dto) {
+        protected void establecerRelaciones(T entidad, D dto, EntityManager em) {
+            if (daoSucursal != null) {
+                daoSucursal.setEntityManager(em);
+            }
+            if (daoModelo != null) {
+                daoModelo.setEntityManager(em);
+            }
+
             Sucursal sucursal = daoSucursal.buscarPorId(dto.getIdSucursal());
             if (sucursal == null) {
                 throw new RecursoNoEncontradoException(
@@ -310,16 +333,19 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         @Override
         public D guardar(D dto) {
             return ejecutarTransaccion(em -> {
-                configurarEntityManager(em); 
+                configurarEntityManager(em);
 
-                validarNegocio(dto, dto.getIdEquipo() == null);
+                validarNegocio(dto, dto.getIdEquipo() == null, em);
 
                 T entidad = mapper.mapToEntity(dto);
 
-                establecerRelaciones(entidad, dto);
+                establecerRelaciones(entidad, dto, em);
 
                 if (dto.getIdEquipo() != null && dto.getIdEquipo() > 0) {
                     T existente = dao.buscarPorId(dto.getIdEquipo());
+                    if (existente == null) {
+                        throw new RecursoNoEncontradoException("Equipo no encontrado para actualizar");
+                    }
                     entidad.setEstado(existente.getEstado());
                     entidad = dao.actualizar(entidad);
                 } else {
@@ -337,18 +363,18 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
      */
     private class EquipoEscritorioServicio extends EquipoBaseServicio<EquipoDeEscritorio, EquipoEscritorioDTO> {
 
-        public EquipoEscritorioServicio() {
-            super(new DaoEquipoDeEscritorio(), MapperEquipos.escritorio, EquipoDeEscritorio.class);
-            this.dao = (IDaoEquipoDeEscritorio) super.dao;
+        public EquipoEscritorioServicio(IDaoEquipoDeComputo daoGeneral) {
+            super(new DaoEquipoDeEscritorio(), MapperEquipos.escritorio, EquipoDeEscritorio.class, daoGeneral);
         }
 
-        public EquipoEscritorioServicio(IDaoEquipoDeEscritorio dao, IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
-            super(dao, MapperEquipos.escritorio, EquipoDeEscritorio.class, daoModelo, daoSucursal);
+        public EquipoEscritorioServicio(IDaoEquipoDeComputo daoGeneral, IDaoEquipoDeEscritorio dao, 
+                                        IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
+            super(dao, MapperEquipos.escritorio, EquipoDeEscritorio.class, daoGeneral, daoModelo, daoSucursal);
         }
 
         @Override
-        protected void validarNegocio(EquipoEscritorioDTO dto, boolean esNuevo) {
-            super.validarNegocio(dto, esNuevo);
+        protected void validarNegocio(EquipoEscritorioDTO dto, boolean esNuevo, EntityManager em) {
+            super.validarNegocio(dto, esNuevo, em);
 
             if (dto.getNombreEquipo() == null || dto.getNombreEquipo().isBlank()) {
                 throw new ReglaNegocioException("El nombre del equipo es obligatorio");
@@ -363,7 +389,6 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         public List<EquipoEscritorioDTO> buscarConFiltro(String filtro) {
             return null;
         }
-
     }
 
     /**
@@ -371,18 +396,18 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
      */
     private class EquipoMovilServicio extends EquipoBaseServicio<Movil, MovilDTO> {
 
-        public EquipoMovilServicio() {
-            super(new DaoMovil(), MapperEquipos.movil, Movil.class);
-            this.dao = (IDaoMovil) super.dao;
+        public EquipoMovilServicio(IDaoEquipoDeComputo daoGeneral) {
+            super(new DaoMovil(), MapperEquipos.movil, Movil.class, daoGeneral);
         }
 
-        public EquipoMovilServicio(IDaoMovil dao, IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
-            super(dao, MapperEquipos.movil, Movil.class, daoModelo, daoSucursal);
+        public EquipoMovilServicio(IDaoEquipoDeComputo daoGeneral, IDaoMovil dao, 
+                                   IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
+            super(dao, MapperEquipos.movil, Movil.class, daoGeneral, daoModelo, daoSucursal);
         }
 
         @Override
-        protected void validarNegocio(MovilDTO dto, boolean esNuevo) {
-            super.validarNegocio(dto, esNuevo);
+        protected void validarNegocio(MovilDTO dto, boolean esNuevo, EntityManager em) {
+            super.validarNegocio(dto, esNuevo, em);
 
             if (dto.getNumCelular() == null || dto.getNumCelular().isBlank()) {
                 throw new ReglaNegocioException("El número de celular es obligatorio");
@@ -408,18 +433,18 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
      */
     private class EquipoOtroServicio extends EquipoBaseServicio<OtroEquipo, OtroEquipoDTO> {
 
-        public EquipoOtroServicio() {
-            super(new DaoOtroEquipo(), MapperEquipos.otro, OtroEquipo.class);
-            this.dao = (IDaoOtroEquipo) super.dao;
+        public EquipoOtroServicio(IDaoEquipoDeComputo daoGeneral) {
+            super(new DaoOtroEquipo(), MapperEquipos.otro, OtroEquipo.class, daoGeneral);
         }
 
-        public EquipoOtroServicio(IDaoOtroEquipo dao, IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
-            super(dao, MapperEquipos.otro, OtroEquipo.class, daoModelo, daoSucursal);
+        public EquipoOtroServicio(IDaoEquipoDeComputo daoGeneral, IDaoOtroEquipo dao, 
+                                  IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
+            super(dao, MapperEquipos.otro, OtroEquipo.class, daoGeneral, daoModelo, daoSucursal);
         }
 
         @Override
-        protected void validarNegocio(OtroEquipoDTO dto, boolean esNuevo) {
-            super.validarNegocio(dto, esNuevo);
+        protected void validarNegocio(OtroEquipoDTO dto, boolean esNuevo, EntityManager em) {
+            super.validarNegocio(dto, esNuevo, em);
 
             if (dto.getTituloCampoExtra() == null || dto.getTituloCampoExtra().isBlank()) {
                 throw new ReglaNegocioException("El título del campo extra es obligatorio");
@@ -455,11 +480,13 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
 
         @Override
         protected void configurarEntityManager(EntityManager em) {
-            dao.setEntityManager(em);
+            if (dao != null) {
+                dao.setEntityManager(em);
+            }
         }
 
         @Override
-        protected void validarNegocio(ModeloDTO dto, boolean esNuevo) {
+        protected void validarNegocio(ModeloDTO dto, boolean esNuevo, EntityManager em) {
             if (dto.getNombre() == null || dto.getNombre().isBlank()) {
                 throw new ReglaNegocioException("El nombre del modelo es obligatorio");
             }
@@ -481,7 +508,7 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
             }
 
             if (esNuevo) {
-                validarModeloDuplicado(dto);
+                validarModeloDuplicado(dto, em);
             }
         }
 
@@ -498,24 +525,21 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
             }
         }
 
-        private void validarModeloDuplicado(ModeloDTO dto) {
-            ejecutarLectura(em -> {
-                configurarEntityManager(em);
+        private void validarModeloDuplicado(ModeloDTO dto, EntityManager em) {
+            configurarEntityManager(em);
 
-                boolean existe = ((DaoModelo) dao).existeModeloDuplicado(
-                        dto.getMarca(),
-                        dto.getNombre(),
-                        dto.getMemoriaRam(),
-                        dto.getAlmacenamiento(),
-                        dto.getProcesador()
-                );
+            boolean existe = ((DaoModelo) dao).existeModeloDuplicado(
+                    dto.getMarca(),
+                    dto.getNombre(),
+                    dto.getMemoriaRam(),
+                    dto.getAlmacenamiento(),
+                    dto.getProcesador()
+            );
 
-                if (existe) {
-                    throw new ReglaNegocioException(
-                            "Ya existe un modelo con las mismas características");
-                }
-                return null;
-            });
+            if (existe) {
+                throw new ReglaNegocioException(
+                        "Ya existe un modelo con las mismas características");
+            }
         }
 
         /**

@@ -130,11 +130,13 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
         
         @Override
         protected void configurarEntityManager(EntityManager em) {
-            dao.setEntityManager(em);
+            if (dao != null) {
+                dao.setEntityManager(em);
+            }
         }
         
         @Override
-        protected void validarNegocio(EmpresaDTO dto, boolean esNuevo) {
+        protected void validarNegocio(EmpresaDTO dto, boolean esNuevo, EntityManager em) {
             if (dto.getNombre() == null || dto.getNombre().isBlank()) {
                 throw new ReglaNegocioException("El nombre de la empresa es obligatorio");
             }
@@ -198,12 +200,16 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
         
         @Override
         protected void configurarEntityManager(EntityManager em) {
-            dao.setEntityManager(em);
-            daoEmpresa.setEntityManager(em);
+            if (dao != null) {
+                dao.setEntityManager(em);
+            }
+            if (daoEmpresa != null) {
+                daoEmpresa.setEntityManager(em);
+            }
         }
         
         @Override
-        protected void validarNegocio(SucursalDTO dto, boolean esNuevo) {
+        protected void validarNegocio(SucursalDTO dto, boolean esNuevo, EntityManager em) {
             if (dto.getNombre() == null || dto.getNombre().isBlank()) {
                 throw new ReglaNegocioException("El nombre de la sucursal es obligatorio");
             }
@@ -299,12 +305,16 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
         
         @Override
         protected void configurarEntityManager(EntityManager em) {
-            dao.setEntityManager(em);
-            daoSucursal.setEntityManager(em);
+            if (dao != null) {
+                dao.setEntityManager(em);
+            }
+            if (daoSucursal != null) {
+                daoSucursal.setEntityManager(em);
+            }
         }
         
         @Override
-        protected void validarNegocio(DepartamentoDTO dto, boolean esNuevo) {
+        protected void validarNegocio(DepartamentoDTO dto, boolean esNuevo, EntityManager em) {
             if (dto.getNombre() == null || dto.getNombre().isBlank()) {
                 throw new ReglaNegocioException("El nombre del departamento es obligatorio");
             }
@@ -395,12 +405,16 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
         
         @Override
         protected void configurarEntityManager(EntityManager em) {
-            dao.setEntityManager(em);
-            daoDepartamento.setEntityManager(em);
+            if (dao != null) {
+                dao.setEntityManager(em);
+            }
+            if (daoDepartamento != null) {
+                daoDepartamento.setEntityManager(em);
+            }
         }
         
         @Override
-        protected void validarNegocio(PuestoDTO dto, boolean esNuevo) {
+        protected void validarNegocio(PuestoDTO dto, boolean esNuevo, EntityManager em) {
             if (dto.getNombre() == null || dto.getNombre().isBlank()) {
                 throw new ReglaNegocioException("El nombre del puesto es obligatorio");
             }

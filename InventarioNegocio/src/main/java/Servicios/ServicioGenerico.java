@@ -27,14 +27,19 @@ public abstract class ServicioGenerico<E, D, ID> extends ServicioBase implements
 
     protected abstract void configurarEntityManager(EntityManager em);
 
-    protected abstract void validarNegocio(D dto, boolean esNuevo);
+    protected abstract void validarNegocio(D dto, boolean esNuevo, EntityManager em);
+
+    protected abstract ID extraerId(D dto);
+
+    protected void validarEliminacion(E entidad) {
+    }
 
     @Override
     public D guardar(D dto) {
-        validarNegocio(dto, true);
-
         return ejecutarTransaccion(em -> {
             configurarEntityManager(em);
+            
+            validarNegocio(dto, true, em);
 
             E entidad = mapper.mapToEntity(dto);
             entidad = dao.guardar(entidad);
@@ -45,12 +50,11 @@ public abstract class ServicioGenerico<E, D, ID> extends ServicioBase implements
 
     @Override
     public D actualizar(D dto) {
-        validarNegocio(dto, false);
-
         return ejecutarTransaccion(em -> {
             configurarEntityManager(em);
+            
+            validarNegocio(dto, false, em);
 
-            // Verificar que existe
             ID id = extraerId(dto);
             E existente = dao.buscarPorId(id);
             if (existente == null) {
@@ -113,15 +117,7 @@ public abstract class ServicioGenerico<E, D, ID> extends ServicioBase implements
         });
     }
     
-    /**
-     * Extrae el ID del DTO. Debe ser implementado por las subclases.
-     */
-    protected abstract ID extraerId(D dto);
-
-    /**
-     * Validación adicional antes de eliminar. Por defecto, no hace nada.
-     */
-    protected void validarEliminacion(E entidad) {
-        // Hook method - las subclases pueden sobreescribir
+    protected void validarNegocio(D dto, boolean esNuevo) {
+        throw new UnsupportedOperationException("Use la versión con EntityManager");
     }
 }
