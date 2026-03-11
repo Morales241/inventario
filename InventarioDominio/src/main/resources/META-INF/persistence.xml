@@ -15,7 +15,7 @@
     <class>Entidades.Usuario</class>
     <class>Entidades.CuentaSistema</class>
     <properties>
-      <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlserver://192.168.25.25:1433; databaseName=inventario; encrypt=true; trustServerCertificate=true; "/>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlserver://; databaseName=inventario; encrypt=true; trustServerCertificate=true; "/>
       <property name="jakarta.persistence.jdbc.user" value=""/>
       <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
       <property name="jakarta.persistence.jdbc.password" value=""/>
