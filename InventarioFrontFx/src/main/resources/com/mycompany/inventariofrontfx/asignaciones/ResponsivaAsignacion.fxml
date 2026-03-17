@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.WebView?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="rootPane" prefHeight="700.0" prefWidth="1000.0" stylesheets="@asignaciones.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.asignaciones.ResponsivaAsignacionController">
+
+    <top>
+        <VBox spacing="10.0" styleClass="panel-superior" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+            </padding>
+            
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                    <children>
+                        <Label style="-fx-font-size: 24px;" text="📄" />
+                        <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #13507d;" text="RESPONSIVA DE ASIGNACIÓN" />
+                    </children>
+                </HBox>
+                
+                <Separator />
+                
+                <HBox spacing="30.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                            <Label style="-fx-font-weight: bold; -fx-text-fill: #13507d;" text="TRABAJADOR:" />
+                            <Label fx:id="lblTrabajador" style="-fx-font-size: 14px;" text="-" />
+                        </VBox>
+                        
+                        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                            <Label style="-fx-font-weight: bold; -fx-text-fill: #13507d;" text="EQUIPO ASIGNADO:" />
+                            <Label fx:id="lblEquipo" style="-fx-font-size: 14px;" text="-" />
+                        </VBox>
+                        
+                        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                            <Label style="-fx-font-weight: bold; -fx-text-fill: #13507d;" text="FECHA DE ASIGNACIÓN:" />
+                            <Label fx:id="lblFecha" style="-fx-font-size: 14px;" text="-" />
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+
+    <center>
+        <StackPane>
+            <WebView fx:id="webViewPDF" />
+            <StackPane fx:id="progressContainer" style="-fx-background-color: rgba(255,255,255,0.8);">
+                <ProgressIndicator fx:id="progressIndicator" />
+            </StackPane>
+        </StackPane>
+    </center>
+
+    <bottom>
+        <ToolBar styleClass="panel-superior">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            
+            <HBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <children>
+                    <Button fx:id="btnVolver" styleClass="btn-cancelar" text="← Volver a Asignaciones" />
+                </children>
+            </HBox>
+            
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                <children>
+                    <Button fx:id="btnImprimir" styleClass="btn-editar" text="🖨️ Imprimir Responsiva" />
+                    <Button fx:id="btnGuardarPDF" styleClass="btn-agregar" text="💾 Guardar PDF" />
+                </children>
+            </HBox>
+        </ToolBar>
+    </bottom>
+    
+</BorderPane>

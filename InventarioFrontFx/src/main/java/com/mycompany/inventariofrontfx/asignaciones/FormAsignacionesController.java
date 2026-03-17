@@ -12,20 +12,27 @@ import fabricaFachadas.FabricaFachadas;
 import interfaces.BaseController;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+
 public class FormAsignacionesController implements Initializable, BaseController {
 
     private MenuController dbc;
@@ -45,12 +52,26 @@ public class FormAsignacionesController implements Initializable, BaseController
     @FXML
     private DatePicker dateEntrega;
     @FXML
-    private DatePicker dateRegreso;
-    @FXML
     private Button btnConfirmar;
+    @FXML
+    private Button btnCancelar;
+    
+    // Labels para resumen
+    @FXML
+    private Label resumenTrabajador;
+    @FXML
+    private Label resumenEquipo;
+    @FXML
+    private Label resumenFechaEntrega;
+    @FXML
+    private Label lblUsuarioSeleccionado;
+    @FXML
+    private Label lblEquipoSeleccionado;
 
     private UsuarioDTO usuarioSeleccionado;
     private EquipoBaseDTO equipoSeleccionado;
+    private List<UsuarioDTO> usuariosCache;
+    private List<EquipoBaseDTO> equiposCache;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -58,6 +79,7 @@ public class FormAsignacionesController implements Initializable, BaseController
         cargarDatosIniciales();
         
         dateEntrega.setValue(LocalDate.now());
+        actualizarResumen();
         
         txtBuscarUsuario.textProperty().addListener((obs, old, newVal) -> 
             buscarUsuarios(newVal));
@@ -67,11 +89,26 @@ public class FormAsignacionesController implements Initializable, BaseController
         
         listUsuarios.getSelectionModel().selectedItemProperty().addListener((obs, old, selected) -> {
             usuarioSeleccionado = selected;
+            actualizarResumen();
+            if (selected != null) {
+                lblUsuarioSeleccionado.setText(selected.getNombre() + " - " + selected.getNoNomina());
+            } else {
+                lblUsuarioSeleccionado.setText("Ninguno seleccionado");
+            }
         });
         
         listEquipos.getSelectionModel().selectedItemProperty().addListener((obs, old, selected) -> {
             equipoSeleccionado = selected;
+            actualizarResumen();
+            if (selected != null) {
+                lblEquipoSeleccionado.setText("GRY: " + selected.getGry() + " - " + selected.getNombreModelo());
+            } else {
+                lblEquipoSeleccionado.setText("Ninguno seleccionado");
+            }
         });
+        
+        dateEntrega.valueProperty().addListener((obs, old, newVal) -> 
+            actualizarResumen());
     }
 
     private void configurarListas() {
@@ -96,7 +133,8 @@ public class FormAsignacionesController implements Initializable, BaseController
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText("GRY: " + item.getGry() + " - " + item.getNombreModelo());
+                    setText("GRY: " + item.getGry() + " - " + item.getNombreModelo() + 
+                           " (" + item.getIdentificador() + ")");
                 }
             }
         });
@@ -111,10 +149,11 @@ public class FormAsignacionesController implements Initializable, BaseController
         Task<List<UsuarioDTO>> task = new Task<>() {
             @Override
             protected List<UsuarioDTO> call() {
-                return fachadaPersonas.buscarUsuarios(filtro)
+                usuariosCache = fachadaPersonas.buscarUsuarios(filtro)
                     .stream()
                     .filter(UsuarioDTO::getActivo)
                     .collect(Collectors.toList());
+                return usuariosCache;
             }
         };
 
@@ -129,8 +168,9 @@ public class FormAsignacionesController implements Initializable, BaseController
         Task<List<EquipoBaseDTO>> task = new Task<>() {
             @Override
             protected List<EquipoBaseDTO> call() {
-                return fachadaEquipos.buscarConFiltros(
+                equiposCache = fachadaEquipos.buscarConFiltros(
                     filtro, null, null, EstadoEquipo.EN_STOCK);
+                return equiposCache;
             }
         };
 
@@ -139,6 +179,27 @@ public class FormAsignacionesController implements Initializable, BaseController
         });
 
         new Thread(task).start();
+    }
+
+    private void actualizarResumen() {
+        if (usuarioSeleccionado != null) {
+            resumenTrabajador.setText(usuarioSeleccionado.getNombre());
+        } else {
+            resumenTrabajador.setText("No seleccionado");
+        }
+        
+        if (equipoSeleccionado != null) {
+            resumenEquipo.setText("GRY: " + equipoSeleccionado.getGry() + " - " + 
+                                  equipoSeleccionado.getNombreModelo());
+        } else {
+            resumenEquipo.setText("No seleccionado");
+        }
+        
+        if (dateEntrega.getValue() != null) {
+            resumenFechaEntrega.setText(dateEntrega.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        } else {
+            resumenFechaEntrega.setText("No definida");
+        }
     }
 
     @FXML
@@ -153,13 +214,36 @@ public class FormAsignacionesController implements Initializable, BaseController
                 usuarioSeleccionado.getId()
             );
             
-            mostrarExito("Equipo asignado correctamente a " + usuarioSeleccionado.getNombre());
+            mostrarExito("Equipo asignado correctamente");
             
-            // Volver a la pantalla anterior
-            volverALista();
+            // Ir a la pantalla de responsiva
+            mostrarResponsiva();
             
         } catch (Exception e) {
             mostrarError("Error al asignar: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Muestra la pantalla de responsiva después de una asignación exitosa
+     */
+    private void mostrarResponsiva() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ResponsivaAsignacion.fxml"));
+            Parent vista = loader.load();
+            
+            ResponsivaAsignacionController controller = loader.getController();
+            controller.setDashBoard(dbc);
+            controller.setDatosAsignacion(usuarioSeleccionado, equipoSeleccionado, dateEntrega.getValue());
+            
+            dbc.getCenterContainer().setContent(vista);
+            dbc.getCenterContainer().setVvalue(0);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarError("Error al mostrar responsiva");
+            // Si hay error, volver a la lista
+            volverALista();
         }
     }
 
@@ -202,7 +286,7 @@ public class FormAsignacionesController implements Initializable, BaseController
     private void volverALista() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Asignaciones.fxml"));
-            javafx.scene.Parent vista = loader.load();
+            Parent vista = loader.load();
             
             Object controller = loader.getController();
             if (controller instanceof BaseController baseController) {

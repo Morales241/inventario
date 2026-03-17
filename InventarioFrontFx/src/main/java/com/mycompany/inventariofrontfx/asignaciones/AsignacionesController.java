@@ -1,6 +1,10 @@
 package com.mycompany.inventariofrontfx.asignaciones;
 
 import Dtos.AsignacionDTO;
+import Dtos.EquipoBaseDTO;
+import Dtos.UsuarioDTO;
+import InterfacesFachada.IFachadaEquipos;
+import InterfacesFachada.IFachadaPersonas;
 import InterfacesFachada.IFachadaPrestamos;
 import com.mycompany.inventariofrontfx.menu.MenuController;
 import fabricaFachadas.FabricaFachadas;
@@ -34,6 +38,8 @@ public class AsignacionesController implements Initializable, BaseController {
 
     private MenuController dbc;
     private final IFachadaPrestamos fachadaPrestamos = FabricaFachadas.getFachadaPrestamos();
+    private final IFachadaPersonas fachadapersonas = FabricaFachadas.getFachadaPersonas();
+    private final IFachadaEquipos fachadaEquipos = FabricaFachadas.getFachadaEquipos();
 
     @FXML
     private TableView<AsignacionDTO> tablaAsignaciones;
@@ -95,17 +101,32 @@ public class AsignacionesController implements Initializable, BaseController {
         });
     }
 
+    // En la clase AsignacionesController, dentro del método configurarAcciones()
     private void configurarAcciones() {
         colAcciones.setCellFactory(col -> new TableCell<>() {
+            private final FontIcon viewIcon = new FontIcon("fas-file-pdf");
             private final FontIcon returnIcon = new FontIcon("fas-undo-alt");
+            private final Button btnVerResponsiva = new Button("", viewIcon);
             private final Button btnDevolver = new Button("", returnIcon);
-            private final HBox container = new HBox(8, btnDevolver);
+            private final HBox container = new HBox(8, btnVerResponsiva, btnDevolver);
 
             {
+                viewIcon.setIconSize(16);
                 returnIcon.setIconSize(16);
-                btnDevolver.getStyleClass().add("btn-editar"); // Reusamos estilo existente
+
+                btnVerResponsiva.getStyleClass().add("btn-ver");
+                btnDevolver.getStyleClass().add("btn-editar");
+
+                btnVerResponsiva.setTooltip(new Tooltip("Ver responsiva"));
                 btnDevolver.setTooltip(new Tooltip("Devolver equipo"));
                 container.setAlignment(Pos.CENTER);
+
+                btnVerResponsiva.setOnAction(e -> {
+                    AsignacionDTO asignacion = getTableRow().getItem();
+                    if (asignacion != null) {
+                        verResponsiva(asignacion);
+                    }
+                });
 
                 btnDevolver.setOnAction(e -> {
                     AsignacionDTO asignacion = getTableRow().getItem();
@@ -127,6 +148,29 @@ public class AsignacionesController implements Initializable, BaseController {
                 }
             }
         });
+    }
+
+// Método para ver la responsiva de una asignación existente
+    private void verResponsiva(AsignacionDTO asignacion) {
+        try {
+            // Obtener datos completos del usuario y equipo
+            UsuarioDTO usuario = fachadapersonas.obtenerUsuario(asignacion.getIdUsuario());
+            EquipoBaseDTO equipo = fachadaEquipos.obtenerEquipoPorId(asignacion.getIdEquipo());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ResponsivaAsignacion.fxml"));
+            Parent vista = loader.load();
+
+            ResponsivaAsignacionController controller = loader.getController();
+            controller.setDashBoard(dbc);
+            controller.setDatosAsignacion(usuario, equipo, asignacion.getFechaEntrega());
+
+            dbc.getCenterContainer().setContent(vista);
+            dbc.getCenterContainer().setVvalue(0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarError("Error al cargar responsiva");
+        }
     }
 
     private void cargarDatos() {
