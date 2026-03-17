@@ -2,3 +2,4 @@ jdbc:sqlserver://192.168.25.25:1433;
 databaseName=inventario;
 encrypt=true;
 trustServerCertificate=true;
+modificado

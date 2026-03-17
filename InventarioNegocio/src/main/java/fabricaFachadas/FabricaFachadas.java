@@ -4,10 +4,12 @@ import Implementaciones.FachadaEquipos;
 import Implementaciones.FachadaOrganizacion;
 import Implementaciones.FachadaPersonas;
 import Implementaciones.FachadaPrestamos;
+import Implementaciones.FachadaReportes;
 import InterfacesFachada.IFachadaEquipos;
 import InterfacesFachada.IFachadaOrganizacion;
 import InterfacesFachada.IFachadaPersonas;
 import InterfacesFachada.IFachadaPrestamos;
+import InterfacesFachada.IFachadaReportes;
 
 /**
  * Fábrica para obtener instancias de las fachadas del sistema.
@@ -23,6 +25,7 @@ public final class FabricaFachadas {
     private static IFachadaOrganizacion fachadaOrganizacion;
     private static IFachadaPersonas fachadaPersonas;
     private static IFachadaPrestamos fachadaPrestamos;
+    private static IFachadaReportes fachadaReportes;
 
     private FabricaFachadas() {
     }
@@ -72,12 +75,24 @@ public final class FabricaFachadas {
     }
     
     /**
+     * Obtiene la instancia única de la fachada de reportes.
+     * @return Implementación de IFachadaReportes
+     */
+    public static IFachadaReportes getFachadaReportes() {
+        if (fachadaReportes == null) {
+            fachadaReportes = new FachadaReportes();
+        }
+        return fachadaReportes;
+    }
+    
+    /**
      * Reinicia todas las instancias (útil para pruebas).
      */
     public static void reset() {
         fachadaEquipos = null;
         fachadaOrganizacion = null;
         fachadaPersonas = null;
+        fachadaReportes = null;
         fachadaPrestamos = null;
     }
 }
