@@ -25,7 +25,7 @@ public class ReporteController {
     
     private static ReporteController instancia;
     private Stage stageVisor;
-    private IFachadaReportes facahdaReportes;
+    private final IFachadaReportes facahdaReportes;
     private ReportesController visorController;
     private ProgressIndicator progressIndicator;
     
