@@ -11,7 +11,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.concurrent.Task;
@@ -31,7 +30,7 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.pdf.JRPdfExporter;
@@ -77,6 +76,10 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
 
     /**
      * Recibe los datos de la asignación para generar la responsiva
+     *
+     * @param usuario
+     * @param equipo
+     * @param fecha
      */
     public void setDatosAsignacion(UsuarioDTO usuario, EquipoBaseDTO equipo, LocalDate fecha) {
         this.usuario = usuario;
@@ -126,41 +129,92 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
     }
 
     /**
-     * Genera la responsiva en PDF usando JasperReports
+     * Genera la responsiva en PDF usando JasperReports desde archivo JRXML
      */
     private byte[] generarResponsivaPDF() throws Exception {
-        // Opción 1: Usar un reporte .jasper precompilado
-        InputStream reportStream = getClass().getResourceAsStream("/reportes/responsiva_asignacion.jasper");
-
-        // Si no existe, usar datos en memoria (simulado)
-        if (reportStream == null) {
+        // Buscar el archivo .jrxml
+        InputStream jrxmlStream = getClass().getResourceAsStream("/com/mycompany/inventariofrontfx/asignaciones/responsiva_asignacion.jrxml");
+        
+        if (jrxmlStream == null) {
+            System.out.println("No se encontró el archivo JRXML, usando versión simulada");
             return generarResponsivaSimulada();
         }
 
-        // Cargar parámetros
-        Map<String, Object> parametros = new HashMap<>();
-        parametros.put("NOMBRE_USUARIO", usuario.getNombre());
-        parametros.put("NOMINA_USUARIO", usuario.getNoNomina());
-        parametros.put("PUESTO_USUARIO", usuario.getNombrePuesto());
-        parametros.put("GRY_EQUIPO", equipo.getGry());
-        parametros.put("MODELO_EQUIPO", equipo.getNombreModelo());
-        parametros.put("IDENTIFICADOR", equipo.getIdentificador());
-        parametros.put("FECHA_ASIGNACION", fechaAsignacion);
-        parametros.put("FECHA_FORMATEADA", fechaAsignacion.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        // Compilar el JRXML en tiempo real
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlStream);
 
-        // Cargar reporte
-        JasperReport jasperReport = (JasperReport) net.sf.jasperreports.engine.util.JRLoader.loadObject(reportStream);
+        // Preparar parámetros según tu JRXML
+        Map<String, Object> parametros = prepararParametros();
 
-        // Llenar reporte (usando datasource vacío o con datos si es necesario)
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, new JRBeanCollectionDataSource(List.of()));
+        // Llenar reporte (sin datasource, solo parámetros)
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, new JREmptyDataSource());
 
         // Exportar a PDF
+        return exportarAPDF(jasperPrint);
+    }
+
+    /**
+     * Prepara los parámetros para el reporte según tu JRXML
+     */
+    private Map<String, Object> prepararParametros() {
+        Map<String, Object> parametros = new HashMap<>();
+
+        // Parámetros básicos del JRXML
+        parametros.put("fecha", fechaAsignacion.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        parametros.put("nombreEmpleado", usuario.getNombre());
+        parametros.put("puesto", usuario.getNombrePuesto() != null ? usuario.getNombrePuesto() : "No asignado");
+        parametros.put("gry", equipo.getGry());
+        parametros.put("numeroCarta", "RESP-" + System.currentTimeMillis()); // Número único para cada responsiva
+
+        // Datos del equipo
+        parametros.put("marca", obtenerMarcaDelModelo(equipo.getNombreModelo()));
+        parametros.put("tipoEquipo", equipo.getTipo() != null ? equipo.getTipo() : "No especificado");
+        parametros.put("numeroSerie", equipo.getIdentificador() != null ? equipo.getIdentificador() : "N/A");
+        parametros.put("modelo", equipo.getNombreModelo() != null ? equipo.getNombreModelo() : "N/A");
+
+        // Especificaciones técnicas (valores por defecto)
+        parametros.put("memoriaRam", "16");
+        parametros.put("procesador", "Intel Core i7");
+        parametros.put("almacenamiento", "512");
+
+        // Accesorios (valores por defecto)
+        parametros.put("mouse", true);
+        parametros.put("teclado", true);
+        parametros.put("mochila", false);
+        parametros.put("Adaptador", false);
+        parametros.put("baseMonitor", false);
+        parametros.put("otrosAccesorios", "Ninguno");
+
+        // Software
+        parametros.put("sistemaOperativo", true);
+        parametros.put("antivirus", true);
+        parametros.put("paqueteriaOffice", true);
+        parametros.put("lectorPDF", true);
+
+        return parametros;
+    }
+
+    /**
+     * Extrae la marca del nombre del modelo (primer palabra antes del espacio)
+     */
+    private String obtenerMarcaDelModelo(String nombreModelo) {
+        if (nombreModelo == null || nombreModelo.isBlank()) {
+            return "No especificada";
+        }
+
+        String[] partes = nombreModelo.split(" ");
+        return partes.length > 0 ? partes[0] : nombreModelo;
+    }
+
+    /**
+     * Exporta JasperPrint a PDF
+     */
+    private byte[] exportarAPDF(JasperPrint jasperPrint) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         JRPdfExporter exporter = new JRPdfExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
         exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(baos));
         exporter.exportReport();
-
         return baos.toByteArray();
     }
 
@@ -169,6 +223,9 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
      * Jasper)
      */
     private byte[] generarResponsivaSimulada() {
+        String fechaFormateada = fechaAsignacion.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        String nombrePuesto = usuario.getNombrePuesto() != null ? usuario.getNombrePuesto() : "No asignado";
+
         String html = String.format("""
         <!DOCTYPE html>
         <html>
@@ -236,12 +293,12 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
         """,
                 usuario.getNombre(),
                 usuario.getNoNomina(),
-                usuario.getNombrePuesto() != null ? usuario.getNombrePuesto() : "No asignado",
+                nombrePuesto,
                 equipo.getGry(),
                 equipo.getNombreModelo(),
                 equipo.getIdentificador(),
                 equipo.getCondicion(),
-                fechaAsignacion.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                fechaFormateada
         );
 
         return html.getBytes(java.nio.charset.StandardCharsets.UTF_8);

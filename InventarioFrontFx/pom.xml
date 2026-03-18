@@ -121,36 +121,21 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
-
             <plugin>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
                 <configuration>
-                    <mainClass>com.mycompany.inventariofrontfx.Starter</mainClass>
-                    <options>
-                        <option>--add-exports=java.base/sun.nio.ch=ALL-UNNAMED</option>
-                        <option>--add-exports=java.desktop/com.sun.imageio.plugins.jpeg=ALL-UNNAMED</option>
-                        <option>--add-opens=java.base/java.lang=ALL-UNNAMED</option>
-                        <option>--add-opens=java.base/java.util=ALL-UNNAMED</option>
-                        <option>--add-opens=java.base/java.io=ALL-UNNAMED</option>
-                    </options>
+                    <release>25</release>
+                    <compilerArgs>
+                        <arg>--enable-preview</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
-            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M9</version>
-                <configuration>
-                    <argLine>
-                        --add-exports=java.base/sun.nio.ch=ALL-UNNAMED
-                        --add-exports=java.desktop/com.sun.imageio.plugins.jpeg=ALL-UNNAMED
-                        --add-opens=java.base/java.lang=ALL-UNNAMED
-                        --add-opens=java.base/java.util=ALL-UNNAMED
-                        --add-opens=java.base/java.io=ALL-UNNAMED
-                    </argLine>
-                </configuration>
             </plugin>
         </plugins>
     </build>

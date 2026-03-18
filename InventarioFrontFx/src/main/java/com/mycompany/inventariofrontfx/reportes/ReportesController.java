@@ -16,6 +16,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.web.WebView;
+import net.sf.jasperreports.pdf.JRPdfExporter;
 
 /**
  * Controlador para el visor de PDF
@@ -25,8 +27,8 @@ public class ReportesController {
     @FXML
     private BorderPane rootPane;
     
-//    @FXML
-//    private WebView webView;
+    @FXML
+    private WebView webView;
     
     @FXML
     private ProgressIndicator progressIndicator;
@@ -54,7 +56,7 @@ public class ReportesController {
     @FXML
     public void initialize() {
         // Configurar el WebView
-//        webView.getEngine().setJavaScriptEnabled(true);
+        webView.getEngine().setJavaScriptEnabled(true);
         
         // Configurar botones
         btnCerrar.setOnAction(e -> cerrar());
@@ -76,11 +78,11 @@ public class ReportesController {
                 try {
                     // Exportar JasperPrint a PDF
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                    JRPdfExporter exporter = new JRPdfExporter();
-//                    exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-//                    exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(baos));
-//                    exporter.exportReport();
-//                    
+                    JRPdfExporter exporter = new JRPdfExporter();
+                    exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+                    exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(baos));
+                    exporter.exportReport();
+                   
                     pdfBytes = baos.toByteArray();
                     
                 } catch (Exception e) {
@@ -147,8 +149,7 @@ public class ReportesController {
                 "</body>\n" +
                 "</html>";
             
-            // Cargar en el WebView
-//            webView.getEngine().loadContent(html);
+            webView.getEngine().loadContent(html);
             
         } catch (Exception e) {
             mostrarError("Error al mostrar PDF", e.getMessage());
@@ -161,7 +162,7 @@ public class ReportesController {
             // Crear diálogo de impresión
             javafx.print.PrinterJob job = javafx.print.PrinterJob.createPrinterJob();
             if (job != null && job.showPrintDialog(stage)) {
-//                webView.getEngine().print(job);
+                webView.getEngine().print(job);
                 job.endJob();
             }
         } catch (Exception e) {
