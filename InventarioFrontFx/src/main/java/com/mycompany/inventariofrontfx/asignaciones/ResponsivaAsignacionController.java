@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -71,7 +72,33 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarBotones();
+        
         progressContainer.setVisible(false);
+        progressContainer.setManaged(false);
+        
+        webViewPDF.setVisible(true);
+        webViewPDF.setManaged(true);
+        
+        Platform.runLater(() -> {
+            webViewPDF.prefWidthProperty().bind(rootPane.widthProperty());
+            webViewPDF.prefHeightProperty().bind(rootPane.heightProperty().subtract(150)); 
+            
+            if (webViewPDF.getParent() instanceof StackPane) {
+                StackPane parent = (StackPane) webViewPDF.getParent();
+                parent.prefWidthProperty().bind(rootPane.widthProperty());
+                parent.prefHeightProperty().bind(rootPane.heightProperty().subtract(150));
+            }
+            
+            System.out.println("WebView dimensiones iniciales: " + webViewPDF.getWidth() + " x " + webViewPDF.getHeight());
+        });
+        
+        javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(1));
+//        pause.setOnFinished(e -> {
+//            String testHtml = "<html><body style='background: #13507d; display: flex; justify-content: center; align-items: center;'><h1 style='color: white; font-family: Arial;'>WebView FUNCIONA</h1></body></html>";
+//            webViewPDF.getEngine().loadContent(testHtml);
+//            System.out.println("Test HTML cargado - WebView funciona");
+//        });
+        pause.play();
     }
 
     /**
@@ -114,17 +141,25 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
             protected void succeeded() {
                 pdfBytes = getValue();
                 progressContainer.setVisible(false);
+                progressContainer.setManaged(false); 
+                webViewPDF.setVisible(true);
+                webViewPDF.setManaged(true);
                 mostrarPDF(pdfBytes);
             }
 
             @Override
             protected void failed() {
                 progressContainer.setVisible(false);
+                progressContainer.setManaged(false);
+                webViewPDF.setVisible(true);
+                webViewPDF.setManaged(true);
                 mostrarError("Error al generar responsiva", getException().getMessage());
             }
         };
 
         progressContainer.setVisible(true);
+        progressContainer.setManaged(true); 
+        webViewPDF.setVisible(false);
         new Thread(task).start();
     }
 
@@ -132,25 +167,71 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
      * Genera la responsiva en PDF usando JasperReports desde archivo JRXML
      */
     private byte[] generarResponsivaPDF() throws Exception {
-        // Buscar el archivo .jrxml
-        InputStream jrxmlStream = getClass().getResourceAsStream("/com/mycompany/inventariofrontfx/asignaciones/responsiva_asignacion.jrxml");
-        
+        System.out.println("=== INICIANDO GENERACIÓN DE RESPONSIVA ===");
+
+        String rutaJRXML = "/com/mycompany/inventariofrontfx/asignaciones/responsiva_asignacion.jrxml";
+        System.out.println("Buscando JRXML en: " + rutaJRXML);
+
+        InputStream jrxmlStream = getClass().getResourceAsStream(rutaJRXML);
+
         if (jrxmlStream == null) {
-            System.out.println("No se encontró el archivo JRXML, usando versión simulada");
+            System.out.println("¡ERROR! No se encontró el archivo JRXML");
+            System.out.println("Rutas alternativas:");
+            System.out.println("  - " + getClass().getResource("/reportes/responsiva_asignacion.jrxml"));
+            System.out.println("  - " + getClass().getResource("/responsiva_asignacion.jrxml"));
+            System.out.println("  - " + getClass().getResource("responsiva_asignacion.jrxml"));
+
+            // Mostrar error en la interfaz
+            Platform.runLater(() -> {
+                mostrarError("Error de configuración",
+                        "No se encontró el archivo de la responsiva.\n"
+                        + "Verifique que el archivo .jrxml esté en:\n"
+                        + "src/main/resources/com/mycompany/inventariofrontfx/asignaciones/");
+            });
+
             return generarResponsivaSimulada();
         }
 
-        // Compilar el JRXML en tiempo real
-        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlStream);
+        System.out.println("✓ Archivo JRXML encontrado");
 
-        // Preparar parámetros según tu JRXML
-        Map<String, Object> parametros = prepararParametros();
+        try {
+            System.out.println("Compilando JRXML...");
+            JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlStream);
+            System.out.println("✓ JRXML compilado correctamente");
 
-        // Llenar reporte (sin datasource, solo parámetros)
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, new JREmptyDataSource());
+            System.out.println("Preparando parámetros...");
+            Map<String, Object> parametros = prepararParametros();
+            System.out.println("Parámetros preparados: " + parametros.keySet());
 
-        // Exportar a PDF
-        return exportarAPDF(jasperPrint);
+            System.out.println("Llenando reporte...");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, new JREmptyDataSource());
+            System.out.println("✓ Reporte llenado correctamente");
+            System.out.println("Páginas generadas: " + jasperPrint.getPages().size());
+
+            System.out.println("Exportando a PDF...");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            JRPdfExporter exporter = new JRPdfExporter();
+            exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(baos));
+            exporter.exportReport();
+
+            byte[] pdfBytes = baos.toByteArray();
+            System.out.println("✓ PDF generado, tamaño: " + pdfBytes.length + " bytes");
+
+            return pdfBytes;
+
+        } catch (Exception e) {
+            System.err.println("¡ERROR en generación de PDF!");
+            e.printStackTrace();
+
+            // Mostrar error en la interfaz
+            Platform.runLater(() -> {
+                mostrarError("Error al generar PDF",
+                        e.getMessage() + "\n\nUsando versión HTML de respaldo");
+            });
+
+            return generarResponsivaSimulada();
+        }
     }
 
     /**
@@ -159,25 +240,21 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
     private Map<String, Object> prepararParametros() {
         Map<String, Object> parametros = new HashMap<>();
 
-        // Parámetros básicos del JRXML
         parametros.put("fecha", fechaAsignacion.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         parametros.put("nombreEmpleado", usuario.getNombre());
         parametros.put("puesto", usuario.getNombrePuesto() != null ? usuario.getNombrePuesto() : "No asignado");
         parametros.put("gry", equipo.getGry());
         parametros.put("numeroCarta", "RESP-" + System.currentTimeMillis()); // Número único para cada responsiva
 
-        // Datos del equipo
         parametros.put("marca", obtenerMarcaDelModelo(equipo.getNombreModelo()));
         parametros.put("tipoEquipo", equipo.getTipo() != null ? equipo.getTipo() : "No especificado");
         parametros.put("numeroSerie", equipo.getIdentificador() != null ? equipo.getIdentificador() : "N/A");
         parametros.put("modelo", equipo.getNombreModelo() != null ? equipo.getNombreModelo() : "N/A");
 
-        // Especificaciones técnicas (valores por defecto)
         parametros.put("memoriaRam", "16");
         parametros.put("procesador", "Intel Core i7");
         parametros.put("almacenamiento", "512");
 
-        // Accesorios (valores por defecto)
         parametros.put("mouse", true);
         parametros.put("teclado", true);
         parametros.put("mochila", false);
@@ -185,7 +262,6 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
         parametros.put("baseMonitor", false);
         parametros.put("otrosAccesorios", "Ninguno");
 
-        // Software
         parametros.put("sistemaOperativo", true);
         parametros.put("antivirus", true);
         parametros.put("paqueteriaOffice", true);
@@ -219,88 +295,77 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
     }
 
     /**
-     * Genera una responsiva simulada en HTML (fallback si no hay reporte
-     * Jasper)
+     * Genera una responsiva simulada en HTML (fallback si no hay reporte jasper)
      */
     private byte[] generarResponsivaSimulada() {
         String fechaFormateada = fechaAsignacion.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         String nombrePuesto = usuario.getNombrePuesto() != null ? usuario.getNombrePuesto() : "No asignado";
 
-        String html = String.format("""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>Responsiva de Asignación</title>
-            <style>
-                body { font-family: Arial, sans-serif; margin: 40px; }
-                h1 { color: #13507d; border-bottom: 2px solid #13507d; }
-                .datos { margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 5px; }
-                .firma { margin-top: 50px; }
-                table { width: 100%%; border-collapse: collapse; }
-                td { padding: 10px; border: 1px solid #ddd; }
-                .label { font-weight: bold; width: 200px; }
-            </style>
-        </head>
-        <body>
-            <h1>RESPONSIVA DE ASIGNACIÓN DE EQUIPO</h1>
-            
-            <div class="datos">
-                <h3>Datos del Trabajador</h3>
-                <table>
-                    <tr><td class="label">Nombre:</td><td>%s</td></tr>
-                    <tr><td class="label">Número de Nómina:</td><td>%s</td></tr>
-                    <tr><td class="label">Puesto:</td><td>%s</td></tr>
-                </table>
-            </div>
-            
-            <div class="datos">
-                <h3>Datos del Equipo</h3>
-                <table>
-                    <tr><td class="label">GRY:</td><td>%d</td></tr>
-                    <tr><td class="label">Modelo:</td><td>%s</td></tr>
-                    <tr><td class="label">Identificador:</td><td>%s</td></tr>
-                    <tr><td class="label">Condición:</td><td>%s</td></tr>
-                </table>
-            </div>
-            
-            <div class="datos">
-                <h3>Detalles de la Asignación</h3>
-                <table>
-                    <tr><td class="label">Fecha de Asignación:</td><td>%s</td></tr>
-                    <tr><td class="label">Asignado por:</td><td>Sistema de Inventario</td></tr>
-                </table>
-            </div>
-            
-            <p>El trabajador se compromete a cuidar el equipo y devolverlo en las mismas condiciones en que lo recibe.</p>
-            
-            <div class="firma">
-                <table style="border: none; margin-top: 50px;">
-                    <tr>
-                        <td style="border: none; text-align: center;">
-                            ______________________________<br>
-                            <strong>Firma del Trabajador</strong>
-                        </td>
-                        <td style="border: none; text-align: center;">
-                            ______________________________<br>
-                            <strong>Firma del Responsable</strong>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </body>
-        </html>
-        """,
-                usuario.getNombre(),
-                usuario.getNoNomina(),
-                nombrePuesto,
-                equipo.getGry(),
-                equipo.getNombreModelo(),
-                equipo.getIdentificador(),
-                equipo.getCondicion(),
-                fechaFormateada
-        );
+        String html = "<!DOCTYPE html>\n"
+                + "<html>\n"
+                + "<head>\n"
+                + "    <meta charset=\"UTF-8\">\n"
+                + "    <title>Responsiva de Asignación</title>\n"
+                + "    <style>\n"
+                + "        body { font-family: Arial, sans-serif; margin: 40px; }\n"
+                + "        h1 { color: #13507d; border-bottom: 2px solid #13507d; }\n"
+                + "        .datos { margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 5px; }\n"
+                + "        .firma { margin-top: 50px; }\n"
+                + "        table { width: 100%; border-collapse: collapse; }\n"
+                + "        td { padding: 10px; border: 1px solid #ddd; }\n"
+                + "        .label { font-weight: bold; width: 200px; }\n"
+                + "    </style>\n"
+                + "</head>\n"
+                + "<body>\n"
+                + "    <h1>RESPONSIVA DE ASIGNACIÓN DE EQUIPO</h1>\n"
+                + "    \n"
+                + "    <div class=\"datos\">\n"
+                + "        <h3>Datos del Trabajador</h3>\n"
+                + "        <table>\n"
+                + "            <tr><td class=\"label\">Nombre:</td><td>" + usuario.getNombre() + "</td></tr>\n"
+                + "            <tr><td class=\"label\">Número de Nómina:</td><td>" + usuario.getNoNomina() + "</td></tr>\n"
+                + "            <tr><td class=\"label\">Puesto:</td><td>" + nombrePuesto + "</td></tr>\n"
+                + "        </table>\n"
+                + "    </div>\n"
+                + "    \n"
+                + "    <div class=\"datos\">\n"
+                + "        <h3>Datos del Equipo</h3>\n"
+                + "        <table>\n"
+                + "            <tr><td class=\"label\">GRY:</td><td>" + equipo.getGry() + "</td></tr>\n"
+                + "            <tr><td class=\"label\">Modelo:</td><td>" + equipo.getNombreModelo() + "</td></tr>\n"
+                + "            <tr><td class=\"label\">Identificador:</td><td>" + equipo.getIdentificador() + "</td></tr>\n"
+                + "            <tr><td class=\"label\">Condición:</td><td>" + equipo.getCondicion() + "</td></tr>\n"
+                + "        </table>\n"
+                + "    </div>\n"
+                + "    \n"
+                + "    <div class=\"datos\">\n"
+                + "        <h3>Detalles de la Asignación</h3>\n"
+                + "        <table>\n"
+                + "            <tr><td class=\"label\">Fecha de Asignación:</td><td>" + fechaFormateada + "</td></tr>\n"
+                + "            <tr><td class=\"label\">Asignado por:</td><td>Sistema de Inventario</td></tr>\n"
+                + "        </table>\n"
+                + "    </div>\n"
+                + "    \n"
+                + "    <p>El trabajador se compromete a cuidar el equipo y devolverlo en las mismas condiciones en que lo recibe.</p>\n"
+                + "    \n"
+                + "    <div class=\"firma\">\n"
+                + "        <table style=\"border: none; margin-top: 50px;\">\n"
+                + "            <tr>\n"
+                + "                <td style=\"border: none; text-align: center;\">\n"
+                + "                    ______________________________<br>\n"
+                + "                    <strong>Firma del Trabajador</strong>\n"
+                + "                </td>\n"
+                + "                <td style=\"border: none; text-align: center;\">\n"
+                + "                    ______________________________<br>\n"
+                + "                    <strong>Firma del Responsable</strong>\n"
+                + "                </td>\n"
+                + "            </tr>\n"
+                + "        </table>\n"
+                + "    </div>\n"
+                + "</body>\n"
+                + "</html>";
 
+        System.out.println("Generando HTML de respaldo, tamaño: " + html.length() + " caracteres");
         return html.getBytes(java.nio.charset.StandardCharsets.UTF_8);
     }
 
@@ -309,23 +374,49 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
      */
     private void mostrarPDF(byte[] pdfData) {
         try {
-            String base64Pdf = java.util.Base64.getEncoder().encodeToString(pdfData);
-            String html = "<!DOCTYPE html>\n"
-                    + "<html>\n"
-                    + "<head>\n"
-                    + "    <style>\n"
-                    + "        body, html { margin: 0; padding: 0; width: 100%; height: 100%; }\n"
-                    + "        embed { width: 100%; height: 100%; }\n"
-                    + "    </style>\n"
-                    + "</head>\n"
-                    + "<body>\n"
-                    + "    <embed src=\"data:application/pdf;base64," + base64Pdf + "\" type=\"application/pdf\" />\n"
-                    + "</body>\n"
-                    + "</html>";
+            System.out.println("Mostrando PDF, tamaño: " + pdfData.length + " bytes");
 
-            webViewPDF.getEngine().loadContent(html);
+            webViewPDF.setVisible(true);
+            webViewPDF.setManaged(true);
+
+            boolean esPDF = pdfData.length > 4
+                    && pdfData[0] == 0x25 && pdfData[1] == 0x50
+                    && pdfData[2] == 0x44 && pdfData[3] == 0x46; 
+
+            String contenido;
+
+            if (esPDF) {
+                System.out.println("Es un PDF válido");
+                String base64Pdf = java.util.Base64.getEncoder().encodeToString(pdfData);
+                contenido = "<!DOCTYPE html>\n"
+                        + "<html>\n"
+                        + "<head>\n"
+                        + "    <style>\n"
+                        + "        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }\n"
+                        + "        embed { width: 100%; height: 100%; }\n"
+                        + "    </style>\n"
+                        + "</head>\n"
+                        + "<body>\n"
+                        + "    <embed src=\"data:application/pdf;base64," + base64Pdf + "\" type=\"application/pdf\" />\n"
+                        + "</body>\n"
+                        + "</html>";
+            } else {
+                System.out.println("Es HTML (fallback)");
+                contenido = new String(pdfData, java.nio.charset.StandardCharsets.UTF_8);
+            }
+
+            Platform.runLater(() -> {
+                webViewPDF.getEngine().loadContent(contenido);
+
+                webViewPDF.requestLayout();
+                webViewPDF.getEngine().reload(); 
+
+                System.out.println("Contenido cargado en WebView");
+            });
 
         } catch (Exception e) {
+            System.err.println("Error al mostrar PDF: " + e.getMessage());
+            e.printStackTrace();
             mostrarError("Error al mostrar PDF", e.getMessage());
         }
     }
