@@ -51,29 +51,35 @@
                               </VBox>
                               
                               <VBox spacing="5.0">
-                                 <Label text="Fecha de compra:" />
-                                 <DatePicker fx:id="fechaCompra" editable="false" prefHeight="35.0" prefWidth="300.0" />
+                                 <Label text="Tipo de equipo:" />
+                                 <ComboBox fx:id="cbxTipoEquipo" prefHeight="35.0" prefWidth="300.0" />
                               </VBox>
                               
                               <VBox spacing="5.0">
-                                 <Label text="Tipo de equipo:" />
-                                 <ComboBox fx:id="cbxTipoEquipo" prefHeight="35.0" prefWidth="300.0" />
+                                 <Label text="Fecha de compra:" />
+                                 <DatePicker fx:id="fechaCompra" editable="false" prefHeight="35.0" prefWidth="300.0" />
                               </VBox>
                               
                               <VBox spacing="5.0">
                                  <Label text="Factura:" />
                                  <TextField fx:id="txtFactura" prefHeight="35.0" prefWidth="300.0" />
                               </VBox>
-
-                              <VBox spacing="5.0">
-                                 <Label text="Observaciones:" />
-                                 <TextField fx:id="txtObservaciones" prefHeight="35.0" prefWidth="300.0" />
-                              </VBox>
                               <VBox spacing="5.0">
                                  <children>
                                     <Label text="Identificador(IMEI, ST, NS):" />
                                     <TextField fx:id="txtIdentificador" prefHeight="35.0" prefWidth="300.0" />
                                  </children>
+                              </VBox>
+                              <VBox spacing="5.0">
+                                 <children>
+                                    <Label text="Precio:" />
+                                    <TextField prefHeight="35.0" prefWidth="300.0" />
+                                 </children>
+                              </VBox>
+
+                              <VBox spacing="5.0">
+                                 <Label text="Observaciones:" />
+                                 <TextField fx:id="txtObservaciones" prefHeight="35.0" prefWidth="300.0" />
                               </VBox>
                               
                            </children>
@@ -111,6 +117,27 @@
                               <Font name="SansSerif Bold" size="18.0" />
                            </font>
                         </Label>
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                           <children>
+                              <Label text="Busqueda Por Marca:">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="7.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefHeight="35.0" prefWidth="290.0" style="-fx-background-color: ffffff;">
+                                 <HBox.margin>
+                                    <Insets right="150.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <CheckBox fx:id="ckbCrearNuevoModelo" maxWidth="200.0" mnemonicParsing="false" onAction="#checkBoxAction" text="Crear Nuevo" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets left="150.0" />
+                                 </HBox.margin></CheckBox>
+                           </children>
+                        </HBox>
                         
                         <HBox alignment="CENTER_LEFT" spacing="15.0">
                            <children>
@@ -119,8 +146,7 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="cbxModelo" maxWidth="1.7976931348623157E308" prefHeight="35.0" visibleRowCount="5" HBox.hgrow="ALWAYS" />
-                              <CheckBox fx:id="ckbCrearNuevoModelo" mnemonicParsing="false" onAction="#checkBoxAction" text="Crear Nuevo" HBox.hgrow="ALWAYS" />
+                              <ComboBox fx:id="cbxModelo" maxWidth="700.0" prefHeight="35.0" visibleRowCount="5" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
 

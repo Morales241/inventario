@@ -49,6 +49,9 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable{
     @Column(name = "Observaciones")
     private String observaciones;
     
+    @Column(name = "Precio")
+    private Double precio;
+    
     @ManyToOne(optional = false)
     @JoinColumn(name = "IdModelo")
     private Modelo modelo;
@@ -90,6 +93,14 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable{
         this.estado = EstadoEquipo.EN_STOCK;
     }
 
+    public Double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
+    
     public Long getId() {
         return id;
     }

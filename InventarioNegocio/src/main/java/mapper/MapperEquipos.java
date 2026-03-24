@@ -108,6 +108,7 @@ public class MapperEquipos {
         dto.setFactura(e.getFactura());
         dto.setObservaciones(e.getObservaciones());
         dto.setFechaCompra(e.getFechaCompra());
+        dto.setPrecio(e.getPrecio());
 
         if (Objects.nonNull(e.getEstado())) {
             dto.setEstado(e.getEstado().name());
@@ -154,7 +155,8 @@ public class MapperEquipos {
         e.setFactura(dto.getFactura());
         e.setObservaciones(dto.getObservaciones());
         e.setFechaCompra(dto.getFechaCompra());
-
+        e.setPrecio(dto.getPrecio());
+        
         if (dto.getEstado() != null) {
             e.setEstado(EstadoEquipo.valueOf(dto.getEstado()));
         }

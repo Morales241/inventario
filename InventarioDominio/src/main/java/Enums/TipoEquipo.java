@@ -7,6 +7,8 @@ package Enums;
 public enum TipoEquipo {
     LAPTOP, 
     DESKTOP,
+    SERVIDOR,
+    AIO,
     MOVIL,
     IMPRESORA,
     PROYECTOR,

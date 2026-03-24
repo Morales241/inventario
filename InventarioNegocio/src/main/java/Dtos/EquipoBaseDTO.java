@@ -28,10 +28,19 @@ public class EquipoBaseDTO {
     private String nombreSucursal;
     private Long idModelo;
     private String nombreModelo;
+    private Double precio;
 
     public EquipoBaseDTO() {
     }
 
+    public Double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
+    
     public Long getIdEquipo() {
         return idEquipo;
     }
