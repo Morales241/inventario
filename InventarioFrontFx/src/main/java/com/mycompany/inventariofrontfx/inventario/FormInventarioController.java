@@ -35,7 +35,10 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.util.Duration;
 
 /**
@@ -58,8 +61,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     private Long versionEquipo;
 
     private static final Long IdSucursal = 1L;
-    
-    
+
     @FXML
     private TextField txtFiltroMarca;
 
@@ -82,7 +84,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     @FXML
     private TextField txtPrecio;
     @FXML
-    private FlowPane containerEspecifico;
+    private AnchorPane containerEspecifico;
     @FXML
     private ComboBox<ModeloDTO> cbxModelo;
     @FXML
@@ -97,8 +99,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     private TextField txtRam;
     @FXML
     private TextField txtProcesador;
-    
-    
+
     private PauseTransition pause
             = new PauseTransition(Duration.millis(400));
 
@@ -112,7 +113,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         cbxCondicion.getItems().remove(CondicionFisica.TODAS);
 
         cargarModelos();
-        
+
         txtFiltroMarca.textProperty().addListener((obs, oldVal, newVal) -> {
 
             pause.setOnFinished(e -> aplicarFiltro());
@@ -125,11 +126,11 @@ public class FormInventarioController implements ControllerInventario, IValidaci
             this.btnAgregar.setText("+ Actualizar equipo");
         }
     }
-    
+
     private void aplicarFiltro() {
         cargarDatosAsync();
     }
-    
+
     private void cargarDatosAsync() {
 
         Task<List<ModeloDTO>> task = new Task<>() {
@@ -145,7 +146,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         task.setOnSucceeded(e -> {
             cbxModelo.getItems().setAll(task.getValue());
             cbxModelo.setDisable(false);
-            
+
             if (!task.getValue().isEmpty()) {
                 cbxModelo.getSelectionModel().selectFirst();
             }
@@ -174,7 +175,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
 
             switch (tipo) {
 
-                case LAPTOP, DESKTOP ->
+                case LAPTOP, DESKTOP, SERVIDOR, AIO ->
                     loader = new FXMLLoader(getClass().getResource("InfoEspecificaEscritorio.fxml"));
 
                 case MOVIL ->
@@ -187,7 +188,24 @@ public class FormInventarioController implements ControllerInventario, IValidaci
             panelEspecificoActual = loader.load();
             controllerEspecifico = (IValidaciones) loader.getController();
 
-            containerEspecifico.getChildren().add(panelEspecificoActual);
+            containerEspecifico.getChildren().setAll(panelEspecificoActual);
+
+            AnchorPane.setTopAnchor(panelEspecificoActual, 0.0);
+            AnchorPane.setBottomAnchor(panelEspecificoActual, 0.0);
+            AnchorPane.setLeftAnchor(panelEspecificoActual, 0.0);
+            AnchorPane.setRightAnchor(panelEspecificoActual, 0.0);
+
+            if (panelEspecificoActual instanceof FlowPane flow) {
+                flow.prefWrapLengthProperty().bind(containerEspecifico.widthProperty());
+            }
+
+            controllerEspecifico = (IValidaciones) loader.getController();
+            
+            if (panelEspecificoActual.getParent() != null) {
+                ((Pane) panelEspecificoActual.getParent()).getChildren().remove(panelEspecificoActual);
+            }
+            
+            containerEspecifico.getChildren().setAll(panelEspecificoActual);
 
         } catch (IOException ex) {
             mostrarError(ex.getMessage());
@@ -201,10 +219,10 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         cbxModelo.getItems().setAll(modelos);
 
         cbxModelo.setOnAction(e -> llenarModeloSeleccionado());
-        
+
         if (!modelos.isEmpty()) {
-                cbxModelo.getSelectionModel().selectFirst();
-            }
+            cbxModelo.getSelectionModel().selectFirst();
+        }
     }
 
     private void llenarModeloSeleccionado() {

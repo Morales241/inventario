@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
@@ -101,15 +102,11 @@
                               <Font name="SansSerif Bold" size="18.0" />
                            </font>
                         </Label>
-                        <FlowPane fx:id="containerEspecifico" hgap="20.0" minHeight="150.0" vgap="15.0" VBox.vgrow="ALWAYS">
-                           <padding>
-                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                           </padding>
-                           <styleClass>
-                              <String fx:value="panel-isla" />
-                              <String fx:value="panel-isla-padre" />
-                           </styleClass>
-                           </FlowPane>
+                        <AnchorPane fx:id="containerEspecifico" prefHeight="100.0" styleClass="panel-isla" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </AnchorPane>
                      </children>
                   </VBox>
 
@@ -120,6 +117,7 @@
                               <Font name="SansSerif Bold" size="18.0" />
                            </font>
                         </Label>
+                        
                         <HBox alignment="CENTER_LEFT" spacing="15.0">
                            <children>
                               <Label text="Busqueda Por Marca:">
@@ -127,29 +125,24 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                                  <HBox.margin>
-                                    <Insets right="7.0" />
+                                    <Insets />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="txtFiltroMarca" prefHeight="35.0" prefWidth="290.0" style="-fx-background-color: ffffff;">
+                              <TextField fx:id="txtFiltroMarca" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: ffffff;">
                                  <HBox.margin>
-                                    <Insets right="150.0" />
+                                    <Insets />
                                  </HBox.margin>
                               </TextField>
-                              <CheckBox fx:id="ckbCrearNuevoModelo" maxWidth="200.0" mnemonicParsing="false" onAction="#checkBoxAction" text="Crear Nuevo" HBox.hgrow="ALWAYS">
-                                 <HBox.margin>
-                                    <Insets left="150.0" />
-                                 </HBox.margin></CheckBox>
-                           </children>
-                        </HBox>
-                        
-                        <HBox alignment="CENTER_LEFT" spacing="15.0">
-                           <children>
                               <Label text="Seleccione un modelo:">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="cbxModelo" maxWidth="700.0" prefHeight="35.0" visibleRowCount="5" HBox.hgrow="ALWAYS" />
+                              <ComboBox fx:id="cbxModelo" maxWidth="670.0" prefHeight="35.0" prefWidth="670.0" visibleRowCount="5" HBox.hgrow="ALWAYS" />
+                              <CheckBox fx:id="ckbCrearNuevoModelo" maxWidth="200.0" mnemonicParsing="false" onAction="#checkBoxAction" text="Crear Nuevo" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin></CheckBox>
                            </children>
                         </HBox>
 
