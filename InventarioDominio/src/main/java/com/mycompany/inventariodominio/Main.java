@@ -44,6 +44,10 @@ public class Main {
             emf.close();
         }
     }
+    
+    private static void importarDatos(){
+         
+    }
 
     private static void cargarMockDatos(EntityManager em) {
 
@@ -112,12 +116,11 @@ public class Main {
         // ===============================
         // 5️⃣ MODELOS DE EQUIPO
         // ===============================
-
-        daoModelo.guardar(new Modelo("Dell", "Optiplex 7090", 16, 512, "Intel i7 11th Gen"));
-        daoModelo.guardar(new Modelo("HP", "EliteBook 840 G8", 8, 256, "Intel i5 11th Gen"));
-        daoModelo.guardar(new Modelo("Apple", "MacBook Pro M2", 16, 512, "Apple M2 Chip"));
-        daoModelo.guardar(new Modelo("Lenovo", "ThinkPad X1 Carbon", 32, 1000, "Intel i7 12th Gen"));
-        daoModelo.guardar(new Modelo("Samsung", "Galaxy S23", 8, 256, "Snapdragon 8 Gen 2"));
+        daoModelo.guardar(new Modelo("Optiplex 7090", "Dell", 16, 512, "Intel i7 11th Gen"));
+        daoModelo.guardar(new Modelo("EliteBook 840 G8", "HP", 8, 256, "Intel i5 11th Gen"));
+        daoModelo.guardar(new Modelo("MacBook Pro M2", "Apple", 16, 512, "Apple M2 Chip"));
+        daoModelo.guardar(new Modelo("ThinkPad X1 Carbon", "Lenovo", 32, 1000, "Intel i7 12th Gen"));
+        daoModelo.guardar(new Modelo("Galaxy S23", "Samsung", 8, 256, "Snapdragon 8 Gen 2"));
 
         System.out.println("✔ Datos mock cargados correctamente");
     }

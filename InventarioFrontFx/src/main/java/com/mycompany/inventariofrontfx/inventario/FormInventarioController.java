@@ -24,6 +24,8 @@ import interfaces.IValidaciones;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import javafx.animation.PauseTransition;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -34,6 +36,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -55,6 +58,10 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     private Long versionEquipo;
 
     private static final Long IdSucursal = 1L;
+    
+    
+    @FXML
+    private TextField txtFiltroMarca;
 
     @FXML
     private Button btnAgregar;
@@ -72,10 +79,10 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     private TextField txtObservaciones;
     @FXML
     private TextField txtIdentificador;
-
+    @FXML
+    private TextField txtPrecio;
     @FXML
     private FlowPane containerEspecifico;
-
     @FXML
     private ComboBox<ModeloDTO> cbxModelo;
     @FXML
@@ -90,6 +97,10 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     private TextField txtRam;
     @FXML
     private TextField txtProcesador;
+    
+    
+    private PauseTransition pause
+            = new PauseTransition(Duration.millis(400));
 
     @FXML
     public void initialize() {
@@ -99,15 +110,53 @@ public class FormInventarioController implements ControllerInventario, IValidaci
 
         cbxTipoEquipo.getItems().remove(TipoEquipo.TODOS);
         cbxCondicion.getItems().remove(CondicionFisica.TODAS);
-        
-        
+
         cargarModelos();
+        
+        txtFiltroMarca.textProperty().addListener((obs, oldVal, newVal) -> {
+
+            pause.setOnFinished(e -> aplicarFiltro());
+            pause.playFromStart();
+        });
 
         cbxTipoEquipo.setOnAction(e -> cambiarPanelEspecifico());
 
         if (modoEdicion) {
             this.btnAgregar.setText("+ Actualizar equipo");
         }
+    }
+    
+    private void aplicarFiltro() {
+        cargarDatosAsync();
+    }
+    
+    private void cargarDatosAsync() {
+
+        Task<List<ModeloDTO>> task = new Task<>() {
+            @Override
+            protected List<ModeloDTO> call() {
+
+                return fachadaEquipos.buscarModelosConFiltros(null, txtFiltroMarca.getText(), null, null, null);
+            }
+        };
+
+        cbxModelo.setDisable(true);
+
+        task.setOnSucceeded(e -> {
+            cbxModelo.getItems().setAll(task.getValue());
+            cbxModelo.setDisable(false);
+            
+            if (!task.getValue().isEmpty()) {
+                cbxModelo.getSelectionModel().selectFirst();
+            }
+        });
+
+        task.setOnFailed(e -> {
+            cbxModelo.setDisable(false);
+            task.getException().printStackTrace();
+        });
+
+        new Thread(task).start();
     }
 
     private void cambiarPanelEspecifico() {
@@ -152,6 +201,10 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         cbxModelo.getItems().setAll(modelos);
 
         cbxModelo.setOnAction(e -> llenarModeloSeleccionado());
+        
+        if (!modelos.isEmpty()) {
+                cbxModelo.getSelectionModel().selectFirst();
+            }
     }
 
     private void llenarModeloSeleccionado() {
@@ -210,7 +263,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
             }
         } catch (Exception ex) {
             System.out.println(Arrays.toString(ex.getStackTrace()));
-            
+
         }
     }
 
@@ -305,6 +358,29 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         dto.setVersion(versionEquipo);
         dto.setIdModelo(modelo.getIdModelo());
         dto.setIdSucursal(IdSucursal);
+        dto.setPrecio(traerPrecio());
+    }
+
+    private Double traerPrecio() {
+        Double precio = 0.0;
+
+        if (txtPrecio != null) {
+            String txtPrecioAux = txtPrecio.getText();
+
+            if (txtPrecioAux != null && !txtPrecioAux.trim().isEmpty()) {
+                try {
+                    if (txtPrecioAux.contains(".")) {
+                        precio = Double.valueOf(txtPrecioAux);
+                    } else {
+                        precio = Double.valueOf(txtPrecioAux + ".00");
+                    }
+                } catch (NumberFormatException e) {
+                    System.err.println("Error: el valor ingresado no es un número válido -> " + txtPrecioAux);
+                }
+            }
+        }
+
+        return precio;
     }
 
     private void mostrarError(String msg) {
@@ -334,8 +410,6 @@ public class FormInventarioController implements ControllerInventario, IValidaci
 
         ckbCrearNuevoModelo.setSelected(false);
 
-        // limpiar los datos del contenedor especifico
-//        containerEspecifico.getChildren().clear();
     }
 
     public MenuController getDbc() {
@@ -357,7 +431,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         ModeloDTO modeloDto = fachadaEquipos.buscarModeloPorId(equipo.getIdModelo());
 
         idEquipoEditando = equipo.getIdEquipo();
-        
+
         txtGry.setText(String.valueOf(equipo.getGry()));
         txtFactura.setText(equipo.getFactura());
         txtObservaciones.setText(equipo.getObservaciones());
@@ -380,7 +454,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         llenarModeloSeleccionado();
 
         this.btnAgregar.setText("+ Actualizar equipo");
-        
+
         versionEquipo = equipo.getVersion();
 
         modoEdicion = true;

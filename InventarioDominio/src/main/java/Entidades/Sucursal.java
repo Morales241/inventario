@@ -95,15 +95,7 @@ public class Sucursal extends AuditoriaBase implements Serializable {
     public void setNombre(String Nombre) {
         this.nombre = Nombre;
     }
-
-    public List<Departamento> getDepartamento() {
-        return departamentos;
-    }
-
-    public void setDepartamento(List<Departamento> departamento) {
-        this.departamentos = departamento;
-    }
-
+    
     public List<Departamento> getDepartamentos() {
         return departamentos;
     }

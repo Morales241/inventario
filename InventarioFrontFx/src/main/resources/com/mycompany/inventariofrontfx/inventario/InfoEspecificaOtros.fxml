@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-<FlowPane hgap="20.0" styleClass="panel-isla" stylesheets="@inventario.css" vgap="15.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.InfoEspecificaOtrosController">
+<FlowPane alignment="CENTER_LEFT" hgap="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="panel-isla" stylesheets="@inventario.css" vgap="15.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.inventario.InfoEspecificaOtrosController">
    <children>
       
       <VBox spacing="5.0">

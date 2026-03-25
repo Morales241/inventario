@@ -17,21 +17,21 @@
       <VBox spacing="5.0">
          <children>
             <Label text="Nombre de equipo:" />
-            <TextField fx:id="txtNombreEquipo" prefHeight="35.0" prefWidth="300.0" />
+            <TextField fx:id="txtNombreEquipo" prefHeight="35.0" prefWidth="287.0" />
          </children>
       </VBox>
 
       <VBox spacing="5.0">
          <children>
             <Label text="Usuario de red:" />
-            <TextField fx:id="txtUserRed" prefHeight="35.0" prefWidth="300.0" />
+            <TextField fx:id="txtUserRed" prefHeight="35.0" prefWidth="287.0" />
          </children>
       </VBox>
 
       <VBox spacing="5.0">
          <children>
             <Label text="Final de la garantía:" />
-            <DatePicker fx:id="fechaGarantia" prefHeight="35.0" prefWidth="300.0" />
+            <DatePicker fx:id="fechaGarantia" prefHeight="35.0" prefWidth="287.0" />
          </children>
       </VBox>
       <VBox prefHeight="50.0" prefWidth="140.0" spacing="5.0">
@@ -70,7 +70,7 @@
             </HBox>
          </children>
       </VBox>
-      <VBox prefHeight="55.0" prefWidth="300.0">
+      <VBox prefHeight="55.0" prefWidth="287.0">
          <children>
             <Label text="Sistema operativo" />
             <ComboBox fx:id="cbxSistema" prefHeight="35.0" prefWidth="300.0" />
