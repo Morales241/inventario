@@ -23,9 +23,9 @@
                   <Insets bottom="40" left="40" right="40" top="40" />
                </padding>
                <children>
-                  <ImageView fitHeight="87.0" fitWidth="212.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="87.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@LogoGRY.jpeg" />
+                        <Image url="@lll.png" />
                      </image>
                   </ImageView>
                   <Label styleClass="titulo-login" text="INICIAR SESIÓN">

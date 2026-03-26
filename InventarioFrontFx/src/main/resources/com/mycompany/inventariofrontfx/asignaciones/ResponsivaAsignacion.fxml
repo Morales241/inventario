@@ -11,40 +11,68 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
 
-<BorderPane fx:id="rootPane" prefHeight="700.0" prefWidth="1000.0" stylesheets="@asignaciones.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.asignaciones.ResponsivaAsignacionController">
+<!--
+    CORRECCIONES en este FXML:
+    1. ScrollPane ahora tiene fitToWidth="true" para que el contenido se expanda
+       al ancho del viewport, evitando que el PDF se vea "de lado".
+    2. VBox pdfContainer tiene alignment="TOP_CENTER" para centrar cada página.
+    3. Se eliminó prefWidth="200" del ScrollPane (era un valor residual de Scene Builder).
+    4. El ScrollPane tiene fitToHeight="false" para que el scroll vertical funcione.
+-->
 
+<BorderPane fx:id="rootPane"
+            prefHeight="700.0" prefWidth="1000.0"
+            stylesheets="@asignaciones.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.mycompany.inventariofrontfx.asignaciones.ResponsivaAsignacionController">
+
+    <!-- ============ ENCABEZADO ============ -->
     <top>
         <VBox spacing="10.0" styleClass="panel-superior" BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
             </padding>
-            
+
             <children>
-                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                <!-- Título -->
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
                     <children>
-                        <Label style="-fx-font-size: 24px;" text="📄" />
-                        <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #13507d;" text="RESPONSIVA DE ASIGNACIÓN" />
+                        <Label style="-fx-font-size: 22px;" text="📄" />
+                        <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #13507d;"
+                               text="RESPONSIVA DE ASIGNACIÓN" />
                     </children>
                 </HBox>
-                
+
                 <Separator />
-                
+
+                <!-- Datos de la asignación -->
                 <HBox spacing="30.0" HBox.hgrow="ALWAYS">
                     <children>
-                        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-                            <Label style="-fx-font-weight: bold; -fx-text-fill: #13507d;" text="TRABAJADOR:" />
-                            <Label fx:id="lblTrabajador" style="-fx-font-size: 14px;" text="-" />
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label style="-fx-font-weight: bold; -fx-font-size: 11px; -fx-text-fill: #13507d;"
+                                   text="TRABAJADOR:" />
+                            <Label fx:id="lblTrabajador"
+                                   style="-fx-font-size: 13px;"
+                                   text="—" />
                         </VBox>
-                        
-                        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-                            <Label style="-fx-font-weight: bold; -fx-text-fill: #13507d;" text="EQUIPO ASIGNADO:" />
-                            <Label fx:id="lblEquipo" style="-fx-font-size: 14px;" text="-" />
+
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label style="-fx-font-weight: bold; -fx-font-size: 11px; -fx-text-fill: #13507d;"
+                                   text="EQUIPO ASIGNADO:" />
+                            <Label fx:id="lblEquipo"
+                                   style="-fx-font-size: 13px;"
+                                   text="—" />
                         </VBox>
-                        
-                        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-                            <Label style="-fx-font-weight: bold; -fx-text-fill: #13507d;" text="FECHA DE ASIGNACIÓN:" />
-                            <Label fx:id="lblFecha" style="-fx-font-size: 14px;" text="-" />
+
+                        <VBox spacing="4.0">
+                            <Label style="-fx-font-weight: bold; -fx-font-size: 11px; -fx-text-fill: #13507d;"
+                                   text="FECHA:" />
+                            <Label fx:id="lblFecha"
+                                   style="-fx-font-size: 13px;"
+                                   text="—" />
                         </VBox>
                     </children>
                 </HBox>
@@ -52,38 +80,92 @@
         </VBox>
     </top>
 
+    <!-- ============ ÁREA CENTRAL — VISOR DE PDF ============ -->
     <center>
+        <!--
+            StackPane envuelve el ScrollPane y el overlay de progreso.
+            CORRECCIÓN: el StackPane se expande completamente (no tiene tamaño fijo).
+        -->
         <StackPane>
-            <ScrollPane fx:id="scrollPDF" prefHeight="200.0" prefWidth="200.0" StackPane.alignment="CENTER">
+
+            <!--
+                CORRECCIÓN CLAVE:
+                  fitToWidth="true"  → el VBox interno se expande al ancho del viewport,
+                                       lo que hace que el ImageView pueda centrarse.
+                  fitToHeight="false" → necesario para que el scroll vertical funcione.
+                  hbarPolicy="NEVER"  → sin barra horizontal (el contenido se adapta).
+                  vbarPolicy="AS_NEEDED" → barra vertical solo cuando se necesita.
+                  Se eliminó prefWidth="200" que causaba que el scroll fuera muy angosto.
+            -->
+            <ScrollPane fx:id="scrollPDF"
+                        fitToWidth="true"
+                        fitToHeight="false"
+                        hbarPolicy="NEVER"
+                        vbarPolicy="AS_NEEDED"
+                        style="-fx-background-color: #f0f0f0; -fx-background: #f0f0f0;"
+                        StackPane.alignment="CENTER">
                 <content>
-                    <VBox fx:id="pdfContainer" alignment="CENTER" spacing="10.0" />           
+                    <!--
+                        CORRECCIÓN: alignment="TOP_CENTER" centra horizontalmente
+                        cada página del PDF dentro del scroll.
+                        spacing="15" para separación visual entre páginas.
+                    -->
+                    <VBox fx:id="pdfContainer"
+                          alignment="TOP_CENTER"
+                          spacing="15.0">
+                        <padding>
+                            <Insets top="20.0" bottom="20.0" left="20.0" right="20.0" />
+                        </padding>
+                    </VBox>
                 </content>
             </ScrollPane>
-            <StackPane fx:id="progressContainer" style="-fx-background-color: rgba(255,255,255,0.8);">
-                <ProgressIndicator fx:id="progressIndicator" />
+
+            <!-- Overlay de carga (se muestra mientras se genera el PDF) -->
+            <StackPane fx:id="progressContainer"
+                       style="-fx-background-color: rgba(255,255,255,0.85);"
+                       StackPane.alignment="CENTER">
+                <VBox alignment="CENTER" spacing="12.0">
+                    <ProgressIndicator fx:id="progressIndicator" prefWidth="60" prefHeight="60" />
+                    <Label style="-fx-font-size: 13px; -fx-text-fill: #555555;"
+                           text="Generando responsiva…" />
+                </VBox>
             </StackPane>
+
         </StackPane>
     </center>
 
+    <!-- ============ BARRA INFERIOR DE BOTONES ============ -->
     <bottom>
         <ToolBar styleClass="panel-superior">
             <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
             </padding>
-            
+
+            <!-- Botón izquierda: Volver -->
             <HBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
                 <children>
-                    <Button fx:id="btnVolver" styleClass="btn-cancelar" text="← Volver a Asignaciones" />
+                    <Button fx:id="btnVolver"
+                            styleClass="btn-cancelar"
+                            text="← Volver a Asignaciones" />
                 </children>
             </HBox>
-            
+
+            <!-- Spacer -->
+            <Region HBox.hgrow="ALWAYS" />
+
+            <!-- Botones derecha: Imprimir / Guardar -->
             <HBox alignment="CENTER_RIGHT" spacing="10.0">
                 <children>
-                    <Button fx:id="btnImprimir" styleClass="btn-editar" text="🖨Imprimir Responsiva" />
-                    <Button fx:id="btnGuardarPDF" styleClass="btn-agregar" text="💾 Guardar PDF" />
+                    <Button fx:id="btnImprimir"
+                            styleClass="btn-editar"
+                            text="🖨 Imprimir" />
+                    <Button fx:id="btnGuardarPDF"
+                            styleClass="btn-agregar"
+                            text="💾 Guardar PDF" />
                 </children>
             </HBox>
+
         </ToolBar>
     </bottom>
-    
+
 </BorderPane>
