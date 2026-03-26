@@ -197,7 +197,11 @@ public class UsuariosController implements Initializable {
     }
 
     private void onAccionCbxEmpresa() {
-        Long id = cbxEmpresa.getSelectionModel().getSelectedItem().getId();
+        Long id = 0L;
+        if (cbxEmpresa.getSelectionModel().getSelectedItem() != null) {
+            id = cbxEmpresa.getSelectionModel().getSelectedItem().getId();
+
+        }
 
         if (id != null) {
 
