@@ -18,14 +18,14 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="root" />
       <BorderPane maxHeight="450.0" maxWidth="400" prefHeight="450.0" prefWidth="400.0" styleClass="panel-login">
          <center>
-            <VBox alignment="CENTER" spacing="18">
+            <VBox alignment="CENTER" spacing="15.0">
                <padding>
                   <Insets bottom="40" left="40" right="40" top="40" />
                </padding>
                <children>
-                  <ImageView fitHeight="165.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="119.0" fitWidth="324.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@logo_rioyaqui_2k_transparente.png" />
+                        <Image url="@ChatGPT%20Image%2026%20mar%202026,%2012_38_54%20p.m..png" />
                      </image>
                   </ImageView>
                   <Label styleClass="titulo-login" text="INICIAR SESIÓN">
