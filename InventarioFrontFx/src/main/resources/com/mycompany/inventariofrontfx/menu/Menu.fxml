@@ -130,25 +130,12 @@
             
             <HBox alignment="CENTER_LEFT" prefWidth="220.0" spacing="10.0" styleClass="panel-lateral">
                <children>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="64.0" fitWidth="183.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@logo.png" />
+                        <Image url="@../logo_rioyaqui_2k_transparente.png" />
                      </image>
                   </ImageView>
-                  <VBox alignment="CENTER_LEFT">
-                     <children>
-                        <Label text="Sistema TI">
-                           <font>
-                              <Font name="SansSerif Bold" size="18.0" />
-                           </font>
-                        </Label>
-                        <Label text="Inventario v1.0" textFill="#666666">
-                           <font>
-                              <Font size="11.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
+                  <VBox alignment="CENTER_LEFT" />
                </children>
                <padding>
                   <Insets left="20.0" />

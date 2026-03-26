@@ -23,9 +23,9 @@
                   <Insets bottom="40" left="40" right="40" top="40" />
                </padding>
                <children>
-                  <ImageView fitHeight="87.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="165.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@lll.png" />
+                        <Image url="@logo_rioyaqui_2k_transparente.png" />
                      </image>
                   </ImageView>
                   <Label styleClass="titulo-login" text="INICIAR SESIÓN">

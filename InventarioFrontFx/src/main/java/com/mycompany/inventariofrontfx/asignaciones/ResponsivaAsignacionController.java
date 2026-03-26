@@ -46,22 +46,33 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
 
     private MenuController dbc;
 
-    @FXML private BorderPane rootPane;
-    @FXML private StackPane  progressContainer;
-    @FXML private ProgressIndicator progressIndicator;
-    @FXML private ScrollPane scrollPDF;
-    @FXML private VBox       pdfContainer;
-    @FXML private Label      lblTrabajador;
-    @FXML private Label      lblEquipo;
-    @FXML private Label      lblFecha;
-    @FXML private Button     btnImprimir;
-    @FXML private Button     btnGuardarPDF;
-    @FXML private Button     btnVolver;
+    @FXML
+    private BorderPane rootPane;
+    @FXML
+    private StackPane progressContainer;
+    @FXML
+    private ProgressIndicator progressIndicator;
+    @FXML
+    private ScrollPane scrollPDF;
+    @FXML
+    private VBox pdfContainer;
+    @FXML
+    private Label lblTrabajador;
+    @FXML
+    private Label lblEquipo;
+    @FXML
+    private Label lblFecha;
+    @FXML
+    private Button btnImprimir;
+    @FXML
+    private Button btnGuardarPDF;
+    @FXML
+    private Button btnVolver;
 
-    private UsuarioDTO   usuario;
+    private UsuarioDTO usuario;
     private EquipoBaseDTO equipo;
-    private LocalDate    fechaAsignacion;
-    private byte[]       pdfBytes;
+    private LocalDate fechaAsignacion;
+    private byte[] pdfBytes;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -73,8 +84,8 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
     }
 
     /**
-     * CORRECCIÓN: configura el ScrollPane y el VBox para que el PDF
-     * siempre aparezca centrado, sin importar el ancho de la ventana.
+     * CORRECCIÓN: configura el ScrollPane y el VBox para que el PDF siempre
+     * aparezca centrado, sin importar el ancho de la ventana.
      */
     private void configurarScrollPane() {
         scrollPDF.setFitToWidth(true);
@@ -85,8 +96,8 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
     }
 
     public void setDatosAsignacion(UsuarioDTO usuario, EquipoBaseDTO equipo, LocalDate fecha) {
-        this.usuario         = usuario;
-        this.equipo          = equipo;
+        this.usuario = usuario;
+        this.equipo = equipo;
         this.fechaAsignacion = fecha;
 
         mostrarDatosEnPantalla();
@@ -137,22 +148,21 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
     }
 
     /**
-     * Compila el JRXML (desde el classpath), llena el reporte con los parámetros
-     * y exporta el resultado a bytes PDF.
+     * Compila el JRXML (desde el classpath), llena el reporte con los
+     * parámetros y exporta el resultado a bytes PDF.
      */
     private byte[] generarResponsivaPDF() throws Exception {
-        String rutaJRXML = "/com/mycompany/inventariofrontfx/asignaciones/responsiva_asignacion.jrxml";
-        InputStream jrxmlStream = getClass().getResourceAsStream(rutaJRXML);
+        String rutaJasper = "/com/mycompany/inventariofrontfx/asignaciones/responsiva_asignacion.jasper";
+        InputStream jasperStream = getClass().getResourceAsStream(rutaJasper);
 
-        if (jrxmlStream == null) {
-            throw new RuntimeException("No se encontró el archivo JRXML en: " + rutaJRXML);
+        if (jasperStream == null) {
+            throw new RuntimeException("No se encontró el archivo JASPER en: " + rutaJasper + " (¿Revisaste que esté en src/main/resources?)");
         }
 
-        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlStream);
         Map<String, Object> parametros = prepararParametros();
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(
-                jasperReport,
+                jasperStream,
                 parametros,
                 new JREmptyDataSource()
         );
@@ -170,46 +180,46 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
 
         Map<String, Object> p = new HashMap<>();
 
-        p.put("fecha",          fechaAsignacion.format(DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy",
-                                    new java.util.Locale("es", "MX"))));
+        p.put("fecha", fechaAsignacion.format(DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy",
+                new java.util.Locale("es", "MX"))));
         p.put("nombreEmpleado", safe(usuario.getNombre()));
-        p.put("puesto",         safe(usuario.getNombrePuesto()));
-        p.put("numeroCarta",    "RESP-" + equipo.getGry() + "-"
-                                + fechaAsignacion.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        p.put("puesto", safe(usuario.getNombrePuesto()));
+        p.put("numeroCarta", "RESP-" + equipo.getGry() + "-"
+                + fechaAsignacion.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 
-        p.put("gry",            equipo.getGry());
-        p.put("marca",          safe(equipo.getNombreModelo()));
-        p.put("tipoEquipo",     safe(equipo.getTipo()));
-        p.put("numeroSerie",    safe(equipo.getIdentificador()));
-        p.put("modelo",         safe(equipo.getNombreModelo()));
+        p.put("gry", equipo.getGry());
+        p.put("marca", safe(equipo.getNombreModelo()));
+        p.put("tipoEquipo", safe(equipo.getTipo()));
+        p.put("numeroSerie", safe(equipo.getIdentificador()));
+        p.put("modelo", safe(equipo.getNombreModelo()));
 
         if (equipo instanceof EquipoEscritorioDTO escritorio) {
-            p.put("memoriaRam",    "-");
-            p.put("procesador",    safe(escritorio.getSisOpertativo()));
-            p.put("almacenamiento", "—");                                
-            p.put("mouse",         bool(escritorio.getMouse()));
-            p.put("teclado",       false);   
-            p.put("monitor",        bool(escritorio.getMochila()));   
+            p.put("memoriaRam", "-");
+            p.put("procesador", safe(escritorio.getSisOpertativo()));
+            p.put("almacenamiento", "—");
+            p.put("mouse", bool(escritorio.getMouse()));
+            p.put("teclado", false);
+            p.put("monitor", bool(escritorio.getMochila()));
             p.put("cableCorriente", false);
-            p.put("baseMonitor",   false);
-            p.put("sistemaOperativo", escritorio.getSisOpertativo());
-            
-            p.put("antivirus",     false);
-            p.put("paqueteriaOffice", false);
-            p.put("lectorPDF",     false);
-        } else {
-            p.put("memoriaRam",    "—");
-            p.put("procesador",    "—");
-            p.put("almacenamiento","—");
-            p.put("mouse",         false);
-            p.put("teclado",       false);
-            p.put("monitor",       false);
-            p.put("cableCorriente",true);
-            p.put("Mochila",   false);
+            p.put("baseMonitor", false);
             p.put("sistemaOperativo", true);
-            p.put("antivirus",     false);
+
+            p.put("antivirus", false);
             p.put("paqueteriaOffice", false);
-            p.put("lectorPDF",     false);
+            p.put("lectorPDF", false);
+        } else {
+            p.put("memoriaRam", "—");
+            p.put("procesador", "—");
+            p.put("almacenamiento", "—");
+            p.put("mouse", false);
+            p.put("teclado", false);
+            p.put("monitor", false);
+            p.put("cableCorriente", true);
+            p.put("Mochila", false);
+            p.put("sistemaOperativo", true);
+            p.put("antivirus", false);
+            p.put("paqueteriaOffice", false);
+            p.put("lectorPDF", false);
         }
 
         p.put("otrosAccesorios", "Ninguno");
@@ -318,22 +328,30 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
         }
     }
 
-    /** Devuelve el String si no es null/vacío, o "—" como placeholder. */
+    /**
+     * Devuelve el String si no es null/vacío, o "—" como placeholder.
+     */
     private String safe(String valor) {
         return (valor != null && !valor.isBlank()) ? valor : "—";
     }
 
-    /** Convierte un Integer a String seguro. */
+    /**
+     * Convierte un Integer a String seguro.
+     */
     private String safeInt(Integer valor) {
         return valor != null ? String.valueOf(valor) : "—";
     }
 
-    /** Convierte Boolean de forma segura (null → false). */
+    /**
+     * Convierte Boolean de forma segura (null → false).
+     */
     private Boolean bool(Boolean valor) {
         return valor != null && valor;
     }
 
-    /** Determina si el sistema operativo tiene un valor real. */
+    /**
+     * Determina si el sistema operativo tiene un valor real.
+     */
     private Boolean sistemaOperativoTieneValor(String so) {
         return so != null && !so.isBlank() && !so.equals("—");
     }
