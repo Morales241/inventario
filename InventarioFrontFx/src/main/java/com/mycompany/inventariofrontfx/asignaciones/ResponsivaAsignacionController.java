@@ -293,7 +293,8 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
         }
     }
 
-    private void mostrarError(String titulo, String mensaje) {
+    @Override
+    public void mostrarError(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(titulo);

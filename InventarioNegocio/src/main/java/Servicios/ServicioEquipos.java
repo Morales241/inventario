@@ -380,9 +380,9 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
                 throw new ReglaNegocioException("El nombre del equipo es obligatorio");
             }
 
-            if (dto.getUserRed() == null || dto.getUserRed().isBlank()) {
-                throw new ReglaNegocioException("El usuario de red es obligatorio");
-            }
+//            if (dto.getUserRed() == null || dto.getPrecio() == 0.0) {
+//                throw new ReglaNegocioException("El usuario de red es obligatorio");
+//            }
         }
 
         @Override

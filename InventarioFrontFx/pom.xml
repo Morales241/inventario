@@ -108,7 +108,19 @@
             <scope>runtime</scope>
         </dependency>
         
-        <!-- Activation (actualizado) -->
+        <!-- SLF4J API -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.11</version>
+        </dependency>
+        
+        <!-- Logback Implementation -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.5.3</version>
+        </dependency>
         <dependency>
             <groupId>jakarta.activation</groupId>
             <artifactId>jakarta.activation-api</artifactId>
@@ -118,17 +130,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
-                <configuration>
-                    <release>24</release>
-                    <compilerArgs>
-                        <arg>--enable-preview</arg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

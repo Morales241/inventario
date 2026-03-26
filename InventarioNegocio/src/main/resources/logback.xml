@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Propiedades de configuración -->
+    <property name="LOG_DIR" value="logs"/>
+    <property name="LOG_FILE_NAME" value="inventario"/>
+    
+    <!-- Patrón de salida para logs (Producción) -->
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    
+    <!-- Patrón de salida para logs (Desarrollo - más detallado) -->
+    <property name="LOG_PATTERN_DEV" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15thread] %-5level %-40logger{36} - %msg%n"/>
+    
+    <!-- Patrón simple para consola -->
+    <property name="LOG_PATTERN_SIMPLE" value="%d{HH:mm:ss.SSS} [%-5level] %msg%n"/>
+    
+    <!-- Appender para consola (INFO y superior) -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN_DEV}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- Filtrar por nivel: mostrar solo INFO y superior en consola -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+    
+    <!-- Appender para consola DEBUG (solo para desarrollo) -->
+    <appender name="CONSOLE_DEBUG" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [DEBUG] %logger{30} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- Mostrar solo DEBUG -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    
+    <!-- Appender para archivo de todos los logs -->
+    <appender name="FILE_ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${LOG_FILE_NAME}.log</file>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- Política de rotación: máximo 10MB por archivo, mantener 30 días -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/${LOG_FILE_NAME}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>500MB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    
+    <!-- Appender para archivo de errores -->
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${LOG_FILE_NAME}-error.log</file>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- Solo errores y WARNING -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/${LOG_FILE_NAME}-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>500MB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    
+    <!-- Appender para archivo DEBUG -->
+    <appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${LOG_FILE_NAME}-debug.log</file>
+        <encoder>
+            <pattern>${LOG_PATTERN_DEV}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- Solo DEBUG -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/${LOG_FILE_NAME}-debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>7</maxHistory>
+            <totalSizeCap>100MB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    
+    <!-- Logger específico para excepciones (DEBUG para desarrollo) -->
+    <logger name="excepciones" level="DEBUG">
+        <appender-ref ref="CONSOLE_DEBUG"/>
+        <appender-ref ref="FILE_DEBUG"/>
+    </logger>
+    
+    <!-- Logger para servicios -->
+    <logger name="Servicios" level="DEBUG">
+        <appender-ref ref="CONSOLE_DEBUG"/>
+        <appender-ref ref="FILE_DEBUG"/>
+    </logger>
+    
+    <!-- Logger para fachadas -->
+    <logger name="Implementaciones" level="DEBUG">
+        <appender-ref ref="CONSOLE_DEBUG"/>
+        <appender-ref ref="FILE_DEBUG"/>
+    </logger>
+    
+    <!-- Logger para conexión y DAO -->
+    <logger name="conexion" level="DEBUG">
+        <appender-ref ref="CONSOLE_DEBUG"/>
+        <appender-ref ref="FILE_DEBUG"/>
+    </logger>
+    
+    <logger name="Dao" level="DEBUG">
+        <appender-ref ref="CONSOLE_DEBUG"/>
+        <appender-ref ref="FILE_DEBUG"/>
+    </logger>
+    
+    <!-- Logger para mappers -->
+    <logger name="mapper" level="DEBUG">
+        <appender-ref ref="CONSOLE_DEBUG"/>
+        <appender-ref ref="FILE_DEBUG"/>
+    </logger>
+    
+    <!-- Logger para utilidades de la UI -->
+    <logger name="com.mycompany.inventariofrontfx.util" level="DEBUG">
+        <appender-ref ref="CONSOLE_DEBUG"/>
+        <appender-ref ref="FILE_DEBUG"/>
+    </logger>
+    
+    <!-- Logger raíz -->
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="CONSOLE_DEBUG"/>
+        <appender-ref ref="FILE_ALL"/>
+        <appender-ref ref="FILE_ERROR"/>
+        <appender-ref ref="FILE_DEBUG"/>
+    </root>
+</configuration>
