@@ -1158,3 +1158,299 @@
 2026-03-26 12:43:59.524 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
 2026-03-26 12:43:59.527 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
 2026-03-26 12:43:59.527 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:39:38.168 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:39:38.168 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:39:38.281 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:39:38.281 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:39:44.286 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Modelo
+2026-03-27 10:39:44.286 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Modelo
+2026-03-27 10:39:44.288 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:39:44.288 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:39:44.292 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Se encontraron 5 registros de Modelo
+2026-03-27 10:39:44.292 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Se encontraron 5 registros de Modelo
+2026-03-27 10:39:44.292 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:39:44.292 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:40:44.994 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - Transacción iniciada con nuevo EntityManager
+2026-03-27 10:40:44.994 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - Transacción iniciada con nuevo EntityManager
+2026-03-27 10:40:45.016 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:40:45.016 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:40:52.710 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - Transacción iniciada con nuevo EntityManager
+2026-03-27 10:40:52.710 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - Transacción iniciada con nuevo EntityManager
+2026-03-27 10:40:52.766 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - Transacción completada exitosamente
+2026-03-27 10:40:52.766 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - Transacción completada exitosamente
+2026-03-27 10:40:52.766 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:40:52.766 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:40:52.771 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:40:52.771 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:40:52.778 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:40:52.778 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:40:52.782 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:40:52.782 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:40:52.790 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:40:52.790 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:40:57.031 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:40:57.031 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:40:57.034 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:40:57.034 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:40:57.041 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Modelo
+2026-03-27 10:40:57.041 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Modelo
+2026-03-27 10:40:57.041 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:40:57.041 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:40:57.044 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Se encontraron 5 registros de Modelo
+2026-03-27 10:40:57.044 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Se encontraron 5 registros de Modelo
+2026-03-27 10:40:57.044 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:40:57.044 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:40:57.048 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Modelo por ID: 3
+2026-03-27 10:40:57.048 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Modelo por ID: 3
+2026-03-27 10:40:57.048 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:40:57.048 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:40:57.050 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Modelo encontrado con ID: 3
+2026-03-27 10:40:57.050 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Modelo encontrado con ID: 3
+2026-03-27 10:40:57.051 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:40:57.051 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:02.550 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:02.550 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:02.558 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:02.558 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:02.561 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:02.561 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:02.567 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:02.567 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.505 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.505 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.512 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.512 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.512 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.512 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.515 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.515 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.526 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.526 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.526 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.526 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.526 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 2
+2026-03-27 10:41:19.526 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 2
+2026-03-27 10:41:19.526 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.526 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.528 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 2
+2026-03-27 10:41:19.528 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 2
+2026-03-27 10:41:19.529 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.529 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.529 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.529 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.531 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.531 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.532 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.532 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.532 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.532 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.533 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 5
+2026-03-27 10:41:19.533 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 5
+2026-03-27 10:41:19.533 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.533 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.535 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 5
+2026-03-27 10:41:19.535 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 5
+2026-03-27 10:41:19.535 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.535 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.535 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.535 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.538 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.538 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.540 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.540 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.540 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.540 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.540 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 1
+2026-03-27 10:41:19.540 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 1
+2026-03-27 10:41:19.540 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.540 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.542 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 1
+2026-03-27 10:41:19.542 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 1
+2026-03-27 10:41:19.542 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.542 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.543 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Empresa
+2026-03-27 10:41:19.543 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Empresa
+2026-03-27 10:41:19.543 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.543 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.554 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Se encontraron 5 registros de Empresa
+2026-03-27 10:41:19.554 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Se encontraron 5 registros de Empresa
+2026-03-27 10:41:19.554 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.554 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.555 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.555 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:19.560 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:19.560 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:22.833 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:22.833 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:22.840 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:22.840 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.381 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.381 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.388 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.388 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.388 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.388 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.390 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.390 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.398 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.398 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.398 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.398 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.398 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 2
+2026-03-27 10:41:25.398 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 2
+2026-03-27 10:41:25.398 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.398 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.400 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 2
+2026-03-27 10:41:25.400 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 2
+2026-03-27 10:41:25.400 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.400 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.400 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.400 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.403 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.403 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.406 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.406 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.407 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.407 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.407 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 5
+2026-03-27 10:41:25.407 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 5
+2026-03-27 10:41:25.407 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.407 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.409 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 5
+2026-03-27 10:41:25.409 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 5
+2026-03-27 10:41:25.409 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.409 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.409 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.409 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.412 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.412 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.414 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.414 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.414 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.414 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.414 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 1
+2026-03-27 10:41:25.414 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 1
+2026-03-27 10:41:25.415 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.415 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.417 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 1
+2026-03-27 10:41:25.417 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 1
+2026-03-27 10:41:25.417 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.417 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.417 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Empresa
+2026-03-27 10:41:25.417 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Empresa
+2026-03-27 10:41:25.417 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.417 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.425 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Se encontraron 5 registros de Empresa
+2026-03-27 10:41:25.425 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Se encontraron 5 registros de Empresa
+2026-03-27 10:41:25.426 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.426 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.426 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.426 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:25.431 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:25.431 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:37.576 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:37.576 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:37.579 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:37.579 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:38.567 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:38.567 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:38.574 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:38.574 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.109 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - Transacción iniciada con nuevo EntityManager
+2026-03-27 10:41:40.109 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - Transacción iniciada con nuevo EntityManager
+2026-03-27 10:41:40.129 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - Transacción completada exitosamente
+2026-03-27 10:41:40.129 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - Transacción completada exitosamente
+2026-03-27 10:41:40.129 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.129 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.129 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.129 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.133 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.133 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.133 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.133 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.140 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.140 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.140 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.140 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.143 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.143 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.149 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.149 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.149 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.149 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.149 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 2
+2026-03-27 10:41:40.149 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 2
+2026-03-27 10:41:40.149 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.149 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.152 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 2
+2026-03-27 10:41:40.152 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 2
+2026-03-27 10:41:40.152 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.152 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.152 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.152 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.154 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.154 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.156 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.156 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.156 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.156 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.156 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 5
+2026-03-27 10:41:40.156 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 5
+2026-03-27 10:41:40.156 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.156 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.158 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 5
+2026-03-27 10:41:40.158 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 5
+2026-03-27 10:41:40.158 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.158 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.158 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.158 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.159 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.159 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.161 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.161 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.161 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.161 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.161 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 1
+2026-03-27 10:41:40.161 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 1
+2026-03-27 10:41:40.161 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.161 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.162 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 1
+2026-03-27 10:41:40.162 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 1
+2026-03-27 10:41:40.163 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.163 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.163 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.163 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.164 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.164 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.166 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.166 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.166 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.166 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.166 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 2
+2026-03-27 10:41:40.166 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando Puesto por ID: 2
+2026-03-27 10:41:40.166 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.166 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.168 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 2
+2026-03-27 10:41:40.168 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Puesto encontrado con ID: 2
+2026-03-27 10:41:40.168 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.168 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.168 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Empresa
+2026-03-27 10:41:40.168 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Empresa
+2026-03-27 10:41:40.168 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.168 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.176 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Se encontraron 5 registros de Empresa
+2026-03-27 10:41:40.176 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Se encontraron 5 registros de Empresa
+2026-03-27 10:41:40.176 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.176 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.177 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.177 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.179 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.179 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.179 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.179 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.184 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.184 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.184 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.184 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-03-27 10:41:40.189 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-03-27 10:41:40.189 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado

@@ -1556,3 +1556,319 @@ Caused by: java.net.ConnectException: Connection refused: connect
 2026-03-26 12:43:59.524 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
 2026-03-26 12:43:59.524 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
 2026-03-26 12:43:59.527 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:39:38.168 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:39:38.281 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:39:44.286 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Modelo
+2026-03-27 10:39:44.288 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:39:44.292 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Se encontraron 5 registros de Modelo
+2026-03-27 10:39:44.292 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:40:44.994 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - Transacción iniciada con nuevo EntityManager
+2026-03-27 10:40:45.011 [JavaFX Application Thread] ERROR excepciones.NegocioException - NegocioException: Ya existe un equipo con el GRY: 250
+2026-03-27 10:40:45.012 [JavaFX Application Thread] WARN  excepciones.ReglaNegocioException - Regla de negocio violada: Ya existe un equipo con el GRY: 250
+2026-03-27 10:40:45.014 [JavaFX Application Thread] WARN  Servicios.ServicioBase - Transacción reversada por error
+excepciones.ReglaNegocioException: Ya existe un equipo con el GRY: 250
+	at Servicios.ServicioEquipos$EquipoBaseServicio.validarDuplicidadGry(ServicioEquipos.java:303)
+	at Servicios.ServicioEquipos$EquipoBaseServicio.validarNegocio(ServicioEquipos.java:274)
+	at Servicios.ServicioEquipos$EquipoEscritorioServicio.validarNegocio(ServicioEquipos.java:377)
+	at Servicios.ServicioEquipos$EquipoEscritorioServicio.validarNegocio(ServicioEquipos.java:364)
+	at Servicios.ServicioEquipos$EquipoBaseServicio.lambda$guardar$0(ServicioEquipos.java:338)
+	at Servicios.ServicioBase.ejecutarTransaccion(ServicioBase.java:88)
+	at Servicios.ServicioEquipos$EquipoBaseServicio.guardar(ServicioEquipos.java:335)
+	at Servicios.ServicioEquipos.guardarEscritorio(ServicioEquipos.java:165)
+	at Implementaciones.FachadaEquipos.guardarEscritorio(FachadaEquipos.java:76)
+	at com.mycompany.inventariofrontfx.inventario.FormInventarioController.guardarEquipo(FormInventarioController.java:423)
+	at com.mycompany.inventariofrontfx.inventario.FormInventarioController.guardarDatos(FormInventarioController.java:386)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270)
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1855)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1726)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8875)
+	at javafx.scene.control.Button.fire(Button.java:203)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207)
+	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3984)
+	at javafx.scene.Scene.processMouseEvent(Scene.java:1890)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2708)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:138)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:551)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+2026-03-27 10:40:45.016 [JavaFX Application Thread] ERROR Servicios.ServicioBase - Error en transacción de base de datos
+excepciones.ReglaNegocioException: Ya existe un equipo con el GRY: 250
+	at Servicios.ServicioEquipos$EquipoBaseServicio.validarDuplicidadGry(ServicioEquipos.java:303)
+	at Servicios.ServicioEquipos$EquipoBaseServicio.validarNegocio(ServicioEquipos.java:274)
+	at Servicios.ServicioEquipos$EquipoEscritorioServicio.validarNegocio(ServicioEquipos.java:377)
+	at Servicios.ServicioEquipos$EquipoEscritorioServicio.validarNegocio(ServicioEquipos.java:364)
+	at Servicios.ServicioEquipos$EquipoBaseServicio.lambda$guardar$0(ServicioEquipos.java:338)
+	at Servicios.ServicioBase.ejecutarTransaccion(ServicioBase.java:88)
+	at Servicios.ServicioEquipos$EquipoBaseServicio.guardar(ServicioEquipos.java:335)
+	at Servicios.ServicioEquipos.guardarEscritorio(ServicioEquipos.java:165)
+	at Implementaciones.FachadaEquipos.guardarEscritorio(FachadaEquipos.java:76)
+	at com.mycompany.inventariofrontfx.inventario.FormInventarioController.guardarEquipo(FormInventarioController.java:423)
+	at com.mycompany.inventariofrontfx.inventario.FormInventarioController.guardarDatos(FormInventarioController.java:386)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270)
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1855)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1726)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8875)
+	at javafx.scene.control.Button.fire(Button.java:203)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207)
+	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3984)
+	at javafx.scene.Scene.processMouseEvent(Scene.java:1890)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2708)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:138)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:551)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+2026-03-27 10:40:45.016 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:40:52.710 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - Transacción iniciada con nuevo EntityManager
+2026-03-27 10:40:52.766 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - Transacción completada exitosamente
+2026-03-27 10:40:52.766 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:40:52.771 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:40:52.778 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:40:52.782 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:40:52.790 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:40:57.031 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:40:57.034 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:40:57.041 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Modelo
+2026-03-27 10:40:57.041 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:40:57.044 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Se encontraron 5 registros de Modelo
+2026-03-27 10:40:57.044 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:40:57.048 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando Modelo por ID: 3
+2026-03-27 10:40:57.048 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:40:57.050 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Modelo encontrado con ID: 3
+2026-03-27 10:40:57.051 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:02.550 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:02.558 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:02.561 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:02.567 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:19.505 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:19.512 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:19.512 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:19.515 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:19.526 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:19.526 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:19.526 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando Puesto por ID: 2
+2026-03-27 10:41:19.526 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:19.528 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Puesto encontrado con ID: 2
+2026-03-27 10:41:19.529 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:19.529 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:19.531 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:19.532 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:19.532 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:19.533 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando Puesto por ID: 5
+2026-03-27 10:41:19.533 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:19.535 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Puesto encontrado con ID: 5
+2026-03-27 10:41:19.535 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:19.535 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:19.538 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:19.540 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:19.540 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:19.540 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando Puesto por ID: 1
+2026-03-27 10:41:19.540 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:19.542 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Puesto encontrado con ID: 1
+2026-03-27 10:41:19.542 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:19.543 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Empresa
+2026-03-27 10:41:19.543 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:19.554 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Se encontraron 5 registros de Empresa
+2026-03-27 10:41:19.554 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:19.555 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:19.560 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:22.833 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:22.840 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:25.381 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:25.388 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:25.388 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:25.390 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:25.398 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:25.398 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:25.398 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando Puesto por ID: 2
+2026-03-27 10:41:25.398 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:25.400 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Puesto encontrado con ID: 2
+2026-03-27 10:41:25.400 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:25.400 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:25.403 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:25.406 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:25.407 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:25.407 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando Puesto por ID: 5
+2026-03-27 10:41:25.407 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:25.409 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Puesto encontrado con ID: 5
+2026-03-27 10:41:25.409 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:25.409 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:25.412 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:25.414 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:25.414 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:25.414 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando Puesto por ID: 1
+2026-03-27 10:41:25.415 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:25.417 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Puesto encontrado con ID: 1
+2026-03-27 10:41:25.417 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:25.417 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Empresa
+2026-03-27 10:41:25.417 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:25.425 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Se encontraron 5 registros de Empresa
+2026-03-27 10:41:25.426 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:25.426 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:25.431 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:37.576 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:37.579 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:38.567 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:38.574 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.109 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - Transacción iniciada con nuevo EntityManager
+2026-03-27 10:41:40.129 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - Transacción completada exitosamente
+2026-03-27 10:41:40.129 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.129 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.133 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.133 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.140 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.140 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.143 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.149 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.149 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.149 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando Puesto por ID: 2
+2026-03-27 10:41:40.149 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.152 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Puesto encontrado con ID: 2
+2026-03-27 10:41:40.152 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.152 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.154 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.156 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.156 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.156 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando Puesto por ID: 5
+2026-03-27 10:41:40.156 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.158 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Puesto encontrado con ID: 5
+2026-03-27 10:41:40.158 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.158 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.159 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.161 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.161 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.161 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando Puesto por ID: 1
+2026-03-27 10:41:40.161 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.162 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Puesto encontrado con ID: 1
+2026-03-27 10:41:40.163 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.163 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.164 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.166 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.166 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.166 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando Puesto por ID: 2
+2026-03-27 10:41:40.166 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.168 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Puesto encontrado con ID: 2
+2026-03-27 10:41:40.168 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.168 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Empresa
+2026-03-27 10:41:40.168 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.176 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Se encontraron 5 registros de Empresa
+2026-03-27 10:41:40.176 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.177 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.179 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.179 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.184 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-27 10:41:40.184 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-27 10:41:40.189 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
