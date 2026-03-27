@@ -186,7 +186,7 @@ public class InventarioController implements Initializable, ControllerInventario
                 btnVer.setOnAction(e -> {
                     EquipoBaseDTO equipo = getTableRow().getItem();
                     if (equipo != null) {
-//                        visualizarEquipo(equipo);
+                        cargarEquipoParaVer(equipo);
                     }
                 });
 
@@ -337,6 +337,17 @@ public class InventarioController implements Initializable, ControllerInventario
             form.cargarEquipoParaEditar(equipoAux);
         }
 
+    }
+
+    public <T extends EquipoBaseDTO> void cargarEquipoParaVer(T equipo) {
+        T equipoAux = fachadaEquipos.buscarPorId(equipo.getIdEquipo());
+
+        ControllerInventario controller
+                = cambiarPantalla("FormInventario.fxml");
+
+        if (controller instanceof FormInventarioController form) {
+            form.cargarEquipoParaVisualizar(equipoAux);
+        }
     }
 
     @FXML

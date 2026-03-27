@@ -77,7 +77,7 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarBotones();
-        configurarScrollPane();          // <-- CORRECCIÓN centrado
+        configurarScrollPane();          
 
         progressContainer.setVisible(false);
         progressContainer.setManaged(false);
@@ -152,7 +152,7 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
      * parámetros y exporta el resultado a bytes PDF.
      */
     private byte[] generarResponsivaPDF() throws Exception {
-        String rutaJasper = "/com/mycompany/inventariofrontfx/asignaciones/responsiva_asignacion.jasper";
+        String rutaJasper = "/com/mycompany/inventariofrontfx/asignaciones/Responsiva_Asignacion.jasper";
         InputStream jasperStream = getClass().getResourceAsStream(rutaJasper);
 
         if (jasperStream == null) {

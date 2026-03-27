@@ -64,6 +64,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     private MenuController dbc;
 
     private boolean modoEdicion = false;
+    private boolean modoVisualizacion = false;
     private Long idEquipoEditando;
     private Long versionEquipo;
 
@@ -148,6 +149,12 @@ public class FormInventarioController implements ControllerInventario, IValidaci
 
         if (modoEdicion) {
             this.btnAgregar.setText("+ Actualizar equipo");
+        }
+
+        if (modoVisualizacion) {
+            aplicarModoVisualizacion(true);
+            this.btnAgregar.setVisible(false);
+            this.btnAgregar.setManaged(false);
         }
 
         configurarListenersValidacion();
@@ -583,6 +590,31 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         }
     }
 
+    private void aplicarModoVisualizacion(boolean visualizar) {
+        this.modoVisualizacion = visualizar;
+        boolean editable = !visualizar;
+
+        txtGry.setDisable(!editable);
+        cbxCondicion.setDisable(!editable);
+        fechaCompra.setDisable(!editable);
+        cbxTipoEquipo.setDisable(!editable);
+        txtFactura.setDisable(!editable);
+        txtObservaciones.setDisable(!editable);
+        txtIdentificador.setDisable(!editable);
+        txtPrecio.setDisable(!editable);
+        ckbCrearNuevoModelo.setDisable(!editable);
+        cbxModelo.setDisable(!editable || ckbCrearNuevoModelo.isSelected());
+        txtModelo.setDisable(!editable || !ckbCrearNuevoModelo.isSelected());
+        txtMarca.setDisable(!editable || !ckbCrearNuevoModelo.isSelected());
+        txtAlmacenamiento.setDisable(!editable || !ckbCrearNuevoModelo.isSelected());
+        txtRam.setDisable(!editable || !ckbCrearNuevoModelo.isSelected());
+        txtProcesador.setDisable(!editable || !ckbCrearNuevoModelo.isSelected());
+        containerEspecifico.setDisable(!editable);
+        txtFiltroMarca.setEditable(!editable);
+        btnAgregar.setVisible(editable);
+        btnAgregar.setManaged(editable);
+    }
+
     @FXML
     private void btnCancelar() {
         cambiarPantalla("/com/mycompany/inventariofrontfx/inventario/Inventario.fxml");
@@ -621,28 +653,43 @@ public class FormInventarioController implements ControllerInventario, IValidaci
 
     @Override
     public <T extends EquipoBaseDTO> void cargarEquipoParaEditar(T equipo) {
+        limpiarFormulario();
+
         ModeloDTO modeloDto = fachadaEquipos.buscarModeloPorId(equipo.getIdModelo());
         idEquipoEditando = equipo.getIdEquipo();
+        versionEquipo = equipo.getVersion();
+
         txtGry.setText(String.valueOf(equipo.getGry()));
         txtFactura.setText(equipo.getFactura());
         txtObservaciones.setText(equipo.getObservaciones());
         txtIdentificador.setText(equipo.getIdentificador());
+        txtPrecio.setText(equipo.getPrecio() != null ? String.valueOf(equipo.getPrecio()) : "");
+
         cbxCondicion.setValue(CondicionFisica.valueOf(equipo.getCondicion()));
         cbxTipoEquipo.setValue(TipoEquipo.valueOf(equipo.getTipo()));
         fechaCompra.setValue(equipo.getFechaCompra());
+
         cbxModelo.getSelectionModel().select(modeloDto);
-        cbxTipoEquipo.getSelectionModel().select(TipoEquipo.valueOf(equipo.getTipo()));
-        cambiarPanelEspecifico();
         llenarModeloSeleccionado();
+
         this.btnAgregar.setText("+ Actualizar equipo");
-        versionEquipo = equipo.getVersion();
         modoEdicion = true;
-        controllerEspecifico.cargarEquipoParaEditar(equipo);
-        limpiarFormulario();
-        txtGry.setText(String.valueOf(equipo.getGry()));
-        txtFactura.setText(equipo.getFactura());
-        txtObservaciones.setText(equipo.getObservaciones());
-        txtIdentificador.setText(equipo.getIdentificador());
+        modoVisualizacion = false;
+
+        cambiarPanelEspecifico();
+        if (controllerEspecifico != null) {
+            controllerEspecifico.cargarEquipoParaEditar(equipo);
+        }
+
+        aplicarModoVisualizacion(false);
+    }
+
+    public <T extends EquipoBaseDTO> void cargarEquipoParaVisualizar(T equipo) {
+        cargarEquipoParaEditar(equipo);
+        aplicarModoVisualizacion(true);
+        // La acción principal de guardar no está disponible en vista
+        btnAgregar.setVisible(false);
+        btnAgregar.setManaged(false);
     }
 
     @Override
