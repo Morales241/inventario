@@ -6,6 +6,9 @@ import Entidades.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +19,8 @@ public class Main {
 
         System.out.println("--- Iniciando Generación de Base de Datos ---");
 
-        EntityManagerFactory emf =
-                Persistence.createEntityManagerFactory("ConexionPU");
+        EntityManagerFactory emf
+                = Persistence.createEntityManagerFactory("ConexionPU");
 
         EntityManager em = emf.createEntityManager();
 
@@ -25,7 +28,9 @@ public class Main {
 
             em.getTransaction().begin();
 
-            cargarMockDatos(em);
+//            cargarMockDatos(em);
+
+            importarDatos(em);
 
             em.getTransaction().commit();
 
@@ -44,9 +49,26 @@ public class Main {
             emf.close();
         }
     }
-    
-    private static void importarDatos(){
-         
+
+    private static void importarDatos(EntityManager em) throws FileNotFoundException, IOException {
+        FileInputStream fis = new FileInputStream("C:/Users/JesusMorales/Documents/inventario simplificado.xlsx");
+        
+        DaoEmpresa daoEmpresa = new DaoEmpresa();
+
+        daoEmpresa.setEntityManager(em);
+        
+        importarxlsx lector = new importarxlsx();
+        
+        List<Empresa> empresas = lector.readExcelOrganizacion(fis);
+        
+        empresas.forEach(e -> {
+            daoEmpresa.guardar(e);
+            
+            System.out.println(e.toString());
+        });
+        
+        
+        fis.close();
     }
 
     private static void cargarMockDatos(EntityManager em) {
@@ -67,7 +89,6 @@ public class Main {
         // ===============================
         // 1️⃣ EMPRESAS
         // ===============================
-
         Empresa tech = daoEmpresa.guardar(new Empresa("Tech Solutions SA"));
         Empresa logistics = daoEmpresa.guardar(new Empresa("Global Logistics"));
         Empresa market = daoEmpresa.guardar(new Empresa("Mega Market"));
@@ -77,7 +98,6 @@ public class Main {
         // ===============================
         // 2️⃣ SUCURSALES
         // ===============================
-
         Sucursal s1 = daoSucursal.guardar(
                 new Sucursal(tech, "Av. Central 123", "Matriz CDMX", new ArrayList<>()));
 
@@ -96,7 +116,6 @@ public class Main {
         // ===============================
         // 3️⃣ DEPARTAMENTOS
         // ===============================
-
         Departamento d1 = daoDepartamento.guardar(new Departamento("Sistemas TI", s1));
         Departamento d2 = daoDepartamento.guardar(new Departamento("Recursos Humanos", s1));
         Departamento d3 = daoDepartamento.guardar(new Departamento("Contabilidad", s2));
@@ -106,7 +125,6 @@ public class Main {
         // ===============================
         // 4️⃣ PUESTOS
         // ===============================
-
         daoPuesto.guardar(new Puesto("Desarrollador Senior", d1));
         daoPuesto.guardar(new Puesto("Analista de Soporte", d1));
         daoPuesto.guardar(new Puesto("Gerente de RH", d2));

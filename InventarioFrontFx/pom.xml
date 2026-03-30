@@ -8,7 +8,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>24</maven.compiler.release>
-        <javafx.version>21</javafx.version>
+        <javafx.version>25</javafx.version>
         <ikonli.version>12.4.0</ikonli.version>
         <jasperreports.version>7.0.6</jasperreports.version>
     </properties>
@@ -137,7 +137,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <release>21</release>
+                    <release>25</release>
                     <compilerArgs>
                         <arg>--enable-preview</arg>
                     </compilerArgs>

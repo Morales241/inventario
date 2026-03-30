@@ -4,15 +4,11 @@ import Entidades.Departamento;
 import Entidades.Empresa;
 import Entidades.Puesto;
 import Entidades.Sucursal;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Consumer;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -38,21 +34,44 @@ public class importarxlsx {
             return "";
         }
 
-//        switch (cell.getCellType()) {
-//            case STRING:
-//                return cell.getStringCellValue().trim();
-//            case NUMERIC:
-//                return BigDecimal.valueOf(cell.getNumericCellValue()).toPlainString();
-//            case BOOLEAN:
-//                return String.valueOf(cell.getBooleanCellValue());
-//            case FORMULA:
-//                return cell.getCellFormula();
-//            case BLANK:
-//                return "";
-//            default:
-//                return "UNKNOWN";
-//        }
-        return null;
+        try {
+            switch (cell.getCellType()) {
+                case STRING:
+                    return cell.getStringCellValue().trim();
+
+                case NUMERIC:
+                    double numericValue = cell.getNumericCellValue();
+                    if (numericValue == (long) numericValue) {
+                        return String.valueOf((long) numericValue);
+                    } else {
+                        return String.valueOf(numericValue);
+                    }
+
+                case BOOLEAN:
+                    return String.valueOf(cell.getBooleanCellValue());
+
+                case FORMULA:
+                    try {
+                        return cell.getStringCellValue().trim();
+                    } catch (IllegalStateException e) {
+                        double formulaValue = cell.getNumericCellValue();
+                        if (formulaValue == (long) formulaValue) {
+                            return String.valueOf((long) formulaValue);
+                        } else {
+                            return String.valueOf(formulaValue);
+                        }
+                    }
+
+                case BLANK:
+                    return "";
+
+                default:
+                    return "";
+            }
+        } catch (Exception e) {
+            System.err.println("Error al leer celda: " + e.getMessage());
+            return "";
+        }
     }
 
     private int indexColumnaEspecifica(String columna) {
@@ -60,152 +79,191 @@ public class importarxlsx {
     }
 
     private void cargarEncabezados(Iterator<Cell> cellIterator) {
-
+        encabezados.clear();
         while (cellIterator.hasNext()) {
             Cell cell = cellIterator.next();
-
             String cellValue = getCellValueAsString(cell);
-
             encabezados.add(cellValue);
-
         }
     }
 
     public List<Empresa> readExcelOrganizacion(InputStream file) {
+        Workbook workbook = null;
         try {
-
             encabezados.clear();
-
-            Workbook workbook = new XSSFWorkbook(file);
-
+            workbook = new XSSFWorkbook(file);
             Sheet sheet = workbook.getSheet(SHEET);
 
-            Iterator<Row> rowIterator = sheet.iterator();
+            if (sheet == null) {
+                System.err.println("No se encontró la hoja: " + SHEET);
+                return new ArrayList<>();
+            }
 
+            Iterator<Row> rowIterator = sheet.iterator();
             List<Empresa> empresas = new ArrayList<>();
-            List<Sucursal> sucursales = new ArrayList<>();
-            List<Departamento> departamentos = new ArrayList<>();
-            List<Puesto> puestos = new ArrayList<>();
 
             int rowNum = 0;
-            int colUen = 0;
-            int colUbic = 0;
-            int colDep = 0;
-            int colPuesto = 0;
+            int colUen = -1;
+            int colUbic = -1;
+            int colDep = -1;
+            int colPuesto = -1;
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
+                
+                if (row.getRowNum() == 0 || row.getCell(0) == null) {
+                    if (row.getRowNum() == 0) {
+                        Iterator<Cell> cellIterator = row.cellIterator();
+                        cargarEncabezados(cellIterator);
 
-                Iterator<Cell> cellIterator = row.cellIterator();
+                        colUen = indexColumnaEspecifica("Uen");
+                        colUbic = indexColumnaEspecifica("Ubicaion");
+                        colDep = indexColumnaEspecifica("Departamento");
+                        colPuesto = indexColumnaEspecifica("Puesto");
 
-                if (row.getRowNum() == 0) {
+                        System.out.println("Columnas encontradas:");
+                        System.out.println("  Uen: " + colUen);
+                        System.out.println("  Ubicaion: " + colUbic);
+                        System.out.println("  Departamento: " + colDep);
+                        System.out.println("  Puesto: " + colPuesto);
+                    }
+                    continue;
+                }
+                
+                String nombreEmpresa = "";
+                String nombreSucursal = "";
+                String nombreDepartamento = "";
+                String nombrePuesto = "";
 
-                    cargarEncabezados(cellIterator);
+                if (colUen != -1 && colUen < row.getLastCellNum()) {
+                    Cell cell = row.getCell(colUen);
+                    nombreEmpresa = getCellValueAsString(cell);
+                }
 
-                    colUen = indexColumnaEspecifica("Uen");
-                    colUbic = indexColumnaEspecifica("Ubicaion");
-                    colDep = indexColumnaEspecifica("Departamento");
-                    colPuesto = indexColumnaEspecifica("Puesto");
+                if (colUbic != -1 && colUbic < row.getLastCellNum()) {
+                    Cell cell = row.getCell(colUbic);
+                    nombreSucursal = getCellValueAsString(cell);
+                }
 
-                    rowNum++;
+                if (colDep != -1 && colDep < row.getLastCellNum()) {
+                    Cell cell = row.getCell(colDep);
+                    nombreDepartamento = getCellValueAsString(cell);
+                }
+
+                if (colPuesto != -1 && colPuesto < row.getLastCellNum()) {
+                    Cell cell = row.getCell(colPuesto);
+                    nombrePuesto = getCellValueAsString(cell);
+                }
+
+                if (nombreEmpresa.isEmpty()) {
+                    System.err.println("Fila " + row.getRowNum() + ": Empresa vacía, saltando...");
                     continue;
                 }
 
-                Empresa empresa = new Empresa();
-                Sucursal sucursal = new Sucursal();
-                Departamento departamento = new Departamento();
-                Puesto puesto = new Puesto();
-
-                int celIdx = 0;
-
-                while (cellIterator.hasNext()) {
-                    Cell cell = cellIterator.next();
-
-                    String cellValue = getCellValueAsString(cell);
-
-                    if (celIdx == colUen) {
-
-                        if (!empresas.isEmpty()) {
-                            for (Empresa e : empresas) {
-                                if (e.getNombre().contains(cellValue)) {
-                                    empresa = e;
-                                    break;
-                                }
-                            }
-                        }
-                        empresa.setNombre(cellValue);
-
-                    } else if (celIdx == colUbic) {
-
-                        if (!empresa.getSucursales().isEmpty()) {
-
-                            for (Sucursal s : empresa.getSucursales()) {
-                                if (s.getNombre().contains(cellValue)) {
-                                    sucursal = s;
-                                    break;
-                                }
-                            }
-
-                        }
-                        sucursal.setNombre(cellValue);
-                        sucursal.setUbicacion(cellValue);
-
-                        empresa.getSucursales().add(sucursal);
-
-                    } else if (celIdx == colDep) {
-
-                        if (!sucursal.getDepartamentos().isEmpty()) {
-
-                            for (Departamento d : sucursal.getDepartamentos()) {
-                                if (d.getNombre().contains(cellValue)) {
-                                    departamento = d;
-                                    break;
-                                }
-                            }
-
-                        }
-                        departamento.setNombre(cellValue);
-
-                        sucursal.getDepartamentos().add(departamento);
-
-                    } else if (celIdx == colPuesto) {
-
-                        if (!departamento.getPuestos().isEmpty()) {
-
-                            for (Puesto p : departamento.getPuestos()) {
-                                if (p.getNombre().contains(cellValue)) {
-                                    puesto = p;
-                                    break;
-                                }
-                            }
-
-                        }
-                        puesto.setNombre(cellValue);
-
-                        departamento.getPuestos().add(puesto);
-
-                        System.out.println("### GENERACION-----: %s".formatted(cellValue));
-                    }
-
-                    celIdx++;
-                }
-
-                boolean llave = false;
-
-                for (Empresa e : empresas) {
-                    if (e.getNombre().equalsIgnoreCase(empresa.getNombre())) {
-                        llave = true;
-                    }
-                }
-
-                if (!llave) {
+                Empresa empresa = buscarEmpresa(empresas, nombreEmpresa);
+                if (empresa == null) {
+                    empresa = new Empresa();
+                    empresa.setNombre(nombreEmpresa);
                     empresas.add(empresa);
                 }
+
+                if (!nombreSucursal.isEmpty()) {
+                    Sucursal sucursal = buscarSucursal(empresa, nombreSucursal);
+                    if (sucursal == null) {
+                        sucursal = new Sucursal();
+                        sucursal.setNombre(nombreSucursal);
+                        sucursal.setUbicacion(nombreSucursal);
+                        sucursal.setEmpresa(empresa);
+                        empresa.getSucursales().add(sucursal);
+                    }
+
+                    if (!nombreDepartamento.isEmpty()) {
+                        Departamento departamento = buscarDepartamento(sucursal, nombreDepartamento);
+                        if (departamento == null) {
+                            departamento = new Departamento();
+                            departamento.setNombre(nombreDepartamento);
+                            departamento.setSucursal(sucursal);
+                            sucursal.getDepartamentos().add(departamento);
+                        }
+
+                        if (!nombrePuesto.isEmpty()) {
+                            Puesto puesto = buscarPuesto(departamento, nombrePuesto);
+                            if (puesto == null) {
+                                puesto = new Puesto();
+                                puesto.setNombre(nombrePuesto);
+                                puesto.setDepartamento(departamento);
+                                departamento.getPuestos().add(puesto);
+                            }
+
+                            System.out.println("Registro " + row.getRowNum() + ": "
+                                    + nombreEmpresa + " | "
+                                    + nombreSucursal + " | "
+                                    + nombreDepartamento + " | "
+                                    + nombrePuesto);
+                        }
+                    }
+                }
+
+                rowNum++;
             }
+
+            System.out.println("\n=== RESUMEN ===");
+            System.out.println("Total de empresas: " + empresas.size());
+            for (Empresa e : empresas) {
+                System.out.println("  " + e.getNombre() + " - Sucursales: " + e.getSucursales().size());
+            }
+
             workbook.close();
             return empresas;
+
         } catch (IOException e) {
+            System.err.println("Error al parsear Excel: " + e.getMessage());
+            e.printStackTrace();
             throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
+        } finally {
+            try {
+                if (workbook != null) {
+                    workbook.close();
+                }
+            } catch (IOException e) {
+                System.err.println("Error al cerrar workbook: " + e.getMessage());
+            }
         }
+    }
+
+    private Empresa buscarEmpresa(List<Empresa> empresas, String nombre) {
+        for (Empresa e : empresas) {
+            if (e.getNombre() != null && e.getNombre().equalsIgnoreCase(nombre)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    private Sucursal buscarSucursal(Empresa empresa, String nombre) {
+        for (Sucursal s : empresa.getSucursales()) {
+            if (s.getNombre() != null && s.getNombre().equalsIgnoreCase(nombre)) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    private Departamento buscarDepartamento(Sucursal sucursal, String nombre) {
+        for (Departamento d : sucursal.getDepartamentos()) {
+            if (d.getNombre() != null && d.getNombre().equalsIgnoreCase(nombre)) {
+                return d;
+            }
+        }
+        return null;
+    }
+
+    private Puesto buscarPuesto(Departamento departamento, String nombre) {
+        for (Puesto p : departamento.getPuestos()) {
+            if (p.getNombre() != null && p.getNombre().equalsIgnoreCase(nombre)) {
+                return p;
+            }
+        }
+        return null;
     }
 }

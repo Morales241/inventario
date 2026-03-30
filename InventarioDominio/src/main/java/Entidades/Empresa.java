@@ -82,5 +82,11 @@ public class Empresa extends AuditoriaBase implements Serializable {
     public void setVersion(Long version) {
         this.version = version;
     }
+
+    @Override
+    public String toString() {
+        return getNombre();
+    }
    
+    
 }
