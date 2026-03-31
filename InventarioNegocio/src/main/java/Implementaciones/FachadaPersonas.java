@@ -1,20 +1,14 @@
 package Implementaciones;
 
-import Dtos.UsuarioDTO;
 import Dtos.CuentaSistemaDTO;
+import Dtos.UsuarioDTO;
 import InterfacesFachada.IFachadaPersonas;
 import Servicios.ServicioPersonas;
 import interfacesServicios.IServicioPersonas;
 import java.util.List;
 
 /**
- * Implementación de la fachada para operaciones de gestión de personas.
- * <p>
- * Proporciona acceso simplificado a la lógica de negocio del servicio de personas 
- * (usuarios y cuentas de sistema). Utiliza el patrón Facade para abstraer la 
- * complejidad de las operaciones.
- * </p>
- * @author JMorales
+ * Fachada de personas — se delegan los dos métodos nuevos de paginación.
  */
 public class FachadaPersonas implements IFachadaPersonas {
 
@@ -28,77 +22,33 @@ public class FachadaPersonas implements IFachadaPersonas {
         this(new ServicioPersonas());
     }
 
-    // CUENTAS DE SISTEMA
-    
+    // ── Cuentas de sistema ────────────────────────────────────────────────────
+    @Override public CuentaSistemaDTO login(String u, String p)               { return servicioPersonas.login(u, p); }
+    @Override public CuentaSistemaDTO buscarPorUsername(String u)             { return servicioPersonas.buscarPorUsername(u); }
+    @Override public CuentaSistemaDTO guardarCuentaSistema(CuentaSistemaDTO d){ return servicioPersonas.guardarCuentaSistema(d); }
+    @Override public void eliminarCuentaSistema(Long id)                      { servicioPersonas.eliminarCuentaSistema(id); }
+    @Override public List<CuentaSistemaDTO> listarCuentasSistema()            { return servicioPersonas.listarCuentasSistema(); }
+    @Override public List<CuentaSistemaDTO> buscarCuentasSistema(String f)    { return servicioPersonas.buscarCuentasSistema(f); }
+
+    // ── Usuarios ──────────────────────────────────────────────────────────────
+    @Override public List<UsuarioDTO> buscarUsuarios(String b)                { return servicioPersonas.buscarUsuarios(b); }
+    @Override public UsuarioDTO obtenerUsuario(Long id)                       { return servicioPersonas.obtenerUsuario(id); }
+    @Override public void guardarUsuario(UsuarioDTO dto)                      { servicioPersonas.guardarUsuario(dto); }
+    @Override public void cambiarEstadoUsuario(Long id, boolean a)            { servicioPersonas.cambiarEstadoUsuario(id, a); }
+    @Override public List<UsuarioDTO> listarUsuariosActivos()                 { return servicioPersonas.listarUsuariosActivos(); }
+    @Override public List<UsuarioDTO> buscarUsuariosPorDepartamento(Long id)  { return servicioPersonas.buscarUsuariosPorDepartamento(id); }
+    @Override public List<UsuarioDTO> buscarUsuariosPorPuesto(Long id)        { return servicioPersonas.buscarUsuariosPorPuesto(id); }
+    @Override public boolean usuarioTieneEquiposAsignados(Long id)            { return servicioPersonas.usuarioTieneEquiposAsignados(id); }
+
+    /** NUEVO: devuelve una página de usuarios con equipos ya contados. */
     @Override
-    public CuentaSistemaDTO login(String user, String pass) {
-        return servicioPersonas.login(user, pass);
+    public List<UsuarioDTO> buscarUsuariosPaginado(String busqueda, int pagina, int tamano) {
+        return servicioPersonas.buscarUsuariosPaginado(busqueda, pagina, tamano);
     }
 
+    /** NUEVO: cuenta total para calcular páginas. */
     @Override
-    public CuentaSistemaDTO buscarPorUsername(String username) {
-        return servicioPersonas.buscarPorUsername(username);
-    }
-
-    @Override
-    public CuentaSistemaDTO guardarCuentaSistema(CuentaSistemaDTO dto) {
-        return servicioPersonas.guardarCuentaSistema(dto);
-    }
-
-    @Override
-    public void eliminarCuentaSistema(Long id) {
-        servicioPersonas.eliminarCuentaSistema(id);
-    }
-
-    @Override
-    public List<CuentaSistemaDTO> listarCuentasSistema() {
-        return servicioPersonas.listarCuentasSistema();
-    }
-
-    @Override
-    public List<CuentaSistemaDTO> buscarCuentasSistema(String filtro) {
-        return servicioPersonas.buscarCuentasSistema(filtro);
-    }
-
-    // USUARIOS
-    
-    @Override
-    public List<UsuarioDTO> buscarUsuarios(String busquedaGlobal) {
-        return servicioPersonas.buscarUsuarios(busquedaGlobal);
-    }
-
-    @Override
-    public UsuarioDTO obtenerUsuario(Long id) {
-        return servicioPersonas.obtenerUsuario(id);
-    }
-
-    @Override
-    public void guardarUsuario(UsuarioDTO dto) {
-        servicioPersonas.guardarUsuario(dto);
-    }
-
-    @Override
-    public void cambiarEstadoUsuario(Long id, boolean activo) {
-        servicioPersonas.cambiarEstadoUsuario(id, activo);
-    }
-
-    @Override
-    public List<UsuarioDTO> listarUsuariosActivos() {
-        return servicioPersonas.listarUsuariosActivos();
-    }
-
-    @Override
-    public List<UsuarioDTO> buscarUsuariosPorDepartamento(Long idDepartamento) {
-        return servicioPersonas.buscarUsuariosPorDepartamento(idDepartamento);
-    }
-
-    @Override
-    public List<UsuarioDTO> buscarUsuariosPorPuesto(Long idPuesto) {
-        return servicioPersonas.buscarUsuariosPorPuesto(idPuesto);
-    }
-
-    @Override
-    public boolean usuarioTieneEquiposAsignados(Long idUsuario) {
-        return servicioPersonas.usuarioTieneEquiposAsignados(idUsuario);
+    public long contarUsuarios(String busqueda) {
+        return servicioPersonas.contarUsuarios(busqueda);
     }
 }

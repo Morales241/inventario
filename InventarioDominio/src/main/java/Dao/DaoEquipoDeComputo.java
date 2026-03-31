@@ -11,28 +11,42 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DAO especializado para la gestión de {@link EquipoDeComputo}. Permite filtrar
- * equipos por GRI, estado físico y descripciones del modelo.
- *
- * * @author JMorales
+ * DAO de EquipoDeComputo con soporte de paginación.
  */
-public class DaoEquipoDeComputo extends DaoGenerico<EquipoDeComputo, Long> implements IDaoEquipoDeComputo {
+public class DaoEquipoDeComputo extends DaoGenerico<EquipoDeComputo, Long>
+        implements IDaoEquipoDeComputo {
 
     public DaoEquipoDeComputo() {
         super(EquipoDeComputo.class);
     }
 
     @Override
+    public EquipoDeComputo buscarPorGry(Integer gry) {
+        if (gry == null) {
+            return null;
+        }
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<EquipoDeComputo> cq = cb.createQuery(EquipoDeComputo.class);
+        Root<EquipoDeComputo> root = cq.from(EquipoDeComputo.class);
+        cq.select(root).where(cb.equal(root.get("gry"), gry));
+        try {
+            return em.createQuery(cq).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
     public List<EquipoDeComputo> buscarConFiltros(Integer gry,
             EstadoEquipo estado,
             String busquedaModelo) {
-
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<EquipoDeComputo> cq = cb.createQuery(EquipoDeComputo.class);
         Root<EquipoDeComputo> root = cq.from(EquipoDeComputo.class);
@@ -48,115 +62,128 @@ public class DaoEquipoDeComputo extends DaoGenerico<EquipoDeComputo, Long> imple
         }
 
         if (busquedaModelo != null && !busquedaModelo.isBlank()) {
-
             Join<EquipoDeComputo, Modelo> joinModelo = root.join("modelo");
-
             String filtro = "%" + busquedaModelo.toLowerCase() + "%";
-
-            Predicate porMarca
-                    = cb.like(cb.lower(joinModelo.get("marca")), filtro);
-
-            Predicate porNombre
-                    = cb.like(cb.lower(joinModelo.get("nombre")), filtro);
-
-            predicados.add(cb.or(porMarca, porNombre));
+            predicados.add(cb.or(
+                    cb.like(cb.lower(joinModelo.get("marca")), filtro),
+                    cb.like(cb.lower(joinModelo.get("nombre")), filtro)
+            ));
         }
 
-        cq.select(root)
-                .where(predicados.toArray(Predicate[]::new));
-
+        cq.select(root).where(predicados.toArray(Predicate[]::new));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public EquipoDeComputo buscarPorGry(Integer gry) {
-
-        if (gry == null) {
-            return null;
-        }
-
+    public List<EquipoDeComputo> buscarConFiltros(String texto,
+            TipoEquipo tipo,
+            CondicionFisica condicion,
+            EstadoEquipo estado) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<EquipoDeComputo> cq = cb.createQuery(EquipoDeComputo.class);
         Root<EquipoDeComputo> root = cq.from(EquipoDeComputo.class);
 
-        cq.select(root)
-                .where(cb.equal(root.get("gry"), gry));
+        // fetch join: trae modelo en la misma query → evita N+1
+        root.fetch("modelo", JoinType.LEFT);
 
-        try {
-            return em.createQuery(cq).getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+        List<Predicate> predicates = buildPredicados(cb, root, texto, tipo, condicion, estado);
+
+        cq.select(root)
+                .where(predicates.toArray(Predicate[]::new))
+                .distinct(true)
+                .orderBy(cb.desc(root.get("id")));
+
+        return em.createQuery(cq).getResultList();
     }
 
-    @Override
-    public List<EquipoDeComputo> buscarConFiltros(
+    /**
+     * Devuelve solo los registros de la página solicitada.
+     *
+     * @param texto filtro texto libre (GRY numérico o nombre de modelo)
+     * @param tipo filtro por TipoEquipo, null o TODOS = sin filtro
+     * @param condicion filtro por CondicionFisica, null o TODAS = sin filtro
+     * @param estado filtro por EstadoEquipo, null o TODOS = sin filtro
+     * @param pagina número de página comenzando en 0
+     * @param tamano filas por página (ej. 25)
+     */
+    public List<EquipoDeComputo> buscarConFiltrosPaginado(String texto,
+            TipoEquipo tipo,
+            CondicionFisica condicion,
+            EstadoEquipo estado,
+            int pagina,
+            int tamano) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<EquipoDeComputo> cq = cb.createQuery(EquipoDeComputo.class);
+        Root<EquipoDeComputo> root = cq.from(EquipoDeComputo.class);
+
+        // fetch join para evitar N+1 al mapear equipo → modelo
+        root.fetch("modelo", JoinType.LEFT);
+
+        List<Predicate> predicates = buildPredicados(cb, root, texto, tipo, condicion, estado);
+
+        cq.select(root)
+                .where(predicates.toArray(Predicate[]::new))
+                .distinct(true)
+                .orderBy(cb.desc(root.get("id")));
+
+        return em.createQuery(cq)
+                .setFirstResult(pagina * tamano) 
+                .setMaxResults(tamano)
+                .getResultList();
+    }
+
+    /**
+     * Cuenta los equipos que coinciden con los filtros sin traer objetos
+     * completos.
+     */
+    public long contarConFiltros(String texto,
+            TipoEquipo tipo,
+            CondicionFisica condicion,
+            EstadoEquipo estado) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<EquipoDeComputo> root = cq.from(EquipoDeComputo.class);
+        
+        List<Predicate> predicates = buildPredicados(cb, root, texto, tipo, condicion, estado);
+
+        cq.select(cb.countDistinct(root))
+                .where(predicates.toArray(Predicate[]::new));
+
+        return em.createQuery(cq).getSingleResult();
+    }
+
+    private List<Predicate> buildPredicados(CriteriaBuilder cb,
+            Root<EquipoDeComputo> root,
             String texto,
             TipoEquipo tipo,
             CondicionFisica condicion,
-            EstadoEquipo estado
-    ) {
-
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<EquipoDeComputo> cq
-                = cb.createQuery(EquipoDeComputo.class);
-
-        Root<EquipoDeComputo> root = cq.from(EquipoDeComputo.class);
-
+            EstadoEquipo estado) {
         List<Predicate> predicates = new ArrayList<>();
 
         if (texto != null && !texto.isBlank()) {
-
             if (texto.matches("\\d+")) {
-
-                predicates.add(
-                        cb.equal(
-                                root.get("gry"),
-                                Integer.valueOf(texto)
-                        )
-                );
-
+                predicates.add(cb.equal(root.get("gry"), Integer.valueOf(texto)));
             } else {
-
-                Join<EquipoDeComputo, Modelo> modeloJoin
-                        = root.join("modelo");
-
-                predicates.add(
-                        cb.like(
-                                cb.lower(modeloJoin.get("nombre")),
-                                "%" + texto.toLowerCase() + "%"
-                        )
-                );
+                Join<EquipoDeComputo, Modelo> modeloJoin = root.join("modelo", JoinType.LEFT);
+                predicates.add(cb.like(
+                        cb.lower(modeloJoin.get("nombre")),
+                        "%" + texto.toLowerCase() + "%"
+                ));
             }
         }
 
-        if (tipo != null && tipo != (TipoEquipo.TODOS)) {
-            predicates.add(
-                    cb.equal(root.get("tipo"), tipo)
-            );
+        if (tipo != null && tipo != TipoEquipo.TODOS) {
+            predicates.add(cb.equal(root.get("tipo"), tipo));
         }
 
-        if (condicion != null  && condicion != (CondicionFisica.TODAS)) {
-            predicates.add(
-                    cb.equal(root.get("condicion"), condicion)
-            );
+        if (condicion != null && condicion != CondicionFisica.TODAS) {
+            predicates.add(cb.equal(root.get("condicion"), condicion));
         }
 
         if (estado != null && estado != EstadoEquipo.TODOS) {
-            predicates.add(
-                    cb.equal(root.get("estado"), estado)
-            );
+            predicates.add(cb.equal(root.get("estado"), estado));
         }
 
-        cq.where(predicates.toArray(Predicate[]::new));
-
-        // Orden empresarial por ID descendente
-        cq.orderBy(cb.desc(root.get("id")));
-
-        TypedQuery<EquipoDeComputo> query
-                = em.createQuery(cq);
-
-        return query.getResultList();
+        return predicates;
     }
-
 }

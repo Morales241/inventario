@@ -68,7 +68,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     private Long idEquipoEditando;
     private Long versionEquipo;
 
-    private static final Long IdSucursal = 1L;
+    private static final Long IdSucursal = 6L;
 
     // ── Campos del formulario 
     @FXML

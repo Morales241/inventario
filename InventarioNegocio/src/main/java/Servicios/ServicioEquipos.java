@@ -135,6 +135,44 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
     }
 
     @Override
+    public List<EquipoBaseDTO> buscarConFiltrosPaginado(String texto,
+            TipoEquipo tipo,
+            CondicionFisica condicion,
+            EstadoEquipo estado,
+            int pagina,
+            int tamano) {
+        return ejecutarLectura(em -> {
+            configurarGeneral(em);
+
+            // daoGeneral es DaoEquipoDeComputo — hacer cast para acceder al método nuevo
+            DaoEquipoDeComputo dao = (DaoEquipoDeComputo) daoGeneral;
+
+            List<EquipoDeComputo> equipos
+                    = dao.buscarConFiltrosPaginado(texto, tipo, condicion, estado, pagina, tamano);
+
+            return equipos.stream()
+                    .map(this::mapearPolimorfico)
+                    .collect(Collectors.toList());
+        });
+    }
+
+    /**
+     * NUEVO: COUNT en BD — no trae objetos completos. Se usa para calcular el
+     * total de páginas en el paginador.
+     */
+    @Override
+    public long contarConFiltros(String texto,
+            TipoEquipo tipo,
+            CondicionFisica condicion,
+            EstadoEquipo estado) {
+        return ejecutarLectura(em -> {
+            configurarGeneral(em);
+            DaoEquipoDeComputo dao = (DaoEquipoDeComputo) daoGeneral;
+            return dao.contarConFiltros(texto, tipo, condicion, estado);
+        });
+    }
+
+    @Override
     public void eliminarEquipo(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("ID inválido");
@@ -229,8 +267,8 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
             this.daoGeneral = daoGeneral;
         }
 
-        public EquipoBaseServicio(IDaoGenerico<T, Long> dao, Mapper<T, D> mapper, Class<T> claseEntidad, 
-                                  IDaoEquipoDeComputo daoGeneral, IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
+        public EquipoBaseServicio(IDaoGenerico<T, Long> dao, Mapper<T, D> mapper, Class<T> claseEntidad,
+                IDaoEquipoDeComputo daoGeneral, IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
             super(dao, mapper, claseEntidad);
             this.daoEquipo = dao;
             this.daoGeneral = daoGeneral;
@@ -292,7 +330,7 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
             if (daoGeneral == null) {
                 throw new IllegalStateException("daoGeneral no está inicializado");
             }
-            
+
             // Configurar el EntityManager en daoGeneral
             daoGeneral.setEntityManager(em);
 
@@ -367,8 +405,8 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
             super(new DaoEquipoDeEscritorio(), MapperEquipos.escritorio, EquipoDeEscritorio.class, daoGeneral);
         }
 
-        public EquipoEscritorioServicio(IDaoEquipoDeComputo daoGeneral, IDaoEquipoDeEscritorio dao, 
-                                        IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
+        public EquipoEscritorioServicio(IDaoEquipoDeComputo daoGeneral, IDaoEquipoDeEscritorio dao,
+                IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
             super(dao, MapperEquipos.escritorio, EquipoDeEscritorio.class, daoGeneral, daoModelo, daoSucursal);
         }
 
@@ -400,8 +438,8 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
             super(new DaoMovil(), MapperEquipos.movil, Movil.class, daoGeneral);
         }
 
-        public EquipoMovilServicio(IDaoEquipoDeComputo daoGeneral, IDaoMovil dao, 
-                                   IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
+        public EquipoMovilServicio(IDaoEquipoDeComputo daoGeneral, IDaoMovil dao,
+                IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
             super(dao, MapperEquipos.movil, Movil.class, daoGeneral, daoModelo, daoSucursal);
         }
 
@@ -437,8 +475,8 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
             super(new DaoOtroEquipo(), MapperEquipos.otro, OtroEquipo.class, daoGeneral);
         }
 
-        public EquipoOtroServicio(IDaoEquipoDeComputo daoGeneral, IDaoOtroEquipo dao, 
-                                  IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
+        public EquipoOtroServicio(IDaoEquipoDeComputo daoGeneral, IDaoOtroEquipo dao,
+                IDaoModelo daoModelo, IDaoSucursal daoSucursal) {
             super(dao, MapperEquipos.otro, OtroEquipo.class, daoGeneral, daoModelo, daoSucursal);
         }
 

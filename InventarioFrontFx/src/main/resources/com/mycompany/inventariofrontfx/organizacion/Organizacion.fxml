@@ -3,77 +3,253 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" 
-            stylesheets="@organizacion.css" 
-            xmlns="http://javafx.com/javafx/21" 
-            xmlns:fx="http://javafx.com/fxml/1" 
+<!--
+    DISEÑO PROPUESTO — Organización
+    ════════════════════════════════
+    Layout: SplitPane 30/70
+
+    PANEL IZQUIERDO (30%):
+      • Buscador que filtra el árbol en tiempo real
+      • TreeView con íconos por nivel (🏢 → 📍 → 🏬 → 👤)
+      • Botones [+ Nueva empresa] y [Limpiar selección]
+      • Spinner de carga
+
+    PANEL DERECHO (70%):
+      Tiene 3 estados manejados por el controller:
+        A) PLACEHOLDER — "Seleccione un elemento del árbol"
+        B) DETALLE + FORMULARIO — campos para editar/crear la entidad seleccionada:
+             • Breadcrumb visual: Empresa > Sucursal > Dpto > Puesto
+             • Badge de tipo (chip de color)
+             • Stat cards: N sucursales / N departamentos / N puestos / N empleados
+             • Formulario con campos específicos del tipo
+             • Botones [Guardar] [Eliminar]
+             • Sección "Agregar hijo": botón contextual para añadir el nivel siguiente
+        C) FORMULARIO NUEVO — misma estructura pero sin stat cards y sin botón eliminar
+
+    IMPLEMENTACIÓN:
+      El controller muestra/oculta estos sub-paneles con setVisible()/setManaged().
+      Las secciones con fx:id son las que el controller manipula.
+-->
+
+<BorderPane maxHeight="1.7976931348623157E308"
+            maxWidth="1.7976931348623157E308"
+            stylesheets="@organizacion.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.mycompany.inventariofrontfx.organizacion.OrganizacionController">
-    
+
+    <!-- ════════════ ENCABEZADO ════════════ -->
     <top>
-        <VBox spacing="10.0" styleClass="panel-superior">
-            <padding>
-                <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
-            </padding>
-            
+        <VBox spacing="4.0" styleClass="panel-superior" BorderPane.alignment="CENTER">
+            <padding><Insets bottom="14.0" left="20.0" right="20.0" top="14.0" /></padding>
             <children>
-                <HBox alignment="CENTER_LEFT" spacing="15.0">
-                    <Label style="-fx-font-size: 24px;" text="🏢" />
-                    <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #13507d;" 
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <Label style="-fx-font-size: 22px;" text="🏢" />
+                    <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #13507d;"
                            text="ESTRUCTURA ORGANIZACIONAL" />
                 </HBox>
-                
-                <Label text="Gestión de empresas, sucursales, departamentos y puestos" 
-                       style="-fx-text-fill: #666666;" />
+                <Label text="Gestión de empresas, sucursales, departamentos y puestos de trabajo"
+                       style="-fx-text-fill: #6B7280; -fx-font-size: 12px;" />
             </children>
         </VBox>
     </top>
-    
+
+    <!-- ════════════ SPLIT PRINCIPAL ════════════ -->
     <center>
-        <SplitPane dividerPositions="0.3">
-            <!-- Panel izquierdo: Árbol jerárquico -->
-            <VBox spacing="10.0" styleClass="panel-lateral">
-                <padding>
-                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                </padding>
-                
+        <SplitPane dividerPositions="0.30" style="-fx-background-color: #F3F4F6; -fx-padding: 10;">
+
+            <!-- ══════ PANEL IZQUIERDO: ÁRBOL ══════ -->
+            <VBox spacing="10.0"
+                  style="-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #E5E7EB; -fx-border-radius: 12; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 6, 0, 0, 2);"
+                  minWidth="200">
+                <padding><Insets bottom="12.0" left="12.0" right="12.0" top="12.0" /></padding>
+
                 <children>
-                    <Label text="ESTRUCTURA" style="-fx-font-weight: bold; -fx-text-fill: #13507d;" />
-                    
-                    <TreeView fx:id="treeOrganizacion" VBox.vgrow="ALWAYS" 
-                              styleClass="arbol-organizacion" />
-                    
-                    <HBox spacing="10.0">
-                        <Button fx:id="btnNuevo" styleClass="btn-agregar" text="+ Nuevo" 
-                                maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="btnCancelar" styleClass="btn-cancelar" text="Limpiar" 
-                                maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+
+                    <!-- Título árbol -->
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label text="ESTRUCTURA" style="-fx-font-weight: bold; -fx-font-size: 11px; -fx-text-fill: #9CA3AF;" />
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <ProgressIndicator fx:id="progressArbol" prefWidth="16" prefHeight="16"
+                                           visible="false" managed="false"/>
                     </HBox>
+
+                    <!-- Buscador -->
+                    <TextField fx:id="txtBuscarArbol"
+                               promptText="🔍 Buscar..."
+                               style="-fx-background-color: #F9FAFB; -fx-border-color: #E5E7EB; -fx-border-radius: 7; -fx-background-radius: 7; -fx-padding: 7 10; -fx-font-size: 12px;" />
+
+                    <!-- Árbol -->
+                    <TreeView fx:id="treeOrganizacion"
+                              styleClass="arbol-organizacion"
+                              VBox.vgrow="ALWAYS" />
+
+                    <Separator />
+
+                    <!-- Botones inferiores -->
+                    <Button fx:id="btnNuevaEmpresa"
+                            text="＋ Nueva Empresa"
+                            styleClass="btn-agregar"
+                            onAction="#nuevaEmpresa"
+                            maxWidth="1.7976931348623157E308"
+                            prefHeight="36" />
+
+                    <Button fx:id="btnLimpiar"
+                            text="✕ Limpiar selección"
+                            styleClass="btn-cancelar"
+                            onAction="#limpiarSeleccion"
+                            maxWidth="1.7976931348623157E308"
+                            prefHeight="34" />
+
                 </children>
             </VBox>
-            
-            <!-- Panel derecho: Detalles y formularios -->
-            <VBox spacing="15.0" styleClass="panel-card">
-                <padding>
-                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                </padding>
-                
-                <children>
-                    <Label fx:id="lblTituloDetalle" text="Seleccione un elemento" 
-                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #13507d;" />
-                    
-                    <VBox fx:id="panelDetalle" spacing="10.0" VBox.vgrow="ALWAYS">
-                        <!-- Aquí se insertan los campos dinámicamente -->
+
+            <!-- ══════ PANEL DERECHO: DETALLE / FORMULARIO ══════ -->
+            <StackPane VBox.vgrow="ALWAYS">
+
+                <!-- ─── ESTADO A: PLACEHOLDER (visible cuando nada seleccionado) ─── -->
+                <VBox fx:id="panelPlaceholder"
+                      alignment="CENTER" spacing="16"
+                      style="-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #E5E7EB; -fx-border-radius: 12; -fx-border-width: 1.5; -fx-border-style: dashed;">
+                    <Label styleClass="placeholder-icon" text="🏗️" />
+                    <Label styleClass="placeholder-text" text="Selecciona un elemento del árbol" />
+                    <Label styleClass="placeholder-subtext"
+                           text="Haz clic en una empresa, sucursal, departamento o puesto para ver sus detalles" />
+                    <Button text="＋ Crear primera empresa"
+                            styleClass="btn-add-child"
+                            onAction="#nuevaEmpresa" />
+                </VBox>
+
+                <!-- ─── ESTADO B/C: PANEL DE DETALLE ─── -->
+                <VBox fx:id="panelDetalle"
+                      spacing="0"
+                      visible="false" managed="false"
+                      style="-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #E5E7EB; -fx-border-radius: 12; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 6, 0, 0, 2);">
+
+                    <!-- Cabecera del detalle -->
+                    <VBox spacing="10" style="-fx-padding: 20 24 16 24;">
+
+                        <!-- Breadcrumb -->
+                        <HBox fx:id="breadcrumbBox" styleClass="breadcrumb-box" alignment="CENTER_LEFT" spacing="4" />
+
+                        <!-- Título + badge de tipo -->
+                        <HBox alignment="CENTER_LEFT" spacing="12">
+                            <Label fx:id="lblIconoTipo" style="-fx-font-size: 28px;" text="🏢" />
+                            <VBox spacing="3">
+                                <Label fx:id="lblTituloDetalle"
+                                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #111827;"
+                                       text="Empresa" />
+                                <Label fx:id="lblBadgeTipo"
+                                       styleClass="badge-empresa"
+                                       text="EMPRESA" />
+                            </VBox>
+                            <Region HBox.hgrow="ALWAYS" />
+                            <!-- Botón eliminar en cabecera -->
+                            <Button fx:id="btnEliminar"
+                                    text="🗑 Eliminar"
+                                    styleClass="btn-eliminar"
+                                    onAction="#eliminarSeleccionado"
+                                    visible="false" managed="false"
+                                    prefHeight="34" />
+                        </HBox>
+
+                        <!-- Stat cards (se ocultan en modo "nuevo") -->
+                        <HBox fx:id="statsBox" spacing="12" visible="false" managed="false">
+                            <!-- Los stat cards se generan dinámicamente desde el controller -->
+                        </HBox>
+
                     </VBox>
-                </children>
-            </VBox>
+
+                    <Separator />
+
+                    <!-- Cuerpo del formulario (scroll) -->
+                    <javafx.scene.control.ScrollPane fitToWidth="true"
+                                                     hbarPolicy="NEVER"
+                                                     style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;"
+                                                     VBox.vgrow="ALWAYS">
+                        <content>
+                            <VBox fx:id="formBody" spacing="16" style="-fx-padding: 20 24;">
+
+                                <!-- ─── CAMPOS COMUNES (siempre visibles) ─── -->
+                                <VBox spacing="4">
+                                    <Label text="Nombre" styleClass="form-field-label" />
+                                    <TextField fx:id="txtNombre"
+                                               promptText="Ingresa el nombre..."
+                                               prefHeight="38"
+                                               style="-fx-background-color: #F9FAFB; -fx-border-color: #E5E7EB; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8 12; -fx-font-size: 13px;" />
+                                    <Label fx:id="errNombre" styleClass="label-error" visible="false" managed="false" />
+                                </VBox>
+
+                                <!-- ─── CAMPO UBICACIÓN (solo sucursal) ─── -->
+                                <VBox fx:id="seccionUbicacion" spacing="4" visible="false" managed="false">
+                                    <Label text="Ubicación / Dirección" styleClass="form-field-label" />
+                                    <TextField fx:id="txtUbicacion"
+                                               promptText="Ej: Av. Principal 123, Ciudad Obregón"
+                                               prefHeight="38"
+                                               style="-fx-background-color: #F9FAFB; -fx-border-color: #E5E7EB; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8 12; -fx-font-size: 13px;" />
+                                </VBox>
+
+                                <!-- ─── SELECTOR DE PADRE (empresa, sucursal, depto) ─── -->
+                                <VBox fx:id="seccionPadre" spacing="4" visible="false" managed="false">
+                                    <Label fx:id="lblPadre" text="Empresa" styleClass="form-field-label" />
+                                    <javafx.scene.control.ComboBox fx:id="cbxPadre"
+                                                                   prefHeight="38" maxWidth="1.7976931348623157E308"
+                                                                   style="-fx-background-color: #F9FAFB; -fx-border-color: #E5E7EB; -fx-border-radius: 8; -fx-background-radius: 8;" />
+                                    <Label fx:id="errPadre" styleClass="label-error" visible="false" managed="false" />
+                                </VBox>
+
+                                <!-- ─── BOTÓN GUARDAR ─── -->
+                                <HBox spacing="10" alignment="CENTER_RIGHT">
+                                    <Button fx:id="btnCancelarForm"
+                                            text="Cancelar"
+                                            styleClass="btn-cancelar"
+                                            onAction="#cancelarFormulario"
+                                            prefHeight="38" prefWidth="100" />
+                                    <Button fx:id="btnGuardar"
+                                            text="💾 Guardar"
+                                            styleClass="btn-agregar"
+                                            onAction="#guardarSeleccionado"
+                                            prefHeight="38" prefWidth="130" />
+                                </HBox>
+
+                                <!-- ─── SECCIÓN HIJOS (agregar nivel siguiente) ─── -->
+                                <VBox fx:id="seccionHijos" spacing="10" visible="false" managed="false">
+                                    <Separator />
+                                    <Label fx:id="lblTituloHijos"
+                                           text="Sucursales"
+                                           style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #374151;" />
+                                    <!-- Lista de hijos existentes -->
+                                    <VBox fx:id="listaHijos" spacing="6" />
+                                    <!-- Botón añadir hijo -->
+                                    <Button fx:id="btnAgregarHijo"
+                                            text="＋ Agregar sucursal"
+                                            styleClass="btn-add-child"
+                                            onAction="#agregarHijo"
+                                            maxWidth="1.7976931348623157E308"
+                                            prefHeight="38" />
+                                </VBox>
+
+                            </VBox>
+                        </content>
+                    </javafx.scene.control.ScrollPane>
+
+                </VBox>
+
+            </StackPane>
+
         </SplitPane>
     </center>
-    
+
 </BorderPane>

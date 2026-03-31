@@ -4,6 +4,7 @@ import Entidades.Departamento;
 import Entidades.Empresa;
 import Entidades.Puesto;
 import Entidades.Sucursal;
+import Entidades.Usuario;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -107,10 +108,11 @@ public class importarxlsx {
             int colUbic = -1;
             int colDep = -1;
             int colPuesto = -1;
+            int colUsuario = -1;
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
-                
+
                 if (row.getRowNum() == 0 || row.getCell(0) == null) {
                     if (row.getRowNum() == 0) {
                         Iterator<Cell> cellIterator = row.cellIterator();
@@ -120,39 +122,47 @@ public class importarxlsx {
                         colUbic = indexColumnaEspecifica("Ubicaion");
                         colDep = indexColumnaEspecifica("Departamento");
                         colPuesto = indexColumnaEspecifica("Puesto");
+                        colUsuario = indexColumnaEspecifica("Nombre");
 
                         System.out.println("Columnas encontradas:");
                         System.out.println("  Uen: " + colUen);
                         System.out.println("  Ubicaion: " + colUbic);
                         System.out.println("  Departamento: " + colDep);
                         System.out.println("  Puesto: " + colPuesto);
+                        System.out.println("  Usuario: " + colUsuario);
                     }
                     continue;
                 }
-                
+
                 String nombreEmpresa = "";
                 String nombreSucursal = "";
                 String nombreDepartamento = "";
                 String nombrePuesto = "";
+                String nombreUsuario = "";
 
                 if (colUen != -1 && colUen < row.getLastCellNum()) {
                     Cell cell = row.getCell(colUen);
-                    nombreEmpresa = getCellValueAsString(cell);
+                    nombreEmpresa = formatearTexto(getCellValueAsString(cell));
                 }
 
                 if (colUbic != -1 && colUbic < row.getLastCellNum()) {
                     Cell cell = row.getCell(colUbic);
-                    nombreSucursal = getCellValueAsString(cell);
+                    nombreSucursal = formatearTexto(getCellValueAsString(cell));
                 }
 
                 if (colDep != -1 && colDep < row.getLastCellNum()) {
                     Cell cell = row.getCell(colDep);
-                    nombreDepartamento = getCellValueAsString(cell);
+                    nombreDepartamento = formatearTexto(getCellValueAsString(cell));
                 }
 
                 if (colPuesto != -1 && colPuesto < row.getLastCellNum()) {
                     Cell cell = row.getCell(colPuesto);
-                    nombrePuesto = getCellValueAsString(cell);
+                    nombrePuesto = formatearTexto(getCellValueAsString(cell));
+                }
+
+                if (colUsuario != -1 && colUsuario < row.getLastCellNum()) {
+                    Cell cell = row.getCell(colUsuario);
+                    nombreUsuario = formatearTexto(getCellValueAsString(cell));
                 }
 
                 if (nombreEmpresa.isEmpty()) {
@@ -195,11 +205,23 @@ public class importarxlsx {
                                 departamento.getPuestos().add(puesto);
                             }
 
-                            System.out.println("Registro " + row.getRowNum() + ": "
-                                    + nombreEmpresa + " | "
-                                    + nombreSucursal + " | "
-                                    + nombreDepartamento + " | "
-                                    + nombrePuesto);
+                            if (!nombreUsuario.isEmpty()) {
+//                                Usuario usuario = buscarUsuario(puesto, nombreUsuario);
+//                                if (usuario == null) {
+//                                    usuario = new Usuario();
+//                                    usuario.setActivo(true);
+//                                    usuario.setNombre(nombreUsuario);
+//                                    usuario.setPuesto(puesto);
+//                                    puesto.getUsuarios().add(usuario);
+//                                }
+
+                                System.out.println("Registro " + row.getRowNum() + ": "
+                                        + nombreEmpresa + " | "
+                                        + nombreSucursal + " | "
+                                        + nombreDepartamento + " | "
+                                        + nombrePuesto + " | "
+                                        + nombreUsuario);
+                            }
                         }
                     }
                 }
@@ -265,5 +287,42 @@ public class importarxlsx {
             }
         }
         return null;
+    }
+
+    private Usuario buscarUsuario(Puesto puesto, String nombre) {
+        for (Usuario u : puesto.getUsuarios()) {
+            if (u.getNombre() != null && u.getNombre().equalsIgnoreCase(nombre)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    private String formatearTexto(String texto) {
+        if (texto == null || texto.isEmpty()) {
+            return texto;
+        }
+
+        String[] palabras = texto.trim().split("\\s+");
+        StringBuilder resultado = new StringBuilder();
+
+        for (int i = 0; i < palabras.length; i++) {
+            String palabra = palabras[i];
+
+            if (!palabra.isEmpty()) {
+                String palabraLower = palabra.toLowerCase();
+
+                String palabraFormateada = palabraLower.substring(0, 1).toUpperCase()
+                        + palabraLower.substring(1);
+
+                resultado.append(palabraFormateada);
+
+                if (i < palabras.length - 1) {
+                    resultado.append(" ");
+                }
+            }
+        }
+
+        return resultado.toString();
     }
 }

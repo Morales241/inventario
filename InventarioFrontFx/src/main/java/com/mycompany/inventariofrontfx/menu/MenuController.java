@@ -82,6 +82,8 @@ public class MenuController implements Initializable {
         btnConfiguracion.setGraphic(crearIcono("fas-cog"));
         btnCuentas.setGraphic(crearIcono("fas-user-circle"));
         btnAuditoria.setGraphic(crearIcono("fas-eye"));
+        
+        btnAuditoria.getStyleClass().add("menu-btn");
 
         menu.getToggles().forEach(toggle -> {
             if (toggle instanceof ToggleButton btn) {
@@ -109,7 +111,7 @@ public class MenuController implements Initializable {
             case "Asignaciones" ->
                 cambiarDePantalla("/com/mycompany/inventariofrontfx/asignaciones/Asignaciones.fxml", "Asignación de Equipo", "Asignar equipos a trabajadores");
             case "Organización" ->
-                cambiarDePantalla(null, "Estructura Organizacional", "Gestión de empresas, sucursales, departamentos y puestos");
+                cambiarDePantalla("/com/mycompany/inventariofrontfx/organizacion/Organizacion.fxml", "Estructura Organizacional", "Gestión de empresas, sucursales, departamentos y puestos");
             case "Cuentas" ->
                 cambiarDePantalla(null, "Cuentas del Sistema", "Gestión de administradores, técnicos y operarios");
             case "Auditoria" ->

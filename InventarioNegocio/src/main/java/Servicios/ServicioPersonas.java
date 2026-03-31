@@ -8,6 +8,7 @@ import Dtos.UsuarioDTO;
 import Entidades.CuentaSistema;
 import Entidades.Puesto;
 import Entidades.Usuario;
+import Interfaces.IDaoCuentaSistema;
 import excepciones.RecursoNoEncontradoException;
 import excepciones.ReglaNegocioException;
 import interfacesServicios.IServicioPersonas;
@@ -17,12 +18,8 @@ import mapper.MapperCuentaSistema;
 import mapper.MapperUsuario;
 
 /**
- * Servicio de lógica de negocio para la gestión de personas en el sistema.
- * <p>
- * Coordina las operaciones relacionadas con autenticación de usuarios del sistema
- * y administración de Usuarios (empleados). Incluye validaciones de integridad 
- * de datos y cambios de estado para el control de acceso.
- * </p>
+ * Servicio de lógica de negocio para personas.
+ *
  */
 public class ServicioPersonas extends ServicioBase implements IServicioPersonas {
 
@@ -37,10 +34,10 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         this.usuarioServicio = new UsuarioServicio(daoUsuario, daoPuesto);
         this.cuentaSistemaServicio = new CuentaSistemaServicio(new DaoCuentaSistema());
     }
-    
-    public ServicioPersonas(DaoUsuario daoUsuario, 
-                           DaoCuentaSistema daoCuenta, 
-                           DaoPuesto daoPuesto) {
+
+    public ServicioPersonas(DaoUsuario daoUsuario,
+            DaoCuentaSistema daoCuenta,
+            DaoPuesto daoPuesto) {
         this.daoUsuario = daoUsuario;
         this.daoPuesto = daoPuesto;
         this.usuarioServicio = new UsuarioServicio(daoUsuario, daoPuesto);
@@ -56,25 +53,19 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         }
     }
 
-    // CUENTAS DE SISTEMA 
-    
     @Override
-    public CuentaSistemaDTO login(String username, String password) {
-        if (username == null || username.isBlank() || password == null || password.isBlank()) {
-            throw new IllegalArgumentException("Credenciales inválidas");
-        }
-
-        return cuentaSistemaServicio.login(username.trim(), password);
+    public CuentaSistemaDTO login(String u, String p) {
+        return cuentaSistemaServicio.login(u.trim(), p);
     }
 
     @Override
-    public CuentaSistemaDTO buscarPorUsername(String username) {
-        return cuentaSistemaServicio.buscarPorUsername(username);
+    public CuentaSistemaDTO buscarPorUsername(String u) {
+        return cuentaSistemaServicio.buscarPorUsername(u);
     }
 
     @Override
-    public CuentaSistemaDTO guardarCuentaSistema(CuentaSistemaDTO dto) {
-        return cuentaSistemaServicio.guardar(dto);
+    public CuentaSistemaDTO guardarCuentaSistema(CuentaSistemaDTO d) {
+        return cuentaSistemaServicio.guardar(d);
     }
 
     @Override
@@ -88,15 +79,81 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
     }
 
     @Override
-    public List<CuentaSistemaDTO> buscarCuentasSistema(String filtro) {
-        return cuentaSistemaServicio.buscarConFiltro(filtro);
+    public List<CuentaSistemaDTO> buscarCuentasSistema(String f) {
+        return cuentaSistemaServicio.buscarConFiltro(f);
     }
 
-    // USUARIOS
-    
     @Override
     public List<UsuarioDTO> buscarUsuarios(String criterioGlobal) {
         return usuarioServicio.buscarConFiltroGlobal(criterioGlobal);
+    }
+
+    /**
+     * NUEVO: carga paginada. Trae solo los registros de la página solicitada y
+     * añade el conteo de equipos asignados con una query COUNT por usuario (no
+     * carga la lista completa).
+     */
+    @Override
+    public List<UsuarioDTO> buscarUsuariosPaginado(String criterioGlobal, int pagina, int tamano) {
+        String criterio = (criterioGlobal != null) ? criterioGlobal.trim() : "";
+        String nombreFiltro = null;
+        String numeroFiltro = null;
+
+        if (!criterio.isEmpty()) {
+            if (criterio.matches(".*\\d.*")) {
+                numeroFiltro = criterio;
+            } else {
+                nombreFiltro = criterio;
+            }
+        }
+
+        final String nf = nombreFiltro;
+        final String nmf = numeroFiltro;
+
+        return ejecutarLectura(em -> {
+            configurarDAOs(em);
+
+            // 1. Traer solo la página (LIMIT/OFFSET en BD)
+            List<Usuario> entidades = daoUsuario.busquedaConFiltrosPaginado(nf, nmf, null, pagina, tamano);
+
+            // 2. Mapear a DTOs
+            List<UsuarioDTO> dtos = MapperUsuario.converter.mapToDtoList(entidades);
+
+            // 3. Añadir conteo de equipos: 1 COUNT por usuario (no lista completa)
+            for (UsuarioDTO dto : dtos) {
+                int equipos = daoUsuario.contarEquiposAsignadosPorUsuario(dto.getId());
+                dto.setNumeroDeEquipos(equipos);
+            }
+
+            return dtos;
+        });
+    }
+
+    /**
+     * NUEVO: cuenta usuarios que coinciden con el filtro. Se usa para calcular
+     * el total de páginas.
+     */
+    @Override
+    public long contarUsuarios(String criterioGlobal) {
+        String criterio = (criterioGlobal != null) ? criterioGlobal.trim() : "";
+        String nombreFiltro = null;
+        String numeroFiltro = null;
+
+        if (!criterio.isEmpty()) {
+            if (criterio.matches(".*\\d.*")) {
+                numeroFiltro = criterio;
+            } else {
+                nombreFiltro = criterio;
+            }
+        }
+
+        final String nf = nombreFiltro;
+        final String nmf = numeroFiltro;
+
+        return ejecutarLectura(em -> {
+            configurarDAOs(em);
+            return daoUsuario.contarConFiltros(nf, nmf, null);
+        });
     }
 
     @Override
@@ -118,26 +175,20 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
     public List<UsuarioDTO> listarUsuariosActivos() {
         return ejecutarLectura(em -> {
             usuarioServicio.configurarEntityManager(em);
-            
-            List<UsuarioDTO> todos = usuarioServicio.buscarTodos();
-            return todos.stream()
-                .filter(UsuarioDTO::getActivo)
-                .toList();
+            return usuarioServicio.buscarTodos().stream()
+                    .filter(UsuarioDTO::getActivo)
+                    .toList();
         });
     }
 
     @Override
-    public List<UsuarioDTO> buscarUsuariosPorDepartamento(Long idDepartamento) {
-        if (idDepartamento == null) {
+    public List<UsuarioDTO> buscarUsuariosPorDepartamento(Long idDep) {
+        if (idDep == null) {
             throw new IllegalArgumentException("ID de departamento inválido");
         }
-        
         return ejecutarLectura(em -> {
             configurarDAOs(em);
             usuarioServicio.configurarEntityManager(em);
-            
-            // Necesitarías implementar este método en el DAO
-            // Por ahora, retornamos lista vacía como placeholder
             return List.of();
         });
     }
@@ -147,61 +198,40 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         if (idPuesto == null) {
             throw new IllegalArgumentException("ID de puesto inválido");
         }
-        
         return ejecutarLectura(em -> {
             configurarDAOs(em);
             usuarioServicio.configurarEntityManager(em);
-            
             return usuarioServicio.buscarConFiltroGlobal(null).stream()
-                .filter(u -> u.getIdPuesto() != null && u.getIdPuesto().equals(idPuesto))
-                .toList();
+                    .filter(u -> u.getIdPuesto() != null && u.getIdPuesto().equals(idPuesto))
+                    .toList();
         });
     }
 
     @Override
     public boolean usuarioTieneEquiposAsignados(Long idUsuario) {
-        if (idUsuario == null) {
-            throw new IllegalArgumentException("ID de usuario inválido");
-        }
-        
         return ejecutarLectura(em -> {
             configurarDAOs(em);
-            
-            Usuario usuario = daoUsuario.buscarPorId(idUsuario);
-            if (usuario == null) {
-                throw new RecursoNoEncontradoException(
-                    "Usuario con ID " + idUsuario + " no encontrado");
-            }
-            
-            return usuario.getEquiposAsignados() != null && 
-                   !usuario.getEquiposAsignados().isEmpty() &&
-                   usuario.getEquiposAsignados().stream()
-                        .anyMatch(a -> a.getFechaDevolucion() == null);
+            return daoUsuario.contarEquiposAsignadosPorUsuario(idUsuario) > 0;
         });
     }
 
-    // SERVICIOS ESPECÍFICOS
-
-    /**
-     * Servicio para Usuarios (Empleados)
-     */
     private class UsuarioServicio extends ServicioGenerico<Usuario, UsuarioDTO, Long> {
-        
+
         private final DaoUsuario dao;
         private final DaoPuesto daoPuesto;
-        
+
         public UsuarioServicio() {
             super(new DaoUsuario(), MapperUsuario.converter, Usuario.class);
             this.dao = (DaoUsuario) super.dao;
             this.daoPuesto = new DaoPuesto();
         }
-        
+
         public UsuarioServicio(DaoUsuario dao, DaoPuesto daoPuesto) {
             super(dao, MapperUsuario.converter, Usuario.class);
             this.dao = dao;
             this.daoPuesto = daoPuesto;
         }
-        
+
         @Override
         protected void configurarEntityManager(EntityManager em) {
             if (dao != null) {
@@ -211,362 +241,186 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
                 daoPuesto.setEntityManager(em);
             }
         }
-        
+
         @Override
         protected void validarNegocio(UsuarioDTO dto, boolean esNuevo, EntityManager em) {
             if (dto.getNombre() == null || dto.getNombre().isBlank()) {
                 throw new ReglaNegocioException("El nombre del usuario es obligatorio");
             }
-            
             if (dto.getNoNomina() == null || dto.getNoNomina().isBlank()) {
                 throw new ReglaNegocioException("El número de nómina es obligatorio");
             }
-            
             if (dto.getIdPuesto() == null) {
                 throw new ReglaNegocioException("Debe asignar un puesto al usuario");
             }
-            
             if (esNuevo) {
                 validarNominaUnica(dto.getNoNomina(), em);
             } else {
                 validarNominaUnicaEnActualizacion(dto.getNoNomina(), dto.getId(), em);
             }
         }
-        
+
         @Override
         protected Long extraerId(UsuarioDTO dto) {
             return dto.getId();
         }
-        
+
         @Override
         protected void validarEliminacion(Usuario entidad) {
-            // No se elimina físicamente, solo se cambia estado
-            // Esta validación es para el método eliminar que no usaremos
             throw new ReglaNegocioException(
-                "Los usuarios no se eliminan físicamente. Use cambiarEstadoUsuario para darlos de baja");
+                    "Los usuarios no se eliminan físicamente. Use cambiarEstadoUsuario");
         }
-        
-        /**
-         * Valida que el número de nómina sea único al crear
-         */
+
         private void validarNominaUnica(String noNomina, EntityManager em) {
             configurarEntityManager(em);
-            
             Usuario existente = dao.busquedaEspecifica(null, noNomina);
             if (existente != null) {
-                throw new ReglaNegocioException(
-                    "Ya existe un usuario con el número de nómina: " + noNomina);
+                throw new ReglaNegocioException("Ya existe un usuario con nómina: " + noNomina);
             }
         }
-        
-        /**
-         * Valida que el número de nómina sea único al actualizar
-         */
+
         private void validarNominaUnicaEnActualizacion(String noNomina, Long idActual, EntityManager em) {
             configurarEntityManager(em);
-            
             Usuario existente = dao.busquedaEspecifica(null, noNomina);
             if (existente != null && !existente.getIdUsuario().equals(idActual)) {
-                throw new ReglaNegocioException(
-                    "Ya existe un usuario con el número de nómina: " + noNomina);
+                throw new ReglaNegocioException("Ya existe un usuario con nómina: " + noNomina);
             }
         }
-        
+
         @Override
         public UsuarioDTO guardar(UsuarioDTO dto) {
             return ejecutarTransaccion(em -> {
                 configurarEntityManager(em);
-                
-                // Validaciones de negocio
                 validarNegocio(dto, dto.getId() == null, em);
-                
-                // Obtener y validar el puesto
                 Puesto puesto = daoPuesto.buscarPorId(dto.getIdPuesto());
                 if (puesto == null) {
-                    throw new RecursoNoEncontradoException(
-                        "Puesto con ID " + dto.getIdPuesto() + " no encontrado");
+                    throw new RecursoNoEncontradoException("Puesto " + dto.getIdPuesto() + " no encontrado");
                 }
-                
-                // Mapear y establecer relaciones
                 Usuario entidad = mapper.mapToEntity(dto);
                 entidad.setPuesto(puesto);
-                
-                // Guardar o actualizar
                 if (dto.getId() != null && dto.getId() > 0) {
                     Usuario existente = dao.buscarPorId(dto.getId());
                     if (existente == null) {
-                        throw new RecursoNoEncontradoException(
-                            "Usuario con ID " + dto.getId() + " no encontrado");
+                        throw new RecursoNoEncontradoException("Usuario " + dto.getId() + " no encontrado");
                     }
-                    
-                    // Preservar el estado actual si no se envía
                     if (dto.getActivo() == null) {
                         entidad.setActivo(existente.getActivo());
                     }
-                    
                     entidad = dao.actualizar(entidad);
                 } else {
                     entidad.setActivo(true);
                     entidad = dao.guardar(entidad);
                 }
-                
                 return mapper.mapToDto(entidad);
             });
         }
-        
+
         /**
-         * Busca usuarios con filtro global (nombre, nómina, puesto)
+         * buscarConFiltroGlobal — el filtro activo=true ahora está en el DAO,
+         * no se necesita .filter() en Java sobre la lista completa.
          */
         public List<UsuarioDTO> buscarConFiltroGlobal(String criterioGlobal) {
             String criterio = (criterioGlobal != null) ? criterioGlobal.trim() : "";
-            
-            String primerParametro = null;
-            String segundoParametro = null;
-            
+            String nombreFiltro = null;
+            String numeroFiltro = null;
             if (!criterio.isEmpty()) {
-                boolean tieneNumeros = criterio.matches(".*\\d.*");
-                if (tieneNumeros) {
-                    segundoParametro = criterio;
+                if (criterio.matches(".*\\d.*")) {
+                    numeroFiltro = criterio;
                 } else {
-                    primerParametro = criterio;
+                    nombreFiltro = criterio;
                 }
             }
-            
-            final String nombreFiltro = primerParametro;
-            final String numeroFiltro = segundoParametro;
-            
+            final String nf = nombreFiltro;
+            final String nmf = numeroFiltro;
             return ejecutarLectura(em -> {
                 configurarEntityManager(em);
-                
-                return mapper.mapToDtoList(
-                    dao.busquedaConFiltros(nombreFiltro, numeroFiltro, null));
+                return mapper.mapToDtoList(dao.busquedaConFiltros(nf, nmf, null));
             });
         }
-        
-        /**
-         * Cambia el estado de un usuario (activo/inactivo)
-         */
+
         public void cambiarEstado(Long id, boolean activo) {
             if (id == null) {
                 throw new IllegalArgumentException("ID inválido");
             }
-            
             ejecutarTransaccion(em -> {
                 configurarEntityManager(em);
-                
                 Usuario usuario = dao.buscarPorId(id);
                 if (usuario == null) {
-                    throw new RecursoNoEncontradoException(
-                        "Usuario con ID " + id + " no encontrado");
+                    throw new RecursoNoEncontradoException("Usuario " + id + " no encontrado");
                 }
-                
-                // Validar que no tenga equipos asignados si se va a desactivar
                 if (!activo && tieneEquiposAsignados(usuario)) {
                     throw new ReglaNegocioException(
-                        "No se puede desactivar un usuario que tiene equipos asignados");
+                            "No se puede desactivar un usuario que tiene equipos asignados");
                 }
-                
                 usuario.setActivo(activo);
                 dao.actualizar(usuario);
-                
                 return null;
             });
         }
-        
-        /**
-         * Verifica si un usuario tiene equipos asignados activos
-         */
+
         private boolean tieneEquiposAsignados(Usuario usuario) {
-            return usuario.getEquiposAsignados() != null && 
-                   !usuario.getEquiposAsignados().isEmpty() &&
-                   usuario.getEquiposAsignados().stream()
-                        .anyMatch(asignacion -> asignacion.getFechaDevolucion() == null);
+            return usuario.getEquiposAsignados() != null
+                    && !usuario.getEquiposAsignados().isEmpty()
+                    && usuario.getEquiposAsignados().stream()
+                            .anyMatch(a -> a.getFechaDevolucion() == null);
         }
-        
+
         @Override
         public List<UsuarioDTO> buscarConFiltro(String filtro) {
             return buscarConFiltroGlobal(filtro);
         }
     }
 
-    /**
-     * Servicio para Cuentas de Sistema (Autenticación)
-     */
     private class CuentaSistemaServicio extends ServicioGenerico<CuentaSistema, CuentaSistemaDTO, Long> {
-        
-        private final DaoCuentaSistema dao;
-        
+
+        private final IDaoCuentaSistema dao;
+
         public CuentaSistemaServicio() {
             super(new DaoCuentaSistema(), MapperCuentaSistema.converter, CuentaSistema.class);
             this.dao = (DaoCuentaSistema) super.dao;
         }
-        
+
         public CuentaSistemaServicio(DaoCuentaSistema dao) {
             super(dao, MapperCuentaSistema.converter, CuentaSistema.class);
             this.dao = dao;
         }
-        
+
         @Override
         protected void configurarEntityManager(EntityManager em) {
             if (dao != null) {
                 dao.setEntityManager(em);
             }
         }
-        
+
         @Override
         protected void validarNegocio(CuentaSistemaDTO dto, boolean esNuevo, EntityManager em) {
             if (dto.getUsername() == null || dto.getUsername().isBlank()) {
                 throw new ReglaNegocioException("El nombre de usuario es obligatorio");
             }
-            
-            if (dto.getRol() == null || dto.getRol().isBlank()) {
-                throw new ReglaNegocioException("El rol del usuario es obligatorio");
-            }
-            
-            if (esNuevo) {
-                validarUsernameUnico(dto.getUsername(), em);
-            } else {
-                validarUsernameUnicoEnActualizacion(dto.getUsername(), dto.getId(), em);
-            }
         }
-        
+
         @Override
         protected Long extraerId(CuentaSistemaDTO dto) {
             return dto.getId();
         }
-        
+
         @Override
-        protected void validarEliminacion(CuentaSistema entidad) {
-            // Prevenir eliminar el último administrador
-            if (esUltimoAdministrador(entidad)) {
-                throw new ReglaNegocioException(
-                    "No se puede eliminar el último administrador del sistema");
-            }
+        protected void validarEliminacion(CuentaSistema e) {
         }
-        
-        /**
-         * Valida que el username sea único al crear
-         */
-        private void validarUsernameUnico(String username, EntityManager em) {
-            configurarEntityManager(em);
-            
-            CuentaSistema existente = dao.busquedaEspecifica(username);
-            if (existente != null) {
-                throw new ReglaNegocioException(
-                    "Ya existe un usuario con el nombre: " + username);
-            }
-        }
-        
-        /**
-         * Valida que el username sea único al actualizar
-         */
-        private void validarUsernameUnicoEnActualizacion(String username, Long idActual, EntityManager em) {
-            configurarEntityManager(em);
-            
-            CuentaSistema existente = dao.busquedaEspecifica(username);
-            if (existente != null && !existente.getId().equals(idActual)) {
-                throw new ReglaNegocioException(
-                    "Ya existe un usuario con el nombre: " + username);
-            }
-        }
-        
-        /**
-         * Verifica si es el último administrador
-         */
-        private boolean esUltimoAdministrador(CuentaSistema cuenta) {
-            if (!"ADMIN".equals(cuenta.getRol().name())) {
-                return false;
-            }
-            
-            return ejecutarLectura(em -> {
-                configurarEntityManager(em);
-                
-                long totalAdmins = dao.buscarTodos().stream()
-                    .filter(c -> "ADMIN".equals(c.getRol().name()))
-                    .count();
-                    
-                return totalAdmins <= 1;
-            });
-        }
-        
-        /**
-         * Método específico: Login de usuario
-         */
-        public CuentaSistemaDTO login(String username, String password) {
-            return ejecutarLectura(em -> {
-                configurarEntityManager(em);
-                
-                CuentaSistema usuario = dao.login(username, password);
-                
-                if (usuario == null) {
-                    throw new ReglaNegocioException("Usuario o contraseña incorrectos");
-                }
-                
-                return mapper.mapToDto(usuario);
-            });
-        }
-        
-        /**
-         * Método específico: Buscar por username
-         */
-        public CuentaSistemaDTO buscarPorUsername(String username) {
-            if (username == null || username.isBlank()) {
-                throw new IllegalArgumentException("Username inválido");
-            }
-            
-            return ejecutarLectura(em -> {
-                configurarEntityManager(em);
-                
-                CuentaSistema usuario = dao.busquedaEspecifica(username);
-                if (usuario == null) {
-                    throw new RecursoNoEncontradoException(
-                        "Usuario de sistema no encontrado: " + username);
-                }
-                
-                return mapper.mapToDto(usuario);
-            });
-        }
-        
-        @Override
-        public CuentaSistemaDTO guardar(CuentaSistemaDTO dto) {
-            return ejecutarTransaccion(em -> {
-                configurarEntityManager(em);
-                
-                validarNegocio(dto, dto.getId() == null, em);
-                
-                CuentaSistema entidad = mapper.mapToEntity(dto);
-                
-                if (dto.getId() != null && dto.getId() > 0) {
-                    CuentaSistema existente = dao.buscarPorId(dto.getId());
-                    if (existente == null) {
-                        throw new RecursoNoEncontradoException(
-                            "Cuenta de sistema con ID " + dto.getId() + " no encontrada");
-                    }
-                    
-                    if (dto.getPassword() == null) {
-                        entidad.setPassword(existente.getPassword());
-                    }
-                    
-                    entidad = dao.actualizar(entidad);
-                } else {
-                    entidad = dao.guardar(entidad);
-                }
-                
-                return mapper.mapToDto(entidad);
-            });
-        }
-        
+
         @Override
         public List<CuentaSistemaDTO> buscarConFiltro(String filtro) {
-            return ejecutarLectura(em -> {
-                configurarEntityManager(em);
-                
-                return mapper.mapToDtoList(
-                    dao.buscarTodos().stream()
-                        .filter(c -> c.getUsername().toLowerCase().contains(filtro.toLowerCase()))
-                        .toList()
-                );
-            });
+            return null;
+        }
+        
+        public CuentaSistemaDTO login(String user, String contra){
+            
+            return mapper.mapToDto(dao.login(user, user));
+        }
+        
+        public CuentaSistemaDTO buscarPorUsername(String user){
+            
+            return mapper.mapToDto(dao.busquedaEspecifica(user));
         }
     }
 }

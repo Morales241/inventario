@@ -151,13 +151,13 @@
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </padding>
                            <children>
-                               <VBox spacing="5.0">
-                                 <Label text="Nombre:" />
-                                 <TextField fx:id="txtModelo" disable="true" prefHeight="35.0" prefWidth="287.0" />
-                              </VBox>
                               <VBox spacing="5.0">
                                  <Label text="Marca:" />
                                  <TextField fx:id="txtMarca" disable="true" prefHeight="35.0" prefWidth="287.0" />
+                              </VBox>
+                               <VBox spacing="5.0">
+                                 <Label text="Nombre:" />
+                                 <TextField fx:id="txtModelo" disable="true" prefHeight="35.0" prefWidth="287.0" />
                               </VBox>
                                <VBox spacing="5.0">
                                  <Label text="Almacenamiento (GB):" />

@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
@@ -26,6 +27,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -36,66 +39,138 @@ import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
- * FXML Controller class
- *
- * @author tacot
+ * Controlador del módulo de Inventario con paginación del lado del servidor.
  */
 public class InventarioController implements Initializable, ControllerInventario {
 
-    private MenuController dbc;
+    private static final int TAMANO_PAGINA = 25;
+
+    private MenuController       dbc;
     private final IFachadaEquipos fachadaEquipos = FabricaFachadas.getFachadaEquipos();
 
-    @FXML
-    private TableView<EquipoBaseDTO> tablaEquipos;
+    @FXML private TableView<EquipoBaseDTO>          tablaEquipos;
+    @FXML private TableColumn<EquipoBaseDTO, Long>   colId;
+    @FXML private TableColumn<EquipoBaseDTO, Integer>colGry;
+    @FXML private TableColumn<EquipoBaseDTO, String> colTipo;
+    @FXML private TableColumn<EquipoBaseDTO, String> colFecha;
+    @FXML private TableColumn<EquipoBaseDTO, String> colModelo;
+    @FXML private TableColumn<EquipoBaseDTO, String> colCondicion;
+    @FXML private TableColumn<EquipoBaseDTO, String> colEstado;
+    @FXML private TableColumn<EquipoBaseDTO, Void>   colAcciones;
 
-    @FXML
-    private TableColumn<EquipoBaseDTO, Long> colId;
-    @FXML
-    private TableColumn<EquipoBaseDTO, Integer> colGry;
-    @FXML
-    private TableColumn<EquipoBaseDTO, String> colTipo;
-    @FXML
-    private TableColumn<EquipoBaseDTO, String> colFecha;
-    @FXML
-    private TableColumn<EquipoBaseDTO, String> colModelo;
-    @FXML
-    private TableColumn<EquipoBaseDTO, String> colCondicion;
-    @FXML
-    private TableColumn<EquipoBaseDTO, String> colEstado;
-    @FXML
-    private TableColumn<EquipoBaseDTO, Void> colAcciones;
-    @FXML
-    private Button btnAgregar;
-    @FXML
-    private TextField txtFiltro;
-    @FXML
-    private ComboBox<TipoEquipo> cbxTipo;
-    @FXML
-    private ComboBox<CondicionFisica> cbxCondicion;
-    @FXML
-    private ComboBox<EstadoEquipo> cbxEstado;
+    @FXML private Button                 btnAgregar;
+    @FXML private TextField              txtFiltro;
+    @FXML private ComboBox<TipoEquipo>   cbxTipo;
+    @FXML private ComboBox<CondicionFisica> cbxCondicion;
+    @FXML private ComboBox<EstadoEquipo> cbxEstado;
 
-    private PauseTransition pause
-            = new PauseTransition(Duration.millis(400));
+    @FXML private Button            btnAnterior;
+    @FXML private Button            btnSiguiente;
+    @FXML private Label             lblPagina;      
+    @FXML private Label             lblTotal;       
+    @FXML private ProgressIndicator progressCarga;
+
+    private int     paginaActual   = 0;
+    private long    totalRegistros = 0;
 
     /**
-     * Initializes the controller class.
+     * Flag para evitar que llenarComboBox() dispare el filtro mientras
+     * los combos se inicializan en initialize().
      */
+    private boolean inicializando = false;
+
+    /** Debounce: espera 350 ms tras la última tecla antes de hacer la query. */
+    private final PauseTransition debounce = new PauseTransition(Duration.millis(350));
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         configurarColumnas();
         configurarAcciones();
-        cargarDatos();
+        configurarBotonesPaginacion();
+        ocultarSpinner();
+
+        inicializando = true;
         llenarComboBox();
-
-        txtFiltro.textProperty().addListener((obs, oldVal, newVal) -> {
-
-            pause.setOnFinished(e -> aplicarFiltro());
-            pause.playFromStart();
-        });
+        inicializando = false;
 
         configurarFiltros();
+
+        cargarPagina();
+    }
+
+    private void cargarPagina() {
+        mostrarSpinner();
+        tablaEquipos.setDisable(true);
+
+        final String         texto     = txtFiltro.getText();
+        final TipoEquipo     tipo      = cbxTipo.getValue();
+        final CondicionFisica condicion = cbxCondicion.getValue();
+        final EstadoEquipo   estado    = cbxEstado.getValue();
+        final int            pagina    = this.paginaActual;
+
+        Task<Void> task = new Task<>() {
+
+            List<EquipoBaseDTO> pagData;
+            long                total;
+
+            @Override
+            protected Void call() {
+                total   = fachadaEquipos.contarEquipos(texto, tipo, condicion, estado);
+                pagData = fachadaEquipos.buscarConFiltrosPaginado(
+                                texto, tipo, condicion, estado, pagina, TAMANO_PAGINA);
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                totalRegistros = total;
+                tablaEquipos.getItems().setAll(pagData);
+                tablaEquipos.setDisable(false);
+                actualizarBarraPaginacion();
+                ocultarSpinner();
+            }
+
+            @Override
+            protected void failed() {
+                tablaEquipos.setDisable(false);
+                ocultarSpinner();
+                Throwable ex = getException();
+                if (ex != null) ex.printStackTrace();
+                Platform.runLater(() -> mostrarAlertError(
+                        "No se pudieron cargar los equipos",
+                        ex != null ? ex.getMessage() : "Error desconocido"));
+            }
+        };
+
+        new Thread(task).start();
+    }
+
+    private void configurarBotonesPaginacion() {
+        if (btnAnterior  != null) btnAnterior.setOnAction(e -> irAPaginaAnterior());
+        if (btnSiguiente != null) btnSiguiente.setOnAction(e -> irAPaginaSiguiente());
+    }
+
+    @FXML
+    private void irAPaginaAnterior() {
+        if (paginaActual > 0) { paginaActual--; cargarPagina(); }
+    }
+
+    @FXML
+    private void irAPaginaSiguiente() {
+        if ((long)(paginaActual + 1) * TAMANO_PAGINA < totalRegistros) {
+            paginaActual++;
+            cargarPagina();
+        }
+    }
+
+    private void actualizarBarraPaginacion() {
+        int totalPaginas = (int) Math.ceil((double) totalRegistros / TAMANO_PAGINA);
+        if (totalPaginas == 0) totalPaginas = 1;
+
+        if (lblPagina  != null) lblPagina.setText("Página " + (paginaActual + 1) + " / " + totalPaginas);
+        if (lblTotal   != null) lblTotal.setText(totalRegistros + (totalRegistros == 1 ? " equipo" : " equipos"));
+        if (btnAnterior  != null) btnAnterior.setDisable(paginaActual == 0);
+        if (btnSiguiente != null) btnSiguiente.setDisable((long)(paginaActual + 1) * TAMANO_PAGINA >= totalRegistros);
     }
 
     private void llenarComboBox() {
@@ -104,70 +179,46 @@ public class InventarioController implements Initializable, ControllerInventario
         cbxEstado.getItems().setAll(EstadoEquipo.values());
     }
 
-    private void configurarColumnas() {
+    private void configurarFiltros() {
+        // Campo texto: debounce 350 ms
+        debounce.setOnFinished(e -> { paginaActual = 0; cargarPagina(); });
+        txtFiltro.textProperty().addListener((obs, old, val) -> debounce.playFromStart());
 
-        colId.setCellValueFactory(data
-                -> new SimpleObjectProperty<>(data.getValue().getIdEquipo()));
-
-        colGry.setCellValueFactory(data
-                -> new SimpleObjectProperty<>(data.getValue().getGry()));
-
-        colTipo.setCellValueFactory(data
-                -> new SimpleStringProperty(data.getValue().getTipo()));
-
-        colModelo.setCellValueFactory(data
-                -> new SimpleStringProperty(data.getValue().getNombreModelo()));
-
-        colFecha.setCellValueFactory(data
-                -> new SimpleStringProperty(data.getValue().getFechaCompra().toString()));
-
-        colCondicion.setCellValueFactory(data
-                -> new SimpleStringProperty(data.getValue().getCondicion()));
-
-        colEstado.setCellValueFactory(data
-                -> new SimpleStringProperty(data.getValue().getEstado()));
-    }
-
-    private void cargarDatos() {
-
-        List<EquipoBaseDTO> lista
-                = fachadaEquipos.buscarEquipos(null, null, null);
-
-        tablaEquipos.getItems().setAll(lista);
-    }
-
-    private void eliminarEquipo(EquipoBaseDTO equipo) {
-
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setHeaderText("Eliminar equipo");
-        confirm.setContentText("¿Seguro que desea eliminar este equipo?");
-
-        confirm.showAndWait().ifPresent(r -> {
-            if (r == ButtonType.OK) {
-                try {
-                    fachadaEquipos.eliminarEquipo(equipo.getIdEquipo());
-                } catch (Exception ex) {
-                    System.getLogger(InventarioController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-                }
-                cargarDatos();
-            }
+        // Combos: reactivo inmediato, pero ignorar si aún estamos inicializando
+        cbxTipo.valueProperty().addListener((obs, old, val) -> {
+            if (!inicializando) { paginaActual = 0; cargarPagina(); }
+        });
+        cbxCondicion.valueProperty().addListener((obs, old, val) -> {
+            if (!inicializando) { paginaActual = 0; cargarPagina(); }
+        });
+        cbxEstado.valueProperty().addListener((obs, old, val) -> {
+            if (!inicializando) { paginaActual = 0; cargarPagina(); }
         });
     }
 
-    private void configurarAcciones() {
+    private void configurarColumnas() {
+        colId.setCellValueFactory(d      -> new SimpleObjectProperty<>(d.getValue().getIdEquipo()));
+        colGry.setCellValueFactory(d     -> new SimpleObjectProperty<>(d.getValue().getGry()));
+        colTipo.setCellValueFactory(d    -> new SimpleStringProperty(d.getValue().getTipo()));
+        colModelo.setCellValueFactory(d  -> new SimpleStringProperty(d.getValue().getNombreModelo()));
+        colFecha.setCellValueFactory(d   -> new SimpleStringProperty(
+                d.getValue().getFechaCompra() != null ? d.getValue().getFechaCompra().toString() : ""));
+        colCondicion.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCondicion()));
+        colEstado.setCellValueFactory(d  -> new SimpleStringProperty(d.getValue().getEstado()));
+    }
 
+    private void configurarAcciones() {
         colAcciones.setCellFactory(col -> new TableCell<>() {
 
-            private final FontIcon viewIcon = new FontIcon("fas-eye");
-            private final FontIcon editIcon = new FontIcon("fas-edit");
+            private final FontIcon viewIcon   = new FontIcon("fas-eye");
+            private final FontIcon editIcon   = new FontIcon("fas-edit");
             private final FontIcon deleteIcon = new FontIcon("fas-trash");
 
-            private final Button btnVer = new Button("", viewIcon);
-            private final Button btnEditar = new Button("", editIcon);
+            private final Button btnVer      = new Button("", viewIcon);
+            private final Button btnEditar   = new Button("", editIcon);
             private final Button btnEliminar = new Button("", deleteIcon);
+            private final HBox   container   = new HBox(8, btnVer, btnEditar, btnEliminar);
 
-            private HBox container = new HBox(8, btnVer, btnEditar, btnEliminar);
-            
             {
                 viewIcon.setIconSize(16);
                 editIcon.setIconSize(16);
@@ -177,181 +228,131 @@ public class InventarioController implements Initializable, ControllerInventario
                 btnEditar.getStyleClass().add("btn-editar");
                 btnEliminar.getStyleClass().add("btn-eliminar");
 
-                Tooltip.install(btnVer, new Tooltip("Ver detalles"));
-                Tooltip.install(btnEditar, new Tooltip("Editar equipo"));
+                Tooltip.install(btnVer,      new Tooltip("Ver detalles"));
+                Tooltip.install(btnEditar,   new Tooltip("Editar equipo"));
                 Tooltip.install(btnEliminar, new Tooltip("Eliminar equipo"));
 
                 container.setAlignment(Pos.CENTER);
 
                 btnVer.setOnAction(e -> {
-                    EquipoBaseDTO equipo = getTableRow().getItem();
-                    if (equipo != null) {
-                        cargarEquipoParaVer(equipo);
-                    }
+                    EquipoBaseDTO eq = getTableRow().getItem();
+                    if (eq != null) cargarEquipoParaVer(eq);
                 });
-
                 btnEditar.setOnAction(e -> {
-                    EquipoBaseDTO equipo = getTableRow().getItem();
-                    if (equipo != null) {
-                        cargarEquipoParaEditar(equipo);
-                    }
+                    EquipoBaseDTO eq = getTableRow().getItem();
+                    if (eq != null) cargarEquipoParaEditar(eq);
                 });
-
                 btnEliminar.setOnAction(e -> {
-                    EquipoBaseDTO equipo = getTableRow().getItem();
-                    if (equipo != null) {
-                        confirmarEliminacion(equipo);
-                    }
+                    EquipoBaseDTO eq = getTableRow().getItem();
+                    if (eq != null) confirmarEliminacion(eq);
                 });
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-
                 if (empty || getTableRow().getItem() == null) {
                     setGraphic(null);
                 } else {
-                    EquipoBaseDTO equipo = getTableRow().getItem();
-                    btnEliminar.setDisable(
-                            "ASIGNADO".equalsIgnoreCase(equipo.getEstado())
-                    );
+                    EquipoBaseDTO eq = getTableRow().getItem();
+                    btnEliminar.setDisable("ASIGNADO".equalsIgnoreCase(eq.getEstado()));
                     setGraphic(container);
                 }
             }
         });
     }
 
-    private void aplicarFiltro() {
-        cargarDatosAsync();
-    }
-
-    private void configurarFiltros() {
-
-        txtFiltro.textProperty().addListener((obs, oldVal, newVal)
-                -> aplicarFiltro());
-
-        cbxTipo.valueProperty().addListener((obs, oldVal, newVal)
-                -> aplicarFiltro());
-
-        cbxCondicion.valueProperty().addListener((obs, oldVal, newVal)
-                -> aplicarFiltro());
-
-        cbxEstado.valueProperty().addListener((obs, oldVal, newVal)
-                -> aplicarFiltro());
-    }
-
-    private void cargarDatosAsync() {
-
-        Task<List<EquipoBaseDTO>> task = new Task<>() {
-            @Override
-            protected List<EquipoBaseDTO> call() {
-
-                return fachadaEquipos.buscarConFiltros(txtFiltro.getText(), cbxTipo.getSelectionModel().getSelectedItem(),
-                        cbxCondicion.getSelectionModel().getSelectedItem(), cbxEstado.getSelectionModel().getSelectedItem());
-            }
-        };
-
-        tablaEquipos.setDisable(true);
-
-        task.setOnSucceeded(e -> {
-            tablaEquipos.getItems().setAll(task.getValue());
-            tablaEquipos.setDisable(false);
-        });
-
-        task.setOnFailed(e -> {
-            tablaEquipos.setDisable(false);
-            task.getException().printStackTrace();
-        });
-
-        new Thread(task).start();
-    }
-
     private void confirmarEliminacion(EquipoBaseDTO equipo) {
-
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmación");
         alert.setHeaderText("Eliminar equipo");
-        alert.setContentText(
-                "¿Desea eliminar el equipo GRY "
-                + equipo.getGry() + "?");
+        alert.setContentText("¿Desea eliminar el equipo GRY " + equipo.getGry() + "?");
 
         alert.showAndWait()
-                .filter(btn -> btn == ButtonType.OK)
-                .ifPresent(b -> {
-
-                    try {
-                        fachadaEquipos.eliminarEquipo(equipo.getIdEquipo());
-                    } catch (Exception ex) {
-                        System.getLogger(InventarioController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-                    }
-                    cargarDatos();
-                });
+             .filter(btn -> btn == ButtonType.OK)
+             .ifPresent(b -> {
+                 Task<Void> task = new Task<>() {
+                     @Override protected Void call() throws Exception {
+                         fachadaEquipos.eliminarEquipo(equipo.getIdEquipo());
+                         return null;
+                     }
+                 };
+                 task.setOnSucceeded(e -> cargarPagina());
+                 task.setOnFailed(e -> {
+                     Throwable ex = task.getException();
+                     mostrarAlertError("No se pudo eliminar el equipo",
+                             ex != null ? ex.getMessage() : "Error desconocido");
+                 });
+                 new Thread(task).start();
+             });
+    }
+ 
+    @FXML
+    private void agregarEquipo() {
+        cambiarPantalla("FormInventario.fxml");
     }
 
     @Override
-    public void setDashBoard(MenuController dbc) {
-        this.dbc = dbc;
+    public <T extends EquipoBaseDTO> void cargarEquipoParaEditar(T equipo) {
+        // buscarPorId() trae el objeto completo con todos sus campos específicos
+        T equipoCompleto = fachadaEquipos.buscarPorId(equipo.getIdEquipo());
+        ControllerInventario controller = cambiarPantalla("FormInventario.fxml");
+        if (controller instanceof FormInventarioController form) {
+            form.cargarEquipoParaEditar(equipoCompleto);
+        }
     }
+
+    public <T extends EquipoBaseDTO> void cargarEquipoParaVer(T equipo) {
+        T equipoCompleto = fachadaEquipos.buscarPorId(equipo.getIdEquipo());
+        ControllerInventario controller = cambiarPantalla("FormInventario.fxml");
+        if (controller instanceof FormInventarioController form) {
+            form.cargarEquipoParaVisualizar(equipoCompleto);
+        }
+    }
+
+
+    @Override
+    public void setDashBoard(MenuController dbc) { this.dbc = dbc; }
 
     @Override
     public ControllerInventario cambiarPantalla(String rutaFXML) {
         try {
             if (rutaFXML != null) {
-
-                FXMLLoader loader
-                        = new FXMLLoader(getClass().getResource(rutaFXML));
-
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
                 Parent vista = loader.load();
                 Object controller = loader.getController();
-
-                if (controller instanceof ControllerInventario ci) {
-                    ci.setDashBoard(dbc);
-                }
-
+                if (controller instanceof ControllerInventario ci) ci.setDashBoard(dbc);
                 dbc.getCenterContainer().setContent(vista);
                 dbc.getCenterContainer().setVvalue(0);
-
                 return (ControllerInventario) controller;
             }
-
         } catch (IOException e) {
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
         return null;
     }
 
-    @Override
-    public void limpiarFormulario() {
+    @Override public void limpiarFormulario() { /* no aplica en la tabla */ }
 
+    private void mostrarSpinner() {
+        Platform.runLater(() -> {
+            if (progressCarga != null) { progressCarga.setVisible(true); progressCarga.setManaged(true); }
+        });
     }
 
-    @Override
-    public <T extends EquipoBaseDTO> void cargarEquipoParaEditar(T equipo) {
-        T equipoAux = fachadaEquipos.buscarPorId(equipo.getIdEquipo());
-
-        ControllerInventario controller
-                = cambiarPantalla("FormInventario.fxml");
-
-        if (controller instanceof FormInventarioController form) {
-            form.cargarEquipoParaEditar(equipoAux);
-        }
-
+    private void ocultarSpinner() {
+        Platform.runLater(() -> {
+            if (progressCarga != null) { progressCarga.setVisible(false); progressCarga.setManaged(false); }
+        });
     }
 
-    public <T extends EquipoBaseDTO> void cargarEquipoParaVer(T equipo) {
-        T equipoAux = fachadaEquipos.buscarPorId(equipo.getIdEquipo());
-
-        ControllerInventario controller
-                = cambiarPantalla("FormInventario.fxml");
-
-        if (controller instanceof FormInventarioController form) {
-            form.cargarEquipoParaVisualizar(equipoAux);
-        }
-    }
-
-    @FXML
-    private void agregarEquipo() {
-        cambiarPantalla("FormInventario.fxml");
+    private void mostrarAlertError(String titulo, String mensaje) {
+        Platform.runLater(() -> {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setTitle("Error");
+            a.setHeaderText(titulo);
+            a.setContentText(mensaje);
+            a.showAndWait();
+        });
     }
 }

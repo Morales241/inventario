@@ -13,64 +13,91 @@ import java.util.List;
 /**
  * Contrato de fachada para operaciones de gestión de equipos de cómputo.
  * <p>
- * Define los métodos públicos para buscar, guardar, eliminar equipos y gestionar 
- * el catálogo de modelos. Implementa el patrón Facade para simplificar la 
- * interacción con la capa de servicios de equipos.
+ * Define los métodos públicos para buscar, guardar, eliminar equipos y
+ * gestionar el catálogo de modelos. Implementa el patrón Facade para
+ * simplificar la interacción con la capa de servicios de equipos.
  * </p>
+ *
  * @author JMorales
  */
 public interface IFachadaEquipos {
-    
+
     /**
      * Busca equipos aplicando filtros dinámicos (GRY, estado, criterio).
+     *
      * @param gry Identificador único (GRY) del equipo, puede ser nulo
-     * @param estado Estado del equipo (EN_STOCK, ASIGNADO, etc.), puede ser nulo
+     * @param estado Estado del equipo (EN_STOCK, ASIGNADO, etc.), puede ser
+     * nulo
      * @param criterioBusqueda Texto para búsqueda parcial en marca/modelo
      * @return Lista de EquipoBaseDTO con los equipos que coinciden
      */
     List<EquipoBaseDTO> buscarEquipos(Integer gry, EstadoEquipo estado, String criterioBusqueda);
-    
+
     /**
-     * Obtiene los datos completos de un equipo para edición o visualización detallada.
+     * Obtiene los datos completos de un equipo para edición o visualización
+     * detallada.
+     *
      * @param id Identificador único del equipo
      * @return EquipoBaseDTO con la información del equipo
      */
     EquipoBaseDTO obtenerEquipoPorId(Long id);
-    
+
     /**
      * Busca un equipo por su número GRY.
+     *
      * @param gry Identificador GRY del equipo
      * @return EquipoBaseDTO con la información del equipo
      */
     EquipoBaseDTO buscarPorGry(Integer gry);
-    
+
     /**
      * Busca un equipo por su ID y lo retorna con su tipo específico.
+     *
      * @param <T> Tipo específico del equipo (Escritorio, Móvil, Otro)
      * @param id Identificador del equipo
      * @return Equipo del tipo específico
      */
     <T extends EquipoBaseDTO> T buscarPorId(Long id);
-    
+
     /**
      * Busca equipos aplicando múltiples filtros avanzados.
+     *
      * @param texto Filtro por GRY o modelo
      * @param tipo Filtro por tipo de equipo
      * @param condicion Filtro por condición física
      * @param estado Filtro por estado del equipo
      * @return Lista de equipos filtrados
      */
-    List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, 
-                                         CondicionFisica condicion, EstadoEquipo estado);
-    
+    List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo,
+            CondicionFisica condicion, EstadoEquipo estado);
+
+    /**
+     * Busca equipos aplicando múltiples filtros avanzados regresando un limite de equipos.
+     *
+     * @param texto Filtro por GRY o modelo
+     * @param tipo Filtro por tipo de equipo
+     * @param condicion Filtro por condición física
+     * @param estado Filtro por estado del equipo
+     * @return Lista de equipos filtrados
+     */
+    List<EquipoBaseDTO> buscarConFiltrosPaginado(String texto, TipoEquipo tipo,
+            CondicionFisica condicion, EstadoEquipo estado,
+            int pagina, int tamano);
+
+    //COUNT en BD para calcular total de páginas
+    long contarEquipos(String texto, TipoEquipo tipo,
+            CondicionFisica condicion, EstadoEquipo estado);
+
     /**
      * Elimina un equipo si está disponible (no asignado).
+     *
      * @param id Identificador del equipo a eliminar
      */
     void eliminarEquipo(Long id);
 
     /**
      * Guarda o actualiza un equipo de escritorio.
+     *
      * @param dto Datos del equipo de escritorio
      * @return EquipoEscritorioDTO persistido con ID asignado
      */
@@ -78,6 +105,7 @@ public interface IFachadaEquipos {
 
     /**
      * Guarda o actualiza un equipo móvil.
+     *
      * @param dto Datos del equipo móvil (teléfono, tablet)
      * @return MovilDTO persistido con ID asignado
      */
@@ -85,6 +113,7 @@ public interface IFachadaEquipos {
 
     /**
      * Guarda o actualiza otro tipo de equipo.
+     *
      * @param dto Datos del otro equipo (accesorios, periféricos)
      * @return OtroEquipoDTO persistido con ID asignado
      */
@@ -92,26 +121,30 @@ public interface IFachadaEquipos {
 
     /**
      * Guarda o actualiza un modelo de equipo en el catálogo.
+     *
      * @param dto Datos del modelo (marca, RAM, almacenamiento, procesador)
      * @return ModeloDTO persistido con ID asignado
      */
     ModeloDTO guardarModelo(ModeloDTO dto);
-    
+
     /**
      * Lista todos los modelos de equipos del catálogo.
+     *
      * @return Lista de ModeloDTO disponibles
      */
     List<ModeloDTO> listarModelos();
-    
+
     /**
      * Busca un modelo específico por su ID.
+     *
      * @param id Identificador del modelo
      * @return ModeloDTO con los detalles técnicos del modelo
      */
     ModeloDTO buscarModeloPorId(Long id);
-    
+
     /**
      * Busca modelos aplicando filtros técnicos.
+     *
      * @param nombre Nombre del modelo (búsqueda parcial)
      * @param marca Marca del fabricante (búsqueda parcial)
      * @param memoriaRam Capacidad de RAM en GB
@@ -120,6 +153,6 @@ public interface IFachadaEquipos {
      * @return Lista de ModeloDTO que cumplen los criterios
      */
     List<ModeloDTO> buscarModelosConFiltros(String nombre, String marca,
-                                            Integer memoriaRam, Integer almacenamiento,
-                                            String procesador);
+            Integer memoriaRam, Integer almacenamiento,
+            String procesador);
 }

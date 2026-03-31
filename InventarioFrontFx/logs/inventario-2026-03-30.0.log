@@ -1,0 +1,276 @@
+2026-03-30 08:54:48.233 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:48.242 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:48.345 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 08:54:48.346 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 08:54:49.001 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:49.051 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 08:54:49.055 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:49.084 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:49.117 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 08:54:49.117 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 08:54:49.117 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando Puesto por ID: 1
+2026-03-30 08:54:49.119 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:49.140 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Puesto encontrado con ID: 1
+2026-03-30 08:54:49.141 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 08:54:49.141 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Empresa
+2026-03-30 08:54:49.141 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:49.249 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Se encontraron 5 registros de Empresa
+2026-03-30 08:54:49.250 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 08:54:49.251 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:49.299 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 08:54:49.899 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:49.927 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 08:54:50.745 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:50.794 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 08:54:50.795 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:50.907 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:50.941 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 08:54:50.941 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 08:54:50.941 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando Puesto por ID: 1
+2026-03-30 08:54:50.941 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:50.966 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Puesto encontrado con ID: 1
+2026-03-30 08:54:50.966 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 08:54:50.967 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Empresa
+2026-03-30 08:54:50.967 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:51.109 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Se encontraron 5 registros de Empresa
+2026-03-30 08:54:51.109 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 08:54:51.109 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 08:54:51.169 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 09:36:18.743 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 09:36:18.870 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 09:36:20.828 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 09:36:20.875 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 09:36:20.875 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 09:36:20.890 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 09:36:20.914 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 09:36:20.914 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 09:36:20.914 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando Puesto por ID: 1
+2026-03-30 09:36:20.916 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 09:36:20.929 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Puesto encontrado con ID: 1
+2026-03-30 09:36:20.929 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 09:36:20.929 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Empresa
+2026-03-30 09:36:20.929 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 09:36:20.999 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico - Se encontraron 5 registros de Empresa
+2026-03-30 09:36:20.999 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 09:36:21.000 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 09:36:21.037 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:09.205 [Thread-6] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:09.205 [Thread-5] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Empresa
+2026-03-30 12:07:09.206 [Thread-5] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:09.357 [Thread-6] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:09.360 [Thread-6] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:09.879 [Thread-5] DEBUG Servicios.ServicioGenerico - Se encontraron 26 registros de Empresa
+2026-03-30 12:07:09.880 [Thread-5] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:09.884 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:10.062 [Thread-6] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:10.078 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:20.810 [Thread-7] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:20.829 [Thread-7] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:20.829 [Thread-7] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:21.277 [Thread-7] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:22.392 [Thread-8] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:22.416 [Thread-8] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:22.416 [Thread-8] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:22.869 [Thread-8] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:23.945 [Thread-9] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:23.964 [Thread-9] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:23.964 [Thread-9] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:24.245 [Thread-9] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:27.290 [Thread-10] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:27.312 [Thread-10] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:27.313 [Thread-10] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:27.855 [Thread-10] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:28.326 [Thread-11] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:28.345 [Thread-11] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:28.345 [Thread-11] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:28.837 [Thread-11] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:41.974 [Thread-12] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:41.995 [Thread-12] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:07:41.996 [Thread-12] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:07:42.406 [Thread-12] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:07.369 [Thread-13] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:07.400 [Thread-13] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:07.401 [Thread-13] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:07.851 [Thread-13] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:24.209 [Thread-14] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:24.236 [Thread-14] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:24.236 [Thread-14] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:24.762 [Thread-14] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:25.551 [Thread-15] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:25.565 [Thread-15] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:25.565 [Thread-15] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:26.000 [Thread-15] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:26.727 [Thread-16] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:26.740 [Thread-16] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:26.740 [Thread-16] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:27.185 [Thread-16] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:27.446 [Thread-17] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:27.464 [Thread-17] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:27.464 [Thread-17] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:27.789 [Thread-18] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:27.799 [Thread-18] ERROR Servicios.ServicioBase - Error durante lectura en base de datos
+java.lang.IllegalStateException: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+	at org.hibernate.sql.results.spi.LoadContexts.deregister(LoadContexts.java:39)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:176)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:31)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:211)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:100)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:63)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:137)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:128)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:427)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:355)
+	at org.hibernate.query.sqm.internal.SqmQueryImpl.doList(SqmQueryImpl.java:374)
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:153)
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResult(AbstractSelectionQuery.java:294)
+	at Dao.DaoUsuario.contarConFiltros(DaoUsuario.java:119)
+	at Servicios.ServicioPersonas.lambda$1(ServicioPersonas.java:155)
+	at Servicios.ServicioBase.ejecutarLectura(ServicioBase.java:31)
+	at Servicios.ServicioPersonas.contarUsuarios(ServicioPersonas.java:153)
+	at Implementaciones.FachadaPersonas.contarUsuarios(FachadaPersonas.java:52)
+	at com.mycompany.inventariofrontfx.usuarios.UsuariosController$1.call(UsuariosController.java:151)
+	at com.mycompany.inventariofrontfx.usuarios.UsuariosController$1.call(UsuariosController.java:144)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1407)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+2026-03-30 12:08:27.805 [Thread-17] ERROR Servicios.ServicioBase - Error durante lectura en base de datos
+java.lang.IllegalStateException: Illegal pop() with non-matching JdbcValuesSourceProcessingState
+	at org.hibernate.sql.results.spi.LoadContexts.deregister(LoadContexts.java:39)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:176)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:31)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:211)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:100)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:63)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:137)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:128)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:427)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:355)
+	at org.hibernate.query.sqm.internal.SqmQueryImpl.doList(SqmQueryImpl.java:374)
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:153)
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResult(AbstractSelectionQuery.java:294)
+	at Dao.DaoUsuario.contarEquiposAsignadosPorUsuario(DaoUsuario.java:140)
+	at Servicios.ServicioPersonas.lambda$0(ServicioPersonas.java:124)
+	at Servicios.ServicioBase.ejecutarLectura(ServicioBase.java:31)
+	at Servicios.ServicioPersonas.buscarUsuariosPaginado(ServicioPersonas.java:113)
+	at Implementaciones.FachadaPersonas.buscarUsuariosPaginado(FachadaPersonas.java:46)
+	at com.mycompany.inventariofrontfx.usuarios.UsuariosController$1.call(UsuariosController.java:152)
+	at com.mycompany.inventariofrontfx.usuarios.UsuariosController$1.call(UsuariosController.java:144)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1407)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+2026-03-30 12:08:27.807 [Thread-18] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:27.808 [Thread-17] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:33.390 [Thread-19] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:33.409 [Thread-19] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:33.409 [Thread-19] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:33.840 [Thread-19] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:34.294 [Thread-20] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:34.320 [Thread-20] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:34.320 [Thread-20] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:34.730 [Thread-20] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:38.476 [Thread-21] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:38.491 [Thread-21] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:38.491 [Thread-21] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:38.913 [Thread-21] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:39.545 [Thread-22] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:39.558 [Thread-22] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:39.558 [Thread-22] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:39.970 [Thread-22] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:42.988 [Thread-23] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:43.019 [Thread-23] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:43.021 [Thread-23] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:43.077 [Thread-23] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:47.035 [Thread-24] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:47.052 [Thread-24] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:47.054 [Thread-24] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:47.457 [Thread-24] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:47.964 [Thread-25] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:47.981 [Thread-25] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:47.981 [Thread-25] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:48.357 [Thread-25] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:49.693 [Thread-26] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:49.709 [Thread-26] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:08:49.709 [Thread-26] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:08:49.971 [Thread-26] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:06.155 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:06.183 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:06.905 [Thread-27] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Empresa
+2026-03-30 12:09:06.906 [Thread-27] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:06.906 [Thread-28] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:06.960 [Thread-28] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:06.960 [Thread-28] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:07.255 [Thread-27] DEBUG Servicios.ServicioGenerico - Se encontraron 26 registros de Empresa
+2026-03-30 12:09:07.256 [Thread-27] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:07.256 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:07.355 [Thread-28] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:07.418 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:07.482 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:07.497 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:08.184 [Thread-29] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Empresa
+2026-03-30 12:09:08.185 [Thread-30] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:08.185 [Thread-29] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:08.202 [Thread-30] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:08.202 [Thread-30] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:08.541 [Thread-29] DEBUG Servicios.ServicioGenerico - Se encontraron 26 registros de Empresa
+2026-03-30 12:09:08.541 [Thread-29] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:08.554 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:08.605 [Thread-30] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:08.727 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:23.423 [Thread-31] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:23.440 [Thread-31] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:23.440 [Thread-31] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:23.873 [Thread-31] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:33.560 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:33.592 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:41.668 [Thread-33] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:41.668 [Thread-32] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Empresa
+2026-03-30 12:09:41.668 [Thread-32] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:41.708 [Thread-33] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:41.708 [Thread-33] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:42.060 [Thread-32] DEBUG Servicios.ServicioGenerico - Se encontraron 26 registros de Empresa
+2026-03-30 12:09:42.060 [Thread-32] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:42.071 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:42.130 [Thread-33] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:42.441 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:42.880 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:42.881 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:42.904 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:42.905 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:44.855 [Thread-35] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:44.855 [Thread-34] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Empresa
+2026-03-30 12:09:44.855 [Thread-34] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:44.884 [Thread-35] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:44.884 [Thread-35] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:45.210 [Thread-34] DEBUG Servicios.ServicioGenerico - Se encontraron 26 registros de Empresa
+2026-03-30 12:09:45.210 [Thread-34] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:45.210 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:45.265 [Thread-35] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:45.383 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:46.182 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:46.212 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:49.224 [Thread-36] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Empresa
+2026-03-30 12:09:49.224 [Thread-37] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:49.224 [Thread-36] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:49.246 [Thread-37] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:49.246 [Thread-37] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:49.599 [Thread-36] DEBUG Servicios.ServicioGenerico - Se encontraron 26 registros de Empresa
+2026-03-30 12:09:49.600 [Thread-36] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:49.603 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:49.661 [Thread-37] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:49.797 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:50.077 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:50.077 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:50.089 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:50.089 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:52.195 [Thread-38] DEBUG Servicios.ServicioGenerico - Buscando todos los registros de Empresa
+2026-03-30 12:09:52.195 [Thread-38] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:52.195 [Thread-39] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:52.209 [Thread-39] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:52.209 [Thread-39] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:52.574 [Thread-38] DEBUG Servicios.ServicioGenerico - Se encontraron 26 registros de Empresa
+2026-03-30 12:09:52.575 [Thread-38] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:52.586 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:09:52.627 [Thread-39] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:09:52.724 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado
+2026-03-30 12:53:21.864 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager abierto para lectura
+2026-03-30 12:53:21.893 [JavaFX Application Thread] DEBUG Servicios.ServicioBase - EntityManager cerrado

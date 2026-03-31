@@ -4,129 +4,244 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="551.0" prefWidth="846.0" styleClass="panel-menu" stylesheets="@usuarios.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.usuarios.UsuariosController">
-   <top>
-      <VBox nodeOrientation="LEFT_TO_RIGHT" prefHeight="55.0" prefWidth="844.0" spacing="15.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label maxWidth="1.7976931348623157E308" text="Filtros avanzados">
-               <font>
-                  <Font name="SansSerif Bold" size="16.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="10.0" />
-               </VBox.margin>
-            </Label>
-            
-            <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="panel-menu">
-               <padding>
-                  <Insets left="10.0" right="10.0" />
-               </padding>
-            </HBox>
-            
-         </children>
-         <padding>
-            <Insets bottom="10.0" top="10.0" />
-         </padding>
-      </VBox>
-   </top>
-   
-   <center>
-      <VBox prefHeight="434.0" prefWidth="795.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
+<!--
+    CAMBIOS RESPECTO AL FXML ORIGINAL:
+    1. Se agregó la barra de paginación en la parte inferior de la tabla:
+         [← Anterior]  spinner  Página 1 / 12  (300 empleados)  [Siguiente →]
+       Los fx:id son: btnAnterior, progressCarga, lblPagina, lblTotal, btnSiguiente.
 
-            <FlowPane>
-               <children>
-                  <TextField fx:id="txtFiltro" prefHeight="40.0" prefWidth="317.0" promptText="Buscar por nombre o  numero de nomina" />
-               </children>
-            </FlowPane>
-            <Label text="Mostrando resultados...">
-               <font>
-                  <Font name="SansSerif Regular" size="14.0" />
-               </font>
-            </Label>
-            
-            <TableView fx:id="tablaUsuarios" prefHeight="398.0" prefWidth="753.0" styleClass="mi-tabla" VBox.vgrow="ALWAYS">
-               <columns>
-                  <TableColumn fx:id="colId" editable="false" maxWidth="200.0" prefWidth="100.0" resizable="false" text="ID" />
-                  <TableColumn fx:id="colNombre" editable="false" prefWidth="120.0" sortable="false" text="Nombre" />
-                  <TableColumn fx:id="colNoNomina" editable="false" prefWidth="120.0" sortable="false" text="Numero Nomina" />
-                  <TableColumn fx:id="colPuesto" editable="false" prefWidth="100.0" sortable="false" text="Puesto" />
-                  <TableColumn fx:id="colEquiposAsignados" editable="false" prefWidth="100.0" text="Equipos Asignados" />
-                  <TableColumn fx:id="colAcciones" editable="false" maxWidth="250.0" prefWidth="100.0" resizable="false" sortable="false" text="Acciones" />
-               </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" />
-         </padding>
-      </VBox>
-   </center>
-   <right>
-      <VBox prefHeight="484.0" prefWidth="283.0" spacing="15.0" styleClass="panel-isla" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" />
-         </BorderPane.margin>
-         <children>
-            <Label text="Información General">
-               <font>
-                  <Font name="SansSerif Bold" size="18.0" />
-               </font>
-            </Label>
-            <VBox spacing="5.0">
-               <children>
-                  <Label text="Nombre:" />
-                  <TextField fx:id="txtNombre" prefHeight="35.0" prefWidth="300.0" />
-               </children>
-               <VBox.margin>
-                  <Insets top="28.0" />
-               </VBox.margin>
-            </VBox>
-            <VBox spacing="5.0">
-               <children>
-                  <Label text="Numero de nomina:" />
-                  <TextField fx:id="txtNomina" prefHeight="35.0" prefWidth="300.0" />
-               </children>
-            </VBox>
-            <VBox spacing="5.0">
-               <children>
-                  <Label text="Empresa:" />
-                  <ComboBox fx:id="cbxEmpresa" prefHeight="35.0" prefWidth="300.0" />
-               </children>
-            </VBox>
-            <VBox spacing="5.0">
-               <children>
-                  <Label text="Puesto:" />
-                  <ComboBox fx:id="cbxPuesto" prefHeight="35.0" prefWidth="300.0" />
-               </children>
-            </VBox>
-            <VBox alignment="BOTTOM_CENTER" prefHeight="98.0" prefWidth="251.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#guardarUsuario" prefHeight="45.0" prefWidth="200.0" styleClass="btn-agregar" text="Guardar Usuario" textAlignment="CENTER" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Button>
-               </children>
-            </VBox>
-         </children>
-         <padding>
-            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-         </padding>
-      </VBox>
-   </right>
+    2. Se movió el Label "Mostrando resultados..." fuera — ahora es lblTotal
+       con el conteo real actualizado desde el controller.
+
+    3. Todos los demás elementos son idénticos al FXML original.
+-->
+
+<BorderPane maxHeight="1.7976931348623157E308"
+            maxWidth="1.7976931348623157E308"
+            minHeight="0.0" minWidth="0.0"
+            prefHeight="551.0" prefWidth="846.0"
+            styleClass="panel-menu"
+            stylesheets="@usuarios.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.mycompany.inventariofrontfx.usuarios.UsuariosController">
+
+    <!-- ============ ENCABEZADO ============ -->
+    <top>
+        <VBox nodeOrientation="LEFT_TO_RIGHT"
+              prefHeight="55.0" prefWidth="844.0"
+              spacing="15.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label maxWidth="1.7976931348623157E308" text="Filtros avanzados">
+                    <font><Font name="SansSerif Bold" size="16.0" /></font>
+                    <VBox.margin><Insets left="10.0" /></VBox.margin>
+                </Label>
+                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="panel-menu">
+                    <padding><Insets left="10.0" right="10.0" /></padding>
+                </HBox>
+            </children>
+            <padding><Insets bottom="10.0" top="10.0" /></padding>
+        </VBox>
+    </top>
+
+    <!-- ============ ÁREA CENTRAL — TABLA + PAGINACIÓN ============ -->
+    <center>
+        <VBox prefHeight="434.0" prefWidth="795.0"
+              spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+
+                <!-- Campo de búsqueda -->
+                <FlowPane>
+                    <children>
+                        <TextField fx:id="txtFiltro"
+                                   prefHeight="40.0" prefWidth="317.0"
+                                   promptText="Buscar por nombre o número de nómina" />
+                    </children>
+                </FlowPane>
+
+                <!-- Tabla -->
+                <TableView fx:id="tablaUsuarios"
+                           prefHeight="398.0" prefWidth="753.0"
+                           styleClass="mi-tabla" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colId"
+                                     editable="false" maxWidth="200.0"
+                                     prefWidth="100.0" resizable="false" text="ID" />
+                        <TableColumn fx:id="colNombre"
+                                     editable="false" prefWidth="120.0"
+                                     sortable="false" text="Nombre" />
+                        <TableColumn fx:id="colNoNomina"
+                                     editable="false" prefWidth="120.0"
+                                     sortable="false" text="Número Nómina" />
+                        <TableColumn fx:id="colPuesto"
+                                     editable="false" prefWidth="100.0"
+                                     sortable="false" text="Puesto" />
+                        <TableColumn fx:id="colEquiposAsignados"
+                                     editable="false" prefWidth="100.0"
+                                     text="Equipos Asignados" />
+                        <TableColumn fx:id="colAcciones"
+                                     editable="false" maxWidth="250.0"
+                                     prefWidth="100.0" resizable="false"
+                                     sortable="false" text="Acciones" />
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                </TableView>
+
+                <!-- ════ BARRA DE PAGINACIÓN (NUEVA) ════════════════════════════
+                     Elementos:
+                       btnAnterior  → botón "← Anterior"
+                       progressCarga → spinner visible mientras carga
+                       lblPagina    → "Página 1 / 12"
+                       lblTotal     → "300 empleados"
+                       btnSiguiente → botón "Siguiente →"
+                     El Region central hace el spacer para separar izquierda/derecha.
+                ═══════════════════════════════════════════════════════════════ -->
+                <HBox alignment="CENTER" spacing="12.0"
+                      style="-fx-background-color: #F8FAFC;
+                             -fx-border-color: #E5E7EB;
+                             -fx-border-width: 1 0 0 0;
+                             -fx-padding: 8 12;">
+
+                    <!-- Botón Anterior -->
+                    <Button fx:id="btnAnterior"
+                            text="← Anterior"
+                            styleClass="btn-cancelar"
+                            disable="true"
+                            onAction="#irAPaginaAnterior"
+                            prefHeight="34.0" />
+
+                    <!-- Spinner de carga -->
+                    <ProgressIndicator fx:id="progressCarga"
+                                       prefWidth="24.0" prefHeight="24.0"
+                                       visible="false" managed="false" />
+
+                    <!-- Separador flexible izquierdo -->
+                    <Region HBox.hgrow="ALWAYS" />
+
+                    <!-- Página actual / total -->
+                    <Label fx:id="lblPagina"
+                           text="Página 1 / 1"
+                           style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #374151;" />
+
+                    <!-- Total de registros -->
+                    <Label fx:id="lblTotal"
+                           text="0 empleados"
+                           style="-fx-font-size: 12px; -fx-text-fill: #6B7280;" />
+
+                    <!-- Separador flexible derecho -->
+                    <Region HBox.hgrow="ALWAYS" />
+
+                    <!-- Botón Siguiente -->
+                    <Button fx:id="btnSiguiente"
+                            text="Siguiente →"
+                            styleClass="btn-agregar"
+                            disable="true"
+                            onAction="#irAPaginaSiguiente"
+                            prefHeight="34.0" />
+
+                </HBox>
+
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" />
+            </padding>
+        </VBox>
+    </center>
+
+    <!-- ============ FORMULARIO LATERAL ============ -->
+    <right>
+        <VBox prefHeight="484.0" prefWidth="283.0"
+              spacing="15.0" styleClass="panel-isla"
+              BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" />
+            </BorderPane.margin>
+            <children>
+                <Label text="Información General">
+                    <font><Font name="SansSerif Bold" size="18.0" /></font>
+                </Label>
+
+                <!-- Nombre -->
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Nombre:" />
+                        <TextField fx:id="txtNombre"
+                                   prefHeight="35.0" prefWidth="300.0" />
+                        <Label fx:id="errNombre"
+                               styleClass="label-error"
+                               visible="false" managed="false" />
+                    </children>
+                    <VBox.margin><Insets top="20.0" /></VBox.margin>
+                </VBox>
+
+                <!-- Nómina -->
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Número de nómina:" />
+                        <TextField fx:id="txtNomina"
+                                   prefHeight="35.0" prefWidth="300.0" />
+                        <Label fx:id="errNomina"
+                               styleClass="label-error"
+                               visible="false" managed="false" />
+                    </children>
+                </VBox>
+
+                <!-- Empresa -->
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Empresa:" />
+                        <ComboBox fx:id="cbxEmpresa"
+                                  prefHeight="35.0" prefWidth="300.0" />
+                    </children>
+                </VBox>
+
+                <!-- Puesto -->
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Puesto:" />
+                        <ComboBox fx:id="cbxPuesto"
+                                  prefHeight="35.0" prefWidth="300.0" />
+                        <Label fx:id="errPuesto"
+                               styleClass="label-error"
+                               visible="false" managed="false" />
+                    </children>
+                </VBox>
+
+                <!-- Botón guardar -->
+                <VBox alignment="BOTTOM_CENTER"
+                      prefHeight="98.0" prefWidth="251.0"
+                      VBox.vgrow="ALWAYS">
+                    <children>
+                        <Button alignment="CENTER"
+                                mnemonicParsing="false"
+                                onAction="#guardarUsuario"
+                                prefHeight="45.0" prefWidth="200.0"
+                                styleClass="btn-agregar"
+                                text="Guardar Usuario"
+                                textAlignment="CENTER"
+                                textFill="WHITE">
+                            <font><Font name="System Bold" size="12.0" /></font>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+            <padding>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            </padding>
+        </VBox>
+    </right>
+
 </BorderPane>

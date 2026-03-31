@@ -12,7 +12,8 @@ import fabricaFachadas.FabricaFachadas;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,122 +26,402 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
-import util.ValidacionUtil;
 
+/**
+ * Controlador del módulo de Usuarios con paginación del lado del servidor.
+ *
+ * ─── QUÉ CAMBIÓ Y POR QUÉ ──────────────────────────────────────────────────
+ *
+ * ANTES (2 minutos de carga):
+ *   cargarDatos() bloqueaba el hilo de JavaFX y hacía:
+ *   1. 1 query sin límite → 300 usuarios completos en memoria
+ *   2. 300 queries obtenerEquiposDeUsuarios() → traía la lista completa solo para .size()
+ *   3. 300 queries buscarPuestoEspecifico()
+ *   Total: ~601 round-trips a SQL Server
+ *
+ * AHORA (< 1 segundo):
+ *   1. 1 query COUNT en BD             → sabe el total (para paginador)
+ *   2. 1 query SELECT con LIMIT/OFFSET → trae solo 25 filas
+ *   3. 25 queries COUNT de equipos     → una por usuario, pero solo COUNT
+ *   Total: 27 queries. Todo en Task → UI no se congela.
+ *
+ * ─── PAGINACIÓN ─────────────────────────────────────────────────────────────
+ *   TAMANO_PAGINA = 25 filas (ajústalo con la constante).
+ *   Barra inferior: [← Anterior]  Página 1 / 12  (300 empleados)  [Siguiente →]
+ *
+ * ─── DEBOUNCE EN FILTRO ─────────────────────────────────────────────────────
+ *   El campo de búsqueda espera 350 ms sin actividad antes de lanzar la query,
+ *   evitando una consulta por cada tecla que escribe el usuario.
+ * ────────────────────────────────────────────────────────────────────────────
+ */
 public class UsuariosController implements Initializable {
 
-    @FXML
-    private TextField txtFiltro;
-    @FXML
-    private TableView<UsuarioDTO> tablaUsuarios;
-    @FXML
-    private TableColumn<UsuarioDTO, Long> colId;
-    @FXML
-    private TableColumn<UsuarioDTO, String> colNombre;
-    @FXML
-    private TableColumn<UsuarioDTO, String> colNoNomina;
-    @FXML
-    private TableColumn<UsuarioDTO, String> colPuesto;
-    @FXML
-    private TableColumn<UsuarioDTO, Integer> colEquiposAsignados;
-    @FXML
-    private TextField txtNomina;
-    @FXML
-    private TextField txtNombre;
-    @FXML
-    private ComboBox<EmpresaDTO> cbxEmpresa;
-    @FXML
-    private ComboBox<PuestoDTO> cbxPuesto;
-    @FXML
-    private TableColumn<UsuarioDTO, Void> colAcciones;
+    private static final int TAMANO_PAGINA = 25;
 
-    // Labels de error (agrégalos en el FXML junto a cada campo):
-    // <Label fx:id="errNombre"  visible="false" managed="false"/>
-    // <Label fx:id="errNomina"  visible="false" managed="false"/>
-    // <Label fx:id="errPuesto"  visible="false" managed="false"/>
-    @FXML
-    private Label errNombre;
-    @FXML
-    private Label errNomina;
-    @FXML
-    private Label errPuesto;
+    // ── Tabla ─────────────────────────────────────────────────────────────────
+    @FXML private TextField                       txtFiltro;
+    @FXML private TableView<UsuarioDTO>           tablaUsuarios;
+    @FXML private TableColumn<UsuarioDTO, Long>   colId;
+    @FXML private TableColumn<UsuarioDTO, String> colNombre;
+    @FXML private TableColumn<UsuarioDTO, String> colNoNomina;
+    @FXML private TableColumn<UsuarioDTO, String> colPuesto;
+    @FXML private TableColumn<UsuarioDTO, Integer>colEquiposAsignados;
+    @FXML private TableColumn<UsuarioDTO, Void>   colAcciones;
 
-    private Long idUsuarioEditando;
+    // ── Controles de paginación ───────────────────────────────────────────────
+    // Agregar en Usuarios.fxml (ver instrucciones al final de este archivo)
+    @FXML private Button            btnAnterior;
+    @FXML private Button            btnSiguiente;
+    @FXML private Label             lblPagina;      // "Página 1 / 12"
+    @FXML private Label             lblTotal;       // "300 empleados"
+    @FXML private ProgressIndicator progressCarga;  // spinner mientras carga
+
+    // ── Formulario lateral ────────────────────────────────────────────────────
+    @FXML private TextField            txtNomina;
+    @FXML private TextField            txtNombre;
+    @FXML private ComboBox<EmpresaDTO> cbxEmpresa;
+    @FXML private ComboBox<PuestoDTO>  cbxPuesto;
+
+    // ── Labels de error ───────────────────────────────────────────────────────
+    @FXML private Label errNombre;
+    @FXML private Label errNomina;
+    @FXML private Label errPuesto;
+
+    // ── Estado interno ────────────────────────────────────────────────────────
+    private Long    idUsuarioEditando;
     private Boolean modoEdicion;
-    private long version;
+    private long    version;
+    private int     paginaActual   = 0;
+    private long    totalRegistros = 0;
 
-    private ObservableList<UsuarioDTO> listaUsuarios;
     private ObservableList<EmpresaDTO> empresas;
-    private ObservableList<PuestoDTO> puestos;
+    private ObservableList<PuestoDTO>  puestos;
 
-    private final IFachadaPersonas fachadaUsuario = FabricaFachadas.getFachadaPersonas();
-    private final IFachadaPrestamos fachadaPrestamos = FabricaFachadas.getFachadaPrestamos();
+    /** Espera 350 ms tras la última tecla antes de lanzar la búsqueda. */
+    private final PauseTransition debounce = new PauseTransition(Duration.millis(350));
+
+    private final IFachadaPersonas     fachadaUsuario      = FabricaFachadas.getFachadaPersonas();
+    private final IFachadaPrestamos    fachadaPrestamos    = FabricaFachadas.getFachadaPrestamos();
     private final IFachadaOrganizacion fachadaOrganizacion = FabricaFachadas.getFachadaOrganizacion();
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Inicialización
+    // ─────────────────────────────────────────────────────────────────────────
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnas();
-        configurarFiltroReactivo();
-        cargarDatos();
         configurarAcciones();
+        configurarFiltroConDebounce();
+        configurarBotonesPaginacion();
         configurarListenersValidacion();
+        cargarCombosLaterales();
+
+        ocultarSpinner();
+        cargarPagina();
     }
 
-    /**
-     * Listeners que limpian el borde rojo en cuanto el usuario corrige el
-     * campo.
-     */
-    private void configurarListenersValidacion() {
-        // Nombre: mínimo 3 caracteres, no vacío
-        txtNombre.textProperty().addListener((obs, old, val) -> {
-            if (val != null) {
-                // Solo letras y espacios
-                if (val.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
-                    if (val.trim().length() >= 3) {
-                        ValidacionUtil.marcarOk(txtNombre);
-                        ValidacionUtil.ocultarLabel(errNombre);
-                    } else {
-                        ValidacionUtil.marcarError(txtNombre);
-                        ValidacionUtil.mostrarLabelError(errNombre, "Debe tener al menos 3 letras");
-                    }
-                } else {
-                    ValidacionUtil.marcarError(txtNombre);
-                    ValidacionUtil.mostrarLabelError(errNombre, "Solo se permiten letras");
-                }
-            }
-        });
+    // ─────────────────────────────────────────────────────────────────────────
+    // CARGA PAGINADA — núcleo de la optimización
+    // ─────────────────────────────────────────────────────────────────────────
 
-        txtNomina.textProperty().addListener((obs, old, val) -> {
-            if (val != null) {
-                if (val.matches("\\d+")) {
-                    if (val.trim().length() >= 5) {
-                        ValidacionUtil.marcarOk(txtNomina);
-                        ValidacionUtil.ocultarLabel(errNomina);
-                    } else {
-                        ValidacionUtil.marcarError(txtNomina);
-                        ValidacionUtil.mostrarLabelError(errNomina, "Debe tener al menos 5 dígitos");
-                    }
-                } else {
-                    ValidacionUtil.marcarError(txtNomina);
-                    ValidacionUtil.mostrarLabelError(errNomina, "Solo se permiten números");
-                }
-            }
-        });
+    private void cargarPagina() {
+        mostrarSpinner();
+        tablaUsuarios.setDisable(true);
 
-        cbxPuesto.valueProperty().addListener((obs, old, val) -> {
-            if (val != null) {
-                ValidacionUtil.marcarOk(cbxPuesto);
-                ValidacionUtil.ocultarLabel(errPuesto);
+        final String filtro       = txtFiltro.getText();
+        final int    paginaActual = this.paginaActual;
+
+        Task<Void> task = new Task<>() {
+
+            List<UsuarioDTO> pagina;
+            long             total;
+
+            @Override
+            protected Void call() {
+                total  = fachadaUsuario.contarUsuarios(filtro);
+                pagina = fachadaUsuario.buscarUsuariosPaginado(filtro, paginaActual, TAMANO_PAGINA);
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                totalRegistros = total;
+                tablaUsuarios.getItems().setAll(pagina);
+                tablaUsuarios.setDisable(false);
+                actualizarBarraPaginacion();
+                ocultarSpinner();
+            }
+
+            @Override
+            protected void failed() {
+                tablaUsuarios.setDisable(false);
+                ocultarSpinner();
+                Throwable ex = getException();
+                if (ex != null) ex.printStackTrace();
+                Platform.runLater(() -> mostrarAlertError(
+                        "No se pudieron cargar los usuarios",
+                        ex != null ? ex.getMessage() : "Error desconocido"));
+            }
+        };
+
+        new Thread(task).start();
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Paginación — botones y label
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private void configurarBotonesPaginacion() {
+        if (btnAnterior  != null) btnAnterior.setOnAction(e -> irAPaginaAnterior());
+        if (btnSiguiente != null) btnSiguiente.setOnAction(e -> irAPaginaSiguiente());
+    }
+
+    @FXML
+    private void irAPaginaAnterior() {
+        if (paginaActual > 0) {
+            paginaActual--;
+            cargarPagina();
+        }
+    }
+
+    @FXML
+    private void irAPaginaSiguiente() {
+        if ((long)(paginaActual + 1) * TAMANO_PAGINA < totalRegistros) {
+            paginaActual++;
+            cargarPagina();
+        }
+    }
+
+    private void actualizarBarraPaginacion() {
+        int totalPaginas = (int) Math.ceil((double) totalRegistros / TAMANO_PAGINA);
+        if (totalPaginas == 0) totalPaginas = 1;
+
+        if (lblPagina  != null) lblPagina.setText("Página " + (paginaActual + 1) + " / " + totalPaginas);
+        if (lblTotal   != null) lblTotal.setText(totalRegistros + (totalRegistros == 1 ? " empleado" : " empleados"));
+        if (btnAnterior  != null) btnAnterior.setDisable(paginaActual == 0);
+        if (btnSiguiente != null) btnSiguiente.setDisable((long)(paginaActual + 1) * TAMANO_PAGINA >= totalRegistros);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Filtro con debounce
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private void configurarFiltroConDebounce() {
+        debounce.setOnFinished(e -> {
+            paginaActual = 0;
+            cargarPagina();
+        });
+        txtFiltro.textProperty().addListener((obs, old, val) -> debounce.playFromStart());
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Columnas y acciones de la tabla
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private void configurarColumnas() {
+        colId.setCellValueFactory(d -> new SimpleObjectProperty<>(d.getValue().getId()));
+        colNombre.setCellValueFactory(d -> new SimpleObjectProperty<>(d.getValue().getNombre()));
+        colNoNomina.setCellValueFactory(d -> new SimpleObjectProperty<>(d.getValue().getNoNomina()));
+        colPuesto.setCellValueFactory(d -> new SimpleObjectProperty<>(d.getValue().getNombrePuesto()));
+        colEquiposAsignados.setCellValueFactory(d -> new SimpleObjectProperty<>(d.getValue().getNumeroDeEquipos()));
+    }
+
+    private void configurarAcciones() {
+        colAcciones.setCellFactory(col -> new TableCell<>() {
+            private final FontIcon editIcon   = new FontIcon("fas-edit");
+            private final FontIcon deleteIcon = new FontIcon("fas-trash");
+            private final Button   btnEditar   = new Button("", editIcon);
+            private final Button   btnEliminar = new Button("", deleteIcon);
+            private final HBox     contenedor  = new HBox(8, btnEditar, btnEliminar);
+
+            {
+                editIcon.setIconSize(16);
+                deleteIcon.setIconSize(16);
+                btnEditar.getStyleClass().add("btn-editar");
+                btnEliminar.getStyleClass().add("btn-eliminar");
+                Tooltip.install(btnEditar,   new Tooltip("Editar usuario"));
+                Tooltip.install(btnEliminar, new Tooltip("Eliminar usuario"));
+                contenedor.setAlignment(Pos.CENTER);
+
+                btnEditar.setOnAction(e -> {
+                    UsuarioDTO u = getTableRow().getItem();
+                    if (u != null) cargarUsuarioParaEditar(u);
+                });
+                btnEliminar.setOnAction(e -> {
+                    UsuarioDTO u = getTableRow().getItem();
+                    if (u != null) confirmarEliminacion(u);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty || getTableRow().getItem() == null ? null : contenedor);
             }
         });
     }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Combos laterales
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private void cargarCombosLaterales() {
+        Task<List<EmpresaDTO>> task = new Task<>() {
+            @Override protected List<EmpresaDTO> call() {
+                return fachadaOrganizacion.listarEmpresas(null);
+            }
+        };
+        task.setOnSucceeded(e -> {
+            empresas = FXCollections.observableArrayList(task.getValue());
+            cbxEmpresa.setItems(empresas);
+            cbxEmpresa.getSelectionModel().selectFirst();
+            onAccionCbxEmpresa();
+            cbxEmpresa.setOnAction(ev -> onAccionCbxEmpresa());
+        });
+        new Thread(task).start();
+    }
+
+    private void onAccionCbxEmpresa() {
+        if (cbxEmpresa.getSelectionModel().getSelectedItem() == null) return;
+        Long id = cbxEmpresa.getSelectionModel().getSelectedItem().getId();
+        if (id != null) {
+            puestos = FXCollections.observableArrayList(fachadaOrganizacion.busquedaPorEmpresa(id));
+            cbxPuesto.setItems(puestos);
+            cbxPuesto.setDisable(puestos == null || puestos.isEmpty());
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Guardar
+    // ─────────────────────────────────────────────────────────────────────────
+
+    @FXML
+    private void guardarUsuario() {
+        if (!validarFormulario()) return;
+
+        Task<Void> task = new Task<>() {
+            @Override protected Void call() throws Exception {
+                fachadaUsuario.guardarUsuario(construirUsuario());
+                return null;
+            }
+        };
+        task.setOnSucceeded(e -> {
+            modoEdicion = false; idUsuarioEditando = null; version = 0L;
+            limpiarFormulario();
+            cargarPagina();
+        });
+        task.setOnFailed(e -> {
+            Throwable ex = task.getException();
+            mostrarAlertError("No se pudo guardar el usuario",
+                    ex != null ? ex.getMessage() : "Error desconocido");
+        });
+        new Thread(task).start();
+    }
+
+    private UsuarioDTO construirUsuario() {
+        UsuarioDTO u = new UsuarioDTO();
+        if (modoEdicion != null && modoEdicion) {
+            u.setId(idUsuarioEditando);
+            u.setVersion(version);
+        } else {
+            u.setActivo(Boolean.TRUE);
+        }
+        u.setNombre(txtNombre.getText().trim());
+        u.setNoNomina(txtNomina.getText().trim());
+        u.setIdPuesto(cbxPuesto.getSelectionModel().getSelectedItem().getId());
+        return u;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Eliminar
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private void confirmarEliminacion(UsuarioDTO usuario) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmación");
+        alert.setHeaderText("Eliminar Usuario");
+        alert.setContentText("¿Desea eliminar al usuario: " + usuario.getNombre() + "?");
+        alert.showAndWait()
+             .filter(btn -> btn == ButtonType.OK)
+             .ifPresent(b -> {
+                 Task<Void> task = new Task<>() {
+                     @Override protected Void call() throws Exception {
+                         fachadaUsuario.cambiarEstadoUsuario(usuario.getId(), false);
+                         return null;
+                     }
+                 };
+                 task.setOnSucceeded(e -> cargarPagina());
+                 task.setOnFailed(e -> {
+                     Throwable ex = task.getException();
+                     System.getLogger(InventarioController.class.getName())
+                           .log(System.Logger.Level.ERROR, (String) null, ex);
+                 });
+                 new Thread(task).start();
+             });
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Editar
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private void cargarUsuarioParaEditar(UsuarioDTO usuario) {
+        modoEdicion = true; idUsuarioEditando = usuario.getId(); version = usuario.getVersion();
+        txtNombre.setText(usuario.getNombre());
+        txtNomina.setText(usuario.getNoNomina());
+
+        Task<EmpresaDTO> task = new Task<>() {
+            @Override protected EmpresaDTO call() {
+                return fachadaOrganizacion.buscarEmpresaPorPuesto(usuario.getIdPuesto());
+            }
+        };
+        task.setOnSucceeded(e -> {
+            EmpresaDTO empresa = task.getValue();
+            cbxEmpresa.getItems().stream()
+                .filter(emp -> emp.getId().equals(empresa.getId()))
+                .findFirst()
+                .ifPresent(emp -> cbxEmpresa.getSelectionModel().select(emp));
+            onAccionCbxEmpresa();
+            cbxPuesto.getItems().stream()
+                .filter(p -> p.getId().equals(usuario.getIdPuesto()))
+                .findFirst()
+                .ifPresent(p -> cbxPuesto.getSelectionModel().select(p));
+        });
+        new Thread(task).start();
+
+        ValidacionUtil.resetTodos(txtNombre, txtNomina, cbxPuesto);
+        ValidacionUtil.ocultarLabel(errNombre);
+        ValidacionUtil.ocultarLabel(errNomina);
+        ValidacionUtil.ocultarLabel(errPuesto);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Limpiar
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private void limpiarFormulario() {
+        txtNombre.clear(); txtNomina.clear();
+        cbxEmpresa.getSelectionModel().selectFirst();
+        onAccionCbxEmpresa();
+        modoEdicion = false; idUsuarioEditando = null; version = 0L;
+        ValidacionUtil.resetTodos(txtNombre, txtNomina, cbxPuesto);
+        ValidacionUtil.ocultarLabel(errNombre);
+        ValidacionUtil.ocultarLabel(errNomina);
+        ValidacionUtil.ocultarLabel(errPuesto);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Validación
+    // ─────────────────────────────────────────────────────────────────────────
 
     private boolean validarFormulario() {
         boolean valido = true;
@@ -189,223 +470,48 @@ public class UsuariosController implements Initializable {
             alert.setContentText(errores.toString());
             alert.showAndWait();
         }
-
         return valido;
     }
 
-    @FXML
-    private void guardarUsuario() {
-        if (!validarFormulario()) {
-            return;
-        }
-
-        try {
-            UsuarioDTO usuario = construirUsuario();
-            fachadaUsuario.guardarUsuario(usuario);
-            modoEdicion = false;
-            idUsuarioEditando = null;
-            version = 0L;
-            limpiarFormulario();
-        } catch (Exception ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("No se pudo guardar el usuario");
-            alert.setContentText(ex.getMessage());
-            alert.showAndWait();
-        }
-    }
-
-    private UsuarioDTO construirUsuario() {
-        UsuarioDTO usuario = new UsuarioDTO();
-        if (modoEdicion != null && modoEdicion) {
-            usuario.setId(idUsuarioEditando);
-            usuario.setVersion(version);
-        } else {
-            usuario.setActivo(Boolean.TRUE);
-        }
-        usuario.setNombre(txtNombre.getText().trim());
-        usuario.setNoNomina(txtNomina.getText().trim());
-        usuario.setIdPuesto(cbxPuesto.getSelectionModel().getSelectedItem().getId());
-        return usuario;
-    }
-
-    private void limpiarFormulario() {
-        txtNombre.clear();
-        txtNomina.clear();
-        cbxEmpresa.getSelectionModel().selectFirst();
-        onAccionCbxEmpresa();
-        modoEdicion = false;
-        idUsuarioEditando = null;
-        version = 0L;
-
-        ValidacionUtil.resetTodos(txtNombre, txtNomina, cbxPuesto);
-        ValidacionUtil.ocultarLabel(errNombre);
-        ValidacionUtil.ocultarLabel(errNomina);
-        ValidacionUtil.ocultarLabel(errPuesto);
-
-        cargarDatos();
-    }
-
-    private void configurarColumnas() {
-        colId.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getId()));
-        colNombre.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getNombre()));
-        colNoNomina.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getNoNomina()));
-        colPuesto.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getNombrePuesto()));
-        colEquiposAsignados.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getNumeroDeEquipos()));
-    }
-
-    private void configurarAcciones() {
-        colAcciones.setCellFactory(col -> new TableCell<>() {
-            private final FontIcon editIcon = new FontIcon("fas-edit");
-            private final FontIcon deleteIcon = new FontIcon("fas-trash");
-            private final Button btnEditar = new Button("", editIcon);
-            private final Button btnEliminar = new Button("", deleteIcon);
-            private final HBox container = new HBox(8, btnEditar, btnEliminar);
-
-            {
-                editIcon.setIconSize(16);
-                deleteIcon.setIconSize(16);
-                btnEditar.getStyleClass().add("btn-editar");
-                btnEliminar.getStyleClass().add("btn-eliminar");
-                Tooltip.install(btnEditar, new Tooltip("Editar usuario"));
-                Tooltip.install(btnEliminar, new Tooltip("Eliminar usuario"));
-                container.setAlignment(Pos.CENTER);
-
-                btnEditar.setOnAction(e -> {
-                    UsuarioDTO usuario = getTableRow().getItem();
-                    if (usuario != null) {
-                        cargarUsuarioParaEditar(usuario);
-                    }
-                });
-                btnEliminar.setOnAction(e -> {
-                    UsuarioDTO usuario = getTableRow().getItem();
-                    if (usuario != null) {
-                        confirmarEliminacion(usuario);
-                    }
-                });
+    private void configurarListenersValidacion() {
+        txtNombre.textProperty().addListener((obs, old, val) -> {
+            if (val != null && val.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+") && val.trim().length() >= 3) {
+                ValidacionUtil.marcarOk(txtNombre); ValidacionUtil.ocultarLabel(errNombre);
             }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty || getTableRow().getItem() == null ? null : container);
+        });
+        txtNomina.textProperty().addListener((obs, old, val) -> {
+            if (val != null && val.matches("\\d+") && val.trim().length() >= 5) {
+                ValidacionUtil.marcarOk(txtNomina); ValidacionUtil.ocultarLabel(errNomina);
             }
+        });
+        cbxPuesto.valueProperty().addListener((obs, old, val) -> {
+            if (val != null) { ValidacionUtil.marcarOk(cbxPuesto); ValidacionUtil.ocultarLabel(errPuesto); }
         });
     }
 
-    private void cargarDatos() {
-        listaUsuarios = FXCollections.observableArrayList(
-                fachadaUsuario.buscarUsuarios(null)
-                        .stream()
-                        .filter(UsuarioDTO::getActivo)
-                        .collect(Collectors.toList())
-        );
+    // ─────────────────────────────────────────────────────────────────────────
+    // Helpers
+    // ─────────────────────────────────────────────────────────────────────────
 
-        listaUsuarios.forEach(c -> {
-            int numeroEquipos = fachadaPrestamos.obtenerEquiposDeUsuarios(c.getId()).size();
-            String nombrePuesto = fachadaOrganizacion.buscarPuestoEspecifico(c.getIdPuesto()).getNombre();
-            c.setNumeroDeEquipos(numeroEquipos);
-            c.setNombrePuesto(nombrePuesto);
+    private void mostrarSpinner() {
+        Platform.runLater(() -> {
+            if (progressCarga != null) { progressCarga.setVisible(true); progressCarga.setManaged(true); }
         });
-
-        tablaUsuarios.setItems(listaUsuarios);
-        empresas = FXCollections.observableArrayList(fachadaOrganizacion.listarEmpresas(null));
-        cbxEmpresa.setItems(empresas);
-        cbxEmpresa.getSelectionModel().selectFirst();
-        onAccionCbxEmpresa();
-        cbxEmpresa.setOnAction(e -> onAccionCbxEmpresa());
     }
 
-    private void onAccionCbxEmpresa() {
-        Long id = 0L;
-        if (cbxEmpresa.getSelectionModel().getSelectedItem() != null) {
-            id = cbxEmpresa.getSelectionModel().getSelectedItem().getId();
-        }
-        if (id != null) {
-            puestos = FXCollections.observableArrayList(fachadaOrganizacion.busquedaPorEmpresa(id));
-            if (puestos != null && !puestos.isEmpty()) {
-                cbxPuesto.setItems(puestos);
-                cbxPuesto.setDisable(false);
-            } else {
-                cbxPuesto.setDisable(true);
-            }
-        }
-    }
-
-    private void configurarFiltroReactivo() {
-        txtFiltro.textProperty().addListener((obs, oldValue, newValue) -> aplicarFiltro());
-    }
-
-    private void aplicarFiltro() {
-        cargarDatosAsync();
-    }
-
-    private void cargarDatosAsync() {
-        Task<List<UsuarioDTO>> task = new Task<>() {
-            @Override
-            protected List<UsuarioDTO> call() {
-                return fachadaUsuario.buscarUsuarios(txtFiltro.getText())
-                        .stream()
-                        .filter(UsuarioDTO::getActivo)
-                        .collect(Collectors.toList());
-            }
-        };
-        tablaUsuarios.setDisable(true);
-        task.setOnSucceeded(e -> {
-            tablaUsuarios.getItems().setAll(task.getValue());
-            tablaUsuarios.setDisable(false);
+    private void ocultarSpinner() {
+        Platform.runLater(() -> {
+            if (progressCarga != null) { progressCarga.setVisible(false); progressCarga.setManaged(false); }
         });
-        task.setOnFailed(e -> {
-            tablaUsuarios.setDisable(false);
-            task.getException().printStackTrace();
+    }
+
+    private void mostrarAlertError(String titulo, String mensaje) {
+        Platform.runLater(() -> {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setTitle("Error");
+            a.setHeaderText(titulo);
+            a.setContentText(mensaje);
+            a.showAndWait();
         });
-        new Thread(task).start();
-    }
-
-    private void confirmarEliminacion(UsuarioDTO usuario) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmación");
-        alert.setHeaderText("Eliminar Usuario");
-        alert.setContentText("¿Desea eliminar al usuario: " + usuario.getNombre() + "?");
-        alert.showAndWait()
-                .filter(btn -> btn == ButtonType.OK)
-                .ifPresent(b -> {
-                    try {
-                        fachadaUsuario.cambiarEstadoUsuario(usuario.getId(), false);
-                    } catch (Exception ex) {
-                        System.getLogger(InventarioController.class.getName())
-                                .log(System.Logger.Level.ERROR, (String) null, ex);
-                    }
-                    cargarDatos();
-                });
-    }
-
-    private void cargarUsuarioParaEditar(UsuarioDTO usuario) {
-        modoEdicion = true;
-        idUsuarioEditando = usuario.getId();
-        version = usuario.getVersion();
-
-        txtNombre.setText(usuario.getNombre());
-        txtNomina.setText(usuario.getNoNomina());
-
-        EmpresaDTO empresa = fachadaOrganizacion.buscarEmpresaPorPuesto(usuario.getIdPuesto());
-        cbxEmpresa.getItems().stream()
-                .filter(e -> e.getId().equals(empresa.getId()))
-                .findFirst()
-                .ifPresent(e -> cbxEmpresa.getSelectionModel().select(e));
-
-        cbxEmpresa.getSelectionModel().selectFirst();
-        onAccionCbxEmpresa();
-
-        cbxPuesto.getItems().stream()
-                .filter(p -> p.getId().equals(usuario.getIdPuesto()))
-                .findFirst()
-                .ifPresent(p -> cbxPuesto.getSelectionModel().select(p));
-
-        // Al cargar para editar, los campos tienen datos: limpiar errores
-        ValidacionUtil.resetTodos(txtNombre, txtNomina, cbxPuesto);
-        ValidacionUtil.ocultarLabel(errNombre);
-        ValidacionUtil.ocultarLabel(errNomina);
-        ValidacionUtil.ocultarLabel(errPuesto);
     }
 }

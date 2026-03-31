@@ -36,11 +36,9 @@ public class FachadaEquipos implements IFachadaEquipos {
         this(new ServicioEquipos());
     }
 
-    // MÉTODOS GENERALES
-    
     @Override
-    public List<EquipoBaseDTO> buscarEquipos(Integer gry, EstadoEquipo estado, String criterioBusqueda) {
-        return servicioEquipos.buscarEquipos(gry, estado, criterioBusqueda);
+    public List<EquipoBaseDTO> buscarEquipos(Integer gry, EstadoEquipo estado, String criterio) {
+        return servicioEquipos.buscarEquipos(gry, estado, criterio);
     }
 
     @Override
@@ -59,9 +57,8 @@ public class FachadaEquipos implements IFachadaEquipos {
     }
 
     @Override
-    public List<EquipoBaseDTO> buscarConFiltros(String texto, TipoEquipo tipo, 
-                                                CondicionFisica condicion, EstadoEquipo estado) {
-        return servicioEquipos.buscarConFiltros(texto, tipo, condicion, estado);
+    public List<EquipoBaseDTO> buscarConFiltros(String t, TipoEquipo tp, CondicionFisica c, EstadoEquipo e) {
+        return servicioEquipos.buscarConFiltros(t, tp, c, e);
     }
 
     @Override
@@ -69,29 +66,21 @@ public class FachadaEquipos implements IFachadaEquipos {
         servicioEquipos.eliminarEquipo(id);
     }
 
-    // EQUIPOS DE ESCRITORIO
-    
     @Override
     public EquipoEscritorioDTO guardarEscritorio(EquipoEscritorioDTO dto) {
         return servicioEquipos.guardarEscritorio(dto);
     }
 
-    // EQUIPOS MÓVILES
-    
     @Override
     public MovilDTO guardarMovil(MovilDTO dto) {
         return servicioEquipos.guardarMovil(dto);
     }
 
-    // OTROS EQUIPOS
-    
     @Override
     public OtroEquipoDTO guardarOtro(OtroEquipoDTO dto) {
         return servicioEquipos.guardarOtro(dto);
     }
 
-    // MODELOS
-    
     @Override
     public ModeloDTO guardarModelo(ModeloDTO dto) {
         return servicioEquipos.guardarModelo(dto);
@@ -108,10 +97,20 @@ public class FachadaEquipos implements IFachadaEquipos {
     }
 
     @Override
-    public List<ModeloDTO> buscarModelosConFiltros(String nombre, String marca,
-                                                   Integer memoriaRam, Integer almacenamiento,
-                                                   String procesador) {
-        return servicioEquipos.buscarModelosConFiltros(nombre, marca, memoriaRam, 
-                                                       almacenamiento, procesador);
+    public List<ModeloDTO> buscarModelosConFiltros(String n, String m, Integer r, Integer a, String p) {
+        return servicioEquipos.buscarModelosConFiltros(n, m, r, a, p);
+    }
+
+    @Override
+    public List<EquipoBaseDTO> buscarConFiltrosPaginado(String texto, TipoEquipo tipo,
+            CondicionFisica condicion, EstadoEquipo estado,
+            int pagina, int tamano) {
+        return servicioEquipos.buscarConFiltrosPaginado(texto, tipo, condicion, estado, pagina, tamano);
+    }
+
+    @Override
+    public long contarEquipos(String texto, TipoEquipo tipo,
+            CondicionFisica condicion, EstadoEquipo estado) {
+        return servicioEquipos.contarConFiltros(texto, tipo, condicion, estado);
     }
 }
