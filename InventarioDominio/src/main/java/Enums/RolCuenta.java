@@ -10,7 +10,7 @@ package Enums;
  */
 public enum RolCuenta {
     ADMIN,
-    ALMACENISTA,
+    OPERARIO,
     INVITADO, 
     TODOS
 }

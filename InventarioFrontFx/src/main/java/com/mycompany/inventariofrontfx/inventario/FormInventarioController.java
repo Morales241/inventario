@@ -107,7 +107,6 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     private TextField txtRam;
     @FXML
     private TextField txtProcesador;
-
     @FXML
     private Label errGry;
     @FXML

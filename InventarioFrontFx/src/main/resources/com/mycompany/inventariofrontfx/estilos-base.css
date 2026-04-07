@@ -1,4 +1,4 @@
-/* ========== VARIABLES GLOBALES ========== */
+
 * {
     -fx-primary: #13507d;
     -fx-primary-hover: #176ca8;
@@ -17,7 +17,6 @@
     -fx-background-lateral: #FAF9F6;
 }
 
-/* ========== BOTONES ESTANDARIZADOS ========== */
 .btn-agregar, .btn-principal, .btn-principal-grande {
     -fx-background-color: -fx-primary;
     -fx-text-fill: -fx-text-white;
@@ -92,7 +91,6 @@
     -fx-background-radius: 6;
 }
 
-/* ========== PANELES ========== */
 .panel-menu {
     -fx-background-color: -fx-background-menu;
 }
@@ -126,7 +124,6 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.30), 25, 0, 0, 8);
 }
 
-/* ========== TÍTULOS ========== */
 .titulo-seccion, .titulo-login {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
@@ -137,7 +134,6 @@
     -fx-font-size: 25px;
 }
 
-/* ========== CAMPOS DE TEXTO ========== */
 .text-field, .password-field, .input-busqueda {
     -fx-background-color: -fx-background-light;
     -fx-background-radius: 8;
@@ -155,7 +151,6 @@
     -fx-effect: dropshadow(gaussian, rgba(19,80,125,0.2), 5, 0, 0, 0);
 }
 
-/* ========== LISTVIEW ========== */
 .lista-card {
     -fx-background-color: transparent;
     -fx-background-insets: 0;
@@ -191,7 +186,6 @@
     -fx-text-fill: -fx-text-white;
 }
 
-/* ========== TABLAS ========== */
 .mi-tabla {
     -fx-background-color: -fx-background-white;
     -fx-background-radius: 12;
@@ -256,7 +250,6 @@
     -fx-alignment: CENTER;
 }
 
-/* ========== DATEPICKER ========== */
 .date-picker {
     -fx-background-color: -fx-background-white;
     -fx-border-color: -fx-border-light;
@@ -278,7 +271,6 @@
     -fx-background-color: -fx-border-light;
 }
 
-/* ========== SCROLLBARS ========== */
 .scroll-bar:vertical {
     -fx-background-color: transparent;
     -fx-pref-width: 12;
@@ -303,7 +295,6 @@
     -fx-padding: 0;
 }
 
-/* ========== ITEMS PERSONALIZADOS ========== */
 .item-usuario, .item-equipo {
     -fx-spacing: 8;
     -fx-alignment: center-left;
@@ -337,7 +328,6 @@
     -fx-icon-color: #E0E7FF;
 }
 
-/* ========== MENÚ ========== */
 .menu-btn {
     -fx-background-color: transparent;
     -fx-text-fill: #4d4d4d;

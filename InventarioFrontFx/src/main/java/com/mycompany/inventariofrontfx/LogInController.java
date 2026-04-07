@@ -1,11 +1,17 @@
 package com.mycompany.inventariofrontfx;
 
+import Dtos.CuentaSistemaDTO;
+import InterfacesFachada.IFachadaPersonas;
+import Utilidades.SesionActual;
 import com.mycompany.inventariofrontfx.menu.MenuController;
+import fabricaFachadas.FabricaFachadas;
 import interfaces.BaseController;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,35 +19,125 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 /**
- * FXML Controller class
- *
- * @author JesusM
+ * Controlador del Login.
  */
 public class LogInController implements Initializable, BaseController {
 
     private MenuController dbc;
-
     private Stage stage;
 
-    @FXML
-    private TextField txtPassword;
+    private final IFachadaPersonas fachada = FabricaFachadas.getFachadaPersonas();
+
     @FXML
     private TextField txtUsuario;
+    @FXML
+    private PasswordField txtPassword;
+    @FXML
+    private Button btnIngresar;
+    @FXML
+    private Button btnSalir;
+    @FXML
+    private Label lblError;
+    @FXML
+    private ProgressIndicator progressLogin;
 
-    /**
-     * Initializes the controller class.
-     *
-     * @param url
-     * @param rb
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        dbc = new MenuController();
+        ocultarError();
+        ocultarSpinner();
+
+        txtUsuario.setOnAction(e -> txtPassword.requestFocus());
+        txtPassword.setOnAction(e -> procesarLogin(null));
+
+        txtUsuario.textProperty().addListener((obs, old, v) -> ocultarError());
+        txtPassword.textProperty().addListener((obs, old, v) -> ocultarError());
+    }
+
+    @FXML
+    public void iniciarSesion(ActionEvent event) {
+        this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        procesarLogin(event);
+    }
+
+    private void procesarLogin(ActionEvent event) {
+        String usuario = txtUsuario.getText().trim();
+        String password = txtPassword.getText();
+
+        if (usuario.isEmpty() || password.isEmpty()) {
+            mostrarError("Ingresa tu usuario y contraseña.");
+            return;
+        }
+
+        setFormularioHabilitado(false);
+        mostrarSpinner();
+
+        Task<CuentaSistemaDTO> task = new Task<>() {
+            @Override
+            protected CuentaSistemaDTO call() {
+                return fachada.login(usuario, password);
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            CuentaSistemaDTO cuenta = task.getValue();
+            setFormularioHabilitado(true);
+            ocultarSpinner();
+
+            // Guardar la sesión
+//            SesionActual.iniciarSesion(cuenta);
+            // Navegar al menú
+            if (stage == null && event != null) {
+                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            }
+            navegarAlMenu();
+        });
+
+        task.setOnFailed(e -> {
+            setFormularioHabilitado(true);
+            ocultarSpinner();
+            txtPassword.clear();
+            txtPassword.requestFocus();
+
+            Throwable ex = task.getException();
+            String msg = (ex != null && ex.getMessage() != null)
+                    ? ex.getMessage()
+                    : "Usuario o contraseña incorrectos.";
+            mostrarError(msg);
+        });
+
+        new Thread(task).start();
+    }
+
+    private void navegarAlMenu() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("menu/Menu.fxml"));
+            Parent vista = loader.load();
+
+            MenuController menuController = loader.getController();
+            // Inyectar datos de sesión en el menú
+//            menuController.aplicarSesion(SesionActual.getCuentaActual());
+
+            Scene nuevaEscena = new Scene(vista);
+            stage.setScene(nuevaEscena);
+            stage.setResizable(true);
+            stage.setMaximized(false);
+            stage.setMaximized(true);
+            stage.show();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            mostrarError("Error al cargar la aplicación.");
+        }
     }
 
     @FXML
@@ -49,36 +145,40 @@ public class LogInController implements Initializable, BaseController {
         System.exit(0);
     }
 
-    @FXML
-    public void iniciarSesion(ActionEvent event) {
-        this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-        cambiarDePantalla("menu/Menu.fxml");
+    private void mostrarError(String mensaje) {
+        if (lblError != null) {
+            lblError.setText(mensaje);
+            lblError.setVisible(true);
+            lblError.setManaged(true);
+        }
     }
 
-    public void cambiarDePantalla(String rutaFXML) {
-        try {
-            if (rutaFXML != null) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
-                Parent vista = loader.load();
+    private void ocultarError() {
+        if (lblError != null) {
+            lblError.setVisible(false);
+            lblError.setManaged(false);
+        }
+    }
 
-                Object controller = loader.getController();
-                if (controller instanceof BaseController baseController) {
-                    baseController.setDashBoard(dbc);
-                }
+    private void mostrarSpinner() {
+        if (progressLogin != null) {
+            progressLogin.setVisible(true);
+            progressLogin.setManaged(true);
+        }
+    }
 
-                Scene nuevaEscena = new Scene(vista);
+    private void ocultarSpinner() {
+        if (progressLogin != null) {
+            progressLogin.setVisible(false);
+            progressLogin.setManaged(false);
+        }
+    }
 
-                stage.setScene(nuevaEscena);
-                stage.setResizable(true);
-
-                stage.setMaximized(false);
-                stage.setMaximized(true);
-
-                stage.show();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void setFormularioHabilitado(boolean habilitado) {
+        txtUsuario.setDisable(!habilitado);
+        txtPassword.setDisable(!habilitado);
+        if (btnIngresar != null) {
+            btnIngresar.setDisable(!habilitado);
         }
     }
 
