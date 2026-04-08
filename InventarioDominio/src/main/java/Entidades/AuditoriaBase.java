@@ -22,13 +22,13 @@ public abstract class AuditoriaBase {
     @PrePersist
     public void alCrear() {
         this.fechaCreacion = LocalDateTime.now();
-        this.creadoPor = SesionActual.getUsuario();
+        this.creadoPor = SesionActual.getUsuario().getUsername();
     }
 
     @PreUpdate
     public void alModificar() {
         this.fechaModificacion = LocalDateTime.now();
-        this.modificadoPor = SesionActual.getUsuario();
+        this.modificadoPor = SesionActual.getUsuario().getUsername();
     }
 
     public LocalDateTime getFechaCreacion() {

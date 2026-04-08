@@ -3,6 +3,7 @@ package com.mycompany.inventariofrontfx.cuentas;
 import Dtos.CuentaSistemaDTO;
 import Enums.RolCuenta;
 import InterfacesFachada.IFachadaPersonas;
+import Utilidades.ServicioSesion;
 import Utilidades.SesionActual;
 import com.mycompany.inventariofrontfx.menu.MenuController;
 import fabricaFachadas.FabricaFachadas;
@@ -52,7 +53,7 @@ public class CuentasController implements Initializable, BaseController {
     @FXML
     private PasswordField pfPassword;
     @FXML
-    private Label lblPasswordHint;  // "Dejar vacío para no cambiar" (modo edición)
+    private Label lblPasswordHint;
     @FXML
     private ComboBox<RolCuenta> cbxRol;
     @FXML
@@ -145,7 +146,7 @@ public class CuentasController implements Initializable, BaseController {
                     return;
                 }
                 CuentaSistemaDTO cuenta = getTableRow().getItem();
-//                btnEliminar.setDisable(esMiCuenta(cuenta));
+                btnEliminar.setDisable(esMiCuenta(cuenta));
                 setGraphic(box);
             }
         });
@@ -182,7 +183,6 @@ public class CuentasController implements Initializable, BaseController {
     }
 
     private void configurarFormulario() {
-        // Roles disponibles para asignar (sin TODOS)
         cbxRol.setItems(FXCollections.observableArrayList(
                 RolCuenta.ADMIN, RolCuenta.OPERARIO, RolCuenta.INVITADO
         ));
@@ -361,11 +361,11 @@ public class CuentasController implements Initializable, BaseController {
     /**
      * true si la cuenta dada corresponde al usuario actualmente logueado.
      */
-//    private boolean esMiCuenta(CuentaSistemaDTO cuenta) {
-//        CuentaSistemaDTO actual = SesionActual.getCuentaActual();
-//        return actual != null && actual.getId() != null
-//                && actual.getId().equals(cuenta.getId());
-//    }
+    private boolean esMiCuenta(CuentaSistemaDTO cuenta) {
+        CuentaSistemaDTO actual = ServicioSesion.getUsuario();
+        return actual != null && actual.getId() != null
+                && actual.getId().equals(cuenta.getId());
+    }
 
     private String badgeStyle(String rol) {
         if (rol == null) {

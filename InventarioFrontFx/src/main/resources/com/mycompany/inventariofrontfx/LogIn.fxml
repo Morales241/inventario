@@ -38,8 +38,8 @@
                         </Label>
                         <TextField fx:id="txtUsuario" maxWidth="250.0" prefWidth="250" promptText="Usuario" />
                         <PasswordField fx:id="txtPassword" maxWidth="250.0" prefWidth="250" promptText="Contraseña" />
-                        <Button onAction="#iniciarSesion" prefHeight="40" prefWidth="250" styleClass="btn-agregar" text="Ingresar" />
-                        <Button onAction="#cerrar" prefHeight="40" prefWidth="250" styleClass="btn-cancelar" text="Salir" />
+                        <Button fx:id="btnIngresar" onAction="#iniciarSesion" prefHeight="40" prefWidth="250" styleClass="btn-agregar" text="Ingresar" />
+                        <Button fx:id="btnSalir" onAction="#cerrar" prefHeight="40" prefWidth="250" styleClass="btn-cancelar" text="Salir" />
                     </children>
                 </VBox>
             </center>

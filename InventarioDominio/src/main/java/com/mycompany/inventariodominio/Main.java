@@ -2,6 +2,7 @@ package com.mycompany.inventariodominio;
 
 import Dao.*;
 import Entidades.*;
+import Enums.RolCuenta;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -29,9 +30,9 @@ public class Main {
             em.getTransaction().begin();
 
 //            cargarMockDatos(em);
-
-            importarDatos(em);
-
+//            importarDatos(em);
+            crearCuenta(em);
+            
             em.getTransaction().commit();
 
             System.out.println("Base de datos generada correctamente");
@@ -52,22 +53,21 @@ public class Main {
 
     private static void importarDatos(EntityManager em) throws FileNotFoundException, IOException {
         FileInputStream fis = new FileInputStream("C:/Users/JesusMorales/Documents/inventario simplificado.xlsx");
-        
+
         DaoEmpresa daoEmpresa = new DaoEmpresa();
 
         daoEmpresa.setEntityManager(em);
-        
+
         importarxlsx lector = new importarxlsx();
-        
+
         List<Empresa> empresas = lector.readExcelOrganizacion(fis);
-        
+
         empresas.forEach(e -> {
             daoEmpresa.guardar(e);
-            
+
             System.out.println(e.toString());
         });
-        
-        
+
         fis.close();
     }
 
@@ -141,5 +141,14 @@ public class Main {
         daoModelo.guardar(new Modelo("Galaxy S23", "Samsung", 8, 256, "Snapdragon 8 Gen 2"));
 
         System.out.println("✔ Datos mock cargados correctamente");
+    }
+
+    private static void crearCuenta(EntityManager em) {
+        DaoCuentaSistema dao = new DaoCuentaSistema();
+
+        dao.setEntityManager(em);
+
+        dao.guardar(new CuentaSistema("Admin", "GRY", RolCuenta.ADMIN));
+    
     }
 }

@@ -2,6 +2,7 @@ package com.mycompany.inventariofrontfx;
 
 import Dtos.CuentaSistemaDTO;
 import InterfacesFachada.IFachadaPersonas;
+import Utilidades.ServicioSesion;
 import Utilidades.SesionActual;
 import com.mycompany.inventariofrontfx.menu.MenuController;
 import fabricaFachadas.FabricaFachadas;
@@ -93,7 +94,7 @@ public class LogInController implements Initializable, BaseController {
             ocultarSpinner();
 
             // Guardar la sesión
-//            SesionActual.iniciarSesion(cuenta);
+            ServicioSesion.setUsuario(cuenta);
             // Navegar al menú
             if (stage == null && event != null) {
                 stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -125,7 +126,7 @@ public class LogInController implements Initializable, BaseController {
 
             MenuController menuController = loader.getController();
             // Inyectar datos de sesión en el menú
-//            menuController.aplicarSesion(SesionActual.getCuentaActual());
+            menuController.aplicarSesion(ServicioSesion.getUsuario());
 
             Scene nuevaEscena = new Scene(vista);
             stage.setScene(nuevaEscena);
@@ -148,6 +149,7 @@ public class LogInController implements Initializable, BaseController {
     private void mostrarError(String mensaje) {
         if (lblError != null) {
             lblError.setText(mensaje);
+            System.out.println(mensaje);
             lblError.setVisible(true);
             lblError.setManaged(true);
         }

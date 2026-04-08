@@ -113,13 +113,10 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         return ejecutarLectura(em -> {
             configurarDAOs(em);
 
-            // 1. Traer solo la página (LIMIT/OFFSET en BD)
             List<Usuario> entidades = daoUsuario.busquedaConFiltrosPaginado(nf, nmf, null, pagina, tamano);
 
-            // 2. Mapear a DTOs
             List<UsuarioDTO> dtos = MapperUsuario.converter.mapToDtoList(entidades);
 
-            // 3. Añadir conteo de equipos: 1 COUNT por usuario (no lista completa)
             for (UsuarioDTO dto : dtos) {
                 int equipos = daoUsuario.contarEquiposAsignadosPorUsuario(dto.getId());
                 dto.setNumeroDeEquipos(equipos);
@@ -129,10 +126,6 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         });
     }
 
-    /**
-     * NUEVO: cuenta usuarios que coinciden con el filtro. Se usa para calcular
-     * el total de páginas.
-     */
     @Override
     public long contarUsuarios(String criterioGlobal) {
         String criterio = (criterioGlobal != null) ? criterioGlobal.trim() : "";
@@ -415,12 +408,20 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         
         public CuentaSistemaDTO login(String user, String contra){
             
-            return mapper.mapToDto(dao.login(user, user));
+            return ejecutarLectura(em -> {
+                dao.setEntityManager(em);
+                
+                return mapper.mapToDto(dao.login(user, contra));
+            });
         }
         
         public CuentaSistemaDTO buscarPorUsername(String user){
             
-            return mapper.mapToDto(dao.busquedaEspecifica(user));
+            return ejecutarLectura(em -> {
+                dao.setEntityManager(em);
+                
+                return mapper.mapToDto(dao.busquedaEspecifica(user));
+            });
         }
     }
 }
