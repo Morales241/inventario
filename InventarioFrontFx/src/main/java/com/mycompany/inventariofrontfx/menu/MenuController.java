@@ -24,14 +24,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
  * Controlador del menú principal.
- *
- * CAMBIOS: 1. aplicarSesion(CuentaSistemaDTO): recibe la cuenta del login,
- * muestra nombre + rol en el header y llama a aplicarPermisos() para ocultar o
- * deshabilitar secciones según el rol. 2. Organización y Cuentas ahora navegan
- * a sus FXMLs reales. 3. El botón "Cerrar Sesión" tiene lógica real: limpia
- * SesionActual y vuelve al login. 4. aplicarPermisos() es el único lugar donde
- * se define qué puede ver cada rol. Cuando el alumno defina los permisos
- * exactos, solo hay que editar ese método.
  */
 public class MenuController implements Initializable {
 
@@ -81,19 +73,14 @@ public class MenuController implements Initializable {
         btnConfiguracion.setOnAction(e -> toggleSubMenu());
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Sesión y permisos
-    // ─────────────────────────────────────────────────────────────────────────
     /**
-     * Llamado por LogInController justo después de cargar el menú. Muestra los
-     * datos del usuario en el header y aplica permisos.
+     * Llamado por LogInController justo después de cargar el menú
      */
     public void aplicarSesion(CuentaSistemaDTO cuenta) {
         if (cuenta == null) {
             return;
         }
 
-        // Mostrar nombre y rol en el header
         if (nombreUser != null) {
             nombreUser.setText(cuenta.getUsername());
         }
