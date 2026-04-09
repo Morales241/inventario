@@ -4280,3 +4280,857 @@
 2026-03-31 11:28:22.251 [JavaFX Application Thread] DEBUG Servicios.ServicioGenerico               - Validaciones de negocio pasadas para nuevo registro
 2026-03-31 11:28:22.277 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
 2026-03-31 11:28:22.277 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:49:14.170 [Thread-4       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:49:14.170 [Thread-4       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:49:14.290 [Thread-4       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:49:14.290 [Thread-4       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:49:16.509 [Thread-6       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:49:16.509 [Thread-6       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:49:16.524 [Thread-6       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:49:16.524 [Thread-6       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:49:16.525 [Thread-6       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:49:16.525 [Thread-6       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:49:16.568 [Thread-6       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:49:16.568 [Thread-6       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:01.146 [Thread-7       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:01.146 [Thread-7       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:01.195 [Thread-7       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:01.195 [Thread-7       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:01.196 [Thread-7       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:01.196 [Thread-7       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:01.244 [Thread-7       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:01.244 [Thread-7       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:04.552 [Thread-8       ] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Empresa
+2026-04-09 10:50:04.552 [Thread-8       ] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Empresa
+2026-04-09 10:50:04.553 [Thread-9       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:04.553 [Thread-9       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:04.554 [Thread-8       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:04.554 [Thread-8       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:04.624 [Thread-9       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:04.624 [Thread-9       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:04.625 [Thread-9       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:04.625 [Thread-9       ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:04.796 [Thread-9       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:04.796 [Thread-9       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:04.860 [Thread-8       ] DEBUG Servicios.ServicioGenerico               - Se encontraron 13 registros de Empresa
+2026-04-09 10:50:04.860 [Thread-8       ] DEBUG Servicios.ServicioGenerico               - Se encontraron 13 registros de Empresa
+2026-04-09 10:50:04.861 [Thread-8       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:04.861 [Thread-8       ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:04.905 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:04.905 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:05.100 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:05.100 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:53.608 [Thread-10      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:53.608 [Thread-10      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:53.624 [Thread-10      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:53.624 [Thread-10      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:53.624 [Thread-10      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:53.624 [Thread-10      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:53.642 [Thread-10      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:53.642 [Thread-10      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.520 [Thread-11      ] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Empresa
+2026-04-09 10:50:54.520 [Thread-11      ] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Empresa
+2026-04-09 10:50:54.520 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.520 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.744 [Thread-11      ] DEBUG Servicios.ServicioGenerico               - Se encontraron 13 registros de Empresa
+2026-04-09 10:50:54.744 [Thread-11      ] DEBUG Servicios.ServicioGenerico               - Se encontraron 13 registros de Empresa
+2026-04-09 10:50:54.744 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.744 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.744 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.744 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.781 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.781 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.782 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.782 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.807 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.807 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.807 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.807 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.829 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.829 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.829 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.829 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.848 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.848 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.848 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.848 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.872 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.872 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.872 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.872 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.890 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.890 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.890 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.890 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.906 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.906 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.907 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.907 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.929 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.929 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.929 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.929 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.950 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.950 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.950 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.950 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.968 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.968 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.968 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.968 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.985 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.985 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:54.985 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:54.985 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.003 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.003 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.003 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.003 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.029 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.029 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.029 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.029 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.049 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.049 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.049 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.049 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.064 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.064 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.065 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.065 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.085 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.085 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.085 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.085 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.103 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.103 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.104 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.104 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.122 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.122 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.122 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.122 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.139 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.139 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.139 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.139 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.155 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.155 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.156 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.156 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.172 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.172 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.172 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.172 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.189 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.189 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.190 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.190 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.206 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.206 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.206 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.206 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.227 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.227 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.227 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.227 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.242 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.242 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.242 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.242 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.262 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.262 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.262 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.262 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.282 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.282 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.283 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.283 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.304 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.304 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.305 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.305 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.326 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.326 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.326 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.326 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.343 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.343 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.343 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.343 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.362 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.362 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.362 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.362 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.379 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.379 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.379 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.379 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.400 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.400 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.400 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.400 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.414 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.414 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.414 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.414 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.435 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.435 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.435 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.435 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.451 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.451 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.451 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.451 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.474 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.474 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.474 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.474 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.498 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.498 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.498 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.498 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.516 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.516 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.516 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.516 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.538 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.538 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.538 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.538 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.555 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.555 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.556 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.556 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.573 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.573 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.573 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.573 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.596 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.596 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.597 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.597 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.613 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.613 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.614 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.614 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.634 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.634 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.634 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.634 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.663 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.663 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.663 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.663 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.683 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.683 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.683 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.683 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.711 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.711 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.711 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.711 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.744 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.744 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.746 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.746 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.777 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.777 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.778 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.778 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.801 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.801 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.801 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.801 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.819 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.819 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.819 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.819 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.848 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.848 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.849 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.849 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.866 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.866 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.866 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.866 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.884 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.884 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.884 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.884 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.908 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.908 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.908 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.908 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.926 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.926 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.926 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.926 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.951 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.951 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.952 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.952 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.970 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.970 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.971 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.971 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.986 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.986 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:55.986 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:55.986 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.006 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.006 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.006 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.006 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.023 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.023 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.023 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.023 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.042 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.042 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.043 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.043 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.062 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.062 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.063 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.063 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.080 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.080 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.080 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.080 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.103 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.103 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.103 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.103 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.121 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.121 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.122 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.122 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.142 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.142 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.143 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.143 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.161 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.161 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.161 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.161 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.181 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.181 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.181 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.181 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.201 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.201 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.201 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.201 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.217 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.217 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.217 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.217 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.233 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.233 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.233 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.233 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.253 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.253 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.253 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.253 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.268 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.268 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.268 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.268 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.291 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.291 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.291 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.291 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.312 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.312 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.312 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.312 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.328 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.328 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.328 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.328 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.354 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.354 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.355 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.355 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.372 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.372 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.372 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.372 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.388 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.388 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.388 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.388 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.403 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.403 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.403 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.403 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.422 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.422 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.422 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.422 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.438 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.438 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.439 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.439 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.488 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.488 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.488 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.488 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.539 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.539 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.539 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.539 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.562 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.562 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.563 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.563 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.583 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.583 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.584 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.584 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.604 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.604 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.605 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.605 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.631 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.631 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.632 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.632 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.667 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.667 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.667 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.667 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.687 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.687 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.687 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.687 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.709 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.709 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.709 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.709 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.736 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.736 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.736 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.736 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.762 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.762 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.762 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.762 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.782 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.782 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.782 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.782 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.812 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.812 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.812 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.812 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.845 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.845 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.845 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.845 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.892 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.892 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.893 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.893 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.915 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.915 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.916 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.916 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.952 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.952 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:56.952 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:56.952 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.004 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.004 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.004 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.004 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.023 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.023 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.024 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.024 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.052 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.052 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.052 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.052 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.097 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.097 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.097 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.097 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.114 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.114 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.114 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.114 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.130 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.130 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.130 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.130 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.149 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.149 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.149 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.149 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.165 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.165 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.165 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.165 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.181 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.181 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.181 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.181 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.198 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.198 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.198 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.198 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.214 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.214 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.214 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.214 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.234 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.234 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.234 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.234 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.249 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.249 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.250 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.250 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.272 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.272 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.272 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.272 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.289 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.289 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.289 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.289 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.304 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.304 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.305 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.305 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.318 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.318 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.318 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.318 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.338 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.338 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.338 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.338 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.353 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.353 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.354 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.354 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.374 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.374 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.374 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.374 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.388 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.388 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.389 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.389 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.403 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.403 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.403 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.403 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.420 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.420 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.420 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.420 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.441 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.441 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.441 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.441 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.456 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.456 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.456 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.456 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.478 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.478 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.479 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.479 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.497 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.497 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.497 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.497 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.517 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.517 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.517 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.517 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.536 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.536 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.536 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.536 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.551 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.551 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.552 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.552 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.567 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.567 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.567 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.567 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.584 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.584 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.584 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.584 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.600 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.600 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.600 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.600 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.615 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.615 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.615 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.615 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.632 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.632 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.633 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.633 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.654 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.654 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.654 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.654 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.671 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.671 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.672 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.672 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.694 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.694 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.694 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.694 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.709 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.709 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.709 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.709 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.727 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.727 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.727 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.727 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.752 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.752 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.752 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.752 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.768 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.768 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.768 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.768 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.785 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.785 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.785 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.785 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.802 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.802 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.802 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.802 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.820 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.820 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.820 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.820 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.837 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.837 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.837 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.837 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.858 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.858 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.858 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.858 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.885 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.885 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.885 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.885 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.902 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.902 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.902 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.902 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.918 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.918 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.918 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.918 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.932 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.932 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.932 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.932 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.951 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.951 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.951 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.951 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.968 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.968 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.968 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.968 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.986 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.986 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:57.986 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:57.986 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.000 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.000 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.000 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.000 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.017 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.017 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.017 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.017 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.034 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.034 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.034 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.034 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.056 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.056 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.057 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.057 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.071 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.071 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.072 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.072 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.090 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.090 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.090 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.090 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.111 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.111 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.111 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.111 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.128 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.128 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.129 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.129 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.145 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.145 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.145 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.145 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.165 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.165 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.165 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.165 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.188 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.188 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.189 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.189 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.205 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.205 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.205 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.205 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.224 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.224 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.224 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.224 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.238 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.238 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.238 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.238 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.260 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.260 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.261 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.261 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.284 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.284 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.284 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.284 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.301 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.301 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.301 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.301 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.318 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.318 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.318 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.318 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.332 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.332 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.332 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.332 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.348 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.348 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.348 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.348 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.367 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.367 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.367 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.367 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.380 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.380 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.380 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.380 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.417 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.417 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.417 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.417 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.433 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.433 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.433 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.433 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.453 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.453 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.453 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.453 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.469 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.469 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.469 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.469 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.485 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.485 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.485 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.485 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.507 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.507 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.507 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.507 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:50:58.543 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:50:58.543 [Thread-11      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:02.106 [Thread-12      ] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Empresa
+2026-04-09 10:51:02.106 [Thread-13      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:02.106 [Thread-12      ] DEBUG Servicios.ServicioGenerico               - Buscando todos los registros de Empresa
+2026-04-09 10:51:02.106 [Thread-13      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:02.106 [Thread-12      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:02.106 [Thread-12      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:02.126 [Thread-13      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:02.126 [Thread-13      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:02.126 [Thread-13      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:02.126 [Thread-13      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:02.194 [Thread-13      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:02.194 [Thread-13      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:02.364 [Thread-12      ] DEBUG Servicios.ServicioGenerico               - Se encontraron 13 registros de Empresa
+2026-04-09 10:51:02.364 [Thread-12      ] DEBUG Servicios.ServicioGenerico               - Se encontraron 13 registros de Empresa
+2026-04-09 10:51:02.364 [Thread-12      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:02.364 [Thread-12      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:02.365 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:02.365 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:02.515 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:02.515 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:29.677 [Thread-14      ] DEBUG Servicios.ServicioBase                   - Transacción iniciada con nuevo EntityManager
+2026-04-09 10:51:29.677 [Thread-14      ] DEBUG Servicios.ServicioBase                   - Transacción iniciada con nuevo EntityManager
+2026-04-09 10:51:29.745 [Thread-14      ] DEBUG Servicios.ServicioBase                   - Transacción completada exitosamente
+2026-04-09 10:51:29.745 [Thread-14      ] DEBUG Servicios.ServicioBase                   - Transacción completada exitosamente
+2026-04-09 10:51:29.745 [Thread-14      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:29.745 [Thread-14      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:29.746 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:29.746 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:29.917 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:29.917 [JavaFX Application Thread] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:29.918 [Thread-15      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:29.918 [Thread-15      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:29.936 [Thread-15      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:29.936 [Thread-15      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:29.936 [Thread-15      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:29.936 [Thread-15      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:29.987 [Thread-15      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:29.987 [Thread-15      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:58.358 [Thread-16      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:58.358 [Thread-16      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:58.375 [Thread-16      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:58.375 [Thread-16      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:58.375 [Thread-16      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:58.375 [Thread-16      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:51:58.415 [Thread-16      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:51:58.415 [Thread-16      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:52:00.406 [Thread-17      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:52:00.406 [Thread-17      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:52:00.430 [Thread-17      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:52:00.430 [Thread-17      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:52:00.430 [Thread-17      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:52:00.430 [Thread-17      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:52:00.471 [Thread-17      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:52:00.471 [Thread-17      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:52:01.013 [Thread-18      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:52:01.013 [Thread-18      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:52:01.026 [Thread-18      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:52:01.026 [Thread-18      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:52:01.026 [Thread-18      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:52:01.026 [Thread-18      ] DEBUG Servicios.ServicioBase                   - EntityManager abierto para lectura
+2026-04-09 10:52:01.070 [Thread-18      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
+2026-04-09 10:52:01.070 [Thread-18      ] DEBUG Servicios.ServicioBase                   - EntityManager cerrado
