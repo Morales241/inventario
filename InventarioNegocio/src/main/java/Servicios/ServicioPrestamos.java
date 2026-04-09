@@ -583,4 +583,36 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
             return ServicioPrestamos.this.buscarAsignaciones(filtro);
         }
     }
+    
+    @Override
+    public List<AsignacionDTO> buscarAsignacionesPaginado(String filtro,
+                                                           int pagina,
+                                                           int tamano) {
+        return ejecutarLectura(em -> {
+            configurarDAOs(em);
+ 
+            List<Entidades.EquipoAsignado> entidades;
+ 
+            if (filtro == null || filtro.isBlank()) {
+                entidades = daoAsignacion.buscarActivasPaginado(pagina, tamano);
+            } else {
+                entidades = daoAsignacion.buscarConFiltroPaginado(filtro, pagina, tamano);
+            }
+ 
+            return mapper.MapperAsignacion.converter.mapToDtoList(entidades);
+        });
+    }
+ 
+    @Override
+    public long contarAsignaciones(String filtro) {
+        return ejecutarLectura(em -> {
+            configurarDAOs(em);
+ 
+            if (filtro == null || filtro.isBlank()) {
+                return daoAsignacion.contarActivas();
+            } else {
+                return daoAsignacion.contarConFiltro(filtro);
+            }
+        });
+    }
 }

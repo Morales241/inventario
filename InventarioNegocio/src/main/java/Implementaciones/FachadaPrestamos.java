@@ -28,7 +28,6 @@ public class FachadaPrestamos implements IFachadaPrestamos {
         this(new ServicioPrestamos());
     }
 
-    // OPERACIONES PRINCIPALES
     
     @Override
     public void asignarEquipo(Long idEquipo, Long idUsuario) {
@@ -90,11 +89,6 @@ public class FachadaPrestamos implements IFachadaPrestamos {
         return servicioPrestamos.contarEquiposAsignadosAUsuario(idUsuario);
     }
 
-//    @Override
-//    public List<Object[]> obtenerTopUsuariosConEquipos(int limite) {
-//        return servicioPrestamos.obtenerTopUsuariosConEquipos(limite);
-//    }
-
     @Override
     public AsignacionDTO obtenerUltimaAsignacionDeEquipo(Long idEquipo) {
         return servicioPrestamos.obtenerUltimaAsignacionDeEquipo(idEquipo);
@@ -103,5 +97,16 @@ public class FachadaPrestamos implements IFachadaPrestamos {
     @Override
     public boolean usuarioPuedeRecibirMasEquipos(Long idUsuario, int limiteMaximo) {
         return servicioPrestamos.usuarioPuedeRecibirMasEquipos(idUsuario, limiteMaximo);
+    }
+    
+    @Override
+    public List<AsignacionDTO> buscarAsignacionesPaginado(String filtro, int pagina, int tamano) {
+        return servicioPrestamos.buscarAsignacionesPaginado(filtro, pagina, tamano);
+    }
+ 
+    
+    @Override
+    public long contarAsignaciones(String filtro) {
+        return servicioPrestamos.contarAsignaciones(filtro);
     }
 }
