@@ -65,6 +65,7 @@ public class MenuController implements Initializable {
         menu.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 manejarNavegacion(((ToggleButton) newVal).getText());
+                System.out.println("cambiando pantalla a " + newVal.toString());
             } else if (oldVal != null) {
                 oldVal.setSelected(true);
             }
@@ -153,7 +154,7 @@ public class MenuController implements Initializable {
 
     private void manejarNavegacion(String opcion) {
         switch (opcion) {
-            case "DashBoard" ->
+            case "ADMINDashBoard" ->
                 cambiarDePantalla(null, "Dashboard", "Resumen general del inventario de TI");
             case "Inventario" ->
                 cambiarDePantalla("/com/mycompany/inventariofrontfx/inventario/Inventario.fxml",
@@ -170,8 +171,9 @@ public class MenuController implements Initializable {
             case "Cuentas" ->
                 cambiarDePantalla("/com/mycompany/inventariofrontfx/cuentas/Cuentas.fxml",
                         "Cuentas del Sistema", "Administración de usuarios del sistema y roles de acceso");
-            case "Auditoria" ->
-                cambiarDePantalla(null, "Auditoría del Sistema", "Registro de movimientos y cambios");
+            case "Auditoría" ->
+                cambiarDePantalla("/com/mycompany/inventariofrontfx/auditoria/Auditoria.fxml", 
+                        "Auditoría del Sistema", "Registro de movimientos y cambios");
             default -> {
             }
         }

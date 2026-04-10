@@ -1,25 +1,24 @@
 package Dtos;
 
-import Enums.RolCuenta;
+import java.time.LocalDateTime;
 
 /**
- * Transferencia de datos para usuarios del sistema.
- * <p>
- * Contiene información de autenticación y autorización del usuario.
- * El rol determina los permisos y acceso a diferentes funcionalidades del sistema.
- * La contraseña se maneja por separado por razones de seguridad.
- * </p>
+ * CuentaSistemaDTO ampliado con campos de auditoría.
  */
 public class CuentaSistemaDTO {
 
-    private Long id;
-    private String username;
-    private String password;
-    private Long version;
-    private String rol;
+    private Long          id;
+    private String        username;
+    private String        password;
+    private Long          version;
+    private String        rol;
 
-    public CuentaSistemaDTO() {
-    }
+    private String        creadoPor;
+    private LocalDateTime fechaCreacion;
+    private String        modificadoPor;
+    private LocalDateTime fechaModificacion;
+
+    public CuentaSistemaDTO() {}
 
     public CuentaSistemaDTO(Long id, String username, String rol) {
         this.id = id;
@@ -27,43 +26,33 @@ public class CuentaSistemaDTO {
         this.rol = rol;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Long getId()                   { return id; }
+    public void setId(Long id)            { this.id = id; }
 
-    public String getUsername() {
-        return username;
-    }
+    public String getUsername()           { return username; }
+    public void setUsername(String u)     { this.username = u; }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public String getRol()                { return rol; }
+    public void setRol(String rol)        { this.rol = rol; }
 
-    public String getRol() {
-        return rol;
-    }
+    public Long getVersion()              { return version; }
+    public void setVersion(Long v)        { this.version = v; }
 
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
+    public String getPassword()           { return password; }
+    public void setPassword(String p)     { this.password = p; }
 
-    public Long getVersion() {
-        return version;
-    }
+    // ── Getters / Setters de auditoría (nuevos) ───────────────────────────────
 
-    public void setVersion(Long version) {
-        this.version = version;
-    }
+    public String getCreadoPor()                        { return creadoPor; }
+    public void   setCreadoPor(String creadoPor)        { this.creadoPor = creadoPor; }
 
-    public String getPassword() {
-        return password;
-    }
+    public LocalDateTime getFechaCreacion()             { return fechaCreacion; }
+    public void setFechaCreacion(LocalDateTime f)       { this.fechaCreacion = f; }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public String getModificadoPor()                    { return modificadoPor; }
+    public void   setModificadoPor(String modificadoPor){ this.modificadoPor = modificadoPor; }
+
+    public LocalDateTime getFechaModificacion()         { return fechaModificacion; }
+    public void setFechaModificacion(LocalDateTime f)   { this.fechaModificacion = f; }
 }

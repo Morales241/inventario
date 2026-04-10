@@ -3,20 +3,16 @@ package mapper;
 import Dtos.CuentaSistemaDTO;
 import Entidades.CuentaSistema;
 import Enums.RolCuenta;
-import mapper.Mapper;
 
 /**
- * Mapeador para transformaciones entre la entidad cuentaSistema y su DTO.
- * <p>
- * Convierte datos de autenticación y autorización entre la entidad y el DTO.
- * <b>Nota de seguridad:</b> La contraseña no se incluye en la conversión desde DTO a entidad.
- * </p>
+ * Mapeador CuentaSistema ↔ CuentaSistemaDTO.
  */
 public class MapperCuentaSistema {
 
     public static final Mapper<CuentaSistema, CuentaSistemaDTO> converter =
             new Mapper<>(
 
+                    // ── entity → DTO ──────────────────────────────────────────
                     (entity) -> {
                         if (entity == null) return null;
 
@@ -27,31 +23,41 @@ public class MapperCuentaSistema {
                         if (entity.getRol() != null) {
                             dto.setRol(entity.getRol().name());
                         }
-                        
+
                         if (entity.getVersion() != null) {
                             dto.setVersion(entity.getVersion());
-                            
                         }
-                      
+
+                        // Campos de auditoría (de AuditoriaBase)
+                        dto.setCreadoPor(entity.getCreadoPor());
+                        dto.setFechaCreacion(entity.getFechaCreacion());
+                        dto.setModificadoPor(entity.getModificadoPor());
+                        dto.setFechaModificacion(entity.getFechaModificacion());
+
                         return dto;
                     },
 
+                    // ── DTO → entity ────────
                     (dto) -> {
                         if (dto == null) return null;
 
                         CuentaSistema u = new CuentaSistema();
-                        u.setId(dto.getId());
+                        
+                        if (dto.getId() != null) {
+                            u.setId(dto.getId());
+                        }
+                        
                         u.setUsername(dto.getUsername());
-
+                        u.setPassword(dto.getPassword());
+                        
                         if (dto.getRol() != null) {
                             u.setRol(RolCuenta.valueOf(dto.getRol()));
                         }
-                        
+
                         if (dto.getVersion() != null) {
                             u.setVersion(dto.getVersion());
-                            
                         }
-                        
+
                         return u;
                     }
             );

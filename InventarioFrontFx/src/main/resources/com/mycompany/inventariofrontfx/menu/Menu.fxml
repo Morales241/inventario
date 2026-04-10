@@ -88,7 +88,7 @@
                   
                   <VBox fx:id="containerSubMenu" managed="false" spacing="5.0" visible="false">
                      <children>
-                        <ToggleButton fx:id="btnUsuarios" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" styleClass="menu-btn-sub" text="• Usuarios" toggleGroup="$menu">
+                        <ToggleButton fx:id="btnUsuarios" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" styleClass="menu-btn" text="Cuentas" toggleGroup="$menu">
                            <font>
                               <Font name="SansSerif Regular" size="13.0" />
                            </font>
@@ -96,7 +96,7 @@
                               <Insets left="40.0" />
                            </padding>
                         </ToggleButton>
-                        <ToggleButton fx:id="btnAuditoria" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" styleClass="menu-btn-sub" text="• Auditoria" toggleGroup="$menu">
+                        <ToggleButton fx:id="btnAuditoria" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" styleClass="menu-btn" text="Auditoría" toggleGroup="$menu">
                            <font>
                               <Font name="SansSerif Regular" size="13.0" />
                            </font>
