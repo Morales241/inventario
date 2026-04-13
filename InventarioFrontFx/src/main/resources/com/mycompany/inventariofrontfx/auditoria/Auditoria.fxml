@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../estilos-base.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.inventariofrontfx.auditoria.AuditoriaController">
 
@@ -23,7 +24,10 @@
             <!-- ════════════════════════════════════════════════════════════
                  TAB 1 — HISTORIAL DE EQUIPO
                  ════════════════════════════════════════════════════════════ -->
-            <Tab text="🖥  Historial de Equipo">
+            <Tab text="Historial de Equipo">
+                <graphic>
+                    <FontIcon iconLiteral="fas-desktop"/>
+                </graphic>
                 <content>
                     <BorderPane style="-fx-background-color: #F3F4F6;">
 
@@ -50,7 +54,7 @@
 
                                 <!-- PLACEHOLDER (visible hasta buscar) -->
                                 <VBox fx:id="panelPlaceholderEquipo" alignment="CENTER" spacing="14" style="-fx-background-color: white;                                              -fx-background-radius: 12;                                              -fx-border-color: #E5E7EB;                                              -fx-border-radius: 12;                                              -fx-border-width: 1.5;                                              -fx-border-style: dashed;">
-                                    <Label style="-fx-font-size: 42px;" text="🖥" />
+                                    <FontIcon iconLiteral="fas-desktop" iconSize="64" style="-fx-fill: #D1D5DB;" />
                                     <Label style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #9CA3AF;" text="Busca un equipo para ver su historial" />
                                     <Label style="-fx-font-size: 12px; -fx-text-fill: #D1D5DB;" text="Ingresa el GRY o el nombre del modelo en el campo de búsqueda" />
                                 </VBox>
@@ -117,6 +121,9 @@
                  TAB 2 — HISTORIAL DE CUENTAS DEL SISTEMA
                  ════════════════════════════════════════════════════════════ -->
             <Tab text="Cuentas del Sistema">
+                <graphic>
+                    <FontIcon iconLiteral="fas-id-card"/>
+                </graphic>
                 <content>
                     <BorderPane style="-fx-background-color: #F3F4F6;">
 
@@ -161,7 +168,10 @@
             <!-- ════════════════════════════════════════════════════════════
                  TAB 3 — AUDITORÍA DE USUARIOS
                  ════════════════════════════════════════════════════════════ -->
-            <Tab text="👥 Usuarios">
+            <Tab text="Usuarios">
+                <graphic>
+                    <FontIcon iconLiteral="fas-users"/>
+                </graphic>
                 <content>
                     <BorderPane style="-fx-background-color: #F3F4F6;">
                         <center>
@@ -188,7 +198,10 @@
             <!-- ════════════════════════════════════════════════════════════
                  TAB 4 — AUDITORÍA DE EQUIPOS
                  ════════════════════════════════════════════════════════════ -->
-            <Tab text="💻 Equipos">
+            <Tab text="Equipos">
+                <graphic>
+                    <FontIcon iconLiteral="fas-laptop"/>
+                </graphic>
                 <content>
                     <BorderPane style="-fx-background-color: #F3F4F6;">
                         <center>
@@ -215,7 +228,10 @@
             <!-- ════════════════════════════════════════════════════════════
                  TAB 5 — AUDITORÍA DE ASIGNACIONES
                  ════════════════════════════════════════════════════════════ -->
-            <Tab text="📋 Asignaciones">
+            <Tab text="Asignaciones">
+                <graphic>
+                    <FontIcon iconLiteral="fas-clipboard-list"/>
+                </graphic>
                 <content>
                     <BorderPane style="-fx-background-color: #F3F4F6;">
                         <center>
@@ -242,7 +258,10 @@
             <!-- ════════════════════════════════════════════════════════════
                  TAB 6 — AUDITORÍA DE EMPRESAS
                  ════════════════════════════════════════════════════════════ -->
-            <Tab text="🏢 Empresas">
+            <Tab text="Empresas">
+                <graphic>
+                    <FontIcon iconLiteral="fas-building"/>
+                </graphic>
                 <content>
                     <BorderPane style="-fx-background-color: #F3F4F6;">
                         <center>
@@ -268,7 +287,10 @@
             <!-- ════════════════════════════════════════════════════════════
                  TAB 7 — AUDITORÍA DE SUCURSALES
                  ════════════════════════════════════════════════════════════ -->
-            <Tab text="🏭 Sucursales">
+            <Tab text="Sucursales">
+                <graphic>
+                    <FontIcon iconLiteral="fas-industry"/>
+                </graphic>
                 <content>
                     <BorderPane style="-fx-background-color: #F3F4F6;">
                         <center>
@@ -295,7 +317,10 @@
             <!-- ════════════════════════════════════════════════════════════
                  TAB 8 — AUDITORÍA DE DEPARTAMENTOS
                  ════════════════════════════════════════════════════════════ -->
-            <Tab text="🏗️ Departamentos">
+            <Tab text="Departamentos">
+                <graphic>
+                    <FontIcon iconLiteral="fas-sitemap"/>
+                </graphic>
                 <content>
                     <BorderPane style="-fx-background-color: #F3F4F6;">
                         <center>
@@ -322,7 +347,10 @@
             <!-- ════════════════════════════════════════════════════════════
                  TAB 9 — AUDITORÍA DE PUESTOS
                  ════════════════════════════════════════════════════════════ -->
-            <Tab text="👔 Puestos">
+            <Tab text="Puestos">
+                <graphic>
+                    <FontIcon iconLiteral="fas-user-tie"/>
+                </graphic>
                 <content>
                     <BorderPane style="-fx-background-color: #F3F4F6;">
                         <center>
@@ -349,7 +377,10 @@
             <!-- ════════════════════════════════════════════════════════════
                  TAB 10 — AUDITORÍA DE MODELOS
                  ════════════════════════════════════════════════════════════ -->
-            <Tab text="🔧 Modelos">
+            <Tab text="Modelos">
+                <graphic>
+                    <FontIcon iconLiteral="fas-wrench"/>
+                </graphic>
                 <content>
                     <BorderPane style="-fx-background-color: #F3F4F6;">
                         <center>

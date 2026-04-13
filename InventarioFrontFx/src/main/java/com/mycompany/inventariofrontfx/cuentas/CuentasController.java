@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -22,6 +23,8 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -78,6 +81,7 @@ public class CuentasController implements Initializable, BaseController {
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnas();
         configurarAcciones();
+        configurarInteraccionTabla();
         configurarFormulario();
         configurarFiltro();
         cargarCuentas();
@@ -141,13 +145,64 @@ public class CuentasController implements Initializable, BaseController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || getTableRow().getItem() == null) {
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                     setGraphic(null);
                     return;
                 }
                 CuentaSistemaDTO cuenta = getTableRow().getItem();
                 btnEliminar.setDisable(esMiCuenta(cuenta));
                 setGraphic(box);
+            }
+        });
+    }
+
+    private void configurarInteraccionTabla() {
+        tablaCuentas.setRowFactory(tv -> {
+            TableRow<CuentaSistemaDTO> row = new TableRow<>();
+
+            // Menú contextual estilo Excel / Desktop
+            ContextMenu contextMenu = new ContextMenu();
+
+            MenuItem editarItem = new MenuItem("Editar Cuenta");
+            editarItem.setGraphic(new FontIcon("fas-edit"));
+            editarItem.setOnAction(event -> cargarParaEditar(row.getItem()));
+
+            MenuItem eliminarItem = new MenuItem("Eliminar Cuenta");
+            eliminarItem.setGraphic(new FontIcon("fas-trash"));
+            eliminarItem.setOnAction(event -> confirmarEliminacion(row.getItem()));
+
+            contextMenu.getItems().addAll(editarItem, new SeparatorMenuItem(), eliminarItem);
+
+            row.contextMenuProperty().bind(
+                Bindings.when(row.emptyProperty())
+                    .then((ContextMenu) null)
+                    .otherwise(contextMenu)
+            );
+
+            // Doble clic para editar
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+                    cargarParaEditar(row.getItem());
+                }
+            });
+
+            // Si es la cuenta propia, no dejar eliminar desde el menú contextual tampoco
+            row.itemProperty().addListener((obs, oldItem, newItem) -> {
+                if (newItem != null) {
+                    eliminarItem.setDisable(esMiCuenta(newItem));
+                }
+            });
+
+            return row;
+        });
+
+        // Atajo teclado: ENTER para editar en la tabla
+        tablaCuentas.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                CuentaSistemaDTO selected = tablaCuentas.getSelectionModel().getSelectedItem();
+                if (selected != null) {
+                    cargarParaEditar(selected);
+                }
             }
         });
     }
@@ -191,6 +246,11 @@ public class CuentasController implements Initializable, BaseController {
         pfPassword.textProperty().addListener((obs, old, v) -> ocultarLabel(errPassword));
         cbxRol.valueProperty().addListener((obs, old, v) -> ocultarLabel(errRol));
 
+        // UX: Guardar con ENTER desde los campos
+        txtUsername.setOnKeyPressed(e -> { if(e.getCode() == KeyCode.ENTER) guardarCuenta(); });
+        pfPassword.setOnKeyPressed(e -> { if(e.getCode() == KeyCode.ENTER) guardarCuenta(); });
+        cbxRol.setOnKeyPressed(e -> { if(e.getCode() == KeyCode.ENTER) guardarCuenta(); });
+
         ocultarLabel(lblPasswordHint);
         modoNuevo();
     }
@@ -205,7 +265,9 @@ public class CuentasController implements Initializable, BaseController {
         txtUsername.setDisable(false);
         pfPassword.clear();
         pfPassword.setPromptText("Contraseña (mín. 4 caracteres)");
-        cbxRol.getSelectionModel().clearSelection();
+        if (!cbxRol.getItems().isEmpty()) {
+            cbxRol.getSelectionModel().selectFirst();
+        }
         ocultarLabel(errUsername);
         ocultarLabel(errPassword);
         ocultarLabel(errRol);

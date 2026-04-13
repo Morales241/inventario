@@ -19,6 +19,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
@@ -84,8 +85,22 @@ public class OrganizacionController implements Initializable, BaseController {
         configurarArbol();
         configurarBusqueda();
         configurarIconos();
+        configurarAtajosTecladoFormulario();
         mostrarPlaceholder();
         cargarArbolAsync();
+    }
+
+    private void configurarAtajosTecladoFormulario() {
+        txtNombre.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                guardarSeleccionado();
+            }
+        });
+        txtUbicacion.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                guardarSeleccionado();
+            }
+        });
     }
 
     private void configurarArbol() {
@@ -93,27 +108,60 @@ public class OrganizacionController implements Initializable, BaseController {
         treeOrganizacion.setRoot(root);
         treeOrganizacion.setShowRoot(false);
 
-        treeOrganizacion.setCellFactory(tv -> new TreeCell<>() {
-            @Override
-            protected void updateItem(NodoOrg nodo, boolean empty) {
-                super.updateItem(nodo, empty);
-                if (empty || nodo == null) {
-                    setText(null); setGraphic(null);
-                    getStyleClass().removeAll("nodo-empresa","nodo-sucursal","nodo-depto","nodo-puesto");
-                } else {
-                    getStyleClass().removeAll("nodo-empresa","nodo-sucursal","nodo-depto","nodo-puesto");
-                    FontIcon icono = crearIconoTipo(nodo.tipo(), 14);
-                    String estilo = switch (nodo.tipo()) {
-                        case EMPRESA      -> "nodo-empresa";
-                        case SUCURSAL     -> "nodo-sucursal";
-                        case DEPARTAMENTO -> "nodo-depto";
-                        case PUESTO       -> "nodo-puesto";
-                    };
-                    setText(nodo.nombre());
-                    setGraphic(icono);
-                    getStyleClass().add(estilo);
+        treeOrganizacion.setCellFactory(tv -> {
+            TreeCell<NodoOrg> cell = new TreeCell<>() {
+                @Override
+                protected void updateItem(NodoOrg nodo, boolean empty) {
+                    super.updateItem(nodo, empty);
+                    if (empty || nodo == null) {
+                        setText(null); setGraphic(null);
+                        getStyleClass().removeAll("nodo-empresa","nodo-sucursal","nodo-depto","nodo-puesto");
+                    } else {
+                        getStyleClass().removeAll("nodo-empresa","nodo-sucursal","nodo-depto","nodo-puesto");
+                        FontIcon icono = crearIconoTipo(nodo.tipo(), 14);
+                        String estilo = switch (nodo.tipo()) {
+                            case EMPRESA      -> "nodo-empresa";
+                            case SUCURSAL     -> "nodo-sucursal";
+                            case DEPARTAMENTO -> "nodo-depto";
+                            case PUESTO       -> "nodo-puesto";
+                        };
+                        setText(nodo.nombre());
+                        setGraphic(icono);
+                        getStyleClass().add(estilo);
+                    }
                 }
-            }
+            };
+
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem agregarItem = new MenuItem("Agregar Subnivel");
+            agregarItem.setGraphic(new FontIcon("fas-plus"));
+            agregarItem.setOnAction(e -> {
+                treeOrganizacion.getSelectionModel().select(cell.getItem());
+                agregarHijo();
+            });
+
+            MenuItem eliminarItem = new MenuItem("Eliminar");
+            eliminarItem.setGraphic(new FontIcon("fas-trash"));
+            eliminarItem.setOnAction(e -> {
+                treeOrganizacion.getSelectionModel().select(cell.getItem());
+                eliminarSeleccionado();
+            });
+
+            contextMenu.getItems().addAll(agregarItem, eliminarItem);
+
+            cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
+                if (isNowEmpty) {
+                    cell.setContextMenu(null);
+                } else {
+                    NodoOrg nodo = cell.getItem();
+                    if (nodo != null) {
+                        agregarItem.setDisable(nodo.tipo() == TipoNodo.PUESTO);
+                        cell.setContextMenu(contextMenu);
+                    }
+                }
+            });
+
+            return cell;
         });
 
         treeOrganizacion.getSelectionModel().selectedItemProperty().addListener(

@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,14 +31,20 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 import util.ColumnFilterPanel;
@@ -124,6 +131,7 @@ public class UsuariosController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnas();
         configurarAcciones();
+        configurarInteraccionTabla();
         configurarFiltroConDebounce();
         configurarBotonesPaginacion();
         configurarListenersValidacion();
@@ -333,7 +341,56 @@ public class UsuariosController implements Initializable {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty || getTableRow().getItem() == null ? null : contenedor);
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(contenedor);
+                }
+            }
+        });
+    }
+
+    private void configurarInteraccionTabla() {
+        tablaUsuarios.setRowFactory(tv -> {
+            TableRow<UsuarioDTO> row = new TableRow<>();
+
+            // Menú contextual estilo Excel / Desktop
+            ContextMenu contextMenu = new ContextMenu();
+
+            MenuItem editarItem = new MenuItem("Editar Usuario");
+            editarItem.setGraphic(new FontIcon("fas-edit"));
+            editarItem.setOnAction(event -> cargarUsuarioParaEditar(row.getItem()));
+
+            MenuItem eliminarItem = new MenuItem("Eliminar Usuario");
+            eliminarItem.setGraphic(new FontIcon("fas-trash"));
+            eliminarItem.setOnAction(event -> confirmarEliminacion(row.getItem()));
+
+            contextMenu.getItems().addAll(editarItem, new SeparatorMenuItem(), eliminarItem);
+
+            // Mostrar el menú solo si la fila no está vacía
+            row.contextMenuProperty().bind(
+                Bindings.when(row.emptyProperty())
+                    .then((ContextMenu) null)
+                    .otherwise(contextMenu)
+            );
+
+            // Doble clic para editar
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+                    cargarUsuarioParaEditar(row.getItem());
+                }
+            });
+
+            return row;
+        });
+
+        // Atajo teclado: ENTER para editar, como en muchas tablas
+        tablaUsuarios.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                UsuarioDTO selected = tablaUsuarios.getSelectionModel().getSelectedItem();
+                if (selected != null) {
+                    cargarUsuarioParaEditar(selected);
+                }
             }
         });
     }
@@ -463,6 +520,11 @@ public class UsuariosController implements Initializable {
         ValidacionUtil.ocultarLabel(errNombre);
         ValidacionUtil.ocultarLabel(errNomina);
         ValidacionUtil.ocultarLabel(errPuesto);
+        
+        // UX: Dejar seleccionado el primer valor por defecto en vez de perder foco
+        if (cbxPuesto != null && !cbxPuesto.getItems().isEmpty()) {
+             cbxPuesto.getSelectionModel().selectFirst();
+        }
     }
 
     private boolean validarFormulario() {

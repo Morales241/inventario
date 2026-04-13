@@ -137,6 +137,14 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         cbxTipoEquipo.getItems().remove(TipoEquipo.TODOS);
         cbxCondicion.getItems().remove(CondicionFisica.TODAS);
 
+        // --- UX: Valores por defecto ágiles ---
+        fechaCompra.setValue(java.time.LocalDate.now());
+        if (!cbxCondicion.getItems().isEmpty()) cbxCondicion.getSelectionModel().selectFirst();
+        if (!cbxTipoEquipo.getItems().isEmpty()) {
+            cbxTipoEquipo.getSelectionModel().selectFirst();
+            Platform.runLater(this::cambiarPanelEspecifico); // Cargar el form específico de inmediato
+        }
+
         cargarModelos();
 
         txtFiltroMarca.textProperty().addListener((obs, oldVal, newVal) -> {
@@ -630,10 +638,16 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         txtAlmacenamiento.clear();
         txtRam.clear();
         txtProcesador.clear();
-        cbxCondicion.getSelectionModel().clearSelection();
-        cbxTipoEquipo.getSelectionModel().clearSelection();
-        cbxModelo.getSelectionModel().clearSelection();
-        fechaCompra.setValue(null);
+        
+        // UX: Restaurar valores por defecto al limpiar (no dejar vacío)
+        if (!cbxCondicion.getItems().isEmpty()) cbxCondicion.getSelectionModel().selectFirst();
+        if (!cbxTipoEquipo.getItems().isEmpty()) {
+            cbxTipoEquipo.getSelectionModel().selectFirst();
+            cambiarPanelEspecifico();
+        }
+        if (!cbxModelo.getItems().isEmpty()) cbxModelo.getSelectionModel().selectFirst();
+        
+        fechaCompra.setValue(java.time.LocalDate.now());
         ckbCrearNuevoModelo.setSelected(false);
 
         ValidacionUtil.resetTodos(txtGry, cbxCondicion, cbxTipoEquipo, txtIdentificador,

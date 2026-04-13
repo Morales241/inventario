@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -28,16 +29,22 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
+import javafx.scene.control.TableRow;
 
 /**
  * Controlador del módulo de Asignaciones con paginación del lado del servidor.
@@ -81,6 +88,7 @@ public class AsignacionesController implements Initializable, BaseController {
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnas();
         configurarAcciones();
+        configurarInteraccionTabla();
         configurarBotonesPaginacion();
         ocultarSpinner();
 
@@ -239,10 +247,58 @@ public class AsignacionesController implements Initializable, BaseController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || getTableRow().getItem() == null) { setGraphic(null); return; }
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) { setGraphic(null); return; }
                 AsignacionDTO a = getTableRow().getItem();
                 btnDev.setDisable(a.getFechaDevolucion() != null);
                 setGraphic(container);
+            }
+        });
+    }
+
+    private void configurarInteraccionTabla() {
+        tablaAsignaciones.setRowFactory(tv -> {
+            TableRow<AsignacionDTO> row = new TableRow<>();
+
+            // Menú contextual estilo Excel / Desktop
+            ContextMenu contextMenu = new ContextMenu();
+
+            MenuItem verRespItem = new MenuItem("Ver Responsiva");
+            verRespItem.setGraphic(new FontIcon("fas-file-pdf"));
+            verRespItem.setOnAction(event -> verResponsiva(row.getItem()));
+
+            MenuItem devolverItem = new MenuItem("Devolver Equipo");
+            devolverItem.setGraphic(new FontIcon("fas-undo-alt"));
+            devolverItem.setOnAction(event -> {
+                if (row.getItem().getFechaDevolucion() == null) {
+                    confirmarDevolucion(row.getItem());
+                }
+            });
+
+            contextMenu.getItems().addAll(verRespItem, new SeparatorMenuItem(), devolverItem);
+
+            row.contextMenuProperty().bind(
+                Bindings.when(row.emptyProperty())
+                    .then((ContextMenu) null)
+                    .otherwise(contextMenu)
+            );
+
+            // Doble clic para ver responsiva (la acción primaria)
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+                    verResponsiva(row.getItem());
+                }
+            });
+
+            return row;
+        });
+
+        // Atajo teclado: ENTER para ver responsiva
+        tablaAsignaciones.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                AsignacionDTO selected = tablaAsignaciones.getSelectionModel().getSelectedItem();
+                if (selected != null) {
+                    verResponsiva(selected);
+                }
             }
         });
     }

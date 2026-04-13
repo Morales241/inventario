@@ -11,8 +11,10 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <BorderPane maxHeight="1.7976931348623157E308"
             maxWidth="1.7976931348623157E308"
@@ -104,11 +106,15 @@
                              -fx-padding: 8 12;">
 
                     <Button fx:id="btnAnterior"
-                            text="← Anterior"
+                            text="Anterior"
                             styleClass="btn-cancelar"
                             disable="true"
                             onAction="#irAPaginaAnterior"
-                            prefHeight="34.0" />
+                            prefHeight="34.0">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-chevron-left"/>
+                        </graphic>
+                    </Button>
 
                     <ProgressIndicator fx:id="progressCarga"
                                        prefWidth="24.0" prefHeight="24.0"
@@ -127,11 +133,15 @@
                     <Region HBox.hgrow="ALWAYS" />
 
                     <Button fx:id="btnSiguiente"
-                            text="Siguiente →"
+                            text="Siguiente"
                             styleClass="btn-agregar"
                             disable="true"
                             onAction="#irAPaginaSiguiente"
-                            prefHeight="34.0" />
+                            prefHeight="34.0">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-chevron-right"/>
+                        </graphic>
+                    </Button>
 
                 </HBox>
 

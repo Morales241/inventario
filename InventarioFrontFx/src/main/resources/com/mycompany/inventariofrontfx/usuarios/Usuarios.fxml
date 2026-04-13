@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <!--
     CAMBIOS RESPECTO AL FXML ORIGINAL:
@@ -117,11 +118,15 @@
 
                     <!-- Botón Anterior -->
                     <Button fx:id="btnAnterior"
-                            text="← Anterior"
+                            text="Anterior"
                             styleClass="btn-cancelar"
                             disable="true"
                             onAction="#irAPaginaAnterior"
-                            prefHeight="34.0" />
+                            prefHeight="34.0">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-chevron-left"/>
+                        </graphic>
+                    </Button>
 
                     <!-- Spinner de carga -->
                     <ProgressIndicator fx:id="progressCarga"
@@ -146,11 +151,15 @@
 
                     <!-- Botón Siguiente -->
                     <Button fx:id="btnSiguiente"
-                            text="Siguiente →"
+                            text="Siguiente"
                             styleClass="btn-agregar"
                             disable="true"
                             onAction="#irAPaginaSiguiente"
-                            prefHeight="34.0" />
+                            prefHeight="34.0">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-chevron-right"/>
+                        </graphic>
+                    </Button>
 
                 </HBox>
 

@@ -1,9 +1,6 @@
 package com.mycompany.inventariofrontfx.inventario;
 
 import Dtos.EquipoBaseDTO;
-import Enums.CondicionFisica;
-import Enums.EstadoEquipo;
-import Enums.TipoEquipo;
 import InterfacesFachada.IFachadaEquipos;
 import com.mycompany.inventariofrontfx.menu.MenuController;
 import util.ColumnFilterPanel;
@@ -11,9 +8,8 @@ import fabricaFachadas.FabricaFachadas;
 import interfaces.ControllerInventario;
 import java.io.IOException;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -22,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
@@ -33,8 +30,11 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -42,9 +42,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
-import util.ColumnFilterPanel;
 
 /**
  * Controlador del módulo de Inventario.
@@ -52,6 +53,7 @@ import util.ColumnFilterPanel;
 public class InventarioController implements Initializable, ControllerInventario {
 
     private static final int TAMANO_PAGINA = 25;
+    private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private MenuController dbc;
     private final IFachadaEquipos fachadaEquipos = FabricaFachadas.getFachadaEquipos();
@@ -74,13 +76,10 @@ public class InventarioController implements Initializable, ControllerInventario
     private TableColumn<EquipoBaseDTO, String> colEstado;
     @FXML
     private TableColumn<EquipoBaseDTO, Void> colAcciones;
-
     @FXML
     private Button btnAgregar;
     @FXML
     private TextField txtFiltro;
-
-    
     @FXML
     private Button btnAnterior;
     @FXML
@@ -92,113 +91,134 @@ public class InventarioController implements Initializable, ControllerInventario
     @FXML
     private ProgressIndicator progressCarga;
 
-    // ── Estado de paginación ─────────────────────────────────────────────────
     private int paginaActual = 0;
     private long totalRegistros = 0;
-    private boolean inicializando = false;
-    private final PauseTransition debounce = new PauseTransition(Duration.millis(350));
 
-    /**
-     * Copia de la última página cargada, usada para filtrar localmente.
-     */
     private List<EquipoBaseDTO> paginaActualData = new ArrayList<>();
-
-    /**
-     * Mapa de filtros activos por columna. Key = nombre de columna ("tipo",
-     * "condicion", "estado") Value = Set de valores seleccionados (vacío = sin
-     * filtro)
-     */
     private final Map<String, Set<String>> filtrosColumna = new ConcurrentHashMap<>();
-
     private ColumnFilterPanel<EquipoBaseDTO> filtroTipo;
     private ColumnFilterPanel<EquipoBaseDTO> filtroCondicion;
     private ColumnFilterPanel<EquipoBaseDTO> filtroEstado;
+
+    private final PauseTransition debounce = new PauseTransition(Duration.millis(350));
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnas();
         configurarAcciones();
+        configurarInteraccionTabla();
         configurarBotonesPaginacion();
+        configurarDebounce();
         ocultarSpinner();
-
-        inicializando = true;
-        inicializando = false;
-
-        // Instalar filtros de columna DESPUÉS de que las columnas estén listas
         Platform.runLater(this::instalarFiltrosColumna);
-
         cargarPagina();
     }
+    
+    private void cargarPagina() {
+        mostrarSpinner();
+        tablaEquipos.setDisable(true);
+        filtrosColumna.clear();
 
-    /**
-     * Crea un ColumnFilterPanel para colTipo, colCondicion y colEstado. Cada
-     * panel al aplicarse llama a aplicarFiltrosLocales().
-     */
-    private void instalarFiltrosColumna() {
-        filtroTipo = new ColumnFilterPanel<>(
-                colTipo,
-                equipo -> equipo.getTipo() != null ? equipo.getTipo() : "",
-                seleccion -> {
-                    if (seleccion.isEmpty()) {
-                        filtrosColumna.remove("tipo");
-                    } else {
-                        filtrosColumna.put("tipo", seleccion);
-                    }
-                    aplicarFiltrosLocales();
-                }
-        );
+        final String texto = txtFiltro != null ? txtFiltro.getText() : "";
+        final int pagina = this.paginaActual;
 
-        filtroCondicion = new ColumnFilterPanel<>(
-                colCondicion,
-                equipo -> equipo.getCondicion() != null ? equipo.getCondicion() : "",
-                seleccion -> {
-                    if (seleccion.isEmpty()) {
-                        filtrosColumna.remove("condicion");
-                    } else {
-                        filtrosColumna.put("condicion", seleccion);
-                    }
-                    aplicarFiltrosLocales();
-                }
-        );
+        Task<Void> task = new Task<>() {
 
-        filtroEstado = new ColumnFilterPanel<>(
-                colEstado,
-                equipo -> equipo.getEstado() != null ? equipo.getEstado() : "",
-                seleccion -> {
-                    if (seleccion.isEmpty()) {
-                        filtrosColumna.remove("estado");
-                    } else {
-                        filtrosColumna.put("estado", seleccion);
-                    }
-                    aplicarFiltrosLocales();
+            List<EquipoBaseDTO> pagData;
+            long total;
+
+            @Override
+            protected Void call() {
+                // FIX #1 — estas líneas estaban comentadas, la tabla siempre salía vacía
+                total = fachadaEquipos.contarEquipos(texto, null, null, null);
+                pagData = fachadaEquipos.buscarConFiltrosPaginado(
+                        texto, null, null, null, pagina, TAMANO_PAGINA);
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                totalRegistros = total;
+                paginaActualData = new ArrayList<>(pagData);
+                tablaEquipos.getItems().setAll(pagData);
+                tablaEquipos.setDisable(false);
+                if (filtroTipo != null) {
+                    filtroTipo.actualizarValores(pagData);
                 }
-        );
+                if (filtroCondicion != null) {
+                    filtroCondicion.actualizarValores(pagData);
+                }
+                if (filtroEstado != null) {
+                    filtroEstado.actualizarValores(pagData);
+                }
+                actualizarBarraPaginacion();
+                ocultarSpinner();
+            }
+
+            @Override
+            protected void failed() {
+                tablaEquipos.setDisable(false);
+                ocultarSpinner();
+                Throwable ex = getException();
+                if (ex != null) {
+                    ex.printStackTrace();
+                }
+                mostrarAlertError("No se pudieron cargar los equipos",
+                        ex != null ? ex.getMessage() : "Error desconocido");
+            }
+        };
+
+        new Thread(task).start();
     }
 
-    /**
-     * Filtra localmente los datos de la página actual aplicando todos los
-     * filtros de columna activos en AND. No genera ninguna query nueva a la BD.
-     */
+    private void instalarFiltrosColumna() {
+        filtroTipo = new ColumnFilterPanel<>(colTipo,
+                e -> e.getTipo() != null ? e.getTipo() : "",
+                sel -> {
+                    if (sel.isEmpty()) {
+                        filtrosColumna.remove("tipo");
+                    } else {
+                        filtrosColumna.put("tipo", sel);
+                    }
+                    aplicarFiltrosLocales();
+                });
+
+        filtroCondicion = new ColumnFilterPanel<>(colCondicion,
+                e -> e.getCondicion() != null ? e.getCondicion() : "",
+                sel -> {
+                    if (sel.isEmpty()) {
+                        filtrosColumna.remove("condicion");
+                    } else {
+                        filtrosColumna.put("condicion", sel);
+                    }
+                    aplicarFiltrosLocales();
+                });
+
+        filtroEstado = new ColumnFilterPanel<>(colEstado,
+                e -> e.getEstado() != null ? e.getEstado() : "",
+                sel -> {
+                    if (sel.isEmpty()) {
+                        filtrosColumna.remove("estado");
+                    } else {
+                        filtrosColumna.put("estado", sel);
+                    }
+                    aplicarFiltrosLocales();
+                });
+    }
+
     private void aplicarFiltrosLocales() {
         List<EquipoBaseDTO> resultado = paginaActualData.stream()
                 .filter(e -> filtroTipo == null || filtroTipo.acepta(e.getTipo()))
                 .filter(e -> filtroCondicion == null || filtroCondicion.acepta(e.getCondicion()))
                 .filter(e -> filtroEstado == null || filtroEstado.acepta(e.getEstado()))
                 .collect(Collectors.toList());
-
         tablaEquipos.getItems().setAll(resultado);
-
-        // Actualizar label de total visible
         if (lblTotal != null) {
-            long total = resultado.size();
-            String sufijo = filtrosColumna.isEmpty() ? "" : " (filtrados)";
-            lblTotal.setText(total + (total == 1 ? " equipo" : " equipos") + sufijo);
+            long n = resultado.size();
+            lblTotal.setText(n + (n == 1 ? " equipo" : " equipos") + (filtrosColumna.isEmpty() ? "" : " (filtrados)"));
         }
     }
 
-    /**
-     * Limpia todos los filtros de columna y restaura la página completa.
-     */
     @FXML
     private void limpiarFiltrosColumna() {
         filtrosColumna.clear();
@@ -215,69 +235,14 @@ public class InventarioController implements Initializable, ControllerInventario
         actualizarBarraPaginacion();
     }
 
-    private void cargarPagina() {
-        mostrarSpinner();
-        tablaEquipos.setDisable(true);
-        filtrosColumna.clear();   // nueva página → resetear filtros locales
-
-        final String texto = txtFiltro.getText();
-        final int pagina = this.paginaActual;
-
-        Task<Void> task = new Task<>() {
-
-            List<EquipoBaseDTO> pagData;
-            long total;
-
-            @Override
-            protected Void call() {
-//                total = fachadaEquipos.contarEquipos(texto, tipo, condicion, estado);
-//                pagData = fachadaEquipos.buscarConFiltrosPaginado(
-//                        texto, tipo, condicion, estado, pagina, TAMANO_PAGINA);
-                return null;
-            }
-
-            @Override
-            protected void succeeded() {
-                if (pagData == null) {
-                    pagData = List.of();
-                    total = 0;
-                }
-                totalRegistros = total;
-                paginaActualData = new ArrayList<>(pagData);
-
-                tablaEquipos.getItems().setAll(pagData);
-                tablaEquipos.setDisable(false);
-
-                // Notificar a cada filtro de columna los nuevos valores disponibles
-                if (filtroTipo != null) {
-                    filtroTipo.actualizarValores(pagData);
-                }
-                if (filtroCondicion != null) {
-                    filtroCondicion.actualizarValores(pagData);
-                }
-                if (filtroEstado != null) {
-                    filtroEstado.actualizarValores(pagData);
-                }
-
-                actualizarBarraPaginacion();
-                ocultarSpinner();
-            }
-
-            @Override
-            protected void failed() {
-                tablaEquipos.setDisable(false);
-                ocultarSpinner();
-                Throwable ex = getException();
-                if (ex != null) {
-                    ex.printStackTrace();
-                }
-                Platform.runLater(() -> mostrarAlertError(
-                        "No se pudieron cargar los equipos",
-                        ex != null ? ex.getMessage() : "Error desconocido"));
-            }
-        };
-
-        new Thread(task).start();
+    private void configurarDebounce() {
+        debounce.setOnFinished(e -> {
+            paginaActual = 0;
+            cargarPagina();
+        });
+        if (txtFiltro != null) {
+            txtFiltro.textProperty().addListener((obs, old, v) -> debounce.playFromStart());
+        }
     }
 
     private void configurarBotonesPaginacion() {
@@ -306,12 +271,12 @@ public class InventarioController implements Initializable, ControllerInventario
     }
 
     private void actualizarBarraPaginacion() {
-        int totalPaginas = (int) Math.ceil((double) totalRegistros / TAMANO_PAGINA);
-        if (totalPaginas == 0) {
-            totalPaginas = 1;
+        int tp = (int) Math.ceil((double) totalRegistros / TAMANO_PAGINA);
+        if (tp == 0) {
+            tp = 1;
         }
         if (lblPagina != null) {
-            lblPagina.setText("Página " + (paginaActual + 1) + " / " + totalPaginas);
+            lblPagina.setText("Página " + (paginaActual + 1) + " / " + tp);
         }
         if (lblTotal != null) {
             lblTotal.setText(totalRegistros + (totalRegistros == 1 ? " equipo" : " equipos"));
@@ -323,14 +288,16 @@ public class InventarioController implements Initializable, ControllerInventario
             btnSiguiente.setDisable((long) (paginaActual + 1) * TAMANO_PAGINA >= totalRegistros);
         }
     }
-
+    
     private void configurarColumnas() {
         colId.setCellValueFactory(d -> new SimpleObjectProperty<>(d.getValue().getIdEquipo()));
         colGry.setCellValueFactory(d -> new SimpleObjectProperty<>(d.getValue().getGry()));
         colTipo.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getTipo()));
         colModelo.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombreModelo()));
-        colFecha.setCellValueFactory(d -> new SimpleStringProperty(
-                d.getValue().getFechaCompra() != null ? d.getValue().getFechaCompra().toString() : ""));
+        colFecha.setCellValueFactory(d -> {
+            var f = d.getValue().getFechaCompra();
+            return new SimpleStringProperty(f != null ? f.format(FMT) : "—");  // FIX #6
+        });
         colCondicion.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCondicion()));
         colEstado.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEstado()));
     }
@@ -358,19 +325,19 @@ public class InventarioController implements Initializable, ControllerInventario
                 container.setAlignment(Pos.CENTER);
 
                 btnVer.setOnAction(e -> {
-                    EquipoBaseDTO eq = getTableRow().getItem();
+                    var eq = getTableRow().getItem();
                     if (eq != null) {
                         cargarEquipoParaVer(eq);
                     }
                 });
                 btnEditar.setOnAction(e -> {
-                    EquipoBaseDTO eq = getTableRow().getItem();
+                    var eq = getTableRow().getItem();
                     if (eq != null) {
                         cargarEquipoParaEditar(eq);
                     }
                 });
                 btnEliminar.setOnAction(e -> {
-                    EquipoBaseDTO eq = getTableRow().getItem();
+                    var eq = getTableRow().getItem();
                     if (eq != null) {
                         confirmarEliminacion(eq);
                     }
@@ -380,13 +347,61 @@ public class InventarioController implements Initializable, ControllerInventario
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || getTableRow().getItem() == null) {
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                     setGraphic(null);
                     return;
                 }
-                EquipoBaseDTO eq = getTableRow().getItem();
-                btnEliminar.setDisable("ASIGNADO".equalsIgnoreCase(eq.getEstado()));
+                btnEliminar.setDisable("ASIGNADO".equalsIgnoreCase(getTableRow().getItem().getEstado()));
                 setGraphic(container);
+            }
+        });
+    }
+
+    private void configurarInteraccionTabla() {
+        tablaEquipos.setRowFactory(tv -> {
+            TableRow<EquipoBaseDTO> row = new TableRow<>();
+
+            // Menú contextual estilo Excel / Desktop
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem verItem = new MenuItem("Ver Detalles");
+            verItem.setGraphic(new FontIcon("fas-eye"));
+            verItem.setOnAction(event -> cargarEquipoParaVer(row.getItem()));
+
+            MenuItem editarItem = new MenuItem("Editar Equipo");
+            editarItem.setGraphic(new FontIcon("fas-edit"));
+            editarItem.setOnAction(event -> cargarEquipoParaEditar(row.getItem()));
+
+            MenuItem eliminarItem = new MenuItem("Eliminar Equipo");
+            eliminarItem.setGraphic(new FontIcon("fas-trash"));
+            // Deshabilitar opción si está asignado
+            eliminarItem.setOnAction(event -> confirmarEliminacion(row.getItem()));
+
+            contextMenu.getItems().addAll(verItem, editarItem, new SeparatorMenuItem(), eliminarItem);
+
+            // Mostrar el menú solo si la fila no está vacía
+            row.contextMenuProperty().bind(
+                Bindings.when(row.emptyProperty())
+                    .then((ContextMenu) null)
+                    .otherwise(contextMenu)
+            );
+
+            // Doble clic para editar
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+                    cargarEquipoParaEditar(row.getItem());
+                }
+            });
+
+            return row;
+        });
+
+        // Atajo teclado: ENTER para editar, como en muchas tablas tipo grid
+        tablaEquipos.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                EquipoBaseDTO selected = tablaEquipos.getSelectionModel().getSelectedItem();
+                if (selected != null) {
+                    cargarEquipoParaEditar(selected);
+                }
             }
         });
     }
@@ -396,25 +411,26 @@ public class InventarioController implements Initializable, ControllerInventario
         alert.setTitle("Confirmación");
         alert.setHeaderText("Eliminar equipo");
         alert.setContentText("¿Desea eliminar el equipo GRY " + equipo.getGry() + "?");
-        alert.showAndWait()
-                .filter(btn -> btn == ButtonType.OK)
-                .ifPresent(b -> {
-                    Task<Void> task = new Task<>() {
-                        @Override
-                        protected Void call() throws Exception {
-                            fachadaEquipos.eliminarEquipo(equipo.getIdEquipo());
-                            return null;
-                        }
-                    };
-                    task.setOnSucceeded(e -> cargarPagina());
-                    task.setOnFailed(e -> {
-                        Throwable ex = task.getException();
-                        mostrarAlertError("No se pudo eliminar", ex != null ? ex.getMessage() : "Error");
-                    });
-                    new Thread(task).start();
-                });
+        alert.showAndWait().filter(btn -> btn == ButtonType.OK).ifPresent(b -> {
+            Task<Void> t = new Task<>() {
+                @Override
+                protected Void call() throws Exception {
+                    fachadaEquipos.eliminarEquipo(equipo.getIdEquipo());
+                    return null;
+                }
+            };
+            t.setOnSucceeded(e -> cargarPagina());
+            t.setOnFailed(e -> {
+                var ex = t.getException();
+                mostrarAlertError("No se pudo eliminar", ex != null ? ex.getMessage() : "Error");
+            });
+            new Thread(t).start();
+        });
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
+    // Navegación — FIX #5: buscarPorId en Task
+    // ─────────────────────────────────────────────────────────────────────────
     @FXML
     private void agregarEquipo() {
         cambiarPantalla("FormInventario.fxml");
@@ -422,21 +438,52 @@ public class InventarioController implements Initializable, ControllerInventario
 
     @Override
     public <T extends EquipoBaseDTO> void cargarEquipoParaEditar(T equipo) {
-        T completo = fachadaEquipos.buscarPorId(equipo.getIdEquipo());
-        ControllerInventario c = cambiarPantalla("FormInventario.fxml");
-        if (c instanceof FormInventarioController f) {
-            f.cargarEquipoParaEditar(completo);
-        }
+        mostrarSpinner();
+        Task<T> t = new Task<>() {
+            @Override
+            protected T call() {
+                return fachadaEquipos.buscarPorId(equipo.getIdEquipo());
+            }
+        };
+        t.setOnSucceeded(e -> {
+            ocultarSpinner();
+            var c = cambiarPantalla("FormInventario.fxml");
+            if (c instanceof FormInventarioController f) {
+                f.cargarEquipoParaEditar(t.getValue());
+            }
+        });
+        t.setOnFailed(e -> {
+            ocultarSpinner();
+            mostrarAlertError("Error", "No se pudo cargar el equipo para editar.");
+        });
+        new Thread(t).start();
     }
 
     public <T extends EquipoBaseDTO> void cargarEquipoParaVer(T equipo) {
-        T completo = fachadaEquipos.buscarPorId(equipo.getIdEquipo());
-        ControllerInventario c = cambiarPantalla("FormInventario.fxml");
-        if (c instanceof FormInventarioController f) {
-            f.cargarEquipoParaVisualizar(completo);
-        }
+        mostrarSpinner();
+        Task<T> t = new Task<>() {
+            @Override
+            protected T call() {
+                return fachadaEquipos.buscarPorId(equipo.getIdEquipo());
+            }
+        };
+        t.setOnSucceeded(e -> {
+            ocultarSpinner();
+            var c = cambiarPantalla("FormInventario.fxml");
+            if (c instanceof FormInventarioController f) {
+                f.cargarEquipoParaVisualizar(t.getValue());
+            }
+        });
+        t.setOnFailed(e -> {
+            ocultarSpinner();
+            mostrarAlertError("Error", "No se pudo cargar el equipo.");
+        });
+        new Thread(t).start();
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
+    // ControllerInventario + helpers
+    // ─────────────────────────────────────────────────────────────────────────
     @Override
     public void setDashBoard(MenuController dbc) {
         this.dbc = dbc;
@@ -449,21 +496,24 @@ public class InventarioController implements Initializable, ControllerInventario
     @Override
     public ControllerInventario cambiarPantalla(String rutaFXML) {
         try {
-            if (rutaFXML != null) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
-                Parent vista = loader.load();
-                Object controller = loader.getController();
-                if (controller instanceof ControllerInventario ci) {
-                    ci.setDashBoard(dbc);
-                }
-                dbc.getCenterContainer().setContent(vista);
-                dbc.getCenterContainer().setVvalue(0);
-                return (ControllerInventario) controller;
+            if (rutaFXML == null) {
+                return null;
             }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
+            Parent vista = loader.load();
+            Object controller = loader.getController();
+            if (controller instanceof ControllerInventario ci) {
+                ci.setDashBoard(dbc);
+            }
+            dbc.getCenterContainer().setContent(vista);
+            dbc.getCenterContainer().setVvalue(0);
+            return (ControllerInventario) controller;
         } catch (IOException e) {
-            System.out.println(Arrays.toString(e.getStackTrace()));
+            // FIX #4 — antes solo imprimía en consola
+            e.printStackTrace();
+            mostrarAlertError("Error de navegación", "No se pudo cargar '" + rutaFXML + "': " + e.getMessage());
+            return null;
         }
-        return null;
     }
 
     private void mostrarSpinner() {

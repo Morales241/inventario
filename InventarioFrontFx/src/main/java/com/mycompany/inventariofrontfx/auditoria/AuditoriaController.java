@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
@@ -34,6 +35,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
  * Controlador del módulo de Auditoría — dos secciones
@@ -176,6 +178,8 @@ public class AuditoriaController implements Initializable, BaseController {
         configurarBusquedaEquipo();
         configurarFiltroCuentas();
 
+        configurarInteraccionTablasAuditoria();
+
         // Ocultar card de equipo y tabla hasta que se busque
         ocultarCardEquipo();
         ocultarSpinner(progressEquipo);
@@ -191,6 +195,39 @@ public class AuditoriaController implements Initializable, BaseController {
         cargarDepartamentosAsync("");
         cargarPuestosAsync("");
         cargarModelosAsync("");
+    }
+
+    private void configurarInteraccionTablasAuditoria() {
+        aplicarUXLectura(tablaHistorialEquipo, () -> {
+            if (equipoActual != null) cargarHistorialEquipoAsync(equipoActual.getIdEquipo());
+        });
+        aplicarUXLectura(tablaCuentas, () -> cargarCuentasAsync(txtFiltrosCuentas.getText()));
+        aplicarUXLectura(tablaUsuarios, () -> cargarUsuariosAsync(txtFiltrosCuentas.getText()));
+        aplicarUXLectura(tablaEquipos, () -> cargarEquiposAsync(txtFiltrosCuentas.getText()));
+        aplicarUXLectura(tablaAsignaciones, () -> cargarAsignacionesAsync(txtFiltrosCuentas.getText()));
+        aplicarUXLectura(tablaEmpresas, () -> cargarEmpresasAsync(txtFiltrosCuentas.getText()));
+        aplicarUXLectura(tablaSucursales, () -> cargarSucursalesAsync(txtFiltrosCuentas.getText()));
+        aplicarUXLectura(tablaDepartamentos, () -> cargarDepartamentosAsync(txtFiltrosCuentas.getText()));
+        aplicarUXLectura(tablaPuestos, () -> cargarPuestosAsync(txtFiltrosCuentas.getText()));
+        aplicarUXLectura(tablaModelos, () -> cargarModelosAsync(txtFiltrosCuentas.getText()));
+    }
+
+    private <T> void aplicarUXLectura(TableView<T> tabla, Runnable accionRecargar) {
+        tabla.setRowFactory(tv -> {
+            TableRow<T> row = new TableRow<>();
+            ContextMenu contextMenu = new ContextMenu();
+
+            MenuItem refreshItem = new MenuItem("Actualizar Datos");
+            refreshItem.setGraphic(new FontIcon("fas-sync"));
+            refreshItem.setOnAction(event -> accionRecargar.run());
+
+            contextMenu.getItems().add(refreshItem);
+
+            // Permitir refrescar independientemente de si la fila está vacía
+            row.setContextMenu(contextMenu);
+
+            return row;
+        });
     }
 
     // ══════════════════════════════════════════════════════════════════════════

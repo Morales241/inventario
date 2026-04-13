@@ -210,6 +210,14 @@ public class ColumnFilterPanel<T> {
         } else {
             popup.show(ancla.getScene().getWindow());
         }
+
+        // Auto-foco en el campo de búsqueda (UX Excel)
+        Platform.runLater(() -> {
+            Node lookup = contenido.lookup(".text-field");
+            if (lookup != null) {
+                lookup.requestFocus();
+            }
+        });
     }
 
     private VBox construirContenidoPopup() {
@@ -323,6 +331,14 @@ public class ColumnFilterPanel<T> {
             aplicarFiltro(selActual);
             if (popup != null) {
                 popup.hide();
+            }
+        });
+
+        // UX: Aplicar con ENTER desde el campo de búsqueda
+        txtBuscar.setOnKeyPressed(event -> {
+            if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
+                aplicarFiltro(selActual);
+                if (popup != null) popup.hide();
             }
         });
 
