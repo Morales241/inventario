@@ -57,7 +57,7 @@ public class LogInController implements Initializable, BaseController {
         ocultarSpinner();
 
         txtUsuario.setOnAction(e -> txtPassword.requestFocus());
-        txtPassword.setOnAction(e -> procesarLogin(null));
+        txtPassword.setOnAction(e -> procesarLogin(e));
 
         txtUsuario.textProperty().addListener((obs, old, v) -> ocultarError());
         txtPassword.textProperty().addListener((obs, old, v) -> ocultarError());

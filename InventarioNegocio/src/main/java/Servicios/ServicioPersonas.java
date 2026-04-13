@@ -9,6 +9,7 @@ import Entidades.CuentaSistema;
 import Entidades.Puesto;
 import Entidades.Usuario;
 import Interfaces.IDaoCuentaSistema;
+import Utilidades.ServicioSesion;
 import excepciones.RecursoNoEncontradoException;
 import excepciones.ReglaNegocioException;
 import interfacesServicios.IServicioPersonas;
@@ -411,7 +412,13 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
             return ejecutarLectura(em -> {
                 dao.setEntityManager(em);
                 
-                return mapper.mapToDto(dao.login(user, contra));
+                CuentaSistema cuentaLogueada =  dao.login(user, contra);
+                
+                CuentaSistemaDTO dto = mapper.mapToDto(cuentaLogueada);
+                
+                ServicioSesion.getInstance().setUsuario(dto);
+                
+                return dto;
             });
         }
         
