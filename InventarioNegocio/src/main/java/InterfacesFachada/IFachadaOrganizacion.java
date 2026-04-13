@@ -25,6 +25,12 @@ public interface IFachadaOrganizacion {
     List<EmpresaDTO> listarEmpresas(String filtroNombre);
 
     /**
+     * Lista todas las empresas sin filtros.
+     * @return Lista completa de EmpresaDTO
+     */
+    List<EmpresaDTO> listarTodasEmpresas();
+
+    /**
      * Guarda o actualiza una empresa.
      * @param dto Datos de la empresa
      */
@@ -43,6 +49,12 @@ public interface IFachadaOrganizacion {
      * @return Lista de SucursalDTO
      */
     List<SucursalDTO> listarSucursales(String filtro, Long idEmpresa);
+
+    /**
+     * Lista todas las sucursales sin filtros.
+     * @return Lista de SucursalDTO
+     */
+    List<SucursalDTO> listarTodasSucursales();
 
     /**
      * Guarda o actualiza una sucursal.
@@ -65,6 +77,12 @@ public interface IFachadaOrganizacion {
     List<DepartamentoDTO> listarDepartamentos(String nombre, Long idSucursal);
 
     /**
+     * Lista todos los departamentos sin filtros.
+     * @return Lista de DepartamentoDTO
+     */
+    List<DepartamentoDTO> listarTodosDepartamentos();
+
+    /**
      * Guarda o actualiza un departamento.
      * @param dto Datos del departamento
      */
@@ -82,6 +100,12 @@ public interface IFachadaOrganizacion {
      * @return Lista de PuestoDTO
      */
     List<PuestoDTO> listarPuestos(Long idDepto);
+    
+    /**
+     * Lista todos los puestos sin filtros.
+     * @return Lista de PuestoDTO
+     */
+    List<PuestoDTO> listarTodosPuestos();
     
     /**
      * Guarda o actualiza un puesto de trabajo.

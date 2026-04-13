@@ -75,6 +75,11 @@ public class FachadaPrestamos implements IFachadaPrestamos {
     }
 
     @Override
+    public List<AsignacionDTO> listarAsignaciones() {
+        return servicioPrestamos.listarAsignaciones();
+    }
+
+    @Override
     public List<AsignacionDTO> obtenerAsignacionesActivasPorEquipo(Long idEquipo) {
         return servicioPrestamos.obtenerAsignacionesActivasPorEquipo(idEquipo);
     }

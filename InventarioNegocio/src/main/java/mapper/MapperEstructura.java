@@ -32,6 +32,12 @@ public class MapperEstructura {
                             
                         }
 
+                        // Campos de auditoría
+                        dto.setCreadoPor(e.getCreadoPor());
+                        dto.setFechaCreacion(e.getFechaCreacion());
+                        dto.setModificadoPor(e.getModificadoPor());
+                        dto.setFechaModificacion(e.getFechaModificacion());
+
                         return dto;
                     },
 
@@ -67,6 +73,12 @@ public class MapperEstructura {
                             dto.setVersion(e.getVersion());
                             
                         }
+
+                        // Campos de auditoría
+                        dto.setCreadoPor(e.getCreadoPor());
+                        dto.setFechaCreacion(e.getFechaCreacion());
+                        dto.setModificadoPor(e.getModificadoPor());
+                        dto.setFechaModificacion(e.getFechaModificacion());
 
                         return dto;
                     },
@@ -104,6 +116,12 @@ public class MapperEstructura {
                             
                         }
 
+                        // Campos de auditoría
+                        dto.setCreadoPor(e.getCreadoPor());
+                        dto.setFechaCreacion(e.getFechaCreacion());
+                        dto.setModificadoPor(e.getModificadoPor());
+                        dto.setFechaModificacion(e.getFechaModificacion());
+
                         return dto;
                     },
 
@@ -137,6 +155,12 @@ public class MapperEstructura {
                             dto.setVersion(e.getVersion());
                             
                         }
+
+                        // Campos de auditoría
+                        dto.setCreadoPor(e.getCreadoPor());
+                        dto.setFechaCreacion(e.getFechaCreacion());
+                        dto.setModificadoPor(e.getModificadoPor());
+                        dto.setFechaModificacion(e.getFechaModificacion());
 
                         return dto;
                     },

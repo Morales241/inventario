@@ -77,6 +77,11 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
     }
 
     @Override
+    public List<EquipoBaseDTO> listarEquipos() {
+        return buscarConFiltros(null, null, null, null);
+    }
+
+    @Override
     public EquipoBaseDTO obtenerPorId(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("ID inválido");

@@ -24,6 +24,8 @@ public interface IServicioPersonas {
 
     // ── Usuarios ──────────────────────────────────────────────────────────────
     List<UsuarioDTO> buscarUsuarios(String criterioGlobal);
+    
+    List<UsuarioDTO> listarUsuarios();
 
     /**
      * Devuelve una página de usuarios activos con equipos ya contados.

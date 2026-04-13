@@ -89,6 +89,11 @@ public class ServicioPersonas extends ServicioBase implements IServicioPersonas 
         return usuarioServicio.buscarConFiltroGlobal(criterioGlobal);
     }
 
+    @Override
+    public List<UsuarioDTO> listarUsuarios() {
+        return usuarioServicio.buscarTodos();
+    }
+
     /**
      * NUEVO: carga paginada. Trae solo los registros de la página solicitada y
      * añade el conteo de equipos asignados con una query COUNT por usuario (no

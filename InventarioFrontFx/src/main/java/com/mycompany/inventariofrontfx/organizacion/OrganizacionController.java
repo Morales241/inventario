@@ -18,9 +18,11 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
  * Controlador del módulo de Organización.
@@ -46,8 +48,10 @@ public class OrganizacionController implements Initializable, BaseController {
     @FXML private ProgressIndicator   progressArbol;
     @FXML private Button              btnNuevaEmpresa;
     @FXML private Button              btnLimpiar;
+    @FXML private Label               lblEncabezadoIcono;
 
     @FXML private VBox                panelPlaceholder;
+    @FXML private Label               lblPlaceholderIcon;
     @FXML private VBox                panelDetalle;
     
     @FXML private HBox                breadcrumbBox;
@@ -79,6 +83,7 @@ public class OrganizacionController implements Initializable, BaseController {
     public void initialize(URL url, ResourceBundle rb) {
         configurarArbol();
         configurarBusqueda();
+        configurarIconos();
         mostrarPlaceholder();
         cargarArbolAsync();
     }
@@ -97,21 +102,16 @@ public class OrganizacionController implements Initializable, BaseController {
                     getStyleClass().removeAll("nodo-empresa","nodo-sucursal","nodo-depto","nodo-puesto");
                 } else {
                     getStyleClass().removeAll("nodo-empresa","nodo-sucursal","nodo-depto","nodo-puesto");
-                    String icono = switch (nodo.tipo()) {
-                        case EMPRESA      -> "🏢 ";
-                        case SUCURSAL     -> "📍 ";
-                        case DEPARTAMENTO -> "🏬 ";
-                        case PUESTO       -> "👤 ";
-                    };
+                    FontIcon icono = crearIconoTipo(nodo.tipo(), 14);
                     String estilo = switch (nodo.tipo()) {
                         case EMPRESA      -> "nodo-empresa";
                         case SUCURSAL     -> "nodo-sucursal";
                         case DEPARTAMENTO -> "nodo-depto";
                         case PUESTO       -> "nodo-puesto";
                     };
-                    setText(icono + nodo.nombre());
+                    setText(nodo.nombre());
+                    setGraphic(icono);
                     getStyleClass().add(estilo);
-                    setGraphic(null);
                 }
             }
         });
@@ -482,31 +482,33 @@ public class OrganizacionController implements Initializable, BaseController {
     private void mostrarStatsEmpresa(NodoOrg nodo) {
         statsBox.getChildren().clear();
         List<SucursalDTO> suc = fachada.listarSucursales(null, nodo.id());
-        agregarStatCard(suc.size(), "sucursales", "📍");
+        agregarStatCard(suc.size(), "sucursales", "fas-map-marker-alt");
         statsBox.setVisible(true); statsBox.setManaged(true);
     }
 
     private void mostrarStatsSucursal(NodoOrg nodo) {
         statsBox.getChildren().clear();
         List<DepartamentoDTO> dep = fachada.listarDepartamentos(null, nodo.id());
-        agregarStatCard(dep.size(), "departamentos", "🏬");
+        agregarStatCard(dep.size(), "departamentos", "fas-sitemap");
         statsBox.setVisible(true); statsBox.setManaged(true);
     }
 
     private void mostrarStatsDepartamento(NodoOrg nodo) {
         statsBox.getChildren().clear();
         List<PuestoDTO> puestos = fachada.listarPuestos(nodo.id());
-        agregarStatCard(puestos.size(), "puestos", "👤");
+        agregarStatCard(puestos.size(), "puestos", "fas-user");
         statsBox.setVisible(true); statsBox.setManaged(true);
     }
 
-    private void agregarStatCard(int cantidad, String etiqueta, String icono) {
+    private void agregarStatCard(int cantidad, String etiqueta, String iconCode) {
         VBox card = new VBox(2);
         card.getStyleClass().add("stat-card");
         card.setAlignment(Pos.CENTER);
         card.setPrefWidth(120);
 
-        Label num = new Label(icono + " " + cantidad);
+        Label num = new Label(String.valueOf(cantidad));
+        num.setGraphic(crearIcono(iconCode, 16));
+        num.setContentDisplay(ContentDisplay.TOP);
         num.getStyleClass().add("stat-number");
 
         Label lbl = new Label(etiqueta);
@@ -519,11 +521,11 @@ public class OrganizacionController implements Initializable, BaseController {
     private void mostrarHijosEmpresa(NodoOrg nodo) {
         listaHijos.getChildren().clear();
         lblTituloHijos.setText("Sucursales");
-        btnAgregarHijo.setText("＋ Agregar sucursal");
+        btnAgregarHijo.setText("Agregar sucursal");
         List<SucursalDTO> sucursales = fachada.listarSucursales(null, nodo.id());
         for (SucursalDTO s : sucursales) {
-            listaHijos.getChildren().add(crearTarjetaHijo("📍 " + s.getNombre(), s.getUbicacion(),
-                    "badge-sucursal", "SUCURSAL",
+            listaHijos.getChildren().add(crearTarjetaHijo(s.getNombre(), s.getUbicacion(),
+                    "fas-map-marker-alt", "badge-sucursal", "SUCURSAL",
                     () -> seleccionarPorId(TipoNodo.SUCURSAL, s.getId())));
         }
         seccionHijos.setVisible(true); seccionHijos.setManaged(true);
@@ -532,11 +534,11 @@ public class OrganizacionController implements Initializable, BaseController {
     private void mostrarHijosSucursal(NodoOrg nodo) {
         listaHijos.getChildren().clear();
         lblTituloHijos.setText("Departamentos");
-        btnAgregarHijo.setText("＋ Agregar departamento");
+        btnAgregarHijo.setText("Agregar departamento");
         List<DepartamentoDTO> deptos = fachada.listarDepartamentos(null, nodo.id());
         for (DepartamentoDTO d : deptos) {
-            listaHijos.getChildren().add(crearTarjetaHijo("🏬 " + d.getNombre(), null,
-                    "badge-departamento", "DEPARTAMENTO",
+            listaHijos.getChildren().add(crearTarjetaHijo(d.getNombre(), null,
+                    "fas-building", "badge-departamento", "DEPARTAMENTO",
                     () -> seleccionarPorId(TipoNodo.DEPARTAMENTO, d.getId())));
         }
         seccionHijos.setVisible(true); seccionHijos.setManaged(true);
@@ -545,18 +547,18 @@ public class OrganizacionController implements Initializable, BaseController {
     private void mostrarHijosDepartamento(NodoOrg nodo) {
         listaHijos.getChildren().clear();
         lblTituloHijos.setText("Puestos");
-        btnAgregarHijo.setText("＋ Agregar puesto");
+        btnAgregarHijo.setText("Agregar puesto");
         List<PuestoDTO> puestos = fachada.listarPuestos(nodo.id());
         for (PuestoDTO p : puestos) {
-            listaHijos.getChildren().add(crearTarjetaHijo("👤 " + p.getNombre(), null,
-                    "badge-puesto", "PUESTO",
+            listaHijos.getChildren().add(crearTarjetaHijo(p.getNombre(), null,
+                    "fas-user", "badge-puesto", "PUESTO",
                     () -> seleccionarPorId(TipoNodo.PUESTO, p.getId())));
         }
         seccionHijos.setVisible(true); seccionHijos.setManaged(true);
     }
 
     /** Crea una tarjeta inline para listar un hijo con botón de seleccionar. */
-    private HBox crearTarjetaHijo(String nombre, String subtexto, String badgeClass,
+    private HBox crearTarjetaHijo(String nombre, String subtexto, String iconCode, String badgeClass,
                                    String badgeText, Runnable onSeleccionar) {
         HBox card = new HBox(10);
         card.setAlignment(Pos.CENTER_LEFT);
@@ -564,9 +566,12 @@ public class OrganizacionController implements Initializable, BaseController {
         card.setStyle("-fx-background-color: #F9FAFB; -fx-background-radius: 8; " +
                       "-fx-border-color: #E5E7EB; -fx-border-radius: 8; -fx-border-width: 1; -fx-cursor: hand;");
 
+        FontIcon icono = crearIcono(iconCode, 18);
         VBox texto = new VBox(2);
         Label lblNombre = new Label(nombre);
         lblNombre.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #374151;");
+        lblNombre.setGraphic(icono);
+        lblNombre.setContentDisplay(ContentDisplay.LEFT);
         texto.getChildren().add(lblNombre);
         if (subtexto != null && !subtexto.isBlank()) {
             Label lblSub = new Label(subtexto);
@@ -591,6 +596,54 @@ public class OrganizacionController implements Initializable, BaseController {
                 "-fx-border-color: #E5E7EB; -fx-border-radius: 8; -fx-border-width: 1; -fx-cursor: hand;"));
 
         return card;
+    }
+
+    private FontIcon crearIcono(String code, int size) {
+        FontIcon icon = new FontIcon(code);
+        icon.setIconSize(size);
+        icon.getStyleClass().addAll("icono-inline", "icono-azul");
+        return icon;
+    }
+
+    private FontIcon crearIconoTipo(TipoNodo tipo, int size) {
+        FontIcon icon = crearIcono(switch (tipo) {
+            case EMPRESA      -> "fas-building";
+            case SUCURSAL     -> "fas-map-marker-alt";
+            case DEPARTAMENTO -> "fas-sitemap";
+            case PUESTO       -> "fas-user";
+        }, size);
+        icon.getStyleClass().add(switch (tipo) {
+            case EMPRESA      -> "icono-empresa";
+            case SUCURSAL     -> "icono-sucursal";
+            case DEPARTAMENTO -> "icono-departamento";
+            case PUESTO       -> "icono-puesto";
+        });
+        return icon;
+    }
+
+    private void configurarIconos() {
+        if (lblEncabezadoIcono != null) {
+            lblEncabezadoIcono.setGraphic(crearIcono("fas-project-diagram", 24));
+        }
+        if (lblPlaceholderIcon != null) {
+            lblPlaceholderIcon.setGraphic(crearIcono("fas-project-diagram", 52));
+        }
+        if (btnEliminar != null) {
+            btnEliminar.setGraphic(crearIcono("fas-trash-alt", 14));
+            btnEliminar.setContentDisplay(ContentDisplay.LEFT);
+        }
+        if (btnNuevaEmpresa != null) {
+            btnNuevaEmpresa.setGraphic(crearIcono("fas-plus", 14));
+            btnNuevaEmpresa.setContentDisplay(ContentDisplay.LEFT);
+        }
+        if (btnLimpiar != null) {
+            btnLimpiar.setGraphic(crearIcono("fas-times", 14));
+            btnLimpiar.setContentDisplay(ContentDisplay.LEFT);
+        }
+        if (btnGuardar != null) {
+            btnGuardar.setGraphic(crearIcono("fas-save", 14));
+            btnGuardar.setContentDisplay(ContentDisplay.LEFT);
+        }
     }
 
     /** Selecciona un nodo del árbol por tipo + id. */
@@ -632,27 +685,25 @@ public class OrganizacionController implements Initializable, BaseController {
     }
     
     private void configurarCabeceraParaTipo(NodoOrg nodo) {
+        lblIconoTipo.setText("");
+        lblIconoTipo.setGraphic(crearIconoTipo(nodo.tipo(), 28));
         switch (nodo.tipo()) {
             case EMPRESA -> {
-                lblIconoTipo.setText("🏢");
                 lblTituloDetalle.setText(nodo.nombre());
                 lblBadgeTipo.setText("EMPRESA");
                 lblBadgeTipo.getStyleClass().setAll("badge-empresa");
             }
             case SUCURSAL -> {
-                lblIconoTipo.setText("📍");
                 lblTituloDetalle.setText(nodo.nombre());
                 lblBadgeTipo.setText("SUCURSAL");
                 lblBadgeTipo.getStyleClass().setAll("badge-sucursal");
             }
             case DEPARTAMENTO -> {
-                lblIconoTipo.setText("🏬");
                 lblTituloDetalle.setText(nodo.nombre());
                 lblBadgeTipo.setText("DEPARTAMENTO");
                 lblBadgeTipo.getStyleClass().setAll("badge-departamento");
             }
             case PUESTO -> {
-                lblIconoTipo.setText("👤");
                 lblTituloDetalle.setText(nodo.nombre());
                 lblBadgeTipo.setText("PUESTO");
                 lblBadgeTipo.getStyleClass().setAll("badge-puesto");

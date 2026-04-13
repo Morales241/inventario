@@ -109,4 +109,9 @@ public class FachadaPersonas implements IFachadaPersonas {
     public long contarUsuarios(String busqueda) {
         return servicioPersonas.contarUsuarios(busqueda);
     }
+
+    @Override
+    public List<UsuarioDTO> listarUsuarios() {
+        return servicioPersonas.listarUsuarios();
+    }
 }

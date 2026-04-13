@@ -42,6 +42,11 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
     }
 
     @Override
+    public List<EmpresaDTO> listarTodasEmpresas() {
+        return empresaServicio.buscarTodos();
+    }
+
+    @Override
     public EmpresaDTO guardarEmpresa(EmpresaDTO dto) {
         return empresaServicio.guardar(dto);
     }
@@ -55,6 +60,11 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
     @Override
     public List<SucursalDTO> listarSucursales(String filtro, Long idEmpresa) {
         return sucursalServicio.listarConFiltros(filtro, idEmpresa);
+    }
+
+    @Override
+    public List<SucursalDTO> listarTodasSucursales() {
+        return sucursalServicio.buscarTodos();
     }
 
     @Override
@@ -74,6 +84,11 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
     }
 
     @Override
+    public List<DepartamentoDTO> listarTodosDepartamentos() {
+        return departamentoServicio.buscarTodos();
+    }
+
+    @Override
     public DepartamentoDTO guardarDepartamento(DepartamentoDTO dto) {
         return departamentoServicio.guardar(dto);
     }
@@ -89,8 +104,12 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
         return puestoServicio.listarPorDepartamento(idDepartamento);
     }
 
-    @Override
-    public PuestoDTO guardarPuesto(PuestoDTO dto) {
+    @Override    
+    public List<PuestoDTO> listarTodosPuestos() {
+        return puestoServicio.buscarTodos();
+    }
+
+    @Override    public PuestoDTO guardarPuesto(PuestoDTO dto) {
         return puestoServicio.guardar(dto);
     }
 

@@ -1,5 +1,7 @@
 package Dtos;
 
+import java.time.LocalDateTime;
+
 /**
  * Transferencia de datos para departamentos de empresa.
  * <p>
@@ -14,7 +16,13 @@ public class DepartamentoDTO {
     private Long version;
 
     private Long idSucursal;
-    private String nombreSucursal; 
+    private String nombreSucursal;
+
+    // Campos de auditoría
+    private String creadoPor;
+    private LocalDateTime fechaCreacion;
+    private String modificadoPor;
+    private LocalDateTime fechaModificacion;
 
     public DepartamentoDTO() {
     }
@@ -57,6 +65,39 @@ public class DepartamentoDTO {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    // Getters/Setters de auditoría
+    public String getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(String creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public String getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(String modificadoPor) {
+        this.modificadoPor = modificadoPor;
+    }
+
+    public LocalDateTime getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(LocalDateTime fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
     }
 
     @Override

@@ -25,6 +25,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
  * Panel de filtro estilo Excel para columnas de TableView en JavaFX.
@@ -63,7 +64,7 @@ public class ColumnFilterPanel<T> {
     private boolean filtroActivo = false;
 
     private Popup popup;
-    private Label iconoHeader;
+    private FontIcon iconoHeader;
 
     /**
      * @param columna La TableColumn a la que se añade el filtro
@@ -141,10 +142,10 @@ public class ColumnFilterPanel<T> {
         lblTexto.setStyle("-fx-font-weight: bold; -fx-text-fill: " + COLOR_PRIMARY + "; -fx-font-size: 12.5px;");
         HBox.setHgrow(lblTexto, Priority.ALWAYS);
 
-        iconoHeader = new Label("▼");
+        iconoHeader = new FontIcon("fas-chevron-down");
+        iconoHeader.setIconSize(10);
         iconoHeader.setStyle(estiloIcono(false));
-        iconoHeader.setMinWidth(18);
-        iconoHeader.setAlignment(Pos.CENTER);
+        
 
         headerBox.getChildren().addAll(lblTexto, iconoHeader);
 
@@ -162,7 +163,6 @@ public class ColumnFilterPanel<T> {
     private void actualizarIcono() {
         if (iconoHeader != null) {
             iconoHeader.setStyle(estiloIcono(filtroActivo));
-            iconoHeader.setText(filtroActivo ? "▼●" : "▼");  
         }
     }
 
@@ -236,7 +236,7 @@ public class ColumnFilterPanel<T> {
         root.getChildren().add(new Separator());
 
         TextField txtBuscar = new TextField();
-        txtBuscar.setPromptText("🔍 Buscar...");
+        txtBuscar.setPromptText("Buscar...");
         txtBuscar.setStyle(
                 "-fx-background-color: #F9FAFB; "
                 + "-fx-border-color: #E5E7EB; "

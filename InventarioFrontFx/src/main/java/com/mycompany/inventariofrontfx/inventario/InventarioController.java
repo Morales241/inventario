@@ -79,12 +79,6 @@ public class InventarioController implements Initializable, ControllerInventario
     private Button btnAgregar;
     @FXML
     private TextField txtFiltro;
-    @FXML
-    private ComboBox<TipoEquipo> cbxTipo;
-    @FXML
-    private ComboBox<CondicionFisica> cbxCondicion;
-    @FXML
-    private ComboBox<EstadoEquipo> cbxEstado;
 
     
     @FXML
@@ -128,10 +122,7 @@ public class InventarioController implements Initializable, ControllerInventario
         ocultarSpinner();
 
         inicializando = true;
-        llenarComboBox();
         inicializando = false;
-
-        configurarFiltros();
 
         // Instalar filtros de columna DESPUÉS de que las columnas estén listas
         Platform.runLater(this::instalarFiltrosColumna);
@@ -230,9 +221,6 @@ public class InventarioController implements Initializable, ControllerInventario
         filtrosColumna.clear();   // nueva página → resetear filtros locales
 
         final String texto = txtFiltro.getText();
-        final TipoEquipo tipo = cbxTipo.getValue();
-        final CondicionFisica condicion = cbxCondicion.getValue();
-        final EstadoEquipo estado = cbxEstado.getValue();
         final int pagina = this.paginaActual;
 
         Task<Void> task = new Task<>() {
@@ -242,16 +230,20 @@ public class InventarioController implements Initializable, ControllerInventario
 
             @Override
             protected Void call() {
-                total = fachadaEquipos.contarEquipos(texto, tipo, condicion, estado);
-                pagData = fachadaEquipos.buscarConFiltrosPaginado(
-                        texto, tipo, condicion, estado, pagina, TAMANO_PAGINA);
+//                total = fachadaEquipos.contarEquipos(texto, tipo, condicion, estado);
+//                pagData = fachadaEquipos.buscarConFiltrosPaginado(
+//                        texto, tipo, condicion, estado, pagina, TAMANO_PAGINA);
                 return null;
             }
 
             @Override
             protected void succeeded() {
+                if (pagData == null) {
+                    pagData = List.of();
+                    total = 0;
+                }
                 totalRegistros = total;
-                paginaActualData = new ArrayList<>(pagData);  // guardar copia
+                paginaActualData = new ArrayList<>(pagData);
 
                 tablaEquipos.getItems().setAll(pagData);
                 tablaEquipos.setDisable(false);
@@ -330,38 +322,6 @@ public class InventarioController implements Initializable, ControllerInventario
         if (btnSiguiente != null) {
             btnSiguiente.setDisable((long) (paginaActual + 1) * TAMANO_PAGINA >= totalRegistros);
         }
-    }
-
-    private void llenarComboBox() {
-        cbxTipo.getItems().setAll(TipoEquipo.values());
-        cbxCondicion.getItems().setAll(CondicionFisica.values());
-        cbxEstado.getItems().setAll(EstadoEquipo.values());
-    }
-
-    private void configurarFiltros() {
-        debounce.setOnFinished(e -> {
-            paginaActual = 0;
-            cargarPagina();
-        });
-        txtFiltro.textProperty().addListener((obs, old, val) -> debounce.playFromStart());
-        cbxTipo.valueProperty().addListener((obs, old, val) -> {
-            if (!inicializando) {
-                paginaActual = 0;
-                cargarPagina();
-            }
-        });
-        cbxCondicion.valueProperty().addListener((obs, old, val) -> {
-            if (!inicializando) {
-                paginaActual = 0;
-                cargarPagina();
-            }
-        });
-        cbxEstado.valueProperty().addListener((obs, old, val) -> {
-            if (!inicializando) {
-                paginaActual = 0;
-                cargarPagina();
-            }
-        });
     }
 
     private void configurarColumnas() {

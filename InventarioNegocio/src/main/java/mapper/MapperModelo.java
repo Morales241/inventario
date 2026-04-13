@@ -25,6 +25,13 @@ public class MapperModelo {
                         dto.setMemoriaRam(m.getMemoriaRam());
                         dto.setAlmacenamiento(m.getAlmacenamiento());
                         dto.setProcesador(m.getProcesador());
+
+                        // Campos de auditoría
+                        dto.setCreadoPor(m.getCreadoPor());
+                        dto.setFechaCreacion(m.getFechaCreacion());
+                        dto.setModificadoPor(m.getModificadoPor());
+                        dto.setFechaModificacion(m.getFechaModificacion());
+
                         return dto;
                     },
 

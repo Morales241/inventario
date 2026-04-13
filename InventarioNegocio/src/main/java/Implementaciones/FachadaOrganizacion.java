@@ -38,6 +38,11 @@ public class FachadaOrganizacion implements IFachadaOrganizacion {
     }
 
     @Override
+    public List<EmpresaDTO> listarTodasEmpresas() {
+        return servicioOrganizacion.listarTodasEmpresas();
+    }
+
+    @Override
     public void guardarEmpresa(EmpresaDTO dto) {
         servicioOrganizacion.guardarEmpresa(dto);
     }
@@ -52,6 +57,11 @@ public class FachadaOrganizacion implements IFachadaOrganizacion {
     @Override
     public List<SucursalDTO> listarSucursales(String filtro, Long idEmpresa) {
         return servicioOrganizacion.listarSucursales(filtro, idEmpresa);
+    }
+
+    @Override
+    public List<SucursalDTO> listarTodasSucursales() {
+        return servicioOrganizacion.listarTodasSucursales();
     }
 
     @Override
@@ -72,6 +82,11 @@ public class FachadaOrganizacion implements IFachadaOrganizacion {
     }
 
     @Override
+    public List<DepartamentoDTO> listarTodosDepartamentos() {
+        return servicioOrganizacion.listarTodosDepartamentos();
+    }
+
+    @Override
     public void guardarDepartamento(DepartamentoDTO dto) {
         servicioOrganizacion.guardarDepartamento(dto);
     }
@@ -86,6 +101,11 @@ public class FachadaOrganizacion implements IFachadaOrganizacion {
     @Override
     public List<PuestoDTO> listarPuestos(Long idDepto) {
         return servicioOrganizacion.listarPuestos(idDepto);
+    }
+
+    @Override
+    public List<PuestoDTO> listarTodosPuestos() {
+        return servicioOrganizacion.listarTodosPuestos();
     }
 
     @Override

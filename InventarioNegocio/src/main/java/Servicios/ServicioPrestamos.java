@@ -236,6 +236,11 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
     }
 
     @Override
+    public List<AsignacionDTO> listarAsignaciones() {
+        return asignacionServicio.buscarTodos();
+    }
+
+    @Override
     public List<AsignacionDTO> obtenerAsignacionesActivasPorEquipo(Long idEquipo) {
         if (idEquipo == null) {
             throw new IllegalArgumentException("ID de equipo inválido");

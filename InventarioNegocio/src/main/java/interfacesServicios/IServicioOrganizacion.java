@@ -5,6 +5,7 @@ import Dtos.DepartamentoDTO;
 import Dtos.EmpresaDTO;
 import Dtos.PuestoDTO;
 import Dtos.SucursalDTO;
+import Dtos.UsuarioDTO;
 import java.util.List;
 
 /**
@@ -20,7 +21,13 @@ public interface IServicioOrganizacion {
      * @return Lista de EmpresaDTO
      */
     List<EmpresaDTO> listarEmpresas(String filtroNombre);
-    
+
+    /**
+     * Lista todas las empresas sin filtros.
+     * @return Lista completa de EmpresaDTO
+     */
+    List<EmpresaDTO> listarTodasEmpresas();
+
     /**
      * Guarda o actualiza una empresa.
      * @param dto Datos de la empresa
@@ -118,4 +125,23 @@ public interface IServicioOrganizacion {
      * @return EmpresaDTO con los datos de la empresa
      */
     EmpresaDTO buscarEmpresaPorPuesto(Long idPuesto);
+    
+    
+    /**
+     * Busca todos los puestos 
+     * @return lista con todos los puestos
+     */
+    List<PuestoDTO> listarTodosPuestos();
+    
+    /**
+     * Busca todos los departamentos 
+     * @return lista con todos los departamentos
+     */
+    List<DepartamentoDTO> listarTodosDepartamentos();
+    
+    /**
+     * Busca todos los sucursales 
+     * @return lista con todos los sucursales
+     */
+    List<SucursalDTO> listarTodasSucursales();
 }

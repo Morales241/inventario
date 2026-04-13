@@ -37,6 +37,12 @@ public class MapperAsignacion {
                             
                         }
 
+                        // Campos de auditoría
+                        dto.setCreadoPor(entity.getCreadoPor());
+                        dto.setFechaCreacion(entity.getFechaCreacion());
+                        dto.setModificadoPor(entity.getModificadoPor());
+                        dto.setFechaModificacion(entity.getFechaModificacion());
+
                         return dto;
                     },
                     (dto) -> {

@@ -35,6 +35,12 @@ public class MapperUsuario {
                             
                         }
 
+                        // Campos de auditoría
+                        dto.setCreadoPor(u.getCreadoPor());
+                        dto.setFechaCreacion(u.getFechaCreacion());
+                        dto.setModificadoPor(u.getModificadoPor());
+                        dto.setFechaModificacion(u.getFechaModificacion());
+
                         return dto;
                     },
 

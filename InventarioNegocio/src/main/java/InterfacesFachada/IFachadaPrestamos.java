@@ -88,6 +88,13 @@ public interface IFachadaPrestamos {
     List<AsignacionDTO> buscarAsignaciones(String filtro);
 
     /**
+     * Lista todas las asignaciones sin filtros.
+     *
+     * @return Lista de AsignacionDTO con todas las asignaciones
+     */
+    List<AsignacionDTO> listarAsignaciones();
+
+    /**
      * Obtiene las asignaciones activas de un equipo específico.
      *
      * @param idEquipo Identificador del equipo

@@ -19,6 +19,12 @@ public interface IServicioPrestamos {
      * @param idUsuario Identificador del usuario
      */
     void asignarEquipo(Long idEquipo, Long idUsuario);
+    
+    /**
+     * Busca todos los asignaciónes 
+     * @return lista con todos los asignaciónes
+     */
+    List<AsignacionDTO> listarAsignaciones();
 
     /**
      * Procesa la devolución de un equipo, finalizando el préstamo.

@@ -158,10 +158,10 @@
                 <children>
                     <Button fx:id="btnImprimir"
                             styleClass="btn-editar"
-                            text="🖨 Imprimir" />
+                            text="Imprimir" />
                     <Button fx:id="btnGuardarPDF"
                             styleClass="btn-agregar"
-                            text="💾 Guardar PDF" />
+                            text="Guardar PDF" />
                 </children>
             </HBox>
 

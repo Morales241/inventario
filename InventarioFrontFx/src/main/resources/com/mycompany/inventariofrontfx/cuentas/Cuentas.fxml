@@ -31,9 +31,9 @@
                     <children>
                         <TextField fx:id="txtFiltro"
                                    prefHeight="38.0" prefWidth="280.0"
-                                   promptText="🔍 Buscar por username..." />
+                                   promptText="Buscar por username..." />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button text="＋ Nueva Cuenta"
+                        <Button text="Nueva Cuenta"
                                 styleClass="btn-agregar"
                                 onAction="#modoNuevo"
                                 prefHeight="38.0" prefWidth="160.0">
@@ -137,13 +137,13 @@
 
                 <VBox spacing="6"
                       style="-fx-background-color: #F0F7FF; -fx-background-radius: 8; -fx-border-color: #BFDBFE; -fx-border-radius: 8; -fx-border-width: 1; -fx-padding: 10;">
-                    <Label text="ℹ Roles disponibles"
+                    <Label text="Roles disponibles"
                            style="-fx-font-weight: bold; -fx-font-size: 11px; -fx-text-fill: #13507d;" />
-                    <Label text="🔑 ADMIN — Acceso total"
+                    <Label text="ADMIN — Acceso total"
                            style="-fx-font-size: 11px; -fx-text-fill: #374151;" />
-                    <Label text="📦 ALMACENISTA — Equipos y asignaciones"
+                    <Label text="ALMACENISTA — Equipos y asignaciones"
                            style="-fx-font-size: 11px; -fx-text-fill: #374151;" />
-                    <Label text="👁 INVITADO — Solo lectura"
+                    <Label text="INVITADO — Solo lectura"
                            style="-fx-font-size: 11px; -fx-text-fill: #374151;" />
                 </VBox>
 
@@ -152,7 +152,7 @@
 
                 <VBox spacing="8">
                     <Button fx:id="btnGuardar"
-                            text="💾 Guardar Cuenta"
+                            text="Guardar Cuenta"
                             styleClass="btn-agregar"
                             onAction="#guardarCuenta"
                             maxWidth="1.7976931348623157E308"

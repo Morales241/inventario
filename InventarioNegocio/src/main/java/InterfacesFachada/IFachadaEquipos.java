@@ -34,6 +34,13 @@ public interface IFachadaEquipos {
     List<EquipoBaseDTO> buscarEquipos(Integer gry, EstadoEquipo estado, String criterioBusqueda);
 
     /**
+     * Lista todos los equipos sin filtros.
+     *
+     * @return Lista de EquipoBaseDTO con todos los equipos
+     */
+    List<EquipoBaseDTO> listarEquipos();
+
+    /**
      * Obtiene los datos completos de un equipo para edición o visualización
      * detallada.
      *

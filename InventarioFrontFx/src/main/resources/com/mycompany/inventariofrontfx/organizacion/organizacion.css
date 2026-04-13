@@ -177,6 +177,27 @@
 
 .placeholder-icon {
     -fx-font-size: 40px;
+    -fx-icon-color: -fx-primary;
+}
+
+.icono-azul {
+    -fx-icon-color: -fx-primary;
+}
+
+.icono-empresa {
+    -fx-icon-color: #0f4f7f;
+}
+
+.icono-sucursal {
+    -fx-icon-color: #2563eb;
+}
+
+.icono-departamento {
+    -fx-icon-color: #1d4ed8;
+}
+
+.icono-puesto {
+    -fx-icon-color: #3b82f6;
 }
 
 .placeholder-text {

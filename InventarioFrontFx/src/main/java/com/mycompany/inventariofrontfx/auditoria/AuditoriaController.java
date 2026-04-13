@@ -3,7 +3,16 @@ package com.mycompany.inventariofrontfx.auditoria;
 import Dtos.AsignacionDTO;
 import Dtos.CuentaSistemaDTO;
 import Dtos.EquipoBaseDTO;
+import Dtos.EmpresaDTO;
+import Dtos.ModeloDTO;
+import Dtos.PuestoDTO;
+import Dtos.SucursalDTO;
+import Dtos.DepartamentoDTO;
+import Dtos.UsuarioDTO;
+import Enums.CondicionFisica;
+import Enums.EstadoEquipo;
 import InterfacesFachada.IFachadaEquipos;
+import InterfacesFachada.IFachadaOrganizacion;
 import InterfacesFachada.IFachadaPersonas;
 import InterfacesFachada.IFachadaPrestamos;
 import com.mycompany.inventariofrontfx.menu.MenuController;
@@ -27,23 +36,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 /**
- * Controlador del módulo de Auditoría — dos secciones:
- *
- * ── SECCIÓN 1: HISTORIAL DE EQUIPO ──────────────────────────────────────────
- * Busca un equipo por GRY o identificador y muestra una línea de tiempo de
- * todas sus asignaciones: quién lo tuvo, cuándo lo recibió, cuándo lo devolvió.
- * Fuente de datos: obtenerHistorialEquipo(idEquipo) — ya existe en la fachada.
- *
- * ── SECCIÓN 2: HISTORIAL DE CUENTAS DEL SISTEMA ─────────────────────────────
- * Muestra todas las cuentas del sistema con sus datos de auditoría:
- * quién la creó, cuándo, quién la modificó por última vez y cuándo.
- * Fuente de datos: AuditoriaBase (creadoPor, fechaCreacion, modificadoPor,
- * fechaModificacion) ya está en CuentaSistema a través de la herencia.
- *
- * NOTA SOBRE DATOS DE AUDITORÍA:
- * AuditoriaBase graba creadoPor/modificadoPor usando SesionActual.getUsuario().
- * Esos campos se exponen a través de CuentaSistemaDTO — necesitas agregar
- * los 4 campos de auditoría al DTO (instrucciones en CuentaSistemaDTO_AMPLIADO.java).
+ * Controlador del módulo de Auditoría — dos secciones
  */
 public class AuditoriaController implements Initializable, BaseController {
 
@@ -52,6 +45,7 @@ public class AuditoriaController implements Initializable, BaseController {
     private final IFachadaPrestamos fachadaPrestamos = FabricaFachadas.getFachadaPrestamos();
     private final IFachadaEquipos   fachadaEquipos   = FabricaFachadas.getFachadaEquipos();
     private final IFachadaPersonas  fachadaPersonas  = FabricaFachadas.getFachadaPersonas();
+    private final IFachadaOrganizacion fachadaOrganizacion = FabricaFachadas.getFachadaOrganizacion();
 
     private static final DateTimeFormatter FMT_FECHA  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter FMT_HORA   = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -59,9 +53,6 @@ public class AuditoriaController implements Initializable, BaseController {
     // ── Tab pane ──────────────────────────────────────────────────────────────
     @FXML private TabPane tabPane;
 
-    // ══════════════════════════════════════════════════════════════════════════
-    // SECCIÓN 1 — HISTORIAL DE EQUIPO
-    // ══════════════════════════════════════════════════════════════════════════
     @FXML private TextField                          txtBuscarEquipo;
     @FXML private Button                             btnBuscarEquipo;
     @FXML private ProgressIndicator                  progressEquipo;
@@ -86,9 +77,6 @@ public class AuditoriaController implements Initializable, BaseController {
     // Panel placeholder sección 1
     @FXML private VBox panelPlaceholderEquipo;
 
-    // ══════════════════════════════════════════════════════════════════════════
-    // SECCIÓN 2 — HISTORIAL DE CUENTAS
-    // ══════════════════════════════════════════════════════════════════════════
     @FXML private TextField                          txtFiltrosCuentas;
     @FXML private ProgressIndicator                  progressCuentas;
 
@@ -99,6 +87,69 @@ public class AuditoriaController implements Initializable, BaseController {
     @FXML private TableColumn<CuentaSistemaDTO, String>         colCFechaCreacion;
     @FXML private TableColumn<CuentaSistemaDTO, String>         colCModificadoPor;
     @FXML private TableColumn<CuentaSistemaDTO, String>         colCFechaModificacion;
+
+    @FXML private TableView<UsuarioDTO>                   tablaUsuarios;
+    @FXML private TableColumn<UsuarioDTO, String>         colUUsername;
+    @FXML private TableColumn<UsuarioDTO, String>         colUNoNomina;
+    @FXML private TableColumn<UsuarioDTO, String>         colUCreadoPor;
+    @FXML private TableColumn<UsuarioDTO, String>         colUFechaCreacion;
+    @FXML private TableColumn<UsuarioDTO, String>         colUModificadoPor;
+    @FXML private TableColumn<UsuarioDTO, String>         colUFechaModificacion;
+
+    @FXML private TableView<EquipoBaseDTO>                tablaEquipos;
+    @FXML private TableColumn<EquipoBaseDTO, String>      colEGry;
+    @FXML private TableColumn<EquipoBaseDTO, String>      colENombreModelo;
+    @FXML private TableColumn<EquipoBaseDTO, String>      colECreadoPor;
+    @FXML private TableColumn<EquipoBaseDTO, String>      colEFechaCreacion;
+    @FXML private TableColumn<EquipoBaseDTO, String>      colEModificadoPor;
+    @FXML private TableColumn<EquipoBaseDTO, String>      colEFechaModificacion;
+
+    @FXML private TableView<AsignacionDTO>                tablaAsignaciones;
+    @FXML private TableColumn<AsignacionDTO, String>      colAUsuario;
+    @FXML private TableColumn<AsignacionDTO, String>      colAEquipo;
+    @FXML private TableColumn<AsignacionDTO, String>      colACreadoPor;
+    @FXML private TableColumn<AsignacionDTO, String>      colAFechaCreacion;
+    @FXML private TableColumn<AsignacionDTO, String>      colAModificadoPor;
+    @FXML private TableColumn<AsignacionDTO, String>      colAFechaModificacion;
+
+    @FXML private TableView<EmpresaDTO>                   tablaEmpresas;
+    @FXML private TableColumn<EmpresaDTO, String>         colEmpNombre;
+    @FXML private TableColumn<EmpresaDTO, String>         colEmpCreadoPor;
+    @FXML private TableColumn<EmpresaDTO, String>         colEmpFechaCreacion;
+    @FXML private TableColumn<EmpresaDTO, String>         colEmpModificadoPor;
+    @FXML private TableColumn<EmpresaDTO, String>         colEmpFechaModificacion;
+
+    @FXML private TableView<SucursalDTO>                  tablaSucursales;
+    @FXML private TableColumn<SucursalDTO, String>        colSucNombre;
+    @FXML private TableColumn<SucursalDTO, String>        colSucEmpresa;
+    @FXML private TableColumn<SucursalDTO, String>        colSucCreadoPor;
+    @FXML private TableColumn<SucursalDTO, String>        colSucFechaCreacion;
+    @FXML private TableColumn<SucursalDTO, String>        colSucModificadoPor;
+    @FXML private TableColumn<SucursalDTO, String>        colSucFechaModificacion;
+
+    @FXML private TableView<DepartamentoDTO>              tablaDepartamentos;
+    @FXML private TableColumn<DepartamentoDTO, String>    colDepNombre;
+    @FXML private TableColumn<DepartamentoDTO, String>    colDepSucursal;
+    @FXML private TableColumn<DepartamentoDTO, String>    colDepCreadoPor;
+    @FXML private TableColumn<DepartamentoDTO, String>    colDepFechaCreacion;
+    @FXML private TableColumn<DepartamentoDTO, String>    colDepModificadoPor;
+    @FXML private TableColumn<DepartamentoDTO, String>    colDepFechaModificacion;
+
+    @FXML private TableView<PuestoDTO>                    tablaPuestos;
+    @FXML private TableColumn<PuestoDTO, String>          colPueNombre;
+    @FXML private TableColumn<PuestoDTO, String>          colPueDepartamento;
+    @FXML private TableColumn<PuestoDTO, String>          colPueCreadoPor;
+    @FXML private TableColumn<PuestoDTO, String>          colPueFechaCreacion;
+    @FXML private TableColumn<PuestoDTO, String>          colPueModificadoPor;
+    @FXML private TableColumn<PuestoDTO, String>          colPueFechaModificacion;
+
+    @FXML private TableView<ModeloDTO>                    tablaModelos;
+    @FXML private TableColumn<ModeloDTO, String>          colModNombre;
+    @FXML private TableColumn<ModeloDTO, String>          colModMarca;
+    @FXML private TableColumn<ModeloDTO, String>          colModCreadoPor;
+    @FXML private TableColumn<ModeloDTO, String>          colModFechaCreacion;
+    @FXML private TableColumn<ModeloDTO, String>          colModModificadoPor;
+    @FXML private TableColumn<ModeloDTO, String>          colModFechaModificacion;
 
     // Debounce para filtro de cuentas
     private final PauseTransition debounce = new PauseTransition(Duration.millis(350));
@@ -114,6 +165,14 @@ public class AuditoriaController implements Initializable, BaseController {
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnaHistorialEquipo();
         configurarColumnasCuentas();
+        configurarColumnasUsuarios();
+        configurarColumnasEquipos();
+        configurarColumnasAsignaciones();
+        configurarColumnasEmpresas();
+        configurarColumnasSucursales();
+        configurarColumnasDepartamentos();
+        configurarColumnasPuestos();
+        configurarColumnasModelos();
         configurarBusquedaEquipo();
         configurarFiltroCuentas();
 
@@ -122,8 +181,16 @@ public class AuditoriaController implements Initializable, BaseController {
         ocultarSpinner(progressEquipo);
         ocultarSpinner(progressCuentas);
 
-        // Cargar cuentas al abrir (tab 2 ya tiene datos listos)
+        // Cargar datos de auditoría al abrir
         cargarCuentasAsync("");
+        cargarUsuariosAsync("");
+        cargarEquiposAsync("");
+        cargarAsignacionesAsync("");
+        cargarEmpresasAsync("");
+        cargarSucursalesAsync("");
+        cargarDepartamentosAsync("");
+        cargarPuestosAsync("");
+        cargarModelosAsync("");
     }
 
     // ══════════════════════════════════════════════════════════════════════════
@@ -318,7 +385,196 @@ public class AuditoriaController implements Initializable, BaseController {
         txtFiltrosCuentas.textProperty().addListener((obs, old, val) -> debounce.playFromStart());
     }
 
-    private void cargarCuentasAsync(String filtro) {
+    private void configurarColumnasUsuarios() {
+        colUUsername.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getNombre()));
+
+        colUNoNomina.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getNoNomina() != null ? d.getValue().getNoNomina() : "—"));
+
+        colUCreadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getCreadoPor() != null ? d.getValue().getCreadoPor() : "—"));
+
+        colUFechaCreacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaCreacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "—");
+        });
+
+        colUModificadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getModificadoPor() != null ? d.getValue().getModificadoPor() : "—"));
+
+        colUFechaModificacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaModificacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "Sin cambios");
+        });
+    }
+
+    private void configurarColumnasEquipos() {
+        colEGry.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getGry() != null ? d.getValue().getGry().toString() : "—"));
+
+        colENombreModelo.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getNombreModelo() != null ? d.getValue().getNombreModelo() : "—"));
+
+        colECreadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getCreadoPor() != null ? d.getValue().getCreadoPor() : "—"));
+
+        colEFechaCreacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaCreacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "—");
+        });
+
+        colEModificadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getModificadoPor() != null ? d.getValue().getModificadoPor() : "—"));
+
+        colEFechaModificacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaModificacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "Sin cambios");
+        });
+    }
+
+    private void configurarColumnasAsignaciones() {
+        colAUsuario.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getNombreUsuario() != null ? d.getValue().getNombreUsuario() : "—"));
+
+        colAEquipo.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getIdentificadorEquipo() != null ? d.getValue().getIdentificadorEquipo() : "—"));
+
+        colACreadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getCreadoPor() != null ? d.getValue().getCreadoPor() : "—"));
+
+        colAFechaCreacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaCreacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "—");
+        });
+
+        colAModificadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getModificadoPor() != null ? d.getValue().getModificadoPor() : "—"));
+
+        colAFechaModificacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaModificacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "Sin cambios");
+        });
+    }
+
+    private void configurarColumnasEmpresas() {
+        colEmpNombre.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getNombre()));
+
+        colEmpCreadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getCreadoPor() != null ? d.getValue().getCreadoPor() : "—"));
+
+        colEmpFechaCreacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaCreacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "—");
+        });
+
+        colEmpModificadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getModificadoPor() != null ? d.getValue().getModificadoPor() : "—"));
+
+        colEmpFechaModificacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaModificacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "Sin cambios");
+        });
+    }
+
+    private void configurarColumnasSucursales() {
+        colSucNombre.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getNombre()));
+
+        colSucEmpresa.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getNombreEmpresa() != null ? d.getValue().getNombreEmpresa() : "—"));
+
+        colSucCreadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getCreadoPor() != null ? d.getValue().getCreadoPor() : "—"));
+
+        colSucFechaCreacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaCreacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "—");
+        });
+
+        colSucModificadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getModificadoPor() != null ? d.getValue().getModificadoPor() : "—"));
+
+        colSucFechaModificacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaModificacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "Sin cambios");
+        });
+    }
+
+    private void configurarColumnasDepartamentos() {
+        colDepNombre.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getNombre()));
+
+        colDepSucursal.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getNombreSucursal() != null ? d.getValue().getNombreSucursal() : "—"));
+
+        colDepCreadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getCreadoPor() != null ? d.getValue().getCreadoPor() : "—"));
+
+        colDepFechaCreacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaCreacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "—");
+        });
+
+        colDepModificadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getModificadoPor() != null ? d.getValue().getModificadoPor() : "—"));
+
+        colDepFechaModificacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaModificacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "Sin cambios");
+        });
+    }
+
+    private void configurarColumnasPuestos() {
+        colPueNombre.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getNombre()));
+
+        colPueDepartamento.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getNombreDepartamento() != null ? d.getValue().getNombreDepartamento() : "—"));
+
+        colPueCreadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getCreadoPor() != null ? d.getValue().getCreadoPor() : "—"));
+
+        colPueFechaCreacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaCreacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "—");
+        });
+
+        colPueModificadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getModificadoPor() != null ? d.getValue().getModificadoPor() : "—"));
+
+        colPueFechaModificacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaModificacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "Sin cambios");
+        });
+    }
+
+    private void configurarColumnasModelos() {
+        colModNombre.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getNombre()));
+
+        colModMarca.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getMarca() != null ? d.getValue().getMarca() : "—"));
+
+        colModCreadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getCreadoPor() != null ? d.getValue().getCreadoPor() : "—"));
+
+        colModFechaCreacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaCreacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "—");
+        });
+
+        colModModificadoPor.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getModificadoPor() != null ? d.getValue().getModificadoPor() : "—"));
+
+        colModFechaModificacion.setCellValueFactory(d -> {
+            java.time.LocalDateTime f = d.getValue().getFechaModificacion();
+            return new SimpleStringProperty(f != null ? f.format(FMT_HORA) : "Sin cambios");
+        });
+    }
+    
+    private void cargarCuentasAsync(String filtro){
         mostrarSpinner(progressCuentas);
         tablaCuentas.setDisable(true);
 
@@ -403,6 +659,160 @@ public class AuditoriaController implements Initializable, BaseController {
             default         -> "-fx-background-color:#FEF3C7;-fx-text-fill:#92400E;" +
                                "-fx-background-radius:20;-fx-padding:3 10;-fx-font-size:11px;-fx-font-weight:bold;";
         };
+    }
+
+    private void cargarUsuariosAsync(String filtro) {
+        Task<List<UsuarioDTO>> task = new Task<>() {
+            @Override
+            protected List<UsuarioDTO> call() {
+                return (filtro == null || filtro.isBlank())
+                        ? fachadaPersonas.listarUsuarios()
+                        : fachadaPersonas.buscarUsuarios(filtro);
+            }
+        };
+        task.setOnSucceeded(e -> {
+            tablaUsuarios.getItems().setAll(task.getValue());
+        });
+        task.setOnFailed(e -> {
+            Throwable ex = task.getException();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error al cargar usuarios",
+                    ex != null ? ex.getMessage() : "Error desconocido");
+        });
+        new Thread(task).start();
+    }
+
+    private void cargarEquiposAsync(String filtro) {
+        Task<List<EquipoBaseDTO>> task = new Task<>() {
+            @Override
+            protected List<EquipoBaseDTO> call() {
+                return (filtro == null || filtro.isBlank())
+                        ? fachadaEquipos.listarEquipos()
+                        : fachadaEquipos.buscarConFiltros(filtro, null, null, null);
+            }
+        };
+        task.setOnSucceeded(e -> {
+            tablaEquipos.getItems().setAll(task.getValue());
+        });
+        task.setOnFailed(e -> {
+            Throwable ex = task.getException();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error al cargar equipos",
+                    ex != null ? ex.getMessage() : "Error desconocido");
+        });
+        new Thread(task).start();
+    }
+
+    private void cargarAsignacionesAsync(String filtro) {
+        Task<List<AsignacionDTO>> task = new Task<>() {
+            @Override
+            protected List<AsignacionDTO> call() {
+                return (filtro == null || filtro.isBlank())
+                        ? fachadaPrestamos.listarAsignaciones()
+                        : fachadaPrestamos.buscarAsignaciones(filtro);
+            }
+        };
+        task.setOnSucceeded(e -> {
+            tablaAsignaciones.getItems().setAll(task.getValue());
+        });
+        task.setOnFailed(e -> {
+            Throwable ex = task.getException();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error al cargar asignaciones",
+                    ex != null ? ex.getMessage() : "Error desconocido");
+        });
+        new Thread(task).start();
+    }
+
+    private void cargarEmpresasAsync(String filtro) {
+        Task<List<EmpresaDTO>> task = new Task<>() {
+            @Override
+            protected List<EmpresaDTO> call() {
+                return (filtro == null || filtro.isBlank())
+                        ? fachadaOrganizacion.listarTodasEmpresas()
+                        : fachadaOrganizacion.listarEmpresas(filtro);
+            }
+        };
+        task.setOnSucceeded(e -> {
+            tablaEmpresas.getItems().setAll(task.getValue());
+        });
+        task.setOnFailed(e -> {
+            Throwable ex = task.getException();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error al cargar empresas",
+                    ex != null ? ex.getMessage() : "Error desconocido");
+        });
+        new Thread(task).start();
+    }
+
+    private void cargarSucursalesAsync(String filtro) {
+        Task<List<SucursalDTO>> task = new Task<>() {
+            @Override
+            protected List<SucursalDTO> call() {
+                return fachadaOrganizacion.listarSucursales(filtro, null);
+            }
+        };
+        task.setOnSucceeded(e -> {
+            tablaSucursales.getItems().setAll(task.getValue());
+        });
+        task.setOnFailed(e -> {
+            Throwable ex = task.getException();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error al cargar sucursales",
+                    ex != null ? ex.getMessage() : "Error desconocido");
+        });
+        new Thread(task).start();
+    }
+
+    private void cargarDepartamentosAsync(String filtro) {
+        Task<List<DepartamentoDTO>> task = new Task<>() {
+            @Override
+            protected List<DepartamentoDTO> call() {
+                return fachadaOrganizacion.listarDepartamentos(filtro, null);
+            }
+        };
+        task.setOnSucceeded(e -> {
+            tablaDepartamentos.getItems().setAll(task.getValue());
+        });
+        task.setOnFailed(e -> {
+            Throwable ex = task.getException();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error al cargar departamentos",
+                    ex != null ? ex.getMessage() : "Error desconocido");
+        });
+        new Thread(task).start();
+    }
+
+    private void cargarPuestosAsync(String filtro) {
+        Task<List<PuestoDTO>> task = new Task<>() {
+            @Override
+            protected List<PuestoDTO> call() {
+                return fachadaOrganizacion.listarTodosPuestos();
+            }
+        };
+        task.setOnSucceeded(e -> {
+            tablaPuestos.getItems().setAll(task.getValue());
+        });
+        task.setOnFailed(e -> {
+            Throwable ex = task.getException();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error al cargar puestos",
+                    ex != null ? ex.getMessage() : "Error desconocido");
+        });
+        new Thread(task).start();
+    }
+
+    private void cargarModelosAsync(String filtro) {
+        Task<List<ModeloDTO>> task = new Task<>() {
+            @Override
+            protected List<ModeloDTO> call() {
+                return (filtro == null || filtro.isBlank())
+                        ? fachadaEquipos.listarModelos()
+                        : fachadaEquipos.buscarModelosConFiltros(filtro, null, null, null, null);
+            }
+        };
+        task.setOnSucceeded(e -> {
+            tablaModelos.getItems().setAll(task.getValue());
+        });
+        task.setOnFailed(e -> {
+            Throwable ex = task.getException();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error al cargar modelos",
+                    ex != null ? ex.getMessage() : "Error desconocido");
+        });
+        new Thread(task).start();
     }
 
     // ─────────────────────────────────────────────────────────────────────────

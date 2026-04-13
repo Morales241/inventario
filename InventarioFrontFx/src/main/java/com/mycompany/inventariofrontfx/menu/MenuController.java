@@ -142,11 +142,11 @@ public class MenuController implements Initializable {
         }
         return switch (rol.toUpperCase()) {
             case "ADMIN" ->
-                "🔑 Administrador";
+                "Administrador";
             case "OPERARIO" ->
-                "📦 Operario";
+                "Operario";
             case "INVITADO" ->
-                "👁 Invitado";
+                "Invitado";
             default ->
                 rol;
         };

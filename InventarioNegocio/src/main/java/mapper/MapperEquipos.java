@@ -140,6 +140,12 @@ public class MapperEquipos {
 
         }
 
+        // Campos de auditoría
+        dto.setCreadoPor(e.getCreadoPor());
+        dto.setFechaCreacion(e.getFechaCreacion());
+        dto.setModificadoPor(e.getModificadoPor());
+        dto.setFechaModificacion(e.getFechaModificacion());
+
         return dto;
     }
 

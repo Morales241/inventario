@@ -42,6 +42,11 @@ public class FachadaEquipos implements IFachadaEquipos {
     }
 
     @Override
+    public List<EquipoBaseDTO> listarEquipos() {
+        return servicioEquipos.listarEquipos();
+    }
+
+    @Override
     public EquipoBaseDTO obtenerEquipoPorId(Long id) {
         return servicioEquipos.obtenerPorId(id);
     }

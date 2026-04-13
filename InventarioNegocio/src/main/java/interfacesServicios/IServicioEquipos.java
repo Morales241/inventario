@@ -139,6 +139,12 @@ public interface IServicioEquipos {
     ModeloDTO buscarModeloPorId(Long id);
 
     /**
+     * Busca todos los equipos
+     * @return lista con equipos
+     */
+    public List<EquipoBaseDTO> listarEquipos();
+    
+    /**
      * Busca modelos aplicando filtros técnicos.
      *
      * @param nombre Nombre del modelo (búsqueda parcial)

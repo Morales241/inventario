@@ -26,6 +26,8 @@ public interface IFachadaPersonas {
 
     // ── Usuarios ──────────────────────────────────────────────────────────────
 
+    List<UsuarioDTO> listarUsuarios();
+
     List<UsuarioDTO> buscarUsuarios(String busquedaGlobal);
 
     /**

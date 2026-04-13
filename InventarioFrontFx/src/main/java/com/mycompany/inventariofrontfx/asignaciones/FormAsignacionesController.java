@@ -27,11 +27,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class FormAsignacionesController implements Initializable, BaseController {
 
@@ -55,6 +57,12 @@ public class FormAsignacionesController implements Initializable, BaseController
     private Button btnConfirmar;
     @FXML
     private Button btnCancelar;
+    @FXML
+    private Label iconoTrabajador;
+    @FXML
+    private Label iconoEquipo;
+    @FXML
+    private Label iconoDetalles;
     
     // Labels para resumen
     @FXML
@@ -77,6 +85,7 @@ public class FormAsignacionesController implements Initializable, BaseController
     public void initialize(URL url, ResourceBundle rb) {
         configurarListas();
         cargarDatosIniciales();
+        configurarIconos();
         
         dateEntrega.setValue(LocalDate.now());
         actualizarResumen();
@@ -199,6 +208,28 @@ public class FormAsignacionesController implements Initializable, BaseController
             resumenFechaEntrega.setText(dateEntrega.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         } else {
             resumenFechaEntrega.setText("No definida");
+        }
+    }
+
+    private FontIcon crearIcono(String code, int size) {
+        FontIcon icon = new FontIcon(code);
+        icon.setIconSize(size);
+        icon.getStyleClass().add("icono-azul");
+        return icon;
+    }
+
+    private void configurarIconos() {
+        if (iconoTrabajador != null) {
+            iconoTrabajador.setGraphic(crearIcono("fas-user-tie", 24));
+            iconoTrabajador.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        }
+        if (iconoEquipo != null) {
+            iconoEquipo.setGraphic(crearIcono("fas-laptop", 24));
+            iconoEquipo.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        }
+        if (iconoDetalles != null) {
+            iconoDetalles.setGraphic(crearIcono("fas-clipboard-list", 20));
+            iconoDetalles.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }
     }
 

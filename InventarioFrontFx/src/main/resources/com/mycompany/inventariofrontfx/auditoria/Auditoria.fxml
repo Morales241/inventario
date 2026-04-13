@@ -116,7 +116,7 @@
             <!-- ════════════════════════════════════════════════════════════
                  TAB 2 — HISTORIAL DE CUENTAS DEL SISTEMA
                  ════════════════════════════════════════════════════════════ -->
-            <Tab text="🔑  Cuentas del Sistema">
+            <Tab text="Cuentas del Sistema">
                 <content>
                     <BorderPane style="-fx-background-color: #F3F4F6;">
 
@@ -126,7 +126,7 @@
                                 <children>
                                     <HBox alignment="CENTER_LEFT" spacing="12.0">
                                         <children>
-                                            <TextField fx:id="txtFiltrosCuentas" prefHeight="38.0" prefWidth="300.0" promptText="🔍 Buscar por usuario..." />
+                                            <TextField fx:id="txtFiltrosCuentas" prefHeight="38.0" prefWidth="300.0" promptText="Buscar por usuario..." />
                                             <ProgressIndicator fx:id="progressCuentas" managed="false" prefHeight="24.0" prefWidth="24.0" visible="false" />
                                         </children>
                                     </HBox>
@@ -154,6 +154,221 @@
                             </VBox>
                         </center>
 
+                    </BorderPane>
+                </content>
+            </Tab>
+
+            <!-- ════════════════════════════════════════════════════════════
+                 TAB 3 — AUDITORÍA DE USUARIOS
+                 ════════════════════════════════════════════════════════════ -->
+            <Tab text="👥 Usuarios">
+                <content>
+                    <BorderPane style="-fx-background-color: #F3F4F6;">
+                        <center>
+                            <VBox style="-fx-padding: 10;" VBox.vgrow="ALWAYS">
+                                <TableView fx:id="tablaUsuarios" styleClass="mi-tabla" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colUUsername" prefWidth="200" sortable="false" text="Nombre" />
+                                        <TableColumn fx:id="colUNoNomina" prefWidth="120" sortable="false" text="Nómina" />
+                                        <TableColumn fx:id="colUCreadoPor" prefWidth="130" sortable="false" text="Creado por" />
+                                        <TableColumn fx:id="colUFechaCreacion" prefWidth="145" sortable="false" text="Fecha creación" />
+                                        <TableColumn fx:id="colUModificadoPor" prefWidth="130" sortable="false" text="Modificado por" />
+                                        <TableColumn fx:id="colUFechaModificacion" prefWidth="145" sortable="false" text="Última modificación" />
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                </TableView>
+                            </VBox>
+                        </center>
+                    </BorderPane>
+                </content>
+            </Tab>
+
+            <!-- ════════════════════════════════════════════════════════════
+                 TAB 4 — AUDITORÍA DE EQUIPOS
+                 ════════════════════════════════════════════════════════════ -->
+            <Tab text="💻 Equipos">
+                <content>
+                    <BorderPane style="-fx-background-color: #F3F4F6;">
+                        <center>
+                            <VBox style="-fx-padding: 10;" VBox.vgrow="ALWAYS">
+                                <TableView fx:id="tablaEquipos" styleClass="mi-tabla" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colEGry" prefWidth="100" sortable="false" text="GRY" />
+                                        <TableColumn fx:id="colENombreModelo" prefWidth="200" sortable="false" text="Modelo" />
+                                        <TableColumn fx:id="colECreadoPor" prefWidth="130" sortable="false" text="Creado por" />
+                                        <TableColumn fx:id="colEFechaCreacion" prefWidth="145" sortable="false" text="Fecha creación" />
+                                        <TableColumn fx:id="colEModificadoPor" prefWidth="130" sortable="false" text="Modificado por" />
+                                        <TableColumn fx:id="colEFechaModificacion" prefWidth="145" sortable="false" text="Última modificación" />
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                </TableView>
+                            </VBox>
+                        </center>
+                    </BorderPane>
+                </content>
+            </Tab>
+
+            <!-- ════════════════════════════════════════════════════════════
+                 TAB 5 — AUDITORÍA DE ASIGNACIONES
+                 ════════════════════════════════════════════════════════════ -->
+            <Tab text="📋 Asignaciones">
+                <content>
+                    <BorderPane style="-fx-background-color: #F3F4F6;">
+                        <center>
+                            <VBox style="-fx-padding: 10;" VBox.vgrow="ALWAYS">
+                                <TableView fx:id="tablaAsignaciones" styleClass="mi-tabla" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colAUsuario" prefWidth="200" sortable="false" text="Usuario" />
+                                        <TableColumn fx:id="colAEquipo" prefWidth="150" sortable="false" text="Equipo" />
+                                        <TableColumn fx:id="colACreadoPor" prefWidth="130" sortable="false" text="Creado por" />
+                                        <TableColumn fx:id="colAFechaCreacion" prefWidth="145" sortable="false" text="Fecha creación" />
+                                        <TableColumn fx:id="colAModificadoPor" prefWidth="130" sortable="false" text="Modificado por" />
+                                        <TableColumn fx:id="colAFechaModificacion" prefWidth="145" sortable="false" text="Última modificación" />
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                </TableView>
+                            </VBox>
+                        </center>
+                    </BorderPane>
+                </content>
+            </Tab>
+
+            <!-- ════════════════════════════════════════════════════════════
+                 TAB 6 — AUDITORÍA DE EMPRESAS
+                 ════════════════════════════════════════════════════════════ -->
+            <Tab text="🏢 Empresas">
+                <content>
+                    <BorderPane style="-fx-background-color: #F3F4F6;">
+                        <center>
+                            <VBox style="-fx-padding: 10;" VBox.vgrow="ALWAYS">
+                                <TableView fx:id="tablaEmpresas" styleClass="mi-tabla" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colEmpNombre" prefWidth="250" sortable="false" text="Nombre" />
+                                        <TableColumn fx:id="colEmpCreadoPor" prefWidth="130" sortable="false" text="Creado por" />
+                                        <TableColumn fx:id="colEmpFechaCreacion" prefWidth="145" sortable="false" text="Fecha creación" />
+                                        <TableColumn fx:id="colEmpModificadoPor" prefWidth="130" sortable="false" text="Modificado por" />
+                                        <TableColumn fx:id="colEmpFechaModificacion" prefWidth="145" sortable="false" text="Última modificación" />
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                </TableView>
+                            </VBox>
+                        </center>
+                    </BorderPane>
+                </content>
+            </Tab>
+
+            <!-- ════════════════════════════════════════════════════════════
+                 TAB 7 — AUDITORÍA DE SUCURSALES
+                 ════════════════════════════════════════════════════════════ -->
+            <Tab text="🏭 Sucursales">
+                <content>
+                    <BorderPane style="-fx-background-color: #F3F4F6;">
+                        <center>
+                            <VBox style="-fx-padding: 10;" VBox.vgrow="ALWAYS">
+                                <TableView fx:id="tablaSucursales" styleClass="mi-tabla" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colSucNombre" prefWidth="200" sortable="false" text="Nombre" />
+                                        <TableColumn fx:id="colSucEmpresa" prefWidth="200" sortable="false" text="Empresa" />
+                                        <TableColumn fx:id="colSucCreadoPor" prefWidth="130" sortable="false" text="Creado por" />
+                                        <TableColumn fx:id="colSucFechaCreacion" prefWidth="145" sortable="false" text="Fecha creación" />
+                                        <TableColumn fx:id="colSucModificadoPor" prefWidth="130" sortable="false" text="Modificado por" />
+                                        <TableColumn fx:id="colSucFechaModificacion" prefWidth="145" sortable="false" text="Última modificación" />
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                </TableView>
+                            </VBox>
+                        </center>
+                    </BorderPane>
+                </content>
+            </Tab>
+
+            <!-- ════════════════════════════════════════════════════════════
+                 TAB 8 — AUDITORÍA DE DEPARTAMENTOS
+                 ════════════════════════════════════════════════════════════ -->
+            <Tab text="🏗️ Departamentos">
+                <content>
+                    <BorderPane style="-fx-background-color: #F3F4F6;">
+                        <center>
+                            <VBox style="-fx-padding: 10;" VBox.vgrow="ALWAYS">
+                                <TableView fx:id="tablaDepartamentos" styleClass="mi-tabla" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colDepNombre" prefWidth="200" sortable="false" text="Nombre" />
+                                        <TableColumn fx:id="colDepSucursal" prefWidth="200" sortable="false" text="Sucursal" />
+                                        <TableColumn fx:id="colDepCreadoPor" prefWidth="130" sortable="false" text="Creado por" />
+                                        <TableColumn fx:id="colDepFechaCreacion" prefWidth="145" sortable="false" text="Fecha creación" />
+                                        <TableColumn fx:id="colDepModificadoPor" prefWidth="130" sortable="false" text="Modificado por" />
+                                        <TableColumn fx:id="colDepFechaModificacion" prefWidth="145" sortable="false" text="Última modificación" />
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                </TableView>
+                            </VBox>
+                        </center>
+                    </BorderPane>
+                </content>
+            </Tab>
+
+            <!-- ════════════════════════════════════════════════════════════
+                 TAB 9 — AUDITORÍA DE PUESTOS
+                 ════════════════════════════════════════════════════════════ -->
+            <Tab text="👔 Puestos">
+                <content>
+                    <BorderPane style="-fx-background-color: #F3F4F6;">
+                        <center>
+                            <VBox style="-fx-padding: 10;" VBox.vgrow="ALWAYS">
+                                <TableView fx:id="tablaPuestos" styleClass="mi-tabla" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colPueNombre" prefWidth="200" sortable="false" text="Nombre" />
+                                        <TableColumn fx:id="colPueDepartamento" prefWidth="200" sortable="false" text="Departamento" />
+                                        <TableColumn fx:id="colPueCreadoPor" prefWidth="130" sortable="false" text="Creado por" />
+                                        <TableColumn fx:id="colPueFechaCreacion" prefWidth="145" sortable="false" text="Fecha creación" />
+                                        <TableColumn fx:id="colPueModificadoPor" prefWidth="130" sortable="false" text="Modificado por" />
+                                        <TableColumn fx:id="colPueFechaModificacion" prefWidth="145" sortable="false" text="Última modificación" />
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                </TableView>
+                            </VBox>
+                        </center>
+                    </BorderPane>
+                </content>
+            </Tab>
+
+            <!-- ════════════════════════════════════════════════════════════
+                 TAB 10 — AUDITORÍA DE MODELOS
+                 ════════════════════════════════════════════════════════════ -->
+            <Tab text="🔧 Modelos">
+                <content>
+                    <BorderPane style="-fx-background-color: #F3F4F6;">
+                        <center>
+                            <VBox style="-fx-padding: 10;" VBox.vgrow="ALWAYS">
+                                <TableView fx:id="tablaModelos" styleClass="mi-tabla" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colModNombre" prefWidth="200" sortable="false" text="Nombre" />
+                                        <TableColumn fx:id="colModMarca" prefWidth="150" sortable="false" text="Marca" />
+                                        <TableColumn fx:id="colModCreadoPor" prefWidth="130" sortable="false" text="Creado por" />
+                                        <TableColumn fx:id="colModFechaCreacion" prefWidth="145" sortable="false" text="Fecha creación" />
+                                        <TableColumn fx:id="colModModificadoPor" prefWidth="130" sortable="false" text="Modificado por" />
+                                        <TableColumn fx:id="colModFechaModificacion" prefWidth="145" sortable="false" text="Última modificación" />
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                </TableView>
+                            </VBox>
+                        </center>
                     </BorderPane>
                 </content>
             </Tab>
