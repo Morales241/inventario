@@ -128,12 +128,15 @@ public class LogInController implements Initializable, BaseController {
             // Inyectar datos de sesión en el menú
             menuController.aplicarSesion(ServicioSesion.getUsuario());
 
-            Scene nuevaEscena = new Scene(vista);
-            stage.setScene(nuevaEscena);
+            if (stage.getScene() == null) {
+                stage.setScene(new Scene(vista));
+            } else {
+                stage.getScene().setRoot(vista);
+            }
             stage.setResizable(true);
-            stage.setMaximized(false);
-            stage.setMaximized(true);
-            stage.show();
+            if (!stage.isMaximized()) {
+                stage.setMaximized(true);
+            }
 
         } catch (IOException ex) {
             ex.printStackTrace();

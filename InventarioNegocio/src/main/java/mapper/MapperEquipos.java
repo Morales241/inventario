@@ -29,13 +29,13 @@ public class MapperEquipos {
                         EquipoDeEscritorio e = new EquipoDeEscritorio();
                         mapCommonToEntity(d, e);
 
-                        e.setNombreEquipo(d.getNombreEquipo());
-                        e.setCuenta(d.getCuenta());
-                        e.setFinalGarantia(d.getFinalGarantia());
-                        e.setMochila(d.getMochila());
-                        e.setMouse(d.getMouse());
-                        e.setSisOpertativo(d.getSisOpertativo());
-                        e.setUserRed(d.getUserRed());
+                        e.setNombreEquipo(d.getNombreEquipo() == null ? null : d.getNombreEquipo().trim());
+                        e.setCuenta(d.getCuenta() == null ? null : d.getCuenta().trim());
+                        e.setFinalGarantia(d.getFinalGarantia() == null ? null : d.getFinalGarantia());
+                        e.setMochila(d.getMochila() == null ? null : d.getMochila());
+                        e.setMouse(d.getMouse() == null ? null : d.getMouse());
+                        e.setSisOpertativo(d.getSisOpertativo() == null ? null : d.getSisOpertativo().trim());
+                        e.setUserRed(d.getUserRed() == null ? null : d.getUserRed().trim());
                         return e;
                     }
             );

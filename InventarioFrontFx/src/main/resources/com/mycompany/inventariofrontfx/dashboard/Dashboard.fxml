@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox spacing="24.0"
+      stylesheets="@/com/mycompany/inventariofrontfx/estilos-base.css"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="com.mycompany.inventariofrontfx.dashboard.DashboardController">
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
+    <children>
+        <!-- ── Fila de 5 KPI cards ───────────────────────────────── -->
+        <GridPane hgap="16.0" vgap="16.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="20.0" />
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="20.0" />
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="20.0" />
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="20.0" />
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="20.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="110.0" />
+            </rowConstraints>
+            <children>
+
+                <!-- Total Equipos -->
+                <VBox styleClass="kpi-card,kpi-accent-primary" spacing="8.0" GridPane.columnIndex="0">
+                    <padding><Insets bottom="18.0" left="20.0" right="20.0" top="18.0" /></padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <FontIcon iconLiteral="fas-boxes" iconSize="22" styleClass="kpi-icon,kpi-icon-primary" />
+                                <Label text="Total Equipos" styleClass="kpi-titulo" />
+                            </children>
+                        </HBox>
+                        <Label fx:id="lblTotalEquipos" text="—" styleClass="kpi-valor" />
+                        <Label fx:id="lblSubTotalEquipos" text="registrados en sistema" styleClass="kpi-sub" />
+                    </children>
+                </VBox>
+
+                <!-- Equipos Asignados -->
+                <VBox styleClass="kpi-card,kpi-accent-info" spacing="8.0" GridPane.columnIndex="1">
+                    <padding><Insets bottom="18.0" left="20.0" right="20.0" top="18.0" /></padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <FontIcon iconLiteral="fas-clipboard-list" iconSize="22" styleClass="kpi-icon,kpi-icon-info" />
+                                <Label text="Asignados" styleClass="kpi-titulo" />
+                            </children>
+                        </HBox>
+                        <Label fx:id="lblAsignados" text="—" styleClass="kpi-valor" />
+                        <Label fx:id="lblPctAsignados" text="del total" styleClass="kpi-sub" />
+                    </children>
+                </VBox>
+
+                <!-- En Stock -->
+                <VBox styleClass="kpi-card,kpi-accent-success" spacing="8.0" GridPane.columnIndex="2">
+                    <padding><Insets bottom="18.0" left="20.0" right="20.0" top="18.0" /></padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <FontIcon iconLiteral="fas-archive" iconSize="22" styleClass="kpi-icon,kpi-icon-success" />
+                                <Label text="En Stock" styleClass="kpi-titulo" />
+                            </children>
+                        </HBox>
+                        <Label fx:id="lblEnStock" text="—" styleClass="kpi-valor" />
+                        <Label fx:id="lblPctStock" text="disponibles" styleClass="kpi-sub" />
+                    </children>
+                </VBox>
+
+                <!-- Usuarios Activos -->
+                <VBox styleClass="kpi-card,kpi-accent-violet" spacing="8.0" GridPane.columnIndex="3">
+                    <padding><Insets bottom="18.0" left="20.0" right="20.0" top="18.0" /></padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <FontIcon iconLiteral="fas-users" iconSize="22" styleClass="kpi-icon,kpi-icon-violet" />
+                                <Label text="Usuarios" styleClass="kpi-titulo" />
+                            </children>
+                        </HBox>
+                        <Label fx:id="lblUsuarios" text="—" styleClass="kpi-valor" />
+                        <Label text="activos en sistema" styleClass="kpi-sub" />
+                    </children>
+                </VBox>
+
+                <!-- Asignaciones Activas -->
+                <VBox styleClass="kpi-card,kpi-accent-amber" spacing="8.0" GridPane.columnIndex="4">
+                    <padding><Insets bottom="18.0" left="20.0" right="20.0" top="18.0" /></padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <FontIcon iconLiteral="fas-handshake" iconSize="22" styleClass="kpi-icon,kpi-icon-amber" />
+                                <Label text="Asignaciones" styleClass="kpi-titulo" />
+                            </children>
+                        </HBox>
+                        <Label fx:id="lblAsignaciones" text="—" styleClass="kpi-valor" />
+                        <Label text="préstamos activos" styleClass="kpi-sub" />
+                    </children>
+                </VBox>
+
+            </children>
+        </GridPane>
+
+        <!-- ── Fila inferior: Distribución por tipo + Últimas asignaciones ── -->
+        <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+            <children>
+
+                <!-- Distribución por tipo -->
+                <VBox styleClass="panel-card,dashboard-panel" spacing="16.0" prefWidth="300.0">
+                    <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="8.0">
+                            <children>
+                                <FontIcon iconLiteral="fas-chart-pie" iconSize="16" styleClass="dashboard-panel-icon" />
+                                <Label text="Distribución por Tipo" styleClass="dashboard-panel-title" />
+                            </children>
+                        </HBox>
+
+                        <!-- Laptop -->
+                        <VBox spacing="4.0">
+                            <children>
+                                <HBox>
+                                    <children>
+                                        <Label text="Laptop" styleClass="tipo-label" HBox.hgrow="ALWAYS"/>
+                                        <Label fx:id="lblLaptop" text="—" styleClass="tipo-count" />
+                                    </children>
+                                </HBox>
+                                <HBox styleClass="progress-track"><HBox fx:id="barLaptop" styleClass="progress-bar-laptop" prefHeight="6.0" /></HBox>
+                            </children>
+                        </VBox>
+
+                        <!-- Desktop -->
+                        <VBox spacing="4.0">
+                            <children>
+                                <HBox>
+                                    <children>
+                                        <Label text="Desktop / AIO" styleClass="tipo-label" HBox.hgrow="ALWAYS"/>
+                                        <Label fx:id="lblDesktop" text="—" styleClass="tipo-count" />
+                                    </children>
+                                </HBox>
+                                <HBox styleClass="progress-track"><HBox fx:id="barDesktop" styleClass="progress-bar-desktop" prefHeight="6.0" /></HBox>
+                            </children>
+                        </VBox>
+
+                        <!-- Móvil -->
+                        <VBox spacing="4.0">
+                            <children>
+                                <HBox>
+                                    <children>
+                                        <Label text="Móviles" styleClass="tipo-label" HBox.hgrow="ALWAYS"/>
+                                        <Label fx:id="lblMovil" text="—" styleClass="tipo-count" />
+                                    </children>
+                                </HBox>
+                                <HBox styleClass="progress-track"><HBox fx:id="barMovil" styleClass="progress-bar-movil" prefHeight="6.0" /></HBox>
+                            </children>
+                        </VBox>
+
+                        <!-- Servidor -->
+                        <VBox spacing="4.0">
+                            <children>
+                                <HBox>
+                                    <children>
+                                        <Label text="Servidores" styleClass="tipo-label" HBox.hgrow="ALWAYS"/>
+                                        <Label fx:id="lblServidor" text="—" styleClass="tipo-count" />
+                                    </children>
+                                </HBox>
+                                <HBox styleClass="progress-track"><HBox fx:id="barServidor" styleClass="progress-bar-servidor" prefHeight="6.0" /></HBox>
+                            </children>
+                        </VBox>
+
+                        <!-- Otros -->
+                        <VBox spacing="4.0">
+                            <children>
+                                <HBox>
+                                    <children>
+                                        <Label text="Otros" styleClass="tipo-label" HBox.hgrow="ALWAYS"/>
+                                        <Label fx:id="lblOtros" text="—" styleClass="tipo-count" />
+                                    </children>
+                                </HBox>
+                                <HBox styleClass="progress-track"><HBox fx:id="barOtros" styleClass="progress-bar-otros" prefHeight="6.0" /></HBox>
+                            </children>
+                        </VBox>
+
+                    </children>
+                </VBox>
+
+                <!-- Últimas Asignaciones -->
+                <VBox styleClass="panel-card,dashboard-panel" spacing="16.0" HBox.hgrow="ALWAYS">
+                    <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="8.0">
+                            <children>
+                                <FontIcon iconLiteral="fas-history" iconSize="16" styleClass="dashboard-panel-icon" />
+                                <Label text="Últimas Asignaciones" styleClass="dashboard-panel-title" />
+                            </children>
+                        </HBox>
+                        <TableView fx:id="tablaUltimas" styleClass="mi-tabla" VBox.vgrow="ALWAYS"
+                                   prefHeight="280.0">
+                            <columns>
+                                <TableColumn fx:id="colUsuario"  text="Usuario"     prefWidth="200.0" />
+                                <TableColumn fx:id="colGry"      text="GRY"         prefWidth="80.0"  />
+                                <TableColumn fx:id="colModelo"   text="Modelo"      prefWidth="160.0" />
+                                <TableColumn fx:id="colFechaAs"  text="Fecha"       prefWidth="120.0" />
+                                <TableColumn fx:id="colEstadoAs" text="Estado"      prefWidth="100.0" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </VBox>
+
+            </children>
+        </HBox>
+
+    </children>
+</VBox>

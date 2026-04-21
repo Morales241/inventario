@@ -1,11 +1,10 @@
 package com.mycompany.inventariofrontfx.menu;
 
 import Dtos.CuentaSistemaDTO;
-import Utilidades.SesionActual;
+import Utilidades.ServicioSesion;
 import interfaces.BaseController;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -57,6 +57,8 @@ public class MenuController implements Initializable {
     private Label nombreUser;
     @FXML
     private Label rolUser;
+    @FXML
+    private Button btnCerrarSesion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -65,7 +67,6 @@ public class MenuController implements Initializable {
         menu.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 manejarNavegacion(((ToggleButton) newVal).getText());
-                System.out.println("cambiando pantalla a " + newVal.toString());
             } else if (oldVal != null) {
                 oldVal.setSelected(true);
             }
@@ -74,38 +75,27 @@ public class MenuController implements Initializable {
         btnConfiguracion.setOnAction(e -> toggleSubMenu());
     }
 
-    /**
-     * Llamado por LogInController justo después de cargar el menú
-     */
     public void aplicarSesion(CuentaSistemaDTO cuenta) {
         if (cuenta == null) {
             return;
         }
-
         if (nombreUser != null) {
             nombreUser.setText(cuenta.getUsername());
         }
         if (rolUser != null) {
             rolUser.setText(formatearRol(cuenta.getRol()));
         }
-
         aplicarPermisos(cuenta.getRol());
     }
 
-    /**
-     * Define qué botones del menú puede ver cada rol.
-     */
     private void aplicarPermisos(String rol) {
         if (rol == null) {
             return;
         }
-
         switch (rol.toUpperCase()) {
             case "ADMIN" -> {
-                // Admin ve todo — no ocultar nada
             }
             case "OPERARIO" -> {
-                // Ocultar configuración, organización, cuentas, auditoría
                 ocultarBoton(btnConfiguracion);
                 ocultarBoton(btnOrganizacion);
                 ocultarBoton(btnAuditoria);
@@ -115,7 +105,6 @@ public class MenuController implements Initializable {
                 }
             }
             case "INVITADO" -> {
-                // Solo puede ver Inventario
                 ocultarBoton(btnAsignaciones);
                 ocultarBoton(btnCuentas);
                 ocultarBoton(btnConfiguracion);
@@ -154,8 +143,9 @@ public class MenuController implements Initializable {
 
     private void manejarNavegacion(String opcion) {
         switch (opcion) {
-            case "ADMINDashBoard" ->
-                cambiarDePantalla(null, "Dashboard", "Resumen general del inventario de TI");
+            case "DashBoard" ->
+                cambiarDePantalla("/com/mycompany/inventariofrontfx/dashboard/Dashboard.fxml",
+                        "Dashboard", "Resumen general del inventario de TI");
             case "Inventario" ->
                 cambiarDePantalla("/com/mycompany/inventariofrontfx/inventario/Inventario.fxml",
                         "Inventario", "Gestión de equipos de TI");
@@ -167,15 +157,17 @@ public class MenuController implements Initializable {
                         "Asignación de Equipo", "Asignar equipos a trabajadores");
             case "Organización" ->
                 cambiarDePantalla("/com/mycompany/inventariofrontfx/organizacion/Organizacion.fxml",
-                        "Estructura Organizacional", "Gestión de empresas, sucursales, departamentos y puestos");
+                        "Estructura Organizacional",
+                        "Gestión de empresas, sucursales, departamentos y puestos");
             case "Cuentas" ->
                 cambiarDePantalla("/com/mycompany/inventariofrontfx/cuentas/Cuentas.fxml",
-                        "Cuentas del Sistema", "Administración de usuarios del sistema y roles de acceso");
+                        "Cuentas del Sistema",
+                        "Administración de usuarios del sistema y roles de acceso");
             case "Auditoría" ->
-                cambiarDePantalla("/com/mycompany/inventariofrontfx/auditoria/Auditoria.fxml", 
+                cambiarDePantalla("/com/mycompany/inventariofrontfx/auditoria/Auditoria.fxml",
                         "Auditoría del Sistema", "Registro de movimientos y cambios");
             default -> {
-            }
+                 }
         }
     }
 
@@ -187,20 +179,33 @@ public class MenuController implements Initializable {
         confirm.setContentText("Se regresará a la pantalla de inicio.");
 
         confirm.showAndWait().filter(btn -> btn == ButtonType.OK).ifPresent(b -> {
-//            SesionActual.cerrarSesion();
+            
+            ServicioSesion.cerrarSesion();
+
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/inventariofrontfx/LogIn.fxml"));
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/com/mycompany/inventariofrontfx/LogIn.fxml"));
                 Parent loginVista = loader.load();
                 Stage stage = (Stage) centerContainer.getScene().getWindow();
-                stage.setScene(new Scene(loginVista));
-                stage.setMaximized(false);
-                stage.show();
+                if (stage.getScene() == null) {
+                    stage.setScene(new Scene(loginVista));
+                } else {
+                    stage.getScene().setRoot(loginVista);
+                }
+                if (!stage.isMaximized()) {
+                    stage.setMaximized(true);
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("No se pudo volver al login");
+                error.setContentText(ex.getMessage());
+                error.showAndWait();
             }
         });
     }
-
+    
     public void cambiarDePantalla(String rutaFXML, String titulo, String subtitulo) {
         try {
             if (titulo != null) {
@@ -213,12 +218,10 @@ public class MenuController implements Initializable {
             if (rutaFXML != null) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
                 Parent vista = loader.load();
-
                 Object controller = loader.getController();
                 if (controller instanceof BaseController bc) {
                     bc.setDashBoard(this);
                 }
-
                 centerContainer.setContent(vista);
                 centerContainer.setVvalue(0);
             }
@@ -255,6 +258,7 @@ public class MenuController implements Initializable {
         btnConfiguracion.setGraphic(crearIcono("fas-cog"));
         btnUsuarios.setGraphic(crearIcono("fas-user-circle"));
         btnAuditoria.setGraphic(crearIcono("fas-eye"));
+        btnCerrarSesion.setGraphic(crearIcono("fas-sign-out-alt"));
         menu.getToggles().forEach(t -> {
             if (t instanceof ToggleButton btn) {
                 btn.setGraphicTextGap(10);

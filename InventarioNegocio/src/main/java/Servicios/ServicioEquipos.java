@@ -377,27 +377,53 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         public D guardar(D dto) {
             return ejecutarTransaccion(em -> {
                 configurarEntityManager(em);
-
                 validarNegocio(dto, dto.getIdEquipo() == null, em);
 
-                T entidad = mapper.mapToEntity(dto);
-
-                establecerRelaciones(entidad, dto, em);
+                T entidad;
 
                 if (dto.getIdEquipo() != null && dto.getIdEquipo() > 0) {
-                    T existente = dao.buscarPorId(dto.getIdEquipo());
-                    if (existente == null) {
+                    
+                    entidad = dao.buscarPorId(dto.getIdEquipo());
+                    if (entidad == null) {
                         throw new RecursoNoEncontradoException("Equipo no encontrado para actualizar");
                     }
-                    entidad.setEstado(existente.getEstado());
+
+                    actualizarCamposBase(entidad, dto);
+                    actualizarCamposEspecificos(entidad, dto);
+                    establecerRelaciones(entidad, dto, em);
+
                     entidad = dao.actualizar(entidad);
+
                 } else {
+                    entidad = mapper.mapToEntity(dto);
+                    establecerRelaciones(entidad, dto, em);
                     entidad.setEstado(EstadoEquipo.EN_STOCK);
                     entidad = dao.guardar(entidad);
                 }
 
                 return mapper.mapToDto(entidad);
             });
+        }
+        
+        private void actualizarCamposBase(T existente, D dto) {
+            existente.setGry(dto.getGry());
+            existente.setIndetificador(dto.getIdentificador());
+            existente.setFactura(dto.getFactura());
+            existente.setObservaciones(dto.getObservaciones());
+            existente.setFechaCompra(dto.getFechaCompra());
+            existente.setPrecio(dto.getPrecio());
+            existente.setVersion(dto.getVersion());
+
+            if (dto.getCondicion() != null) {
+                existente.setCondicion(CondicionFisica.valueOf(dto.getCondicion()));
+            }
+            if (dto.getTipo() != null) {
+                existente.setTipo(TipoEquipo.valueOf(dto.getTipo()));
+            }
+        }
+        
+        protected void actualizarCamposEspecificos(T existente, D dto) {
+            // Implementado en EquipoEscritorioServicio, EquipoMovilServicio, EquipoOtroServicio
         }
     }
 
@@ -431,6 +457,17 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         @Override
         public List<EquipoEscritorioDTO> buscarConFiltro(String filtro) {
             return null;
+        }
+        
+        @Override
+        protected void actualizarCamposEspecificos(EquipoDeEscritorio existente, EquipoEscritorioDTO dto) {
+            existente.setNombreEquipo(dto.getNombreEquipo());
+            existente.setCuenta(dto.getCuenta());
+            existente.setFinalGarantia(dto.getFinalGarantia());
+            existente.setMochila(dto.getMochila());
+            existente.setMouse(dto.getMouse());
+            existente.setSisOpertativo(dto.getSisOpertativo());
+            existente.setUserRed(dto.getUserRed());
         }
     }
 
@@ -469,6 +506,17 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         public List<MovilDTO> buscarConFiltro(String filtro) {
             return null;
         }
+        
+        @Override
+        protected void actualizarCamposEspecificos(Movil existente, MovilDTO dto) {
+            existente.setNumCelular(dto.getNumCelular());
+            existente.setCargador(dto.getCargador());
+            existente.setFunda(dto.getFunda());
+            existente.setManosLibres(dto.getManosLibres());
+            existente.setCorreoCuenta(dto.getCorreoCuenta());
+            existente.setContrasenaCuenta(dto.getContrasenaCuenta());
+        }
+        
     }
 
     /**
@@ -502,6 +550,14 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         public List<OtroEquipoDTO> buscarConFiltro(String filtro) {
             return null;
         }
+        
+        @Override
+        protected void actualizarCamposEspecificos(OtroEquipo existente, OtroEquipoDTO dto) {
+            existente.setTituloCampoExtra(dto.getTituloCampoExtra());
+            existente.setContenidoCampoExtra(dto.getContenidoCampoExtra());
+            existente.setTituloCampoExtra2(dto.getTituloCampoExtra2());
+            existente.setContenidoCampoExtra2(dto.getContenidoCampoExtra2());
+        }   
     }
 
     /**

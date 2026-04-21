@@ -55,6 +55,10 @@
     -fx-text-fill: -fx-danger;
 }
 
+.btn-cancelar:hover .menu-icon {
+    -fx-icon-color: -fx-danger;
+}
+
 .btn-ver {
     -fx-background-color: transparent;
     -fx-text-fill: -fx-info;
@@ -382,3 +386,105 @@
     -fx-font-size: 11px;
     -fx-padding: 2 0 0 4;
 }
+
+/* ═══════════════════════════════════════════════════
+   DASHBOARD — KPI Cards
+   ═══════════════════════════════════════════════════ */
+
+.kpi-card {
+    -fx-background-color: -fx-background-white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: -fx-border-light;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 3);
+}
+
+/* Acento izquierdo de color para cada card */
+.kpi-accent-primary  { -fx-border-color: #13507d -fx-border-light -fx-border-light -fx-border-light; -fx-border-width: 0 0 0 4; }
+.kpi-accent-info     { -fx-border-color: #2563EB -fx-border-light -fx-border-light -fx-border-light; -fx-border-width: 0 0 0 4; }
+.kpi-accent-success  { -fx-border-color: #0F766E -fx-border-light -fx-border-light -fx-border-light; -fx-border-width: 0 0 0 4; }
+.kpi-accent-violet   { -fx-border-color: #7C3AED -fx-border-light -fx-border-light -fx-border-light; -fx-border-width: 0 0 0 4; }
+.kpi-accent-amber    { -fx-border-color: #D97706 -fx-border-light -fx-border-light -fx-border-light; -fx-border-width: 0 0 0 4; }
+
+.kpi-valor {
+    -fx-font-size: 34px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-dark;
+}
+
+.kpi-titulo {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-dark;
+}
+
+.kpi-sub {
+    -fx-font-size: 11px;
+    -fx-text-fill: -fx-text-light;
+}
+
+.kpi-icon-primary  { -fx-icon-color: #13507d; }
+.kpi-icon-info     { -fx-icon-color: #2563EB; }
+.kpi-icon-success  { -fx-icon-color: #0F766E; }
+.kpi-icon-violet   { -fx-icon-color: #7C3AED; }
+.kpi-icon-amber    { -fx-icon-color: #D97706; }
+
+/* ── Panel inferior (distribución + tabla) ── */
+.dashboard-panel {
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+}
+
+.dashboard-panel-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-dark;
+}
+
+.dashboard-panel-icon {
+    -fx-icon-color: -fx-primary;
+    -fx-icon-size: 16px;
+}
+
+.dashboard-section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-dark;
+}
+
+.dashboard-section-sub {
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-text-light;
+}
+
+.dashboard-header-icon {
+    -fx-icon-color: -fx-primary;
+    -fx-icon-size: 22px;
+}
+
+/* ── Barras de distribución por tipo ── */
+.tipo-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-text-dark;
+}
+
+.tipo-count {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-primary;
+}
+
+.progress-track {
+    -fx-background-color: #E5E7EB;
+    -fx-background-radius: 4;
+    -fx-pref-height: 6;
+    -fx-min-height: 6;
+    -fx-max-height: 6;
+}
+
+.progress-bar-laptop   { -fx-background-color: #13507d; -fx-background-radius: 4; }
+.progress-bar-desktop  { -fx-background-color: #2563EB; -fx-background-radius: 4; }
+.progress-bar-movil    { -fx-background-color: #7C3AED; -fx-background-radius: 4; }
+.progress-bar-servidor { -fx-background-color: #D97706; -fx-background-radius: 4; }
+.progress-bar-otros    { -fx-background-color: #6B7280; -fx-background-radius: 4; }

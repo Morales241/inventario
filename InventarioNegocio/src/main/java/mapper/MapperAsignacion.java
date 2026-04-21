@@ -51,6 +51,7 @@ public class MapperAsignacion {
                         entity.setId(dto.getId());
                         entity.setFechaEntrega(dto.getFechaEntrega());
                         entity.setFechaDevolucion(dto.getFechaDevolucion());
+                        // Si hay campos de texto relevantes en AsignacionDTO, aplicar trim aquí también
                         
                         if (dto.getVersion() != null) {
                             entity.setVersion(dto.getVersion());

@@ -110,7 +110,7 @@
             </VBox>
             <VBox alignment="BOTTOM_CENTER" prefWidth="220.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button mnemonicParsing="false" prefWidth="200.0" styleClass="btn-cancelar" text="Cerrar Sesión" />
+                  <Button fx:id="btnCerrarSesion" onAction="#cerrarSesion" mnemonicParsing="false" prefWidth="200.0" styleClass="btn-cancelar" text="Cerrar Sesión" />
                </children>
             </VBox>
          </children>

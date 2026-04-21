@@ -49,8 +49,8 @@ public class MapperUsuario {
 
                         Usuario u = new Usuario();
                         u.setIdUsuario(dto.getId());
-                        u.setNombre(dto.getNombre());
-                        u.setNoNomina(dto.getNoNomina());
+                        u.setNombre(dto.getNombre() == null ? null : dto.getNombre().trim());
+                        u.setNoNomina(dto.getNoNomina() == null ? null : dto.getNoNomina().trim());
                         u.setActivo(dto.getActivo() != null ? dto.getActivo() : true);
 
                         /*

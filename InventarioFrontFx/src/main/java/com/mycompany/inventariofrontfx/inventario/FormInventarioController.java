@@ -7,13 +7,7 @@ import Dtos.MovilDTO;
 import Dtos.OtroEquipoDTO;
 import Enums.CondicionFisica;
 import Enums.TipoEquipo;
-import static Enums.TipoEquipo.DESKTOP;
-import static Enums.TipoEquipo.IMPRESORA;
-import static Enums.TipoEquipo.LAPTOP;
-import static Enums.TipoEquipo.MONITOR;
-import static Enums.TipoEquipo.MOVIL;
-import static Enums.TipoEquipo.PROYECTOR;
-import static Enums.TipoEquipo.SCANNER;
+import static Enums.TipoEquipo.*;
 import InterfacesFachada.IFachadaEquipos;
 import InterfacesFachada.IFachadaOrganizacion;
 import interfaces.BaseController;
@@ -23,7 +17,6 @@ import fabricaFachadas.FabricaFachadas;
 import interfaces.ControllerInventario;
 import interfaces.IValidaciones;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import javafx.animation.PauseTransition;
 import javafx.concurrent.Task;
@@ -40,19 +33,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.util.Duration;
-import util.ValidacionUtil;
 
 /**
  * Controlador del formulario de inventario.
- *
- * VALIDACIONES AGREGADAS: - GRY: obligatorio, entero positivo. - Tipo de
- * equipo: obligatorio. - Condición: obligatoria. - Identificador: obligatorio.
- * - Modelo (modo nuevo): campos del modelo nuevo son obligatorios; RAM y
- * Almacenamiento deben ser enteros positivos. - Precio: opcional, pero si se
- * ingresa debe ser decimal ≥ 0. - Cada campo en error se marca con borde rojo
- * en tiempo real y se limpia en cuanto el usuario lo corrige.
  */
 public class FormInventarioController implements ControllerInventario, IValidaciones<EquipoBaseDTO> {
 
@@ -68,9 +52,8 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     private Long idEquipoEditando;
     private Long versionEquipo;
 
-    private static final Long IdSucursal = 6L;
+    private static final Long ID_SUCURSAL_DEFAULT = 6L;
 
-    // ── Campos del formulario 
     @FXML
     private TextField txtFiltroMarca;
     @FXML
@@ -107,6 +90,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     private TextField txtRam;
     @FXML
     private TextField txtProcesador;
+
     @FXML
     private Label errGry;
     @FXML
@@ -137,40 +121,71 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         cbxTipoEquipo.getItems().remove(TipoEquipo.TODOS);
         cbxCondicion.getItems().remove(CondicionFisica.TODAS);
 
-        // --- UX: Valores por defecto ágiles ---
+        // Valores por defecto
         fechaCompra.setValue(java.time.LocalDate.now());
-        if (!cbxCondicion.getItems().isEmpty()) cbxCondicion.getSelectionModel().selectFirst();
+        if (!cbxCondicion.getItems().isEmpty()) {
+            cbxCondicion.getSelectionModel().selectFirst();
+        }
         if (!cbxTipoEquipo.getItems().isEmpty()) {
             cbxTipoEquipo.getSelectionModel().selectFirst();
-            Platform.runLater(this::cambiarPanelEspecifico); // Cargar el form específico de inmediato
         }
+
+        cambiarPanelEspecifico();
 
         cargarModelos();
 
-        txtFiltroMarca.textProperty().addListener((obs, oldVal, newVal) -> {
+        txtFiltroMarca.textProperty().addListener((obs, old, val) -> {
             pause.setOnFinished(e -> aplicarFiltro());
             pause.playFromStart();
         });
 
         cbxTipoEquipo.setOnAction(e -> cambiarPanelEspecifico());
 
-        if (modoEdicion) {
-            this.btnAgregar.setText("+ Actualizar equipo");
-        }
-
-        if (modoVisualizacion) {
-            aplicarModoVisualizacion(true);
-            this.btnAgregar.setVisible(false);
-            this.btnAgregar.setManaged(false);
-        }
-
         configurarListenersValidacion();
     }
 
-    /**
-     * Listeners que limpian el borde rojo en cuanto el usuario corrige el
-     * campo. Esto da retroalimentación inmediata sin bloquear el flujo.
-     */
+    private void cambiarPanelEspecifico() {
+        containerEspecifico.getChildren().clear();
+        TipoEquipo tipo = cbxTipoEquipo.getValue();
+        if (tipo == null) {
+            return;
+        }
+
+        try {
+            FXMLLoader loader = switch (tipo) {
+                case LAPTOP, DESKTOP, SERVIDOR, AIO ->
+                    new FXMLLoader(getClass().getResource("InfoEspecificaEscritorio.fxml"));
+                case MOVIL ->
+                    new FXMLLoader(getClass().getResource("InfoEspecificaMovil.fxml"));
+                case IMPRESORA, MONITOR, SCANNER, PROYECTOR ->
+                    new FXMLLoader(getClass().getResource("InfoEspecificaOtros.fxml"));
+                default ->
+                    null;
+            };
+
+            if (loader == null) {
+                return;
+            }
+
+            panelEspecificoActual = loader.load();
+            controllerEspecifico = (IValidaciones) loader.getController();
+
+            // FIX #4: un solo setAll, sin doble-add ni remove intermedio
+            AnchorPane.setTopAnchor(panelEspecificoActual, 0.0);
+            AnchorPane.setBottomAnchor(panelEspecificoActual, 0.0);
+            AnchorPane.setLeftAnchor(panelEspecificoActual, 0.0);
+            AnchorPane.setRightAnchor(panelEspecificoActual, 0.0);
+            containerEspecifico.getChildren().setAll(panelEspecificoActual);
+
+            if (panelEspecificoActual instanceof FlowPane flow) {
+                flow.prefWrapLengthProperty().bind(containerEspecifico.widthProperty());
+            }
+
+        } catch (IOException ex) {
+            mostrarError("Error al cargar el panel específico: " + ex.getMessage());
+        }
+    }
+
     private void configurarListenersValidacion() {
         txtGry.textProperty().addListener((obs, old, val) -> {
             if (val != null && !val.trim().isEmpty() && val.trim().matches("\\d+")) {
@@ -178,28 +193,24 @@ public class FormInventarioController implements ControllerInventario, IValidaci
                 ValidacionUtil.ocultarLabel(errGry);
             }
         });
-
         cbxTipoEquipo.valueProperty().addListener((obs, old, val) -> {
             if (val != null) {
                 ValidacionUtil.marcarOk(cbxTipoEquipo);
                 ValidacionUtil.ocultarLabel(errTipo);
             }
         });
-
         cbxCondicion.valueProperty().addListener((obs, old, val) -> {
             if (val != null) {
                 ValidacionUtil.marcarOk(cbxCondicion);
                 ValidacionUtil.ocultarLabel(errCondicion);
             }
         });
-
         txtIdentificador.textProperty().addListener((obs, old, val) -> {
             if (val != null && !val.trim().isEmpty()) {
                 ValidacionUtil.marcarOk(txtIdentificador);
                 ValidacionUtil.ocultarLabel(errIdentificador);
             }
         });
-
         txtMarca.textProperty().addListener((obs, old, val) -> {
             if (val != null && !val.trim().isEmpty()) {
                 ValidacionUtil.marcarOk(txtMarca);
@@ -230,7 +241,6 @@ public class FormInventarioController implements ControllerInventario, IValidaci
                 ValidacionUtil.ocultarLabel(errProcesador);
             }
         });
-
         txtPrecio.textProperty().addListener((obs, old, val) -> {
             if (val == null || val.trim().isEmpty()) {
                 ValidacionUtil.marcarOk(txtPrecio);
@@ -246,7 +256,6 @@ public class FormInventarioController implements ControllerInventario, IValidaci
             } catch (NumberFormatException ignored) {
             }
         });
-
         cbxModelo.valueProperty().addListener((obs, old, val) -> {
             if (val != null) {
                 ValidacionUtil.marcarOk(cbxModelo);
@@ -256,14 +265,11 @@ public class FormInventarioController implements ControllerInventario, IValidaci
 
     @Override
     public boolean validarFormulario() {
-
         boolean valido = true;
         StringBuilder errores = new StringBuilder();
 
         if (!ValidacionUtil.esEnteroPositivo(txtGry)) {
-            String msg = txtGry.getText().trim().isEmpty()
-                    ? "El GRY es obligatorio."
-                    : "El GRY debe ser un número entero positivo.";
+            String msg = txtGry.getText().trim().isEmpty() ? "El GRY es obligatorio." : "El GRY debe ser un número entero positivo.";
             errores.append("• ").append(msg).append("\n");
             ValidacionUtil.mostrarLabelError(errGry, msg);
             valido = false;
@@ -308,57 +314,49 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         }
 
         if (ckbCrearNuevoModelo.isSelected()) {
-            // Marca: obligatoria
             if (!ValidacionUtil.requerido(txtMarca)) {
-                String msg = "La marca del modelo es obligatoria.";
-                errores.append("• ").append(msg).append("\n");
-                ValidacionUtil.mostrarLabelError(errMarca, msg);
+                String m = "La marca del modelo es obligatoria.";
+                errores.append("• ").append(m).append("\n");
+                ValidacionUtil.mostrarLabelError(errMarca, m);
                 valido = false;
             } else {
                 ValidacionUtil.ocultarLabel(errMarca);
             }
-
             if (!ValidacionUtil.requerido(txtModelo)) {
-                String msg = "El nombre del modelo es obligatorio.";
-                errores.append("• ").append(msg).append("\n");
-                ValidacionUtil.mostrarLabelError(errModelo, msg);
+                String m = "El nombre del modelo es obligatorio.";
+                errores.append("• ").append(m).append("\n");
+                ValidacionUtil.mostrarLabelError(errModelo, m);
                 valido = false;
             } else {
                 ValidacionUtil.ocultarLabel(errModelo);
             }
-
             if (!ValidacionUtil.esEnteroPositivo(txtRam)) {
-                String msg = "La RAM debe ser un número entero positivo (en GB).";
-                errores.append("• ").append(msg).append("\n");
-                ValidacionUtil.mostrarLabelError(errRam, msg);
+                String m = "La RAM debe ser un número entero positivo (en GB).";
+                errores.append("• ").append(m).append("\n");
+                ValidacionUtil.mostrarLabelError(errRam, m);
                 valido = false;
             } else {
                 ValidacionUtil.ocultarLabel(errRam);
             }
-
             if (!ValidacionUtil.esEnteroPositivo(txtAlmacenamiento)) {
-                String msg = "El almacenamiento debe ser un número entero positivo (en GB).";
-                errores.append("• ").append(msg).append("\n");
-                ValidacionUtil.mostrarLabelError(errAlmacenamiento, msg);
+                String m = "El almacenamiento debe ser un número entero positivo (en GB).";
+                errores.append("• ").append(m).append("\n");
+                ValidacionUtil.mostrarLabelError(errAlmacenamiento, m);
                 valido = false;
             } else {
                 ValidacionUtil.ocultarLabel(errAlmacenamiento);
             }
-
             if (!ValidacionUtil.requerido(txtProcesador)) {
-                String msg = "El procesador del modelo es obligatorio.";
-                errores.append("• ").append(msg).append("\n");
-                ValidacionUtil.mostrarLabelError(errProcesador, msg);
+                String m = "El procesador del modelo es obligatorio.";
+                errores.append("• ").append(m).append("\n");
+                ValidacionUtil.mostrarLabelError(errProcesador, m);
                 valido = false;
             } else {
                 ValidacionUtil.ocultarLabel(errProcesador);
             }
-
         } else {
             if (!ValidacionUtil.seleccionado(cbxModelo)) {
-                String msg = "Debes seleccionar un modelo existente.";
-                errores.append("• ").append(msg).append("\n");
-                // No hay label específico para el combo de modelo — mostrar alert
+                errores.append("• Debes seleccionar un modelo existente.\n");
                 valido = false;
             }
             ValidacionUtil.resetTodos(txtMarca, txtModelo, txtRam, txtAlmacenamiento, txtProcesador);
@@ -372,38 +370,45 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         if (!valido) {
             mostrarError(errores.toString());
         }
-
         return valido;
     }
 
     @FXML
     private void guardarDatos() {
-        try {
-            if (validarFormulario() && controllerEspecifico.validarFormulario()) {
-                ModeloDTO modelo = obtenerModelo();
-                if (modoEdicion) {
-                    actualizarEquipo(modelo);
-                } else {
-                    guardarEquipo(modelo);
+        if (validarFormulario() && controllerEspecifico != null && controllerEspecifico.validarFormulario()) {
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() throws Exception {
+                    ModeloDTO modelo = obtenerModelo();
+                    if (modoEdicion) {
+                        actualizarEquipo(modelo);
+                    } else {
+                        guardarEquipo(modelo);
+                    }
+                    return null;
                 }
-                volverAInventario();
-            }
-        } catch (Exception ex) {
-            mostrarError("Error al guardar: " + ex.getMessage());
-            System.out.println(Arrays.toString(ex.getStackTrace()));
+            };
+            task.setOnSucceeded(e -> volverAInventario());
+            task.setOnFailed(e -> {
+                Throwable ex = task.getException();
+                mostrarError("Error al guardar: " + (ex != null ? ex.getMessage() : "Error desconocido"));
+            });
+            new Thread(task).start();
         }
     }
 
-    private void volverAInventario() {
-        cambiarPantalla("/com/mycompany/inventariofrontfx/inventario/Inventario.fxml");
-    }
 
     private void actualizarEquipo(ModeloDTO modelo) throws Exception {
         switch (cbxTipoEquipo.getValue()) {
-            case DESKTOP, LAPTOP -> {
+            case LAPTOP, DESKTOP, SERVIDOR, AIO -> {
                 EquipoEscritorioDTO dto = construirEscritorio(modelo);
                 dto.setIdEquipo(idEquipoEditando);
                 fachadaEquipos.guardarEscritorio(dto);
+            }
+            case IMPRESORA, MONITOR, SCANNER, PROYECTOR -> {
+                OtroEquipoDTO dto = construirOtro(modelo);
+                dto.setIdEquipo(idEquipoEditando);
+                fachadaEquipos.guardarOtro(dto);
             }
             case MOVIL -> {
                 MovilDTO dto = construirMovil(modelo);
@@ -411,21 +416,22 @@ public class FormInventarioController implements ControllerInventario, IValidaci
                 fachadaEquipos.guardarMovil(dto);
             }
             default -> {
-                OtroEquipoDTO dto = construirOtro(modelo);
-                dto.setIdEquipo(idEquipoEditando);
-                fachadaEquipos.guardarOtro(dto);
+                // Si hay algún tipo no contemplado, no hace nada o puedes lanzar excepción
             }
         }
     }
 
     private void guardarEquipo(ModeloDTO modelo) throws Exception {
         switch (cbxTipoEquipo.getValue()) {
-            case DESKTOP, LAPTOP ->
+            case LAPTOP, DESKTOP, SERVIDOR, AIO ->
                 fachadaEquipos.guardarEscritorio(construirEscritorio(modelo));
+            case IMPRESORA, MONITOR, SCANNER, PROYECTOR ->
+                fachadaEquipos.guardarOtro(construirOtro(modelo));
             case MOVIL ->
                 fachadaEquipos.guardarMovil(construirMovil(modelo));
-            default ->
-                fachadaEquipos.guardarOtro(construirOtro(modelo));
+            default -> {
+                // Si hay algún tipo no contemplado, no hace nada o puedes lanzar excepción
+            }
         }
     }
 
@@ -448,14 +454,14 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         return dto;
     }
 
-    private OtroEquipoDTO construirOtro(ModeloDTO modelo) {
-        OtroEquipoDTO dto = (OtroEquipoDTO) controllerEspecifico.getDatosEntidad();
+    private MovilDTO construirMovil(ModeloDTO modelo) {
+        MovilDTO dto = (MovilDTO) controllerEspecifico.getDatosEntidad();
         llenarBase(dto, modelo);
         return dto;
     }
 
-    private MovilDTO construirMovil(ModeloDTO modelo) {
-        MovilDTO dto = (MovilDTO) controllerEspecifico.getDatosEntidad();
+    private OtroEquipoDTO construirOtro(ModeloDTO modelo) {
+        OtroEquipoDTO dto = (OtroEquipoDTO) controllerEspecifico.getDatosEntidad();
         llenarBase(dto, modelo);
         return dto;
     }
@@ -470,7 +476,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         dto.setTipo(cbxTipoEquipo.getValue().toString());
         dto.setVersion(versionEquipo);
         dto.setIdModelo(modelo.getIdModelo());
-        dto.setIdSucursal(IdSucursal);
+        dto.setIdSucursal(ID_SUCURSAL_DEFAULT);
         dto.setPrecio(traerPrecio());
     }
 
@@ -486,6 +492,55 @@ public class FormInventarioController implements ControllerInventario, IValidaci
             return Double.parseDouble(texto.trim().replace(",", "."));
         } catch (NumberFormatException e) {
             return 0.0;
+        }
+    }
+    
+    @Override
+    public <T extends EquipoBaseDTO> void cargarEquipoParaEditar(T equipo) {
+        limpiarFormulario();
+
+        ModeloDTO modeloDto = fachadaEquipos.buscarModeloPorId(equipo.getIdModelo());
+        idEquipoEditando = equipo.getIdEquipo();
+        versionEquipo = equipo.getVersion();
+
+        txtGry.setText(String.valueOf(equipo.getGry()));
+        txtFactura.setText(equipo.getFactura() != null ? equipo.getFactura() : "");
+        txtObservaciones.setText(equipo.getObservaciones() != null ? equipo.getObservaciones() : "");
+        txtIdentificador.setText(equipo.getIdentificador() != null ? equipo.getIdentificador() : "");
+        txtPrecio.setText(equipo.getPrecio() != null ? String.valueOf(equipo.getPrecio()) : "");
+
+        cbxCondicion.setValue(CondicionFisica.valueOf(equipo.getCondicion()));
+
+        cbxTipoEquipo.setValue(TipoEquipo.valueOf(equipo.getTipo()));
+        
+        fechaCompra.setValue(equipo.getFechaCompra());
+        cbxModelo.getSelectionModel().select(modeloDto);
+        llenarModeloSeleccionado();
+
+        btnAgregar.setText("+ Actualizar equipo");
+        modoEdicion = true;
+        modoVisualizacion = false;
+        
+        if (controllerEspecifico != null) {
+            controllerEspecifico.cargarEquipoParaEditar(equipo);
+        }
+
+        aplicarModoVisualizacion(false);
+    }
+
+    public <T extends EquipoBaseDTO> void cargarEquipoParaVisualizar(T equipo) {
+        cargarEquipoParaEditar(equipo);
+        aplicarModoVisualizacion(true);
+        btnAgregar.setVisible(false);
+        btnAgregar.setManaged(false);
+    }
+
+    private void cargarModelos() {
+        List<ModeloDTO> modelos = fachadaEquipos.listarModelos();
+        cbxModelo.getItems().setAll(modelos);
+        cbxModelo.setOnAction(e -> llenarModeloSeleccionado());
+        if (!modelos.isEmpty()) {
+            cbxModelo.getSelectionModel().selectFirst();
         }
     }
 
@@ -515,64 +570,16 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         new Thread(task).start();
     }
 
-    private void cambiarPanelEspecifico() {
-        containerEspecifico.getChildren().clear();
-        TipoEquipo tipo = cbxTipoEquipo.getValue();
-        if (tipo == null) {
+    private void llenarModeloSeleccionado() {
+        ModeloDTO modelo = cbxModelo.getValue();
+        if (modelo == null) {
             return;
         }
-        try {
-            FXMLLoader loader = null;
-            switch (tipo) {
-                case LAPTOP, DESKTOP, SERVIDOR, AIO ->
-                    loader = new FXMLLoader(getClass().getResource("InfoEspecificaEscritorio.fxml"));
-                case MOVIL ->
-                    loader = new FXMLLoader(getClass().getResource("InfoEspecificaMovil.fxml"));
-                case IMPRESORA, MONITOR, SCANNER, PROYECTOR ->
-                    loader = new FXMLLoader(getClass().getResource("InfoEspecificaOtros.fxml"));
-            }
-            panelEspecificoActual = loader.load();
-            controllerEspecifico = (IValidaciones) loader.getController();
-            containerEspecifico.getChildren().setAll(panelEspecificoActual);
-            AnchorPane.setTopAnchor(panelEspecificoActual, 0.0);
-            AnchorPane.setBottomAnchor(panelEspecificoActual, 0.0);
-            AnchorPane.setLeftAnchor(panelEspecificoActual, 0.0);
-            AnchorPane.setRightAnchor(panelEspecificoActual, 0.0);
-            if (panelEspecificoActual instanceof FlowPane flow) {
-                flow.prefWrapLengthProperty().bind(containerEspecifico.widthProperty());
-            }
-            if (panelEspecificoActual.getParent() != null) {
-                ((Pane) panelEspecificoActual.getParent()).getChildren().remove(panelEspecificoActual);
-            }
-            containerEspecifico.getChildren().setAll(panelEspecificoActual);
-        } catch (IOException ex) {
-            mostrarError(ex.getMessage());
-        }
-    }
-
-    private void cargarModelos() {
-        List<ModeloDTO> modelos = fachadaEquipos.listarModelos();
-        cbxModelo.getItems().setAll(modelos);
-        cbxModelo.setOnAction(e -> llenarModeloSeleccionado());
-        if (!modelos.isEmpty()) {
-            cbxModelo.getSelectionModel().selectFirst();
-        }
-    }
-
-    private void llenarModeloSeleccionado() {
-        try {
-            ModeloDTO modelo = cbxModelo.getValue();
-            if (modelo == null) {
-                return;
-            }
-            txtModelo.setText(modelo.getNombre());
-            txtMarca.setText(modelo.getMarca());
-            txtAlmacenamiento.setText(String.valueOf(modelo.getAlmacenamiento()));
-            txtRam.setText(String.valueOf(modelo.getMemoriaRam()));
-            txtProcesador.setText(modelo.getProcesador());
-        } catch (ClassCastException e) {
-            System.out.println(e.getMessage());
-        }
+        txtModelo.setText(modelo.getNombre());
+        txtMarca.setText(modelo.getMarca());
+        txtAlmacenamiento.setText(modelo.getAlmacenamiento() != null ? String.valueOf(modelo.getAlmacenamiento()) : "");
+        txtRam.setText(modelo.getMemoriaRam() != null ? String.valueOf(modelo.getMemoriaRam()) : "");
+        txtProcesador.setText(modelo.getProcesador());
     }
 
     @FXML
@@ -584,7 +591,6 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         txtRam.setDisable(!crear);
         txtProcesador.setDisable(!crear);
         cbxModelo.setDisable(crear);
-
         if (crear) {
             ValidacionUtil.resetCampo(cbxModelo);
         } else {
@@ -600,7 +606,6 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     private void aplicarModoVisualizacion(boolean visualizar) {
         this.modoVisualizacion = visualizar;
         boolean editable = !visualizar;
-
         txtGry.setDisable(!editable);
         cbxCondicion.setDisable(!editable);
         fechaCompra.setDisable(!editable);
@@ -622,11 +627,6 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         btnAgregar.setManaged(editable);
     }
 
-    @FXML
-    private void btnCancelar() {
-        cambiarPantalla("/com/mycompany/inventariofrontfx/inventario/Inventario.fxml");
-    }
-
     @Override
     public void limpiarFormulario() {
         txtGry.clear();
@@ -638,17 +638,24 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         txtAlmacenamiento.clear();
         txtRam.clear();
         txtProcesador.clear();
-        
-        // UX: Restaurar valores por defecto al limpiar (no dejar vacío)
-        if (!cbxCondicion.getItems().isEmpty()) cbxCondicion.getSelectionModel().selectFirst();
+        if (txtPrecio != null) {
+            txtPrecio.clear();
+        }
+
+        if (!cbxCondicion.getItems().isEmpty()) {
+            cbxCondicion.getSelectionModel().selectFirst();
+        }
         if (!cbxTipoEquipo.getItems().isEmpty()) {
             cbxTipoEquipo.getSelectionModel().selectFirst();
-            cambiarPanelEspecifico();
         }
-        if (!cbxModelo.getItems().isEmpty()) cbxModelo.getSelectionModel().selectFirst();
-        
+        if (!cbxModelo.getItems().isEmpty()) {
+            cbxModelo.getSelectionModel().selectFirst();
+        }
+
         fechaCompra.setValue(java.time.LocalDate.now());
         ckbCrearNuevoModelo.setSelected(false);
+        modoEdicion = false;
+        modoVisualizacion = false;
 
         ValidacionUtil.resetTodos(txtGry, cbxCondicion, cbxTipoEquipo, txtIdentificador,
                 txtPrecio, cbxModelo, txtMarca, txtModelo, txtRam, txtAlmacenamiento, txtProcesador);
@@ -664,66 +671,37 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         ValidacionUtil.ocultarLabel(errPrecio);
     }
 
-    @Override
-    public <T extends EquipoBaseDTO> void cargarEquipoParaEditar(T equipo) {
-        limpiarFormulario();
-
-        ModeloDTO modeloDto = fachadaEquipos.buscarModeloPorId(equipo.getIdModelo());
-        idEquipoEditando = equipo.getIdEquipo();
-        versionEquipo = equipo.getVersion();
-
-        txtGry.setText(String.valueOf(equipo.getGry()));
-        txtFactura.setText(equipo.getFactura());
-        txtObservaciones.setText(equipo.getObservaciones());
-        txtIdentificador.setText(equipo.getIdentificador());
-        txtPrecio.setText(equipo.getPrecio() != null ? String.valueOf(equipo.getPrecio()) : "");
-
-        cbxCondicion.setValue(CondicionFisica.valueOf(equipo.getCondicion()));
-        cbxTipoEquipo.setValue(TipoEquipo.valueOf(equipo.getTipo()));
-        fechaCompra.setValue(equipo.getFechaCompra());
-
-        cbxModelo.getSelectionModel().select(modeloDto);
-        llenarModeloSeleccionado();
-
-        this.btnAgregar.setText("+ Actualizar equipo");
-        modoEdicion = true;
-        modoVisualizacion = false;
-
-        cambiarPanelEspecifico();
-        if (controllerEspecifico != null) {
-            controllerEspecifico.cargarEquipoParaEditar(equipo);
-        }
-
-        aplicarModoVisualizacion(false);
+    private void volverAInventario() {
+        cambiarPantalla("/com/mycompany/inventariofrontfx/inventario/Inventario.fxml");
     }
 
-    public <T extends EquipoBaseDTO> void cargarEquipoParaVisualizar(T equipo) {
-        cargarEquipoParaEditar(equipo);
-        aplicarModoVisualizacion(true);
-        // La acción principal de guardar no está disponible en vista
-        btnAgregar.setVisible(false);
-        btnAgregar.setManaged(false);
+    @FXML
+    private void btnCancelar() {
+        cambiarPantalla("/com/mycompany/inventariofrontfx/inventario/Inventario.fxml");
     }
 
     @Override
     public ControllerInventario cambiarPantalla(String rutaFXML) {
+        if (rutaFXML == null || dbc == null) {
+            return null;
+        }
         try {
-            if (rutaFXML != null) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
-                Parent vista = loader.load();
-                Object controller = loader.getController();
-                if (controller instanceof BaseController baseController) {
-                    baseController.setDashBoard(dbc);
-                }
-                this.dbc.cambiarDePantalla(rutaFXML);
-                this.dbc.getCenterContainer().setVvalue(0);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
+            Parent vista = loader.load();
+            Object controller = loader.getController();
+            if (controller instanceof BaseController bc) {
+                bc.setDashBoard(dbc);
             }
+            
+            dbc.getCenterContainer().setContent(vista);
+            dbc.getCenterContainer().setVvalue(0);
         } catch (IOException e) {
-            System.out.println(Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
+            mostrarError("No se pudo cargar la pantalla: " + e.getMessage());
         }
         return null;
     }
-
+    
     @Override
     public EquipoBaseDTO getDatosEntidad() {
         EquipoBaseDTO dto = new EquipoBaseDTO();
@@ -739,10 +717,16 @@ public class FormInventarioController implements ControllerInventario, IValidaci
 
     private void mostrarError(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Campos inválidos");
-        alert.setHeaderText("Por favor corrige los siguientes errores:");
+        alert.setTitle("Error");
+        alert.setHeaderText("Corrige los siguientes errores:");
+        System.out.println(msg);
         alert.setContentText(msg);
         alert.showAndWait();
+    }
+
+    @Override
+    public void setDashBoard(MenuController dbc) {
+        this.dbc = dbc;
     }
 
     public MenuController getDbc() {
@@ -750,11 +734,6 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     }
 
     public void setDbc(MenuController dbc) {
-        this.dbc = dbc;
-    }
-
-    @Override
-    public void setDashBoard(MenuController dbc) {
         this.dbc = dbc;
     }
 }

@@ -136,14 +136,14 @@ public class OrganizacionController implements Initializable, BaseController {
             MenuItem agregarItem = new MenuItem("Agregar Subnivel");
             agregarItem.setGraphic(new FontIcon("fas-plus"));
             agregarItem.setOnAction(e -> {
-                treeOrganizacion.getSelectionModel().select(cell.getItem());
+                treeOrganizacion.getSelectionModel().select(cell.getTreeItem());
                 agregarHijo();
             });
 
             MenuItem eliminarItem = new MenuItem("Eliminar");
             eliminarItem.setGraphic(new FontIcon("fas-trash"));
             eliminarItem.setOnAction(e -> {
-                treeOrganizacion.getSelectionModel().select(cell.getItem());
+                treeOrganizacion.getSelectionModel().select(cell.getTreeItem());
                 eliminarSeleccionado();
             });
 
