@@ -144,7 +144,7 @@ public class DaoEquipoAsignado extends DaoGenerico<EquipoAsignado, Long>
 
             orPredicates.add(cb.like(cb.lower(joinUsuario.get("nombre")), "%" + lower + "%"));
 
-            orPredicates.add(cb.like(cb.lower(joinEquipo.get("indetificador")), "%" + lower + "%"));
+            orPredicates.add(cb.like(cb.lower(joinEquipo.get("identificador")), "% " + lower + "%"));
 
             if (filtro.trim().matches("\\d+")) {
                 orPredicates.add(cb.equal(joinEquipo.get("gry"), Integer.parseInt(filtro.trim())));

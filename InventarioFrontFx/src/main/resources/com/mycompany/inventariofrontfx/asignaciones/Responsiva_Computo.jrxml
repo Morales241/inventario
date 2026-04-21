@@ -1,0 +1,110 @@
+<!-- Copia base del jasper de equipos de computo, puedes personalizar más si lo deseas -->
+<jasperReport name="ResponsivaComputo" language="java" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="fecha" class="java.lang.String"/>
+	<parameter name="nombreEmpleado" class="java.lang.String"/>
+	<parameter name="puesto" class="java.lang.String"/>
+	<parameter name="numeroCarta" class="java.lang.String"/>
+	<parameter name="gry" class="java.lang.Integer"/>
+	<parameter name="marca" class="java.lang.String"/>
+	<parameter name="tipoEquipo" class="java.lang.String"/>
+	<parameter name="numeroSerie" class="java.lang.String"/>
+	<parameter name="modelo" class="java.lang.String"/>
+	<parameter name="memoriaRam" class="java.lang.String"/>
+	<parameter name="procesador" class="java.lang.String"/>
+	<parameter name="almacenamiento" class="java.lang.String"/>
+	<parameter name="mouse" class="java.lang.Boolean"/>
+	<parameter name="teclado" class="java.lang.Boolean"/>
+	<parameter name="monitor" class="java.lang.Boolean"/>
+	<parameter name="cableCorriente" class="java.lang.Boolean"/>
+	<parameter name="Mochila" class="java.lang.Boolean"/>
+	<parameter name="otrosAccesorios" class="java.lang.String"/>
+	<parameter name="sistemaOperativo" class="java.lang.Boolean"/>
+	<parameter name="antivirus" class="java.lang.Boolean"/>
+	<parameter name="paqueteriaOffice" class="java.lang.Boolean"/>
+	<parameter name="lectorPDF" class="java.lang.Boolean"/>
+	<title height="108">
+		<element kind="staticText" x="80" y="15" width="400" height="32" forecolor="#13507D" fontSize="16.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[CARTA RESPONSIVA DE EQUIPO DE CÓMPUTO]]></text>
+		</element>
+	</title>
+	<detail>
+		<band height="531">
+			<element kind="staticText" x="0" y="8" width="572" height="20" forecolor="#13507D" backcolor="#E8F0F7" fontSize="11.0" bold="true">
+				<text><![CDATA[  DATOS DEL USUARIO RESPONSABLE]]></text>
+			</element>
+			<element kind="staticText" x="10" y="32" width="130" height="18" fontSize="10.0" bold="true">
+				<text><![CDATA[Nombre del Empleado:]]></text>
+			</element>
+			<element kind="textField" x="145" y="32" width="420" height="18">
+				<expression><![CDATA[$P{nombreEmpleado} != null ? $P{nombreEmpleado} : ""]]></expression>
+			</element>
+			<element kind="staticText" x="10" y="52" width="70" height="18" fontSize="10.0" bold="true">
+				<text><![CDATA[Puesto:]]></text>
+			</element>
+			<element kind="textField" x="85" y="52" width="480" height="18">
+				<expression><![CDATA[$P{puesto} != null ? $P{puesto} : ""]]></expression>
+			</element>
+			<element kind="staticText" x="0" y="78" width="572" height="82" fontSize="9.0" hTextAlign="Justified">
+				<text><![CDATA[El empleado arriba mencionado, declara bajo protesta de decir verdad, que recibe en este acto el equipo de cómputo que se describe más adelante, comprometiéndose a utilizarlo única y exclusivamente para el desempeño de sus funciones dentro de la empresa Grupo Rio Yaqui, S.A. de C.V., así como a mantenerlo en óptimas condiciones de uso, limpieza y seguridad, reportando inmediatamente cualquier falla o daño que presente el mismo.
+
+De igual forma, se compromete a no instalar software no autorizado, ni realizar modificaciones al equipo sin autorización expresa del Departamento de TI. En caso de incumplimiento, se aplicarán las sanciones correspondientes conforme al reglamento interno de la empresa.]]></text>
+			</element>
+			<element kind="staticText" x="0" y="170" width="572" height="20" forecolor="#13507D" backcolor="#E8F0F7" fontSize="11.0" bold="true">
+				<text><![CDATA[  ESPECIFICACIONES DEL EQUIPO]]></text>
+			</element>
+			<element kind="textField" x="10" y="196" width="270" height="18" fontSize="10.0">
+				<expression><![CDATA["GRY: " + ($P{gry} != null ? $P{gry}.toString() : "—")]]></expression>
+			</element>
+			<element kind="textField" x="300" y="196" width="265" height="18" fontSize="10.0">
+				<expression><![CDATA["Marca: " + ($P{marca} != null ? $P{marca} : "—")]]></expression>
+			</element>
+			<element kind="textField" x="10" y="216" width="270" height="18" fontSize="10.0">
+				<expression><![CDATA["Tipo: " + ($P{tipoEquipo} != null ? $P{tipoEquipo} : "—")]]></expression>
+			</element>
+			<element kind="textField" x="300" y="216" width="265" height="18" fontSize="10.0">
+				<expression><![CDATA["Serie: " + ($P{numeroSerie} != null ? $P{numeroSerie} : "—")]]></expression>
+			</element>
+			<element kind="textField" x="10" y="236" width="270" height="18" fontSize="10.0">
+				<expression><![CDATA["Modelo: " + ($P{modelo} != null ? $P{modelo} : "—")]]></expression>
+			</element>
+			<element kind="textField" x="300" y="236" width="265" height="18" fontSize="10.0">
+				<expression><![CDATA["RAM: " + ($P{memoriaRam} != null ? $P{memoriaRam} + " GB" : "—")]]></expression>
+			</element>
+			<element kind="textField" x="10" y="256" width="270" height="18" fontSize="10.0">
+				<expression><![CDATA["Procesador: " + ($P{procesador} != null ? $P{procesador} : "—")]]></expression>
+			</element>
+			<element kind="textField" x="300" y="256" width="265" height="18" fontSize="10.0">
+				<expression><![CDATA["Almacenamiento: " + ($P{almacenamiento} != null ? $P{almacenamiento} + " GB" : "—")]]></expression>
+			</element>
+			<element kind="staticText" x="0" y="286" width="572" height="20" forecolor="#13507D" backcolor="#E8F0F7" fontSize="11.0" bold="true">
+				<text><![CDATA[  ACCESORIOS ENTREGADOS]]></text>
+			</element>
+			<element kind="textField" x="10" y="311" width="552" height="20" fontSize="10.0">
+				<expression><![CDATA[
+(Boolean.TRUE.equals($P{mouse})          ? "☑ Mouse   " : "☐ Mouse   ") +
+(Boolean.TRUE.equals($P{teclado})        ? "☑ Teclado   " : "☐ Teclado   ") +
+(Boolean.TRUE.equals($P{monitor})        ? "☑ Monitor   " : "☐ Monitor   ") +
+(Boolean.TRUE.equals($P{cableCorriente}) ? "☑ Cable de corriente   " : "☐ Cable de corriente   ") +
+(Boolean.TRUE.equals($P{Mochila})    ? "☑ Mochila" : "☐ Mochila")
+]]></expression>
+			</element>
+			<element kind="staticText" x="0" y="364" width="572" height="20" forecolor="#13507D" backcolor="#E8F0F7" fontSize="11.0" bold="true">
+				<text><![CDATA[  SOFTWARE INSTALADO]]></text>
+			</element>
+			<element kind="textField" x="10" y="389" width="552" height="20" fontSize="10.0">
+				<expression><![CDATA[
+(Boolean.TRUE.equals($P{sistemaOperativo})  ? "☑ Sistema Operativo   " : "☐ Sistema Operativo   ") +
+(Boolean.TRUE.equals($P{paqueteriaOffice})  ? "☑ Office   " : "☐ Office   ") +
+(Boolean.TRUE.equals($P{antivirus})         ? "☑ Antivirus   " : "☐ Antivirus   ") +
+(Boolean.TRUE.equals($P{lectorPDF})         ? "☑ Lector PDF" : "☐ Lector PDF")
+]]></expression>
+			</element>
+			<element kind="staticText" x="10" y="420" width="552" height="20" fontSize="10.0" bold="true">
+				<text><![CDATA[Otros accesorios:]]></text>
+			</element>
+			<element kind="textField" x="150" y="420" width="412" height="20" fontSize="10.0">
+				<expression><![CDATA[$P{otrosAccesorios} != null ? $P{otrosAccesorios} : "Ninguno"]]></expression>
+			</element>
+		</band>
+	</detail>
+</jasperReport>

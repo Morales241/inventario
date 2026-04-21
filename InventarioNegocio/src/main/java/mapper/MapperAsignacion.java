@@ -29,7 +29,7 @@ public class MapperAsignacion {
 
                         if (entity.getEquipoDeComputo() != null) {
                             dto.setIdEquipo(entity.getEquipoDeComputo().getId());
-                            dto.setIdentificadorEquipo(entity.getEquipoDeComputo().getIndetificador());
+                            dto.setIdentificadorEquipo(entity.getEquipoDeComputo().getIdentificador());
                         }
                         
                         if (entity.getVersion() != null) {

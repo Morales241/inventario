@@ -224,8 +224,8 @@ public class ServicioPrestamos extends ServicioBase implements IServicioPrestamo
                 .filter(a -> 
                     (a.getUsuario() != null && a.getUsuario().getNombre().toLowerCase().contains(filtroLower)) ||
                     (a.getEquipoDeComputo() != null && 
-                        (a.getEquipoDeComputo().getIndetificador() != null && 
-                         a.getEquipoDeComputo().getIndetificador().toLowerCase().contains(filtroLower)) ||
+                        (a.getEquipoDeComputo().getIdentificador() != null && 
+                         a.getEquipoDeComputo().getIdentificador().toLowerCase().contains(filtroLower)) ||
                         (a.getEquipoDeComputo().getGry() != null && 
                          a.getEquipoDeComputo().getGry().toString().contains(filtroLower)))
                 )

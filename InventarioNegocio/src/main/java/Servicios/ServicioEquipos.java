@@ -25,11 +25,6 @@ import mapper.MapperModelo;
 
 /**
  * Servicio de lógica de negocio para la gestión integral de equipos de cómputo.
- * <p>
- * Coordina las operaciones entre los diferentes tipos de hardware (Móviles,
- * Escritorio, Otros) y sus modelos asociados. Maneja la validación de
- * integridad de datos antes de la persistencia.
- * </p>
  */
 public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
 
@@ -306,6 +301,10 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
                 throw new ReglaNegocioException("El GRY es obligatorio y debe ser mayor a 0");
             }
 
+            if (dto.getIdentificador() == null || dto.getIdentificador().isBlank()) {
+                throw new ReglaNegocioException("El identificador es obligatorio y no puede estar en blanco");
+            }
+
             if (dto.getIdSucursal() == null) {
                 throw new ReglaNegocioException("Debe seleccionar una sucursal");
             }
@@ -407,7 +406,7 @@ public class ServicioEquipos extends ServicioBase implements IServicioEquipos {
         
         private void actualizarCamposBase(T existente, D dto) {
             existente.setGry(dto.getGry());
-            existente.setIndetificador(dto.getIdentificador());
+            existente.setIdentificador(dto.getIdentificador());
             existente.setFactura(dto.getFactura());
             existente.setObservaciones(dto.getObservaciones());
             existente.setFechaCompra(dto.getFechaCompra());

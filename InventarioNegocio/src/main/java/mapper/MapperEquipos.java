@@ -104,7 +104,7 @@ public class MapperEquipos {
         dto.setIdEquipo(e.getId());
         dto.setVersion(e.getVersion());
         dto.setGry(e.getGry());
-        dto.setIdentificador(e.getIndetificador());
+        dto.setIdentificador(e.getIdentificador());
         dto.setFactura(e.getFactura());
         dto.setObservaciones(e.getObservaciones());
         dto.setFechaCompra(e.getFechaCompra());
@@ -157,7 +157,7 @@ public class MapperEquipos {
         e.setId(dto.getIdEquipo());
         e.setVersion(dto.getVersion());
         e.setGry(dto.getGry());
-        e.setIndetificador(dto.getIdentificador());
+        e.setIdentificador(dto.getIdentificador());
         e.setFactura(dto.getFactura());
         e.setObservaciones(dto.getObservaciones());
         e.setFechaCompra(dto.getFechaCompra());

@@ -52,7 +52,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
     private Long idEquipoEditando;
     private Long versionEquipo;
 
-    private static final Long ID_SUCURSAL_DEFAULT = 6L;
+    private static final Long ID_SUCURSAL_DEFAULT = 1L;
 
     @FXML
     private TextField txtFiltroMarca;
@@ -139,7 +139,8 @@ public class FormInventarioController implements ControllerInventario, IValidaci
             pause.playFromStart();
         });
 
-        cbxTipoEquipo.setOnAction(e -> cambiarPanelEspecifico());
+        // Configurado en listeners en lugar de action para que se ejecute al setear programáticamente
+        // cbxTipoEquipo.setOnAction(e -> cambiarPanelEspecifico());
 
         configurarListenersValidacion();
     }
@@ -197,6 +198,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
             if (val != null) {
                 ValidacionUtil.marcarOk(cbxTipoEquipo);
                 ValidacionUtil.ocultarLabel(errTipo);
+                cambiarPanelEspecifico();
             }
         });
         cbxCondicion.valueProperty().addListener((obs, old, val) -> {
@@ -224,15 +226,23 @@ public class FormInventarioController implements ControllerInventario, IValidaci
             }
         });
         txtRam.textProperty().addListener((obs, old, val) -> {
-            if (val != null && val.trim().matches("\\d+") && Integer.parseInt(val.trim()) > 0) {
-                ValidacionUtil.marcarOk(txtRam);
-                ValidacionUtil.ocultarLabel(errRam);
+            if (val != null && val.trim().matches("\\d+")) {
+                try {
+                    if (Integer.parseInt(val.trim()) > 0) {
+                        ValidacionUtil.marcarOk(txtRam);
+                        ValidacionUtil.ocultarLabel(errRam);
+                    }
+                } catch(NumberFormatException ignored) {}
             }
         });
         txtAlmacenamiento.textProperty().addListener((obs, old, val) -> {
-            if (val != null && val.trim().matches("\\d+") && Integer.parseInt(val.trim()) > 0) {
-                ValidacionUtil.marcarOk(txtAlmacenamiento);
-                ValidacionUtil.ocultarLabel(errAlmacenamiento);
+            if (val != null && val.trim().matches("\\d+")) {
+                try {
+                    if (Integer.parseInt(val.trim()) > 0) {
+                        ValidacionUtil.marcarOk(txtAlmacenamiento);
+                        ValidacionUtil.ocultarLabel(errAlmacenamiento);
+                    }
+                } catch(NumberFormatException ignored) {}
             }
         });
         txtProcesador.textProperty().addListener((obs, old, val) -> {

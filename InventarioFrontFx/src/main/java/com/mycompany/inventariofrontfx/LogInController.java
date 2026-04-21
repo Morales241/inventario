@@ -93,6 +93,13 @@ public class LogInController implements Initializable, BaseController {
             setFormularioHabilitado(true);
             ocultarSpinner();
 
+            if (cuenta == null) {
+                txtPassword.clear();
+                txtPassword.requestFocus();
+                mostrarError("Usuario o contraseña incorrectos.");
+                return;
+            }
+
             // Guardar la sesión
             ServicioSesion.setUsuario(cuenta);
             // Navegar al menú

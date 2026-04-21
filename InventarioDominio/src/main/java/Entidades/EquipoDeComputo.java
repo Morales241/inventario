@@ -28,7 +28,7 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable{
     private Integer gry;
     
     @Column(nullable = false, unique = true)
-    private String indetificador;
+    private String identificador;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -157,12 +157,12 @@ public class EquipoDeComputo extends AuditoriaBase implements Serializable{
         this.asignaciones = asignaciones;
     }
 
-    public String getIndetificador() {
-        return indetificador;
+    public String getIdentificador() {
+        return identificador;
     }
 
-    public void setIndetificador(String indetificador) {
-        this.indetificador = indetificador;
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
     }
 
     public String getFactura() {
