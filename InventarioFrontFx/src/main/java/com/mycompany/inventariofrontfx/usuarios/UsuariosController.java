@@ -508,7 +508,8 @@ public class UsuariosController implements Initializable {
         ValidacionUtil.ocultarLabel(errPuesto);
     }
 
-    private void limpiarFormulario() {
+    @FXML
+    public void limpiarFormulario() {
         txtNombre.clear();
         txtNomina.clear();
         cbxEmpresa.getSelectionModel().selectFirst();

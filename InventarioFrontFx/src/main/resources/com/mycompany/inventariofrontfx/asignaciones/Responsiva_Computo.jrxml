@@ -1,5 +1,5 @@
-<!-- Copia base del jasper de equipos de computo, puedes personalizar más si lo deseas -->
-<jasperReport name="ResponsivaComputo" language="java" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="ResponsivaComputo" language="java" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="14682a7f-6bb1-42d8-b6c9-8d147b3181c8">
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="nombreEmpleado" class="java.lang.String"/>
 	<parameter name="puesto" class="java.lang.String"/>
@@ -23,63 +23,79 @@
 	<parameter name="paqueteriaOffice" class="java.lang.Boolean"/>
 	<parameter name="lectorPDF" class="java.lang.Boolean"/>
 	<title height="108">
-		<element kind="staticText" x="80" y="15" width="400" height="32" forecolor="#13507D" fontSize="16.0" bold="true" hTextAlign="Center">
+		<element kind="staticText" uuid="7bbd8f34-0526-4083-9825-7337653a032f" x="80" y="15" width="400" height="32" forecolor="#13507D" fontSize="16.0" bold="true" hTextAlign="Center">
 			<text><![CDATA[CARTA RESPONSIVA DE EQUIPO DE CÓMPUTO]]></text>
+		</element>
+		<element kind="rectangle" uuid="371010d7-b1bb-4dde-bc71-ede6e150e40a" x="0" y="0" width="572" height="5" backcolor="#13507D">
+			<pen lineWidth="0.0"/>
+		</element>
+		<element kind="staticText" uuid="907f0d5a-107f-4fe9-8c47-f673213e43f8" x="0" y="50" width="572" height="20" forecolor="#444444" fontSize="11.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[Departamento de Tecnologías de la Información — Grupo Rio Yaqui, S.A. de C.V.]]></text>
+		</element>
+		<element kind="textField" uuid="527525e1-02cd-42cb-a960-de703311071b" x="286" y="75" width="286" height="18" forecolor="#555555" fontSize="9.0" hTextAlign="Right">
+			<expression><![CDATA["Cd. Obregón, Son. a " + $P{fecha}]]></expression>
+		</element>
+		<element kind="line" uuid="e37bc37a-de38-4b91-9f0a-89813bff7e9c" x="0" y="100" width="572" height="1" forecolor="#98D64B"/>
+		<element kind="image" uuid="3527b3f7-7bef-4d11-8443-29fcb8b122d3" x="10" y="16" width="40" height="31">
+			<expression><![CDATA["C:/Users/JesusMorales/Documents/GitHub/inventario/InventarioFrontFx/src/main/resources/com/mycompany/inventariofrontfx/menu/logo.png"]]></expression>
+		</element>
+		<element kind="image" uuid="58305bee-d469-4458-ab3f-1bc059314034" x="532" y="16" width="40" height="31">
+			<expression><![CDATA["C:/Users/JesusMorales/Documents/GitHub/inventario/InventarioFrontFx/src/main/resources/com/mycompany/inventariofrontfx/menu/logo.png"]]></expression>
 		</element>
 	</title>
 	<detail>
 		<band height="531">
-			<element kind="staticText" x="0" y="8" width="572" height="20" forecolor="#13507D" backcolor="#E8F0F7" fontSize="11.0" bold="true">
+			<element kind="staticText" uuid="4b954e6a-1a74-4ffb-8491-020a104d5375" x="0" y="8" width="572" height="20" forecolor="#13507D" backcolor="#E8F0F7" fontSize="11.0" bold="true">
 				<text><![CDATA[  DATOS DEL USUARIO RESPONSABLE]]></text>
 			</element>
-			<element kind="staticText" x="10" y="32" width="130" height="18" fontSize="10.0" bold="true">
+			<element kind="staticText" uuid="943b2f1a-6658-4c90-a2bd-23f136c24ae7" x="10" y="32" width="130" height="18" fontSize="10.0" bold="true">
 				<text><![CDATA[Nombre del Empleado:]]></text>
 			</element>
-			<element kind="textField" x="145" y="32" width="420" height="18">
+			<element kind="textField" uuid="3b137d0a-ebbd-41e3-a866-3c097ccfc4ab" x="145" y="32" width="420" height="18">
 				<expression><![CDATA[$P{nombreEmpleado} != null ? $P{nombreEmpleado} : ""]]></expression>
 			</element>
-			<element kind="staticText" x="10" y="52" width="70" height="18" fontSize="10.0" bold="true">
+			<element kind="staticText" uuid="b6ad7a63-151b-48b3-969f-1d41e73a235f" x="10" y="52" width="70" height="18" fontSize="10.0" bold="true">
 				<text><![CDATA[Puesto:]]></text>
 			</element>
-			<element kind="textField" x="85" y="52" width="480" height="18">
+			<element kind="textField" uuid="a40198ad-264f-4535-80ef-75eec0ddedb6" x="85" y="52" width="480" height="18">
 				<expression><![CDATA[$P{puesto} != null ? $P{puesto} : ""]]></expression>
 			</element>
-			<element kind="staticText" x="0" y="78" width="572" height="82" fontSize="9.0" hTextAlign="Justified">
+			<element kind="staticText" uuid="c4238031-4bb5-4fcb-b8fa-765c0256263e" x="0" y="78" width="572" height="82" fontSize="9.0" hTextAlign="Justified">
 				<text><![CDATA[El empleado arriba mencionado, declara bajo protesta de decir verdad, que recibe en este acto el equipo de cómputo que se describe más adelante, comprometiéndose a utilizarlo única y exclusivamente para el desempeño de sus funciones dentro de la empresa Grupo Rio Yaqui, S.A. de C.V., así como a mantenerlo en óptimas condiciones de uso, limpieza y seguridad, reportando inmediatamente cualquier falla o daño que presente el mismo.
 
 De igual forma, se compromete a no instalar software no autorizado, ni realizar modificaciones al equipo sin autorización expresa del Departamento de TI. En caso de incumplimiento, se aplicarán las sanciones correspondientes conforme al reglamento interno de la empresa.]]></text>
 			</element>
-			<element kind="staticText" x="0" y="170" width="572" height="20" forecolor="#13507D" backcolor="#E8F0F7" fontSize="11.0" bold="true">
+			<element kind="staticText" uuid="24ca87ba-c466-4be8-8bc1-8dd10c57ca29" x="0" y="170" width="572" height="20" forecolor="#13507D" backcolor="#E8F0F7" fontSize="11.0" bold="true">
 				<text><![CDATA[  ESPECIFICACIONES DEL EQUIPO]]></text>
 			</element>
-			<element kind="textField" x="10" y="196" width="270" height="18" fontSize="10.0">
+			<element kind="textField" uuid="c3ce5359-54c5-4480-9093-2fdf304f3c3f" x="10" y="196" width="270" height="18" fontSize="10.0">
 				<expression><![CDATA["GRY: " + ($P{gry} != null ? $P{gry}.toString() : "—")]]></expression>
 			</element>
-			<element kind="textField" x="300" y="196" width="265" height="18" fontSize="10.0">
+			<element kind="textField" uuid="1ca916c0-c91e-46b8-80d2-29aca64439d4" x="300" y="196" width="265" height="18" fontSize="10.0">
 				<expression><![CDATA["Marca: " + ($P{marca} != null ? $P{marca} : "—")]]></expression>
 			</element>
-			<element kind="textField" x="10" y="216" width="270" height="18" fontSize="10.0">
+			<element kind="textField" uuid="6f1901ca-0717-471a-ac7d-248b633106c8" x="10" y="216" width="270" height="18" fontSize="10.0">
 				<expression><![CDATA["Tipo: " + ($P{tipoEquipo} != null ? $P{tipoEquipo} : "—")]]></expression>
 			</element>
-			<element kind="textField" x="300" y="216" width="265" height="18" fontSize="10.0">
+			<element kind="textField" uuid="875b9d83-fc15-4bdb-a468-bf7b5e8578f0" x="300" y="216" width="265" height="18" fontSize="10.0">
 				<expression><![CDATA["Serie: " + ($P{numeroSerie} != null ? $P{numeroSerie} : "—")]]></expression>
 			</element>
-			<element kind="textField" x="10" y="236" width="270" height="18" fontSize="10.0">
+			<element kind="textField" uuid="119d660d-cdac-4af3-8907-c74c2aaa85f9" x="10" y="236" width="270" height="18" fontSize="10.0">
 				<expression><![CDATA["Modelo: " + ($P{modelo} != null ? $P{modelo} : "—")]]></expression>
 			</element>
-			<element kind="textField" x="300" y="236" width="265" height="18" fontSize="10.0">
+			<element kind="textField" uuid="924ce5a5-6d02-4e74-bfea-c988affc457b" x="300" y="236" width="265" height="18" fontSize="10.0">
 				<expression><![CDATA["RAM: " + ($P{memoriaRam} != null ? $P{memoriaRam} + " GB" : "—")]]></expression>
 			</element>
-			<element kind="textField" x="10" y="256" width="270" height="18" fontSize="10.0">
+			<element kind="textField" uuid="dba2e8d0-2cd9-401d-b8cf-7462f1e2f86b" x="10" y="256" width="270" height="18" fontSize="10.0">
 				<expression><![CDATA["Procesador: " + ($P{procesador} != null ? $P{procesador} : "—")]]></expression>
 			</element>
-			<element kind="textField" x="300" y="256" width="265" height="18" fontSize="10.0">
+			<element kind="textField" uuid="185e411c-e93b-46a3-8cd0-265c028fd948" x="300" y="256" width="265" height="18" fontSize="10.0">
 				<expression><![CDATA["Almacenamiento: " + ($P{almacenamiento} != null ? $P{almacenamiento} + " GB" : "—")]]></expression>
 			</element>
-			<element kind="staticText" x="0" y="286" width="572" height="20" forecolor="#13507D" backcolor="#E8F0F7" fontSize="11.0" bold="true">
+			<element kind="staticText" uuid="dbd44b43-b759-4239-bdd9-bb9369f84ad0" x="0" y="286" width="572" height="20" forecolor="#13507D" backcolor="#E8F0F7" fontSize="11.0" bold="true">
 				<text><![CDATA[  ACCESORIOS ENTREGADOS]]></text>
 			</element>
-			<element kind="textField" x="10" y="311" width="552" height="20" fontSize="10.0">
+			<element kind="textField" uuid="9c88e4a0-d98a-45e6-99b8-d4eeeff32ef3" x="10" y="311" width="552" height="20" fontSize="10.0">
 				<expression><![CDATA[
 (Boolean.TRUE.equals($P{mouse})          ? "☑ Mouse   " : "☐ Mouse   ") +
 (Boolean.TRUE.equals($P{teclado})        ? "☑ Teclado   " : "☐ Teclado   ") +
@@ -88,10 +104,10 @@ De igual forma, se compromete a no instalar software no autorizado, ni realizar 
 (Boolean.TRUE.equals($P{Mochila})    ? "☑ Mochila" : "☐ Mochila")
 ]]></expression>
 			</element>
-			<element kind="staticText" x="0" y="364" width="572" height="20" forecolor="#13507D" backcolor="#E8F0F7" fontSize="11.0" bold="true">
+			<element kind="staticText" uuid="15095474-d8ac-4238-a48d-69190da232aa" x="0" y="364" width="572" height="20" forecolor="#13507D" backcolor="#E8F0F7" fontSize="11.0" bold="true">
 				<text><![CDATA[  SOFTWARE INSTALADO]]></text>
 			</element>
-			<element kind="textField" x="10" y="389" width="552" height="20" fontSize="10.0">
+			<element kind="textField" uuid="4facb0f5-bbbf-4302-a02d-9afae555ef7f" x="10" y="389" width="552" height="20" fontSize="10.0">
 				<expression><![CDATA[
 (Boolean.TRUE.equals($P{sistemaOperativo})  ? "☑ Sistema Operativo   " : "☐ Sistema Operativo   ") +
 (Boolean.TRUE.equals($P{paqueteriaOffice})  ? "☑ Office   " : "☐ Office   ") +
@@ -99,10 +115,10 @@ De igual forma, se compromete a no instalar software no autorizado, ni realizar 
 (Boolean.TRUE.equals($P{lectorPDF})         ? "☑ Lector PDF" : "☐ Lector PDF")
 ]]></expression>
 			</element>
-			<element kind="staticText" x="10" y="420" width="552" height="20" fontSize="10.0" bold="true">
+			<element kind="staticText" uuid="d4c327f6-1253-447e-b3a1-850e2aba2ea9" x="10" y="420" width="552" height="20" fontSize="10.0" bold="true">
 				<text><![CDATA[Otros accesorios:]]></text>
 			</element>
-			<element kind="textField" x="150" y="420" width="412" height="20" fontSize="10.0">
+			<element kind="textField" uuid="c0cbc7a3-bc20-4747-ab16-3bc0420c3047" x="150" y="420" width="412" height="20" fontSize="10.0">
 				<expression><![CDATA[$P{otrosAccesorios} != null ? $P{otrosAccesorios} : "Ninguno"]]></expression>
 			</element>
 		</band>
