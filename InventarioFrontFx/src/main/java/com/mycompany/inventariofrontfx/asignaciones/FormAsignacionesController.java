@@ -121,7 +121,6 @@ public class FormAsignacionesController implements Initializable, BaseController
     }
 
     private void configurarListas() {
-        // Personalizar cómo se muestran los usuarios en la lista
         listUsuarios.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(UsuarioDTO item, boolean empty) {
@@ -134,7 +133,6 @@ public class FormAsignacionesController implements Initializable, BaseController
             }
         });
 
-        // Personalizar cómo se muestran los equipos en la lista
         listEquipos.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(EquipoBaseDTO item, boolean empty) {

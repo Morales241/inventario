@@ -25,14 +25,16 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.util.Duration;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
  * Panel de filtro estilo Excel para columnas de TableView en JavaFX.
  *
- * que hace esto
- * Agrega un icono que es este ▼ al encabezado de una columna, caundo haces clic abre un Popup
- * flotante que tiene el campo de búsqueda de texto, un checkbox "Seleccionar todo", una lista de valores únicos con
+ * que hace esto Agrega un icono que es este ▼ al encabezado de una columna,
+ * caundo haces clic abre un Popup flotante que tiene el campo de búsqueda de
+ * texto, un checkbox "Seleccionar todo", una lista de valores únicos con
  * checkboxes individuales y botones de aplicar y limpiar
  *
  * @param <T> Tipo de los ítems de la tabla (EquipoBaseDTO, UsuarioDTO, etc.)
@@ -42,7 +44,7 @@ public class ColumnFilterPanel<T> {
     private static final double POPUP_WIDTH = 220;
     private static final double MAX_LISTA_HEIGHT = 200;
     private static final String COLOR_PRIMARY = "#13507d";
-    private static final String COLOR_ACTIVO = "#0F766E";   
+    private static final String COLOR_ACTIVO = "#0F766E";
 
     private final TableColumn<T, String> columna;
     private final java.util.function.Function<T, String> extractor;
@@ -64,7 +66,8 @@ public class ColumnFilterPanel<T> {
     private boolean filtroActivo = false;
 
     private Popup popup;
-    private FontIcon iconoHeader;
+    private FontIcon iconoFiltro;
+    private FontIcon iconoChevron;
 
     /**
      * @param columna La TableColumn a la que se añade el filtro
@@ -132,7 +135,7 @@ public class ColumnFilterPanel<T> {
 
     private void instalarEncabezado() {
         String textoOriginal = columna.getText();
-        columna.setText("");   
+        columna.setText("");
 
         HBox headerBox = new HBox(4);
         headerBox.setAlignment(Pos.CENTER_LEFT);
@@ -142,16 +145,30 @@ public class ColumnFilterPanel<T> {
         lblTexto.setStyle("-fx-font-weight: bold; -fx-text-fill: " + COLOR_PRIMARY + "; -fx-font-size: 12.5px;");
         HBox.setHgrow(lblTexto, Priority.ALWAYS);
 
-        iconoHeader = new FontIcon("fas-chevron-down");
-        iconoHeader.setIconSize(10);
-        iconoHeader.setStyle(estiloIcono(false));
-        
+        iconoFiltro = new FontIcon(FontAwesomeRegular.ARROW_ALT_CIRCLE_UP);
+        iconoFiltro.setIconSize(8);
+        iconoFiltro.setStyle(estiloIcono(false));
 
-        headerBox.getChildren().addAll(lblTexto, iconoHeader);
+        iconoChevron = new FontIcon(FontAwesomeSolid.CHEVRON_DOWN);
+        iconoChevron.setIconSize(8);
+        iconoChevron.setStyle(estiloIcono(false));
 
-        iconoHeader.setOnMouseClicked(e -> {
+        HBox iconos = new HBox(4, iconoFiltro, iconoChevron);
+        iconos.setAlignment(Pos.CENTER_RIGHT);
+        iconos.setOnMouseClicked(e -> {
             e.consume();
-            togglePopup(iconoHeader);
+            togglePopup(iconos);
+        });
+
+        headerBox.getChildren().addAll(lblTexto, iconos);
+
+        iconoFiltro.setOnMouseClicked(e -> {
+            e.consume();
+            togglePopup(iconos);
+        });
+        iconoChevron.setOnMouseClicked(e -> {
+            e.consume();
+            togglePopup(iconos);
         });
 
         lblTexto.setOnMouseClicked(e -> {
@@ -161,8 +178,11 @@ public class ColumnFilterPanel<T> {
     }
 
     private void actualizarIcono() {
-        if (iconoHeader != null) {
-            iconoHeader.setStyle(estiloIcono(filtroActivo));
+        if (iconoFiltro != null) {
+            iconoFiltro.setStyle(estiloIcono(filtroActivo));
+        }
+        if (iconoChevron != null) {
+            iconoChevron.setStyle(estiloIcono(filtroActivo));
         }
     }
 
@@ -226,7 +246,7 @@ public class ColumnFilterPanel<T> {
         Node graphic = columna.getGraphic();
         String textoColumna;
 
-        if (graphic instanceof HBox hb) { 
+        if (graphic instanceof HBox hb) {
             textoColumna = ((Label) hb.getChildren().get(0)).getText();
         } else {
             textoColumna = "columna";
@@ -338,7 +358,9 @@ public class ColumnFilterPanel<T> {
         txtBuscar.setOnKeyPressed(event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
                 aplicarFiltro(selActual);
-                if (popup != null) popup.hide();
+                if (popup != null) {
+                    popup.hide();
+                }
             }
         });
 

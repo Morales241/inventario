@@ -131,7 +131,7 @@ public class MapperEstructura {
                         dep.setNombre(d.getNombre());
 
                         if (d.getVersion() != null) {
-                            d.setVersion(d.getVersion());
+                            dep.setVersion(d.getVersion());
                             
                         }
                         return dep;
@@ -171,7 +171,7 @@ public class MapperEstructura {
                         p.setNombre(d.getNombre());
 
                         if (d.getVersion() != null) {
-                            d.setVersion(d.getVersion());
+                            p.setVersion(d.getVersion());
                             
                         }
 

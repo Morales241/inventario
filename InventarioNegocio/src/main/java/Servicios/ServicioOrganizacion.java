@@ -180,6 +180,27 @@ public class ServicioOrganizacion extends ServicioBase implements IServicioOrgan
                 return mapper.mapToDtoList(dao.buscarPorCoincidencias(filtro));
             });
         }
+
+        @Override
+        public EmpresaDTO guardar(EmpresaDTO dto) {
+            return ejecutarTransaccion(em -> {
+                configurarEntityManager(em);
+                validarNegocio(dto, dto.getId() == null || dto.getId() <= 0, em);
+
+                Empresa entidad = mapper.mapToEntity(dto);
+                if (dto.getId() != null && dto.getId() > 0) {
+                    Empresa existente = dao.buscarPorId(dto.getId());
+                    if (existente == null) {
+                        throw new RecursoNoEncontradoException(
+                            "Empresa con ID " + dto.getId() + " no encontrada");
+                    }
+                    entidad = dao.actualizar(entidad);
+                } else {
+                    entidad = dao.guardar(entidad);
+                }
+                return mapper.mapToDto(entidad);
+            });
+        }
         
         /**
          * Método específico: Buscar empresa por ID de puesto

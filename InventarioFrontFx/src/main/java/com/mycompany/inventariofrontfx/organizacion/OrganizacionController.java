@@ -32,7 +32,7 @@ public class OrganizacionController implements Initializable, BaseController {
 
     public enum TipoNodo { EMPRESA, SUCURSAL, DEPARTAMENTO, PUESTO }
 
-    private record NodoOrg(TipoNodo tipo, Long id, String nombre, Long idPadre) {
+    private record NodoOrg(TipoNodo tipo, Long id, String nombre, Long idPadre, Long version) {
         @Override public String toString() { return nombre; }
     }
 
@@ -204,25 +204,25 @@ public class OrganizacionController implements Initializable, BaseController {
 
                 List<EmpresaDTO> empresas = fachada.listarEmpresas(null);
                 for (EmpresaDTO emp : empresas) {
-                    NodoOrg nEmp = new NodoOrg(TipoNodo.EMPRESA, emp.getId(), emp.getNombre(), null);
+                    NodoOrg nEmp = new NodoOrg(TipoNodo.EMPRESA, emp.getId(), emp.getNombre(), null, emp.getVersion());
                     TreeItem<NodoOrg> itemEmp = new TreeItem<>(nEmp);
                     itemEmp.setExpanded(true);
 
                     List<SucursalDTO> sucursales = fachada.listarSucursales(null, emp.getId());
                     for (SucursalDTO suc : sucursales) {
-                        NodoOrg nSuc = new NodoOrg(TipoNodo.SUCURSAL, suc.getId(), suc.getNombre(), emp.getId());
+                        NodoOrg nSuc = new NodoOrg(TipoNodo.SUCURSAL, suc.getId(), suc.getNombre(), emp.getId(), suc.getVersion());
                         TreeItem<NodoOrg> itemSuc = new TreeItem<>(nSuc);
                         itemSuc.setExpanded(false);
 
                         List<DepartamentoDTO> deptos = fachada.listarDepartamentos(null, suc.getId());
                         for (DepartamentoDTO dep : deptos) {
-                            NodoOrg nDep = new NodoOrg(TipoNodo.DEPARTAMENTO, dep.getId(), dep.getNombre(), suc.getId());
+                            NodoOrg nDep = new NodoOrg(TipoNodo.DEPARTAMENTO, dep.getId(), dep.getNombre(), suc.getId(), dep.getVersion());
                             TreeItem<NodoOrg> itemDep = new TreeItem<>(nDep);
                             itemDep.setExpanded(false);
 
                             List<PuestoDTO> puestos = fachada.listarPuestos(dep.getId());
                             for (PuestoDTO p : puestos) {
-                                NodoOrg nP = new NodoOrg(TipoNodo.PUESTO, p.getId(), p.getNombre(), dep.getId());
+                                NodoOrg nP = new NodoOrg(TipoNodo.PUESTO, p.getId(), p.getNombre(), dep.getId(), p.getVersion());
                                 itemDep.getChildren().add(new TreeItem<>(nP));
                             }
                             itemSuc.getChildren().add(itemDep);
@@ -407,12 +407,14 @@ public class OrganizacionController implements Initializable, BaseController {
             case EMPRESA -> {
                 EmpresaDTO dto = new EmpresaDTO();
                 dto.setId(nodoSeleccionado.id());
+                dto.setVersion(nodoSeleccionado.version());
                 dto.setNombre(txtNombre.getText().trim());
                 fachada.guardarEmpresa(dto);
             }
             case SUCURSAL -> {
                 SucursalDTO dto = new SucursalDTO();
                 dto.setId(nodoSeleccionado.id());
+                dto.setVersion(nodoSeleccionado.version());
                 dto.setNombre(txtNombre.getText().trim());
                 dto.setUbicacion(txtUbicacion.getText().trim());
                 dto.setIdEmpresa(nodoSeleccionado.idPadre());
@@ -421,6 +423,7 @@ public class OrganizacionController implements Initializable, BaseController {
             case DEPARTAMENTO -> {
                 DepartamentoDTO dto = new DepartamentoDTO();
                 dto.setId(nodoSeleccionado.id());
+                dto.setVersion(nodoSeleccionado.version());
                 dto.setNombre(txtNombre.getText().trim());
                 dto.setIdSucursal(nodoSeleccionado.idPadre());
                 fachada.guardarDepartamento(dto);
@@ -428,6 +431,7 @@ public class OrganizacionController implements Initializable, BaseController {
             case PUESTO -> {
                 PuestoDTO dto = new PuestoDTO();
                 dto.setId(nodoSeleccionado.id());
+                dto.setVersion(nodoSeleccionado.version());
                 dto.setNombre(txtNombre.getText().trim());
                 dto.setIdDepartamento(nodoSeleccionado.idPadre());
                 fachada.guardarPuesto(dto);
@@ -438,7 +442,7 @@ public class OrganizacionController implements Initializable, BaseController {
     private void prepararFormularioNuevo(TipoNodo tipo, Long idPadre) {
         mostrarPanelDetalle();
         breadcrumbBox.getChildren().clear();
-        configurarCabeceraParaTipo(new NodoOrg(tipo, null, "Nuevo " + nombreTipo(tipo), idPadre));
+        configurarCabeceraParaTipo(new NodoOrg(tipo, null, "Nuevo " + nombreTipo(tipo), idPadre, null));
         btnEliminar.setVisible(false); btnEliminar.setManaged(false);
         statsBox.setVisible(false);    statsBox.setManaged(false);
         seccionHijos.setVisible(false);seccionHijos.setManaged(false);
