@@ -513,7 +513,7 @@ public class FormInventarioController implements ControllerInventario, IValidaci
         idEquipoEditando = equipo.getIdEquipo();
         versionEquipo = equipo.getVersion();
 
-        txtGry.setText(String.valueOf(equipo.getGry()));
+        txtGry.setText(equipo.getGryFormateado() != null ? equipo.getGryFormateado() : "");
         txtFactura.setText(equipo.getFactura() != null ? equipo.getFactura() : "");
         txtObservaciones.setText(equipo.getObservaciones() != null ? equipo.getObservaciones() : "");
         txtIdentificador.setText(equipo.getIdentificador() != null ? equipo.getIdentificador() : "");

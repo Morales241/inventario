@@ -110,7 +110,7 @@ public class FormAsignacionesController implements Initializable, BaseController
             equipoSeleccionado = selected;
             actualizarResumen();
             if (selected != null) {
-                lblEquipoSeleccionado.setText("GRY: " + selected.getGry() + " - " + selected.getNombreModelo());
+                lblEquipoSeleccionado.setText("GRY: " + selected.getGryFormateado() + " - " + selected.getNombreModelo());
             } else {
                 lblEquipoSeleccionado.setText("Ninguno seleccionado");
             }
@@ -140,7 +140,7 @@ public class FormAsignacionesController implements Initializable, BaseController
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText("GRY: " + item.getGry() + " - " + item.getNombreModelo() + 
+                    setText("GRY: " + item.getGryFormateado() + " - " + item.getNombreModelo() + 
                            " (" + item.getIdentificador() + ")");
                 }
             }
@@ -196,7 +196,7 @@ public class FormAsignacionesController implements Initializable, BaseController
         }
         
         if (equipoSeleccionado != null) {
-            resumenEquipo.setText("GRY: " + equipoSeleccionado.getGry() + " - " + 
+            resumenEquipo.setText("GRY: " + equipoSeleccionado.getGryFormateado() + " - " + 
                                   equipoSeleccionado.getNombreModelo());
         } else {
             resumenEquipo.setText("No seleccionado");

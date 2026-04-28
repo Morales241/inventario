@@ -64,6 +64,14 @@ public class EquipoBaseDTO {
         this.gry = gry;
     }
 
+    public String getGryFormateado() {
+        return formatGry(gry);
+    }
+
+    public static String formatGry(Integer gry) {
+        return gry != null ? String.format("%05d", gry) : null;
+    }
+
     public String getEstado() {
         return estado;
     }

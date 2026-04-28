@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
@@ -60,37 +61,88 @@
                                 </VBox>
 
                                 <!-- RESULTADO (oculto hasta buscar) -->
-                                <VBox managed="false" spacing="10.0" visible="false">
+                                <VBox fx:id="panelResultadoEquipo" managed="false" spacing="10.0" visible="false">
 
                                     <!-- Card de info del equipo -->
                                     <VBox fx:id="cardEquipo" managed="false" style="-fx-background-color: white;                                                  -fx-background-radius: 10;                                                  -fx-border-color: #E5E7EB;                                                  -fx-border-radius: 10;                                                  -fx-border-width: 1;                                                  -fx-padding: 14 18;" visible="false">
                                         <children>
                                             <Label style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #9CA3AF;" text="EQUIPO SELECCIONADO" />
-                                            <HBox alignment="CENTER_LEFT" spacing="30.0">
+                                            <GridPane hgap="24" vgap="14">
                                                 <children>
-                                                    <VBox spacing="3">
+                                                    <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="3">
                                                         <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="GRY" />
                                                         <Label fx:id="lblEquipoGry" style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #13507d;" />
                                                     </VBox>
-                                                    <VBox spacing="3">
+                                                    <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="3">
                                                         <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Modelo" />
                                                         <Label fx:id="lblEquipoModelo" style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #374151;" />
                                                     </VBox>
-                                                    <VBox spacing="3">
+                                                    <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" spacing="3">
                                                         <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Tipo" />
                                                         <Label fx:id="lblEquipoTipo" style="-fx-font-size: 13px; -fx-text-fill: #374151;" />
                                                     </VBox>
-                                                    <VBox spacing="3">
-                                                        <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Identificador" />
-                                                        <Label fx:id="lblEquipoIdentificador" style="-fx-font-size: 13px; -fx-text-fill: #374151;" />
-                                                    </VBox>
-                                                    <Region HBox.hgrow="ALWAYS" />
-                                                    <VBox alignment="CENTER_RIGHT" spacing="3">
+                                                    <VBox GridPane.columnIndex="3" GridPane.rowIndex="0" spacing="3">
                                                         <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Estado" />
                                                         <Label fx:id="lblEquipoEstado" />
                                                     </VBox>
+
+                                                    <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="3">
+                                                        <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Identificador" />
+                                                        <Label fx:id="lblEquipoIdentificador" style="-fx-font-size: 13px; -fx-text-fill: #374151;" />
+                                                    </VBox>
+                                                    <VBox GridPane.columnIndex="1" GridPane.rowIndex="1" spacing="3">
+                                                        <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Factura" />
+                                                        <Label fx:id="lblEquipoFactura" style="-fx-font-size: 13px; -fx-text-fill: #374151;" />
+                                                    </VBox>
+                                                    <VBox GridPane.columnIndex="2" GridPane.rowIndex="1" spacing="3">
+                                                        <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Condición" />
+                                                        <Label fx:id="lblEquipoCondicion" style="-fx-font-size: 13px; -fx-text-fill: #374151;" />
+                                                    </VBox>
+                                                    <VBox GridPane.columnIndex="3" GridPane.rowIndex="1" spacing="3">
+                                                        <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Sucursal" />
+                                                        <Label fx:id="lblEquipoSucursal" style="-fx-font-size: 13px; -fx-text-fill: #374151;" />
+                                                    </VBox>
+
+                                                    <VBox GridPane.columnIndex="0" GridPane.rowIndex="2" spacing="3">
+                                                        <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Fecha compra" />
+                                                        <Label fx:id="lblEquipoFechaCompra" style="-fx-font-size: 13px; -fx-text-fill: #374151;" />
+                                                    </VBox>
+                                                    <VBox GridPane.columnIndex="1" GridPane.rowIndex="2" spacing="3">
+                                                        <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Precio" />
+                                                        <Label fx:id="lblEquipoPrecio" style="-fx-font-size: 13px; -fx-text-fill: #374151;" />
+                                                    </VBox>
+                                                    <VBox GridPane.columnIndex="2" GridPane.rowIndex="2" spacing="3">
+                                                        <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Versión" />
+                                                        <Label fx:id="lblEquipoVersion" style="-fx-font-size: 13px; -fx-text-fill: #374151;" />
+                                                    </VBox>
+                                                    <VBox GridPane.columnIndex="3" GridPane.rowIndex="2" spacing="3">
+                                                        <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="ID Equipo" />
+                                                        <Label fx:id="lblEquipoId" style="-fx-font-size: 13px; -fx-text-fill: #374151;" />
+                                                    </VBox>
+
+                                                    <VBox GridPane.columnIndex="0" GridPane.rowIndex="3" spacing="3">
+                                                        <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Creado por" />
+                                                        <Label fx:id="lblEquipoCreadoPor" style="-fx-font-size: 13px; -fx-text-fill: #374151;" />
+                                                    </VBox>
+                                                    <VBox GridPane.columnIndex="1" GridPane.rowIndex="3" spacing="3">
+                                                        <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Fecha creación" />
+                                                        <Label fx:id="lblEquipoFechaCreacion" style="-fx-font-size: 13px; -fx-text-fill: #374151;" />
+                                                    </VBox>
+                                                    <VBox GridPane.columnIndex="2" GridPane.rowIndex="3" spacing="3">
+                                                        <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Modificado por" />
+                                                        <Label fx:id="lblEquipoModificadoPor" style="-fx-font-size: 13px; -fx-text-fill: #374151;" />
+                                                    </VBox>
+                                                    <VBox GridPane.columnIndex="3" GridPane.rowIndex="3" spacing="3">
+                                                        <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Última modificación" />
+                                                        <Label fx:id="lblEquipoFechaModificacion" style="-fx-font-size: 13px; -fx-text-fill: #374151;" />
+                                                    </VBox>
+
+                                                    <VBox GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="4" spacing="3">
+                                                        <Label style="-fx-font-size: 11px; -fx-text-fill: #6B7280;" text="Observaciones" />
+                                                        <Label fx:id="lblEquipoObservaciones" style="-fx-font-size: 13px; -fx-text-fill: #374151;" wrapText="true" />
+                                                    </VBox>
                                                 </children>
-                                            </HBox>
+                                            </GridPane>
                                         </children>
                                     </VBox>
 

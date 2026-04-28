@@ -292,6 +292,13 @@ public class InventarioController implements Initializable, ControllerInventario
     private void configurarColumnas() {
         colId.setCellValueFactory(d -> new SimpleObjectProperty<>(d.getValue().getIdEquipo()));
         colGry.setCellValueFactory(d -> new SimpleObjectProperty<>(d.getValue().getGry()));
+        colGry.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(Integer item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : String.format("%05d", item));
+            }
+        });
         colTipo.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getTipo()));
         colModelo.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombreModelo()));
         colFecha.setCellValueFactory(d -> {
@@ -410,7 +417,7 @@ public class InventarioController implements Initializable, ControllerInventario
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmación");
         alert.setHeaderText("Eliminar equipo");
-        alert.setContentText("¿Desea eliminar el equipo GRY " + equipo.getGry() + "?");
+        alert.setContentText("¿Desea eliminar el equipo GRY " + equipo.getGryFormateado() + "?");
         alert.showAndWait().filter(btn -> btn == ButtonType.OK).ifPresent(b -> {
             Task<Void> t = new Task<>() {
                 @Override

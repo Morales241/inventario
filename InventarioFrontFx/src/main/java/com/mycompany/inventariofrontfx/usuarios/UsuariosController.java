@@ -45,6 +45,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Priority;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 import util.ColumnFilterPanel;
@@ -306,6 +307,29 @@ public class UsuariosController implements Initializable {
         colNoNomina.setCellValueFactory(d -> new SimpleObjectProperty<>(d.getValue().getNoNomina()));
         colPuesto.setCellValueFactory(d -> new SimpleObjectProperty<>(d.getValue().getNombrePuesto()));
         colEquiposAsignados.setCellValueFactory(d -> new SimpleObjectProperty<>(String.valueOf(d.getValue().getNumeroDeEquipos())));
+
+        colNombre.setStyle("-fx-alignment: CENTER-LEFT;");
+        colNoNomina.setStyle("-fx-alignment: CENTER-LEFT;");
+        colPuesto.setStyle("-fx-alignment: CENTER-LEFT;");
+
+        alinearEncabezadoIzquierda(colNombre);
+        alinearEncabezadoIzquierda(colPuesto);
+        alinearEncabezadoIzquierda(colNoNomina);
+    }
+
+    private void alinearEncabezadoIzquierda(TableColumn<?, ?> columna) {
+        String texto = columna.getText();
+        if (texto == null || texto.isBlank()) {
+            return;
+        }
+        columna.setText("");
+        Label label = new Label(texto);
+        label.setAlignment(Pos.CENTER_LEFT);
+        label.setMaxWidth(Double.MAX_VALUE);
+        HBox box = new HBox(label);
+        box.setAlignment(Pos.CENTER_LEFT);
+        box.setMaxWidth(Double.MAX_VALUE);
+        columna.setGraphic(box);
     }
 
     private void configurarAcciones() {

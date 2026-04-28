@@ -112,7 +112,7 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
 
     private void mostrarDatosEnPantalla() {
         lblTrabajador.setText(usuario.getNombre() + " — " + usuario.getNoNomina());
-        lblEquipo.setText("GRY: " + equipo.getGry()
+        lblEquipo.setText("GRY: " + equipo.getGryFormateado()
                 + " — " + equipo.getNombreModelo()
                 + " (" + equipo.getIdentificador() + ")");
         lblFecha.setText(fechaAsignacion.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -204,9 +204,9 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
                 DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", new Locale("es", "MX"))));
         p.put("nombreEmpleado", safe(usuario.getNombre()));
         p.put("puesto", safe(usuario.getNombrePuesto()));
-        p.put("numeroCarta", "RESP-" + equipo.getGry() + "-"
+        p.put("numeroCarta", "RESP-" + equipo.getGryFormateado() + "-"
                 + fechaAsignacion.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-        p.put("gry", equipo.getGry());
+        p.put("gry", equipo.getGryFormateado());
         p.put("tipoEquipo", safe(equipo.getTipo()));
         p.put("numeroSerie", safe(equipo.getIdentificador()));
 
@@ -371,7 +371,7 @@ public class ResponsivaAsignacionController implements Initializable, BaseContro
         }
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Guardar Responsiva como PDF");
-        fileChooser.setInitialFileName("Responsiva_GRY" + equipo.getGry() + ".pdf");
+        fileChooser.setInitialFileName("Responsiva_GRY" + equipo.getGryFormateado() + ".pdf");
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Archivo PDF (*.pdf)", "*.pdf"));
 

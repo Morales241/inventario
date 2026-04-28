@@ -93,7 +93,7 @@ public class DashboardController implements Initializable, BaseController {
             return new SimpleStringProperty(nombre != null ? nombre : "—");
         });
         colGry.setCellValueFactory(d -> {
-            String gry = d.getValue().getIdentificadorEquipo();
+            String gry = d.getValue().getGryFormateado();
             return new SimpleStringProperty(gry != null ? gry : "—");
         });
         colModelo.setCellValueFactory(d -> {

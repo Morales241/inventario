@@ -174,9 +174,9 @@ public class AsignacionesController implements Initializable, BaseController {
 
         colEquipo.setCellValueFactory(d -> {
             AsignacionDTO a = d.getValue();
-            String gry  = a.getIdentificadorEquipo() != null ? a.getIdentificadorEquipo() : "";
-            String idEq = a.getIdEquipo()             != null ? " (ID " + a.getIdEquipo() + ")" : "";
-            return new SimpleStringProperty(gry + idEq);
+            String gry  = a.getGryFormateado() != null ? a.getGryFormateado() : "";
+            String idEq = a.getIdEquipo() != null ? " (ID " + a.getIdEquipo() + ")" : "";
+            return new SimpleStringProperty(gry);
         });
 
         colUsuario.setCellValueFactory(d ->
@@ -308,7 +308,7 @@ public class AsignacionesController implements Initializable, BaseController {
         alert.setTitle("Confirmar devolución");
         alert.setHeaderText("Devolver equipo");
         alert.setContentText("¿Confirmar devolución del equipo " +
-                asignacion.getIdentificadorEquipo() +
+                (asignacion.getGryFormateado() != null ? "GRY " + asignacion.getGryFormateado() : asignacion.getIdentificadorEquipo()) +
                 " asignado a " + asignacion.getNombreUsuario() + "?");
 
         alert.showAndWait().ifPresent(response -> {

@@ -64,7 +64,7 @@
                         <TableColumn fx:id="colNombre" editable="false" prefWidth="120.0" sortable="false" text="Nombre" />
                         <TableColumn fx:id="colNoNomina" editable="false" prefWidth="120.0" sortable="false" text="Número Nómina" />
                         <TableColumn fx:id="colPuesto" editable="false" prefWidth="100.0" sortable="false" text="Puesto" />
-                        <TableColumn fx:id="colEquiposAsignados" editable="false" prefWidth="100.0" text="Equipos Asignados" />
+                        <TableColumn fx:id="colEquiposAsignados" editable="false" prefWidth="100.0" sortable="false" text="Equipos Asignados" />
                         <TableColumn fx:id="colAcciones" editable="false" maxWidth="250.0" prefWidth="100.0" resizable="false" sortable="false" text="Acciones" />
                     </columns>
                     <columnResizePolicy>

@@ -23,7 +23,8 @@ public class AsignacionDTO {
     private String nombreUsuario;
 
     private Long idEquipo;
-    private String GRY;
+    private Integer gry;
+    private String identificadorEquipo;
 
     // Campos de auditoría
     private String creadoPor;
@@ -82,12 +83,28 @@ public class AsignacionDTO {
         this.idEquipo = idEquipo;
     }
 
-    public String getIdentificadorEquipo() {
-        return GRY;
+    public Integer getGry() {
+        return gry;
     }
 
-    public void setIdentificadorEquipo(String GRY) {
-        this.GRY = GRY;
+    public void setGry(Integer gry) {
+        this.gry = gry;
+    }
+
+    public String getGryFormateado() {
+        return formatGry(gry);
+    }
+
+    public static String formatGry(Integer gry) {
+        return gry != null ? String.format("%05d", gry) : null;
+    }
+
+    public String getIdentificadorEquipo() {
+        return identificadorEquipo;
+    }
+
+    public void setIdentificadorEquipo(String identificadorEquipo) {
+        this.identificadorEquipo = identificadorEquipo;
     }
 
     public Long getVersion() {
@@ -133,7 +150,7 @@ public class AsignacionDTO {
 
     @Override
     public String toString() {
-        return id + ".- fechaEntrega=" + fechaEntrega + ", fechaDevolucion=" + fechaDevolucion +  ", nombreUsuario=" + nombreUsuario + ", GRY=" + GRY;
+        return id + ".- fechaEntrega=" + fechaEntrega + ", fechaDevolucion=" + fechaDevolucion +  ", nombreUsuario=" + nombreUsuario + ", GRY=" + gry + ", identificadorEquipo=" + identificadorEquipo;
     }
     
 }

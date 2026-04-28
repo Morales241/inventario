@@ -32,9 +32,9 @@ public class GeneradorResponsivaComputo {
                 DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", new Locale("es", "MX"))));
         p.put("nombreEmpleado", safe(usuario.getNombre()));
         p.put("puesto", safe(usuario.getNombrePuesto()));
-        p.put("numeroCarta", "RESP-" + equipo.getGry() + "-"
+        p.put("numeroCarta", "RESP-" + equipo.getGryFormateado() + "-"
                 + fechaAsignacion.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-        p.put("gry", equipo.getGry());
+        p.put("gry", equipo.getGryFormateado());
         p.put("tipoEquipo", safe(equipo.getTipo()));
         p.put("numeroSerie", safe(equipo.getIdentificador()));
 

@@ -61,11 +61,24 @@ public class AuditoriaController implements Initializable, BaseController {
 
     // Card de info del equipo (visible tras buscar)
     @FXML private VBox                               cardEquipo;
+    @FXML private VBox                               panelResultadoEquipo;
     @FXML private Label                              lblEquipoGry;
     @FXML private Label                              lblEquipoModelo;
     @FXML private Label                              lblEquipoTipo;
     @FXML private Label                              lblEquipoEstado;
     @FXML private Label                              lblEquipoIdentificador;
+    @FXML private Label                              lblEquipoFactura;
+    @FXML private Label                              lblEquipoCondicion;
+    @FXML private Label                              lblEquipoSucursal;
+    @FXML private Label                              lblEquipoFechaCompra;
+    @FXML private Label                              lblEquipoPrecio;
+    @FXML private Label                              lblEquipoVersion;
+    @FXML private Label                              lblEquipoId;
+    @FXML private Label                              lblEquipoCreadoPor;
+    @FXML private Label                              lblEquipoFechaCreacion;
+    @FXML private Label                              lblEquipoModificadoPor;
+    @FXML private Label                              lblEquipoFechaModificacion;
+    @FXML private Label                              lblEquipoObservaciones;
 
     // Tabla de historial de asignaciones
     @FXML private TableView<AsignacionDTO>                      tablaHistorialEquipo;
@@ -290,11 +303,23 @@ public class AuditoriaController implements Initializable, BaseController {
     }
 
     private void mostrarCardEquipo(EquipoBaseDTO equipo) {
-        lblEquipoGry.setText("GRY: " + (equipo.getGry() != null ? equipo.getGry() : "—"));
+        lblEquipoGry.setText("GRY: " + (equipo.getGryFormateado() != null ? equipo.getGryFormateado() : "—"));
         lblEquipoModelo.setText(equipo.getNombreModelo() != null ? equipo.getNombreModelo() : "—");
         lblEquipoTipo.setText(equipo.getTipo() != null ? equipo.getTipo() : "—");
         lblEquipoEstado.setText(equipo.getEstado() != null ? equipo.getEstado() : "—");
         lblEquipoIdentificador.setText(equipo.getIdentificador() != null ? equipo.getIdentificador() : "—");
+        lblEquipoFactura.setText(equipo.getFactura() != null ? equipo.getFactura() : "—");
+        lblEquipoCondicion.setText(equipo.getCondicion() != null ? equipo.getCondicion() : "—");
+        lblEquipoSucursal.setText(equipo.getNombreSucursal() != null ? equipo.getNombreSucursal() : "—");
+        lblEquipoFechaCompra.setText(equipo.getFechaCompra() != null ? equipo.getFechaCompra().format(FMT_FECHA) : "—");
+        lblEquipoPrecio.setText(equipo.getPrecio() != null ? String.format("$%.2f", equipo.getPrecio()) : "—");
+        lblEquipoVersion.setText(equipo.getVersion() != null ? equipo.getVersion().toString() : "—");
+        lblEquipoId.setText(equipo.getIdEquipo() != null ? equipo.getIdEquipo().toString() : "—");
+        lblEquipoCreadoPor.setText(equipo.getCreadoPor() != null ? equipo.getCreadoPor() : "—");
+        lblEquipoFechaCreacion.setText(equipo.getFechaCreacion() != null ? equipo.getFechaCreacion().format(FMT_HORA) : "—");
+        lblEquipoModificadoPor.setText(equipo.getModificadoPor() != null ? equipo.getModificadoPor() : "—");
+        lblEquipoFechaModificacion.setText(equipo.getFechaModificacion() != null ? equipo.getFechaModificacion().format(FMT_HORA) : "—");
+        lblEquipoObservaciones.setText(equipo.getObservaciones() != null ? equipo.getObservaciones() : "—");
 
         // Color del badge de estado
         String estadoColor = switch (equipo.getEstado() != null ? equipo.getEstado().toUpperCase() : "") {
@@ -309,6 +334,10 @@ public class AuditoriaController implements Initializable, BaseController {
         if (panelPlaceholderEquipo != null) {
             panelPlaceholderEquipo.setVisible(false);
             panelPlaceholderEquipo.setManaged(false);
+        }
+        if (panelResultadoEquipo != null) {
+            panelResultadoEquipo.setVisible(true);
+            panelResultadoEquipo.setManaged(true);
         }
         if (cardEquipo != null) {
             cardEquipo.setVisible(true);
@@ -448,7 +477,7 @@ public class AuditoriaController implements Initializable, BaseController {
 
     private void configurarColumnasEquipos() {
         colEGry.setCellValueFactory(d ->
-                new SimpleStringProperty(d.getValue().getGry() != null ? d.getValue().getGry().toString() : "—"));
+                new SimpleStringProperty(d.getValue().getGryFormateado() != null ? d.getValue().getGryFormateado() : "—"));
 
         colENombreModelo.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getNombreModelo() != null ? d.getValue().getNombreModelo() : "—"));
@@ -474,8 +503,11 @@ public class AuditoriaController implements Initializable, BaseController {
         colAUsuario.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getNombreUsuario() != null ? d.getValue().getNombreUsuario() : "—"));
 
-        colAEquipo.setCellValueFactory(d ->
-                new SimpleStringProperty(d.getValue().getIdentificadorEquipo() != null ? d.getValue().getIdentificadorEquipo() : "—"));
+        colAEquipo.setCellValueFactory(d -> {
+            String gry = d.getValue().getGryFormateado();
+            return new SimpleStringProperty(gry != null ? gry :
+                    d.getValue().getIdentificadorEquipo() != null ? d.getValue().getIdentificadorEquipo() : "—");
+        });
 
         colACreadoPor.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getCreadoPor() != null ? d.getValue().getCreadoPor() : "—"));

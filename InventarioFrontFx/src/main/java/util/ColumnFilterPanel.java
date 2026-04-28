@@ -25,9 +25,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.util.Duration;
-import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
-import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
-import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
  * Panel de filtro estilo Excel para columnas de TableView en JavaFX.
@@ -66,8 +63,8 @@ public class ColumnFilterPanel<T> {
     private boolean filtroActivo = false;
 
     private Popup popup;
-    private FontIcon iconoFiltro;
-    private FontIcon iconoChevron;
+    private Label iconoFiltro;
+    private Label iconoChevron;
 
     /**
      * @param columna La TableColumn a la que se añade el filtro
@@ -138,20 +135,24 @@ public class ColumnFilterPanel<T> {
         columna.setText("");
 
         HBox headerBox = new HBox(4);
-        headerBox.setAlignment(Pos.CENTER_LEFT);
+        headerBox.setAlignment(Pos.CENTER);
         headerBox.setMaxWidth(Double.MAX_VALUE);
 
         Label lblTexto = new Label(textoOriginal);
         lblTexto.setStyle("-fx-font-weight: bold; -fx-text-fill: " + COLOR_PRIMARY + "; -fx-font-size: 12.5px;");
+        lblTexto.setMaxWidth(Double.MAX_VALUE);
+        lblTexto.setAlignment(Pos.CENTER);
         HBox.setHgrow(lblTexto, Priority.ALWAYS);
 
-        iconoFiltro = new FontIcon(FontAwesomeRegular.ARROW_ALT_CIRCLE_UP);
-        iconoFiltro.setIconSize(8);
+        iconoFiltro = new Label("●");
         iconoFiltro.setStyle(estiloIcono(false));
+        iconoFiltro.setVisible(false);
+        iconoFiltro.setManaged(false);
 
-        iconoChevron = new FontIcon(FontAwesomeSolid.CHEVRON_DOWN);
-        iconoChevron.setIconSize(8);
+        iconoChevron = new Label("▼");
         iconoChevron.setStyle(estiloIcono(false));
+        iconoChevron.setVisible(true);
+        iconoChevron.setManaged(true);
 
         HBox iconos = new HBox(4, iconoFiltro, iconoChevron);
         iconos.setAlignment(Pos.CENTER_RIGHT);
@@ -179,17 +180,21 @@ public class ColumnFilterPanel<T> {
 
     private void actualizarIcono() {
         if (iconoFiltro != null) {
+            iconoFiltro.setVisible(filtroActivo);
+            iconoFiltro.setManaged(filtroActivo);
             iconoFiltro.setStyle(estiloIcono(filtroActivo));
         }
         if (iconoChevron != null) {
-            iconoChevron.setStyle(estiloIcono(filtroActivo));
+            iconoChevron.setVisible(!filtroActivo);
+            iconoChevron.setManaged(!filtroActivo);
+            iconoChevron.setStyle(estiloIcono(!filtroActivo));
         }
     }
 
     private String estiloIcono(boolean activo) {
         String color = activo ? COLOR_ACTIVO : "#9CA3AF";
         return "-fx-text-fill: " + color + "; "
-                + "-fx-font-size: 9px; "
+                + "-fx-font-size: 11px; "
                 + "-fx-cursor: hand; "
                 + "-fx-padding: 2 3 2 3; "
                 + "-fx-background-radius: 3; "
